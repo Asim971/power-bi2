@@ -1,10 +1,8 @@
 table 'public visits'
-	isHidden
 	lineageTag: 808a39a5-1c4b-496a-bdaf-ce0a0d22e91b
 
 	column id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: ae3292fe-1128-45b9-90eb-52baec404035
 		summarizeBy: sum
@@ -16,7 +14,6 @@ table 'public visits'
 
 	column bd_incharge_feedback
 		dataType: string
-		isHidden
 		lineageTag: 1177af13-f7df-4cf6-ab24-eebda373999a
 		summarizeBy: none
 		sourceColumn: bd_incharge_feedback
@@ -27,7 +24,6 @@ table 'public visits'
 
 	column conversion_no
 		dataType: string
-		isHidden
 		lineageTag: 35080cb1-d23b-4a71-bc52-5ddfe0eca68f
 		summarizeBy: none
 		sourceColumn: conversion_no
@@ -38,7 +34,6 @@ table 'public visits'
 
 	column create_by_name
 		dataType: string
-		isHidden
 		lineageTag: 985e8724-7ca5-45ff-bdc9-5700c708a330
 		summarizeBy: none
 		sourceColumn: create_by_name
@@ -49,7 +44,6 @@ table 'public visits'
 
 	column created_at
 		dataType: dateTime
-		isHidden
 		formatString: General Date
 		lineageTag: 8730f20d-ce1c-413a-838f-af3ae49bb529
 		summarizeBy: none
@@ -66,7 +60,6 @@ table 'public visits'
 
 	column delete_status
 		dataType: string
-		isHidden
 		lineageTag: 951e7b84-55ac-4768-9070-fd9f99b827fa
 		summarizeBy: none
 		sourceColumn: delete_status
@@ -77,7 +70,6 @@ table 'public visits'
 
 	column entity_id
 		dataType: string
-		isHidden
 		lineageTag: fd3e3832-757a-4403-b883-e25f5474da52
 		summarizeBy: none
 		sourceColumn: entity_id
@@ -88,7 +80,6 @@ table 'public visits'
 
 	column entity_name
 		dataType: string
-		isHidden
 		lineageTag: 46bcf593-b91d-4994-85e3-27bbe504f200
 		summarizeBy: none
 		sourceColumn: entity_name
@@ -99,7 +90,6 @@ table 'public visits'
 
 	column entity_record_id
 		dataType: string
-		isHidden
 		lineageTag: ef7e6450-5669-495b-8448-5c0524faf571
 		summarizeBy: none
 		sourceColumn: entity_record_id
@@ -110,7 +100,6 @@ table 'public visits'
 
 	column feedback
 		dataType: string
-		isHidden
 		lineageTag: 359fe502-e3ff-4fda-9949-6e68b12683c8
 		summarizeBy: none
 		sourceColumn: feedback
@@ -121,7 +110,6 @@ table 'public visits'
 
 	column followup_date
 		dataType: dateTime
-		isHidden
 		formatString: Long Date
 		lineageTag: 40c7f077-2592-497c-9d82-24e1de88fa79
 		summarizeBy: none
@@ -140,7 +128,6 @@ table 'public visits'
 
 	column influencer_type
 		dataType: string
-		isHidden
 		lineageTag: b2be7ac6-c809-419d-ba24-240da8cff0a0
 		summarizeBy: none
 		sourceColumn: influencer_type
@@ -151,7 +138,6 @@ table 'public visits'
 
 	column origin
 		dataType: string
-		isHidden
 		lineageTag: 93970418-8640-407b-87b0-2f3bad5c39db
 		summarizeBy: none
 		sourceColumn: origin
@@ -162,7 +148,6 @@ table 'public visits'
 
 	column product_photo
 		dataType: string
-		isHidden
 		lineageTag: af11d46c-e25f-4703-9263-97959040606a
 		summarizeBy: none
 		sourceColumn: product_photo
@@ -173,7 +158,6 @@ table 'public visits'
 
 	column recordid
 		dataType: string
-		isHidden
 		lineageTag: 39b1495d-f0ff-42fa-8da8-b7b21092112e
 		summarizeBy: none
 		sourceColumn: recordid
@@ -184,7 +168,6 @@ table 'public visits'
 
 	column role_level
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 3a85c1b0-92f6-4b3a-a6bd-38f24d6716e9
 		summarizeBy: sum
@@ -196,7 +179,6 @@ table 'public visits'
 
 	column status
 		dataType: string
-		isHidden
 		lineageTag: cf73620f-f3d7-49e2-983b-cbd9e60ad5ad
 		summarizeBy: none
 		sourceColumn: status
@@ -207,7 +189,6 @@ table 'public visits'
 
 	column territory_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: e3c7ee06-ebfd-4c42-9f04-21c54a1771d7
 		summarizeBy: sum
@@ -219,7 +200,6 @@ table 'public visits'
 
 	column territory_name
 		dataType: string
-		isHidden
 		lineageTag: e9ff30bb-0d79-4700-985a-a8a07777980c
 		summarizeBy: none
 		sourceColumn: territory_name
@@ -230,7 +210,6 @@ table 'public visits'
 
 	column updated_at
 		dataType: dateTime
-		isHidden
 		formatString: General Date
 		lineageTag: d7ec9313-3952-4225-9e1a-24ff66a25774
 		summarizeBy: none
@@ -247,7 +226,6 @@ table 'public visits'
 
 	column visit_date_time
 		dataType: dateTime
-		isHidden
 		formatString: General Date
 		lineageTag: 56de6b0a-c8c8-4d48-bd6d-fbae53c78dda
 		summarizeBy: none
@@ -264,7 +242,6 @@ table 'public visits'
 
 	column visit_photo
 		dataType: string
-		isHidden
 		lineageTag: e5ca4050-4283-4601-990f-683b4ad4268e
 		summarizeBy: none
 		sourceColumn: visit_photo
@@ -275,7 +252,6 @@ table 'public visits'
 
 	column visit_type
 		dataType: string
-		isHidden
 		lineageTag: 9975ef84-c603-4a4c-b7e5-7748705f92c2
 		summarizeBy: none
 		sourceColumn: visit_type
@@ -286,7 +262,6 @@ table 'public visits'
 
 	column contractor_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: b9427af9-1953-4c2d-b658-08e25f9ef64a
 		summarizeBy: sum
@@ -298,7 +273,6 @@ table 'public visits'
 
 	column created_by_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 95e3628e-dc64-4b3c-af29-9070c4d8cf68
 		summarizeBy: sum
@@ -310,7 +284,6 @@ table 'public visits'
 
 	column dealer_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 10dbd97e-e412-4675-bff2-5bb561b1fa82
 		summarizeBy: sum
@@ -322,7 +295,6 @@ table 'public visits'
 
 	column engineer_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 17058432-2464-420b-9517-2df2b8a48a22
 		summarizeBy: sum
@@ -334,7 +306,6 @@ table 'public visits'
 
 	column head_mason_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 10083d54-f5aa-4719-a857-4b7e9f014c83
 		summarizeBy: sum
@@ -346,7 +317,6 @@ table 'public visits'
 
 	column ihb_registration_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 0a8b6254-2287-4943-9a9e-15125ab86693
 		summarizeBy: sum
@@ -358,7 +328,6 @@ table 'public visits'
 
 	column organization_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 65e0251a-8ee1-4df8-98fc-5c663f9fd2a5
 		summarizeBy: sum
@@ -370,7 +339,6 @@ table 'public visits'
 
 	column potential_site_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 7b7a94b2-d93b-46e1-8263-12c4da2a07e5
 		summarizeBy: sum
@@ -382,7 +350,6 @@ table 'public visits'
 
 	column project_conversion_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: f53b9c3b-7dd9-4a68-83c3-fac33b949860
 		summarizeBy: sum
@@ -394,7 +361,6 @@ table 'public visits'
 
 	column retailer_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 62300029-6233-4299-aa48-2252cfacb7a0
 		summarizeBy: sum
@@ -406,7 +372,6 @@ table 'public visits'
 
 	column site_manager_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 8354cda0-26e5-45fc-a27d-1ea8fc99c96f
 		summarizeBy: sum
@@ -418,7 +383,6 @@ table 'public visits'
 
 	column updated_by_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 5721a6ee-489a-4f16-a845-ddde0ed11a3a
 		summarizeBy: sum
@@ -430,7 +394,6 @@ table 'public visits'
 
 	column visit_category_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 97a61557-cac1-48d1-b40c-32b2ca2e70dc
 		summarizeBy: sum
@@ -442,7 +405,6 @@ table 'public visits'
 
 	column visit_phase_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: f469d84c-cf40-4bb2-a291-a2aae12d0d4d
 		summarizeBy: sum
@@ -454,7 +416,6 @@ table 'public visits'
 
 	column visit_stage_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 70e50944-f70c-48ac-ab19-03d3c1c1aebb
 		summarizeBy: sum

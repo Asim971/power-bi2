@@ -177,7 +177,7 @@ ref table LocalDateTable_4ccd853a-ffaa-4612-9342-019595dc6792
 ref table LocalDateTable_80dc7739-add9-4cfa-bfd4-0f267802e538
 ref table LocalDateTable_f8d9e743-e68c-4f07-9f25-9ac4ce880065
 ref table USER-ZONE
-ref table 'Calculation group'
+ref table 'Time Intelligence'
 ref table Fact_Order
 ref table LocalDateTable_9f773199-6de7-48ee-ac31-6425d910fbe6
 ref table LocalDateTable_4749dcd2-f816-46b4-abfb-37e7c17c89ae

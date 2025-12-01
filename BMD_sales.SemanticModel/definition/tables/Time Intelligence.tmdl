@@ -4,37 +4,21 @@ table 'Time Intelligence'
 	calculationGroup
 		precedence: 10
 
-		calculationItem Current
-			expression = SELECTEDMEASURE()
-			ordinal: 0
+		calculationItem Current = SELECTEDMEASURE()
 
-		calculationItem 'Previous Month'
-			expression = CALCULATE(SELECTEDMEASURE(), PREVIOUSMONTH('Dim_Date'[Date]))
-			ordinal: 1
+		calculationItem 'Previous Month' = CALCULATE(SELECTEDMEASURE(), PREVIOUSMONTH('Dim_Date'[Date]))
 
-		calculationItem 'Previous Year'
-			expression = CALCULATE(SELECTEDMEASURE(), PREVIOUSYEAR('Dim_Date'[Date]))
-			ordinal: 2
+		calculationItem 'Previous Year' = CALCULATE(SELECTEDMEASURE(), PREVIOUSYEAR('Dim_Date'[Date]))
 
-		calculationItem MTD
-			expression = CALCULATE(SELECTEDMEASURE(), DATESMTD('Dim_Date'[Date]))
-			ordinal: 3
+		calculationItem MTD = CALCULATE(SELECTEDMEASURE(), DATESMTD('Dim_Date'[Date]))
 
-		calculationItem QTD
-			expression = CALCULATE(SELECTEDMEASURE(), DATESQTD('Dim_Date'[Date]))
-			ordinal: 4
+		calculationItem QTD = CALCULATE(SELECTEDMEASURE(), DATESQTD('Dim_Date'[Date]))
 
-		calculationItem YTD
-			expression = CALCULATE(SELECTEDMEASURE(), DATESYTD('Dim_Date'[Date]))
-			ordinal: 5
+		calculationItem YTD = CALCULATE(SELECTEDMEASURE(), DATESYTD('Dim_Date'[Date]))
 
-		calculationItem 'Rolling 7 Days'
-			expression = CALCULATE(SELECTEDMEASURE(), DATESINPERIOD('Dim_Date'[Date], MAX('Dim_Date'[Date]), -7, DAY))
-			ordinal: 6
+		calculationItem 'Rolling 7 Days' = CALCULATE(SELECTEDMEASURE(), DATESINPERIOD('Dim_Date'[Date], MAX('Dim_Date'[Date]), -7, DAY))
 
-		calculationItem 'Rolling 30 Days'
-			expression = CALCULATE(SELECTEDMEASURE(), DATESINPERIOD('Dim_Date'[Date], MAX('Dim_Date'[Date]), -30, DAY))
-			ordinal: 7
+		calculationItem 'Rolling 30 Days' = CALCULATE(SELECTEDMEASURE(), DATESINPERIOD('Dim_Date'[Date], MAX('Dim_Date'[Date]), -30, DAY))
 
 	measure 'Time Measure'
 		lineageTag: 44600855-7524-4263-bb44-244bebe327c9

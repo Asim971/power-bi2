@@ -10,8 +10,8 @@ table Fact_Visit
 						'Fact_Visit'[ClientType] = "Retailer"
 					)
 			```
-		displayFolder: Visit Counts
 		formatString: 0
+		displayFolder: Visit Counts
 		lineageTag: 54fe40e6-9db7-466a-99e5-ab9705614664
 
 	measure Total_Dealer_Visits = ```
@@ -21,8 +21,8 @@ table Fact_Visit
 						'Fact_Visit'[ClientType] = "Dealer"
 					)
 			```
-		displayFolder: Visit Counts
 		formatString: 0
+		displayFolder: Visit Counts
 		lineageTag: a5e4d983-80ab-4b70-b9fb-7f624ba43ae4
 
 	measure Territory_Captured_Visits = ```
@@ -32,8 +32,8 @@ table Fact_Visit
 			            'Fact_Visit'[HasTerritory] = 1
 			        )
 			```
-		displayFolder: GPS & Territory
 		formatString: 0
+		displayFolder: GPS & Territory
 		lineageTag: 398beba9-89ad-4586-ae55-85f3dfd8e803
 
 	measure No_Territory_Visits = ```
@@ -43,8 +43,8 @@ table Fact_Visit
 			            'Fact_Visit'[HasTerritory] = 0
 			        )
 			```
-		displayFolder: GPS & Territory
 		formatString: 0
+		displayFolder: GPS & Territory
 		lineageTag: 6f8dc6b2-dce7-4366-b1f2-eb3a53e3a142
 
 	measure GPS_Capture_Rate = ```
@@ -354,16 +354,15 @@ table Fact_Visit
 		formatString: 0
 		lineageTag: 53b4d37a-fadf-4f2d-8c96-83172b1a6de5
 
-	measure Employee_Performance_Index = ```
+	measure Employee_Performance_Index =
 			
 			VAR VisitScore = DIVIDE([Total_Visits], [Top_Performer_Visits], 0) * 40
 			VAR QualityScore = [Visit_Quality_Score] * 30
 			VAR ClientCoverage = DIVIDE([Unique_Clients_Visited], CALCULATE(DISTINCTCOUNT('Dim_Client_Simple'[ClientKey]), ALL('Dim_Client_Simple')), 0) * 30
 			RETURN
 			ROUND(VisitScore + QualityScore + ClientCoverage, 1)
-			```
-		displayFolder: Analytics
 		formatString: 0.0
+		displayFolder: Analytics
 		lineageTag: e1a2b3c4-d5e6-f7a8-b9c0-d1e2f3a4b5c6
 
 	measure Visit_Pareto_Running_Total = ```
@@ -382,54 +381,50 @@ table Fact_Visit
 			RETURN
 			DIVIDE(RunningTotal, GrandTotal, 0)
 			```
-		displayFolder: Analytics
 		formatString: 0.0%
+		displayFolder: Analytics
 		lineageTag: f2a3b4c5-e6d7-a8b9-c0d1-e2f3a4b5c6d7
 
-	measure Visits_Anomaly_Flag = ```
+	measure Visits_Anomaly_Flag =
 			VAR AvgVisits = AVERAGEX(ALL('Dim_Date'[Date]), [Total_Visits])
 			VAR StdDeviation = STDEVX.P(ALL('Dim_Date'[Date]), [Total_Visits])
 			VAR CurrentVisits = [Total_Visits]
 			VAR ZScore = DIVIDE(CurrentVisits - AvgVisits, StdDeviation, 0)
 			RETURN
 			IF(ABS(ZScore) > 2, 1, 0)
-			```
-		displayFolder: Analytics
 		formatString: 0
+		displayFolder: Analytics
 		lineageTag: a3b4c5d6-e7f8-a9b0-c1d2-e3f4a5b6c7d8
 
-	measure Visits_Anomaly_Direction = ```
+	measure Visits_Anomaly_Direction =
 			VAR AvgVisits = AVERAGEX(ALL('Dim_Date'[Date]), [Total_Visits])
 			VAR StdDeviation = STDEVX.P(ALL('Dim_Date'[Date]), [Total_Visits])
 			VAR CurrentVisits = [Total_Visits]
 			VAR ZScore = DIVIDE(CurrentVisits - AvgVisits, StdDeviation, 0)
 			RETURN
 			IF(ZScore > 2, "High", IF(ZScore < -2, "Low", "Normal"))
-			```
 		lineageTag: b4c5d6e7-f8a9-b0c1-d2e3-f4a5b6c7d8e9
 
-	measure Days_Since_Last_Visit = ```
+	measure Days_Since_Last_Visit =
 			VAR LastVisitDate = MAX('Fact_Visit'[DateKey])
 			VAR Today = TODAY()
 			RETURN
 			DATEDIFF(LastVisitDate, Today, DAY)
-			```
-		displayFolder: Analytics
 		formatString: 0
+		displayFolder: Analytics
 		lineageTag: c5d6e7f8-a9b0-c1d2-e3f4-a5b6c7d8e9f0
 
-	measure Avg_Days_Between_Visits = ```
+	measure Avg_Days_Between_Visits =
 			
 			VAR VisitDates = SUMMARIZE('Fact_Visit', 'Fact_Visit'[DateKey])
 			VAR DateCount = COUNTROWS(VisitDates)
 			VAR DateRange = DATEDIFF(MIN('Fact_Visit'[DateKey]), MAX('Fact_Visit'[DateKey]), DAY)
 			RETURN
 			IF(DateCount > 1, DIVIDE(DateRange, DateCount - 1, 0), BLANK())
-			```
 		formatString: 0.0
 		lineageTag: d6e7f8a9-b0c1-d2e3-f4a5-b6c7d8e9f0a1
 
-	measure Employee_Rank_by_Visits = ```
+	measure Employee_Rank_by_Visits =
 			
 			VAR CurrentVisits = [Total_Visits]
 			RETURN
@@ -439,7 +434,6 @@ table Fact_Visit
 			        [@V] > CurrentVisits
 			    )
 			) + 1
-			```
 		formatString: 0
 		lineageTag: e7f8a9b0-c1d2-e3f4-a5b6-c7d8e9f0a1b2
 
