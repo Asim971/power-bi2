@@ -1,0 +1,113 @@
+table Dim_VisitCategory
+	lineageTag: f26b0ee4-817e-4879-8d88-301207fef6cc
+
+	column VisitCategoryID
+		dataType: int64
+		formatString: 0
+		lineageTag: 6333327a-f479-4553-98f5-93f31f9236e0
+		summarizeBy: none
+		sourceColumn: VisitCategoryID
+
+		annotation SummarizationSetBy = Automatic
+
+	column CategoryName
+		dataType: string
+		lineageTag: ed37d5c2-36b4-4a81-b31b-ee2edb8bf082
+		summarizeBy: none
+		sourceColumn: CategoryName
+
+		annotation SummarizationSetBy = Automatic
+
+	column CategoryGroup
+		dataType: string
+		lineageTag: b888da47-844f-4c4b-816d-80e42649478c
+		summarizeBy: none
+		sourceColumn: CategoryGroup
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsInfluencer
+		dataType: int64
+		formatString: 0
+		lineageTag: e607e6cf-8749-45a5-a3b7-f393909a2516
+		summarizeBy: none
+		sourceColumn: IsInfluencer
+
+		annotation SummarizationSetBy = Automatic
+
+	column CategorySortOrder
+		dataType: int64
+		formatString: 0
+		lineageTag: e83796bf-015d-463c-bba3-7008d4adf53a
+		summarizeBy: none
+		sourceColumn: CategorySortOrder
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_VisitCategory = m
+		mode: import
+		source = ```
+				// ============================================================
+				// Dim_VisitCategory - Visit Category Dimension
+				// Based on actual 'public visit_categories' table from Power BI
+				// 9 visit categories discovered from the source system
+				// ============================================================
+				
+				let
+				    // Reference the existing 'public visit_categories' table in Power BI
+				    Source = #"public visit_categories",
+				    
+				    // ---- Select Core Columns from actual schema ----
+				    SelectedColumns = Table.SelectColumns(Source, {
+				        "id", "category_name", "delete_status"
+				    }),
+				    
+				    // ---- Filter Active Categories ----
+				    ActiveCategories = Table.SelectRows(SelectedColumns, each [delete_status] = "NO"),
+				    
+				    // ---- Rename Columns ----
+				    RenamedColumns = Table.RenameColumns(ActiveCategories, {
+				        {"id", "VisitCategoryID"},
+				        {"category_name", "CategoryName"}
+				    }),
+				    
+				    // ---- Add Category Type Grouping ----
+				    // Categories: Potential Sites, Dealer, Retailer, IHB, 
+				    //             Conversion Visit, Head Mason, Engineer, Contractor, Site Manager
+				    WithCategoryGroup = Table.AddColumn(RenamedColumns, "CategoryGroup", each 
+				        if [CategoryName] = "Potential Sites" then "Site Development"
+				        else if [CategoryName] = "Conversion Visit" then "Conversion"
+				        else if [CategoryName] = "Dealer" or [CategoryName] = "Retailer" then "Channel Partner"
+				        else if [CategoryName] = "IHB" then "Direct Customer"
+				        else if [CategoryName] = "Head Mason" or [CategoryName] = "Engineer" or 
+				                [CategoryName] = "Contractor" or [CategoryName] = "Site Manager" then "Influencer"
+				        else "Other",
+				        type text
+				    ),
+				    
+				    // ---- Add Is Influencer Flag ----
+				    WithInfluencerFlag = Table.AddColumn(WithCategoryGroup, "IsInfluencer", each 
+				        if [CategoryGroup] = "Influencer" then 1 else 0,
+				        Int64.Type
+				    ),
+				    
+				    // ---- Add Sort Order ----
+				    WithSortOrder = Table.AddColumn(WithInfluencerFlag, "CategorySortOrder", each [VisitCategoryID], Int64.Type),
+				    
+				    // ---- Remove delete_status column ----
+				    CleanedColumns = Table.RemoveColumns(WithSortOrder, {"delete_status"}),
+				    
+				    // ---- Set Data Types ----
+				    TypedTable = Table.TransformColumnTypes(CleanedColumns, {
+				        {"VisitCategoryID", Int64.Type},
+				        {"CategoryName", type text},
+				        {"CategoryGroup", type text},
+				        {"IsInfluencer", Int64.Type},
+				        {"CategorySortOrder", Int64.Type}
+				    })
+				in
+				    TypedTable
+				```
+
+	annotation PBI_ResultType = Table
+

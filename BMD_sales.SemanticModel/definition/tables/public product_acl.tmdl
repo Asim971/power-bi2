@@ -1,0 +1,71 @@
+table 'public product_acl'
+	isHidden
+	lineageTag: 9a6a196e-ba2a-40a2-afc1-7767158a759a
+
+	column id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: a1ab77f7-fc5e-48f5-87b1-600b57acf2d6
+		summarizeBy: sum
+		sourceColumn: id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column attribute
+		dataType: string
+		isHidden
+		lineageTag: abbb6b1e-a4cd-41f0-a741-9eff61a805b6
+		summarizeBy: none
+		sourceColumn: attribute
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column name
+		dataType: string
+		isHidden
+		lineageTag: 60f3e927-6e95-4787-b7a6-e462d847f8bc
+		summarizeBy: none
+		sourceColumn: name
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column unit
+		dataType: string
+		isHidden
+		lineageTag: 7042f46e-2ec3-43fe-b40b-6fa9bb16f5ba
+		summarizeBy: none
+		sourceColumn: unit
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column uom
+		dataType: string
+		isHidden
+		lineageTag: 7efb29a2-0090-459d-9b00-7ff11cc61a2b
+		summarizeBy: none
+		sourceColumn: uom
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'public product_acl' = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("172.17.19.21", "bmdsalesdb"),
+				  #"Navigation 1" = Source{[Schema = "public", Item = "product_acl"]}[Data]
+				in
+				  #"Navigation 1"
+
+	changedProperty = IsHidden
+

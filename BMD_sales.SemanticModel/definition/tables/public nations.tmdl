@@ -1,0 +1,161 @@
+table 'public nations'
+	isHidden
+	lineageTag: 61c4d66c-4ccd-4623-b1a1-df962796e0aa
+
+	column id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 564d968c-fa42-4028-bc08-5c71fb19bae5
+		summarizeBy: sum
+		sourceColumn: id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column assigned_gm
+		dataType: string
+		isHidden
+		lineageTag: b2ff35ca-07ff-4eae-bb3f-4c0f071e375f
+		summarizeBy: none
+		sourceColumn: assigned_gm
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column created_at
+		dataType: dateTime
+		isHidden
+		formatString: General Date
+		lineageTag: f8f4a152-7685-4c95-8fc1-39775ec9d95f
+		summarizeBy: none
+		sourceColumn: created_at
+
+		variation Variation
+			isDefault
+			relationship: d7230a52-4005-457a-8795-331f3340e514
+			defaultHierarchy: LocalDateTable_aa96a396-ce05-47d2-a1b6-117a9e9bfd63.'Date Hierarchy'
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column created_by
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 71edea29-6d87-48ba-8f8d-e140e0e992ee
+		summarizeBy: sum
+		sourceColumn: created_by
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column delete_status
+		dataType: string
+		isHidden
+		lineageTag: 97c703b0-2ef0-49a0-93dc-ee439b47d173
+		summarizeBy: none
+		sourceColumn: delete_status
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column module_id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: c7aef993-2b0d-4a6c-b9bd-bff13fc3788f
+		summarizeBy: sum
+		sourceColumn: module_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column namespace_id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 8af30e9f-bd6f-4a8e-95e2-97d29ae6e37e
+		summarizeBy: sum
+		sourceColumn: namespace_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column nation_name
+		dataType: string
+		isHidden
+		lineageTag: f18f813b-7016-4e4f-8cdb-04957e3f4cc9
+		summarizeBy: none
+		sourceColumn: nation_name
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column owned_by
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 3f636565-45ee-4853-8b0e-29d7ee8b2e17
+		summarizeBy: sum
+		sourceColumn: owned_by
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column record_id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 3225aee7-80f4-4850-b240-33f5db09d2cb
+		summarizeBy: sum
+		sourceColumn: record_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column deleted_by
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 515e2f53-80e8-4b12-af28-5830cf580f08
+		summarizeBy: sum
+		sourceColumn: deleted_by
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column updated_by
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 62804e07-07b8-4b39-a45d-616e8083183e
+		summarizeBy: sum
+		sourceColumn: updated_by
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'public nations' = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("172.17.19.21", "bmdsalesdb"),
+				  #"Navigation 1" = Source{[Schema = "public", Item = "nations"]}[Data]
+				in
+				  #"Navigation 1"
+
+	changedProperty = IsHidden
+

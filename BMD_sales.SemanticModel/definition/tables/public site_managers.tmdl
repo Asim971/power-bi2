@@ -1,0 +1,108 @@
+table 'public site_managers'
+	isHidden
+	lineageTag: c1af9fa8-47d4-40b4-991f-75c72e94f300
+
+	column assignedsr
+		dataType: string
+		isHidden
+		lineageTag: f1092a47-43e9-4390-8bbc-e54e99d89652
+		summarizeBy: none
+		sourceColumn: assignedsr
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column moduleid
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 19eaaf51-a0fb-446c-ae86-ba54d062a793
+		summarizeBy: sum
+		sourceColumn: moduleid
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column namespaceid
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: b70cd8c9-b74b-46ef-bdca-5113509fb63e
+		summarizeBy: sum
+		sourceColumn: namespaceid
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column owned_by
+		dataType: string
+		isHidden
+		lineageTag: 72618aea-a3c0-4124-960e-a15e9ae60abe
+		summarizeBy: none
+		sourceColumn: owned_by
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column recordid
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 7b314eca-e7dd-4380-9346-d46988a11965
+		summarizeBy: sum
+		sourceColumn: recordid
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column revision
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: a8c66082-3401-4b49-8e52-0e25f6b48ea4
+		summarizeBy: sum
+		sourceColumn: revision
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column updated_by
+		dataType: string
+		isHidden
+		lineageTag: 53003dda-df2d-4786-9504-52c1b1fdc75b
+		summarizeBy: none
+		sourceColumn: updated_by
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: e48a753e-d358-4ed3-8ab3-b47f1609b37a
+		summarizeBy: sum
+		sourceColumn: id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'public site_managers' = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("172.17.19.21", "bmdsalesdb"),
+				  #"Navigation 1" = Source{[Schema = "public", Item = "site_managers"]}[Data]
+				in
+				  #"Navigation 1"
+
+	changedProperty = IsHidden
+

@@ -1,0 +1,242 @@
+table Dim_Territory
+	lineageTag: db5d884b-6597-4180-9777-910caa2361d1
+
+	column TerritoryKey
+		dataType: string
+		lineageTag: 6170d94f-10e0-4b07-9040-453a2ca4e6cc
+		summarizeBy: none
+		sourceColumn: TerritoryKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ZoneID
+		dataType: int64
+		formatString: 0
+		lineageTag: 50f3f619-0a75-4644-a84d-4caf4af7af2a
+		summarizeBy: none
+		sourceColumn: ZoneID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ZoneName
+		dataType: string
+		lineageTag: d75f803f-af45-4365-b68d-b6d9291288f3
+		summarizeBy: none
+		sourceColumn: ZoneName
+
+		annotation SummarizationSetBy = Automatic
+
+	column ZoneSortOrder
+		dataType: int64
+		formatString: 0
+		lineageTag: 997e9194-ab1d-44b7-b015-b197bc7450e6
+		summarizeBy: none
+		sourceColumn: ZoneSortOrder
+
+		annotation SummarizationSetBy = Automatic
+
+	column RegionID
+		dataType: int64
+		formatString: 0
+		lineageTag: 9cfefd4e-e5fc-4e89-a996-b3dfd44af963
+		summarizeBy: none
+		sourceColumn: RegionID
+
+		annotation SummarizationSetBy = Automatic
+
+	column RegionName
+		dataType: string
+		lineageTag: f4b7956a-9300-481c-aa24-88c84c0f914b
+		summarizeBy: none
+		sourceColumn: RegionName
+
+		annotation SummarizationSetBy = Automatic
+
+	column AreaID
+		dataType: int64
+		formatString: 0
+		lineageTag: 49bf659c-a5e3-49ee-82d8-32f8b3be567a
+		summarizeBy: none
+		sourceColumn: AreaID
+
+		annotation SummarizationSetBy = Automatic
+
+	column AreaName
+		dataType: string
+		lineageTag: cb53eb18-73a4-4264-a85c-3e8250c0437f
+		summarizeBy: none
+		sourceColumn: AreaName
+
+		annotation SummarizationSetBy = Automatic
+
+	column NationID
+		dataType: int64
+		formatString: 0
+		lineageTag: beb0ebc3-f7b2-47f7-a820-fe4d8c9291b7
+		summarizeBy: none
+		sourceColumn: NationID
+
+		annotation SummarizationSetBy = Automatic
+
+	column NationName
+		dataType: string
+		lineageTag: a3067a9a-3152-4971-b8bd-869a841f85e3
+		summarizeBy: none
+		sourceColumn: NationName
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrganizationID
+		dataType: int64
+		formatString: 0
+		lineageTag: ded7c21d-31fb-4fb4-80b2-4062e7944276
+		summarizeBy: none
+		sourceColumn: OrganizationID
+
+		annotation SummarizationSetBy = Automatic
+
+	column TerritoryPath
+		dataType: string
+		lineageTag: 76ea5675-88e5-4eb4-946f-84e22ab3fba5
+		summarizeBy: none
+		sourceColumn: TerritoryPath
+
+		annotation SummarizationSetBy = Automatic
+
+	column AssignedZSM
+		dataType: string
+		lineageTag: 64b0d8c7-90d8-4d73-be35-cfd439f2aff2
+		summarizeBy: none
+		sourceColumn: AssignedZSM
+
+		annotation SummarizationSetBy = Automatic
+
+	column delete_status
+		dataType: string
+		lineageTag: c8ebcc9e-a340-4924-a773-57d93b2fa3c7
+		summarizeBy: none
+		sourceColumn: delete_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column AssignedGM
+		dataType: string
+		lineageTag: 6f2f0bee-e27d-4a82-9473-bc201c4c4f97
+		summarizeBy: none
+		sourceColumn: AssignedGM
+
+		annotation SummarizationSetBy = Automatic
+
+	column AssignedAGM
+		dataType: string
+		lineageTag: c0516678-66a3-48d1-8968-969608fbaae1
+		summarizeBy: none
+		sourceColumn: AssignedAGM
+
+		annotation SummarizationSetBy = Automatic
+
+	column AssignedASM
+		dataType: string
+		lineageTag: 0bbb4e7a-d829-4984-8b70-6d533602c226
+		summarizeBy: none
+		sourceColumn: AssignedASM
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_Territory = m
+		mode: import
+		source = ```
+				// ============================================================
+				// Dim_Territory - Geographic Hierarchy Dimension
+				// Based on actual 'public areas' table schema from Power BI
+				// Zone → Region → Area hierarchy for Bangladesh
+				// ============================================================
+				
+				let
+				    // Reference the existing 'public areas' table in Power BI
+				    Source = #"public areas",
+				    
+				    // ---- Select Core Columns from actual schema ----
+				    SelectedColumns = Table.SelectColumns(Source, {
+				        "id", "name", "zone_id", "zone_name", "region_id", "region_name",
+				        "nation_id", "nation_name", "organization_id",
+				        "assigned_zsm", "assigned_gm", "assigned_agm", "assigned_asm",
+				        "delete_status"
+				    }),
+				    
+				    // ---- Filter Active Areas ----
+				    ActiveAreas = Table.SelectRows(SelectedColumns, each [delete_status] = "NO"),
+				    
+				    // ---- Rename Columns ----
+				    RenamedColumns = Table.RenameColumns(ActiveAreas, {
+				        {"id", "AreaID"},
+				        {"name", "AreaName"},
+				        {"zone_id", "ZoneID"},
+				        {"zone_name", "ZoneName"},
+				        {"region_id", "RegionID"},
+				        {"region_name", "RegionName"},
+				        {"nation_id", "NationID"},
+				        {"nation_name", "NationName"},
+				        {"organization_id", "OrganizationID"},
+				        {"assigned_zsm", "AssignedZSM"},
+				        {"assigned_gm", "AssignedGM"},
+				        {"assigned_agm", "AssignedAGM"},
+				        {"assigned_asm", "AssignedASM"}
+				    }),
+				    
+				    // ---- Create Territory Key ----
+				    WithTerritoryKey = Table.AddColumn(RenamedColumns, "TerritoryKey", each 
+				        Text.From([ZoneID]) & "-" & Text.From([RegionID]) & "-" & Text.From([AreaID]),
+				        type text
+				    ),
+				    
+				    // ---- Create Full Path for Hierarchy ----
+				    WithFullPath = Table.AddColumn(WithTerritoryKey, "TerritoryPath", each 
+				        (if [ZoneName] <> null then [ZoneName] else "Unknown") & " > " & 
+				        (if [RegionName] <> null then [RegionName] else "Unknown") & " > " & 
+				        (if [AreaName] <> null then [AreaName] else "Unknown"),
+				        type text
+				    ),
+				    
+				    // ---- Add Zone Sort Order (for consistent display) ----
+				    WithZoneSort = Table.AddColumn(WithFullPath, "ZoneSortOrder", each 
+				        if [ZoneID] <> null then [ZoneID] else 999,
+				        Int64.Type
+				    ),
+				    
+				    // ---- Set Data Types ----
+				    TypedTable = Table.TransformColumnTypes(WithZoneSort, {
+				        {"TerritoryKey", type text},
+				        {"AreaID", Int64.Type},
+				        {"AreaName", type text},
+				        {"ZoneID", Int64.Type},
+				        {"ZoneName", type text},
+				        {"RegionID", Int64.Type},
+				        {"RegionName", type text},
+				        {"NationID", Int64.Type},
+				        {"NationName", type text},
+				        {"OrganizationID", Int64.Type},
+				        {"AssignedZSM", type text},
+				        {"AssignedGM", type text},
+				        {"AssignedAGM", type text},
+				        {"AssignedASM", type text},
+				        {"TerritoryPath", type text},
+				        {"ZoneSortOrder", Int64.Type}
+				    }),
+				    
+				    // ---- Reorder Columns ----
+				    ReorderedColumns = Table.ReorderColumns(TypedTable, {
+				        "TerritoryKey", 
+				        "ZoneID", "ZoneName", "ZoneSortOrder",
+				        "RegionID", "RegionName",
+				        "AreaID", "AreaName",
+				        "NationID", "NationName", "OrganizationID",
+				        "TerritoryPath",
+				        "AssignedZSM", "AssignedGM", "AssignedAGM", "AssignedASM"
+				    })
+				in
+				    ReorderedColumns
+				```
+
+	annotation PBI_ResultType = Table
+

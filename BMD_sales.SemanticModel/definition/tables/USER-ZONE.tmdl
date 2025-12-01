@@ -1,0 +1,98 @@
+table USER-ZONE
+	lineageTag: af1a53b2-ab7d-4ff5-b00d-5cc33c63acf2
+
+	column EmployeeEmail
+		dataType: string
+		lineageTag: f60ee5fc-0b11-4666-835e-ef5cd010d0cb
+		summarizeBy: none
+		sourceColumn: EmployeeEmail
+
+		annotation SummarizationSetBy = Automatic
+
+	column ZoneID
+		dataType: int64
+		formatString: 0
+		lineageTag: 4bd7ee16-836a-43cb-92d7-0eee2663a66f
+		summarizeBy: count
+		sourceColumn: ZoneID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ZoneName
+		dataType: string
+		lineageTag: 16dbfba8-22a5-439d-9a02-6702347508af
+		summarizeBy: none
+		sourceColumn: ZoneName
+
+		annotation SummarizationSetBy = Automatic
+
+	column AccessLevel
+		dataType: string
+		lineageTag: 75581f00-e0f0-4113-8d4d-7eb724aa9fb1
+		summarizeBy: none
+		sourceColumn: AccessLevel
+
+		annotation SummarizationSetBy = Automatic
+
+	column RegionIDs
+		dataType: string
+		lineageTag: 2ac66c4a-3fc0-451b-91f8-7e9c3bf2704d
+		summarizeBy: none
+		sourceColumn: RegionIDs
+
+		annotation SummarizationSetBy = Automatic
+
+	partition USER-ZONE = m
+		mode: import
+		source = ```
+				// ============================================================
+				// USER-ZONE MAPPING TABLE
+				// Maps users to their accessible territories for RLS
+				// ============================================================
+				
+				let
+				    // Define user mappings manually or load from SharePoint/SQL
+				    // In production, this should connect to an authoritative source
+				    
+				    UserMappings = Table.FromRecords({
+				        // Zone Managers - Single zone access
+				        [EmployeeEmail = "zm.dhaka@anwargroup.onmicrosoft.com", ZoneID = 1, ZoneName = "Dhaka", AccessLevel = "Zone", RegionIDs = null],
+				        [EmployeeEmail = "zm.chittagong@anwargroup.onmicrosoft.com", ZoneID = 2, ZoneName = "Chittagong", AccessLevel = "Zone", RegionIDs = null],
+				        [EmployeeEmail = "zm.sylhet@anwargroup.onmicrosoft.com", ZoneID = 3, ZoneName = "Sylhet", AccessLevel = "Zone", RegionIDs = null],
+				        [EmployeeEmail = "zm.rajshahi@anwargroup.onmicrosoft.com", ZoneID = 4, ZoneName = "Rajshahi", AccessLevel = "Zone", RegionIDs = null],
+				        [EmployeeEmail = "zm.khulna@anwargroup.onmicrosoft.com", ZoneID = 5, ZoneName = "Khulna", AccessLevel = "Zone", RegionIDs = null],
+				        [EmployeeEmail = "zm.rangpur@anwargroup.onmicrosoft.com", ZoneID = 6, ZoneName = "Rangpur", AccessLevel = "Zone", RegionIDs = null],
+				        [EmployeeEmail = "zm.barisal@anwargroup.onmicrosoft.com", ZoneID = 7, ZoneName = "Barisal", AccessLevel = "Zone", RegionIDs = null],
+				        [EmployeeEmail = "zm.mymensingh@anwargroup.onmicrosoft.com", ZoneID = 8, ZoneName = "Mymensingh", AccessLevel = "Zone", RegionIDs = null],
+				        
+				        // Regional Managers - Multiple region access (Zone set to null)
+				        [EmployeeEmail = "rm.central@anwargroup.onmicrosoft.com", ZoneID = null, ZoneName = null, AccessLevel = "Region", RegionIDs = "{1,2,3}"],
+				        [EmployeeEmail = "rm.north@anwargroup.onmicrosoft.com", ZoneID = null, ZoneName = null, AccessLevel = "Region", RegionIDs = "{4,5,6}"],
+				        [EmployeeEmail = "rm.south@anwargroup.onmicrosoft.com", ZoneID = null, ZoneName = null, AccessLevel = "Region", RegionIDs = "{7,8,9}"],
+				        [EmployeeEmail = "rm.east@anwargroup.onmicrosoft.com", ZoneID = null, ZoneName = null, AccessLevel = "Region", RegionIDs = "{10,11,12}"],
+				        
+				        // Executives - Full access
+				        [EmployeeEmail = "ceo@anwargroup.onmicrosoft.com", ZoneID = null, ZoneName = null, AccessLevel = "All", RegionIDs = null],
+				        [EmployeeEmail = "coo@anwargroup.onmicrosoft.com", ZoneID = null, ZoneName = null, AccessLevel = "All", RegionIDs = null],
+				        [EmployeeEmail = "sales.head@anwargroup.onmicrosoft.com", ZoneID = null, ZoneName = null, AccessLevel = "All", RegionIDs = null],
+				        [EmployeeEmail = "dev1@anwargroup.onmicrosoft.com", ZoneID = null, ZoneName = null, AccessLevel = "All", RegionIDs = null],
+				        
+				        // Field Managers - Zone access with limited scope
+				        [EmployeeEmail = "fm.dhaka1@anwargroup.onmicrosoft.com", ZoneID = 1, ZoneName = "Dhaka", AccessLevel = "Zone", RegionIDs = null],
+				        [EmployeeEmail = "fm.dhaka2@anwargroup.onmicrosoft.com", ZoneID = 1, ZoneName = "Dhaka", AccessLevel = "Zone", RegionIDs = null]
+				    }),
+				    
+				    // Set column types
+				    TypedTable = Table.TransformColumnTypes(UserMappings, {
+				        {"EmployeeEmail", type text},
+				        {"ZoneID", Int64.Type},
+				        {"ZoneName", type text},
+				        {"AccessLevel", type text},
+				        {"RegionIDs", type text}
+				    })
+				in
+				    TypedTable
+				```
+
+	annotation PBI_ResultType = Table
+

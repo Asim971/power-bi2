@@ -1,0 +1,256 @@
+table 'public project_handover'
+	isHidden
+	lineageTag: 78e91bd0-19fa-4eae-968b-31f356a372a0
+
+	column id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 83267753-808b-43cc-9e58-a1c2bdbb0f78
+		summarizeBy: sum
+		sourceColumn: id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column address
+		dataType: string
+		isHidden
+		lineageTag: 7eefac0e-ccf0-4fbd-b93f-a1005310ceb3
+		summarizeBy: none
+		sourceColumn: address
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column created_at
+		dataType: dateTime
+		isHidden
+		formatString: General Date
+		lineageTag: 4d311154-7550-422f-9a24-cf1e579b48e0
+		summarizeBy: none
+		sourceColumn: created_at
+
+		variation Variation
+			isDefault
+			relationship: 829855e6-39d9-44e9-9de4-ca953354133f
+			defaultHierarchy: LocalDateTable_a87ee6c7-eb96-4623-8d48-1729e5a04ae5.'Date Hierarchy'
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column created_by
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: cac894b6-93dd-4166-8ef7-cbf61fe5b1bf
+		summarizeBy: sum
+		sourceColumn: created_by
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column delete_status
+		dataType: string
+		isHidden
+		lineageTag: 17ee359d-ae1b-4de7-be51-4d7c5b884191
+		summarizeBy: none
+		sourceColumn: delete_status
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column handover_date
+		dataType: string
+		isHidden
+		lineageTag: 9554de84-4c70-44ca-a1f9-4a3a7e4fe14b
+		summarizeBy: none
+		sourceColumn: handover_date
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column meta
+		dataType: string
+		isHidden
+		lineageTag: 553d606e-7334-4a82-bd9c-89c2a9686103
+		summarizeBy: none
+		sourceColumn: meta
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column moduleid
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: d3d9feeb-a9e3-4446-8cbf-b4caf419c53c
+		summarizeBy: sum
+		sourceColumn: moduleid
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column namespaceid
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 8dab7e3f-e49f-4356-a420-dfb7f5dca37c
+		summarizeBy: sum
+		sourceColumn: namespaceid
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column owned_by
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 16f0367c-e03f-4f0b-afe6-8df6411ccaff
+		summarizeBy: sum
+		sourceColumn: owned_by
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column primary_contact_number
+		dataType: string
+		isHidden
+		lineageTag: 2b23f2b4-fa30-42e8-970d-c4ddc625e9e0
+		summarizeBy: none
+		sourceColumn: primary_contact_number
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column project_name
+		dataType: string
+		isHidden
+		lineageTag: b8f2dcaa-4004-4c81-8c6a-2ee75ad8df93
+		summarizeBy: none
+		sourceColumn: project_name
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column recordid
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 1e2d4dc5-5b92-4408-8629-150fdccf5f9c
+		summarizeBy: sum
+		sourceColumn: recordid
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column revision
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 8b7bee14-219b-41d3-81bf-291e200d800e
+		summarizeBy: sum
+		sourceColumn: revision
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column site_owner_name
+		dataType: string
+		isHidden
+		lineageTag: 1594b40e-d3a2-499d-b29d-b2f98c72ab53
+		summarizeBy: none
+		sourceColumn: site_owner_name
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column stage
+		dataType: string
+		isHidden
+		lineageTag: 1bdfdaf1-ca1d-452d-959f-2f8136fcd90f
+		summarizeBy: none
+		sourceColumn: stage
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column status
+		dataType: string
+		isHidden
+		lineageTag: 01b1974f-ecd9-47e1-aa19-9c7b4c53601b
+		summarizeBy: none
+		sourceColumn: status
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column updated_at
+		dataType: dateTime
+		isHidden
+		formatString: General Date
+		lineageTag: 580981f4-6085-4b3b-81e3-2b06a4d56996
+		summarizeBy: none
+		sourceColumn: updated_at
+
+		variation Variation
+			isDefault
+			relationship: 7cdc30c4-5b3c-4605-bcdb-dd151d8c530d
+			defaultHierarchy: LocalDateTable_779b0b5d-a944-4613-bfc2-e374f0393ffa.'Date Hierarchy'
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column updated_by
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: b01cb582-56f3-4c6f-9286-13c84ab8f2e2
+		summarizeBy: sum
+		sourceColumn: updated_by
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column project_id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 5174ea20-f762-4cad-9797-61684a28e2da
+		summarizeBy: sum
+		sourceColumn: project_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'public project_handover' = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("172.17.19.21", "bmdsalesdb"),
+				  #"Navigation 1" = Source{[Schema = "public", Item = "project_handover"]}[Data]
+				in
+				  #"Navigation 1"
+
+	changedProperty = IsHidden
+

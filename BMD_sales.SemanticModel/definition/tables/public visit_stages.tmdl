@@ -1,0 +1,118 @@
+table 'public visit_stages'
+	isHidden
+	lineageTag: b65f285b-9d1b-42b8-a4e6-b0a2e6cc6233
+
+	column id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: d446b375-eacc-4664-bb81-40be9c6e2a9b
+		summarizeBy: sum
+		sourceColumn: id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column created_at
+		dataType: dateTime
+		isHidden
+		formatString: General Date
+		lineageTag: ccc72ebc-e558-4f8e-930d-b8b575da5090
+		summarizeBy: none
+		sourceColumn: created_at
+
+		variation Variation
+			isDefault
+			relationship: 112e860c-278f-4a00-b5d7-2ea245ce6364
+			defaultHierarchy: LocalDateTable_b56b1495-d1d3-4b3c-8886-75d3f62619a9.'Date Hierarchy'
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column delete_status
+		dataType: string
+		isHidden
+		lineageTag: 770c85f2-19e1-43b9-b735-db8e879c1d80
+		summarizeBy: none
+		sourceColumn: delete_status
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column description
+		dataType: string
+		isHidden
+		lineageTag: 5b12695f-a392-4780-8d19-a7fd2460b069
+		summarizeBy: none
+		sourceColumn: description
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column name
+		dataType: string
+		isHidden
+		lineageTag: 34e80a4e-c99d-4a1a-95a6-bacd1c2a36ff
+		summarizeBy: none
+		sourceColumn: name
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column updated_at
+		dataType: dateTime
+		isHidden
+		formatString: General Date
+		lineageTag: 12493dcd-8270-4a56-903e-cdc28682932f
+		summarizeBy: none
+		sourceColumn: updated_at
+
+		variation Variation
+			isDefault
+			relationship: e68a9fb0-d833-41f5-abad-723d9ea60793
+			defaultHierarchy: LocalDateTable_7e4c0c37-f537-4816-892c-2fe2d6ee10d2.'Date Hierarchy'
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column visit_phase_id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 692c55c6-b1ff-4be9-96ab-0577aacfc8cc
+		summarizeBy: sum
+		sourceColumn: visit_phase_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column parent_id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: fa240c8e-0d41-4b08-acdd-32535e909698
+		summarizeBy: sum
+		sourceColumn: parent_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'public visit_stages' = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("172.17.19.21", "bmdsalesdb"),
+				  #"Navigation 1" = Source{[Schema = "public", Item = "visit_stages"]}[Data]
+				in
+				  #"Navigation 1"
+
+	changedProperty = IsHidden
+

@@ -1,0 +1,84 @@
+table Dim_VisitPhase
+	lineageTag: b5c483cb-971e-4535-a5c4-a8a67b67faf0
+
+	column VisitPhaseID
+		dataType: int64
+		formatString: 0
+		lineageTag: 0459d1d5-983a-4006-a700-83938c4ad6fe
+		summarizeBy: none
+		sourceColumn: VisitPhaseID
+
+		annotation SummarizationSetBy = Automatic
+
+	column PhaseName
+		dataType: string
+		lineageTag: e85916f2-0fdd-4366-ac6d-ee869697970a
+		summarizeBy: none
+		sourceColumn: PhaseName
+
+		annotation SummarizationSetBy = Automatic
+
+	column PhaseDescription
+		dataType: string
+		lineageTag: f7339911-1f30-40f4-a67d-246a3a09b20b
+		summarizeBy: none
+		sourceColumn: PhaseDescription
+
+		annotation SummarizationSetBy = Automatic
+
+	column PhaseSortOrder
+		dataType: int64
+		formatString: 0
+		lineageTag: adba5d3e-605a-4cf5-a6e1-451d43b71299
+		summarizeBy: sum
+		sourceColumn: PhaseSortOrder
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_VisitPhase = m
+		mode: import
+		source = ```
+				// ============================================================
+				// Dim_VisitPhase - Visit Phase Dimension
+				// Source: public visit_phases (2 records)
+				// 
+				// PURPOSE:
+				// Visit phases define the high-level stage of a visit
+				// Links to visit_stages for detailed stage tracking
+				//
+				// ACTUAL COLUMNS: id, name, description, delete_status, created_at, updated_at
+				// ============================================================
+				
+				let
+				    // Reference the existing 'public visit_phases' table in Power BI
+				    Source = #"public visit_phases",
+				    
+				    // ---- Filter Active Phases ----
+				    ActivePhases = Table.SelectRows(Source, each [delete_status] = "NO" or [delete_status] = null),
+				    
+				    // ---- Select Columns ----
+				    SelectedColumns = Table.SelectColumns(ActivePhases, {"id", "name", "description"}),
+				    
+				    // ---- Rename Columns ----
+				    RenamedColumns = Table.RenameColumns(SelectedColumns, {
+				        {"id", "VisitPhaseID"},
+				        {"name", "PhaseName"},
+				        {"description", "PhaseDescription"}
+				    }),
+				    
+				    // ---- Add Sort Order ----
+				    WithSortOrder = Table.AddColumn(RenamedColumns, "PhaseSortOrder", each [VisitPhaseID], Int64.Type),
+				    
+				    // ---- Set Data Types ----
+				    TypedTable = Table.TransformColumnTypes(WithSortOrder, {
+				        {"VisitPhaseID", Int64.Type},
+				        {"PhaseName", type text},
+				        {"PhaseDescription", type text},
+				        {"PhaseSortOrder", Int64.Type}
+				    })
+				in
+				    TypedTable
+				```
+
+	annotation PBI_ResultType = Table
+

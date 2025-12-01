@@ -1,0 +1,334 @@
+table Dim_User
+	lineageTag: 9688bf50-eb6a-4a3d-9c9a-b8ea809bac6b
+
+	column UserID
+		dataType: int64
+		formatString: 0
+		lineageTag: c6cf996d-9bb4-47e8-b97e-5e84d6d7d26c
+		summarizeBy: none
+		sourceColumn: UserID
+
+		annotation SummarizationSetBy = Automatic
+
+	column EmployeeName
+		dataType: string
+		lineageTag: 75d3dbde-884f-4429-a11c-3739cea911c1
+		summarizeBy: none
+		sourceColumn: EmployeeName
+
+		annotation SummarizationSetBy = Automatic
+
+	column EmployeeEmail
+		dataType: string
+		lineageTag: aea33dae-fef0-4f40-b39a-0c137e448872
+		summarizeBy: none
+		sourceColumn: EmployeeEmail
+
+		annotation SummarizationSetBy = Automatic
+
+	column EmployeePhone
+		dataType: string
+		lineageTag: f3ba80ba-c948-471f-b170-d12edef8a557
+		summarizeBy: none
+		sourceColumn: EmployeePhone
+
+		annotation SummarizationSetBy = Automatic
+
+	column RoleID
+		dataType: int64
+		formatString: 0
+		lineageTag: a77d6042-e3b3-478a-9e90-9541c405a09c
+		summarizeBy: count
+		sourceColumn: RoleID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ZoneID
+		dataType: int64
+		formatString: 0
+		lineageTag: d72e3b02-01c5-4fe7-a8d3-1edafc5aeb32
+		summarizeBy: count
+		sourceColumn: ZoneID
+
+		annotation SummarizationSetBy = Automatic
+
+	column RegionID
+		dataType: int64
+		formatString: 0
+		lineageTag: 18fb9088-1e47-41cd-a675-00529e9dfd31
+		summarizeBy: count
+		sourceColumn: RegionID
+
+		annotation SummarizationSetBy = Automatic
+
+	column AreaID
+		dataType: int64
+		formatString: 0
+		lineageTag: 763db0bb-b325-43ef-8169-d567535b77f9
+		summarizeBy: none
+		sourceColumn: AreaID
+
+		annotation SummarizationSetBy = Automatic
+
+	column BDTerritoryID
+		dataType: int64
+		formatString: 0
+		lineageTag: 9b783287-bfa1-43c2-8880-0655e90dabdf
+		summarizeBy: count
+		sourceColumn: BDTerritoryID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Designation
+		dataType: string
+		lineageTag: e3b5ff39-a1eb-4b4d-8517-bd50b4a3e557
+		summarizeBy: none
+		sourceColumn: Designation
+
+		annotation SummarizationSetBy = Automatic
+
+	column LineManager
+		dataType: string
+		lineageTag: 42e23307-986e-4eee-b5cf-14aa862d1307
+		summarizeBy: none
+		sourceColumn: LineManager
+
+		annotation SummarizationSetBy = Automatic
+
+	column created_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 28613c15-ed79-4f32-8340-91a5e720e204
+		summarizeBy: none
+		sourceColumn: created_at
+
+		variation Variation
+			isDefault
+			relationship: d8f418c8-914a-48f0-8aca-5d32bb211a03
+			defaultHierarchy: LocalDateTable_9b5f3741-9efa-4402-933e-a3106abe5657.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column updated_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 0856598e-4229-4ae4-834e-680e974dbe4a
+		summarizeBy: none
+		sourceColumn: updated_at
+
+		variation Variation
+			isDefault
+			relationship: 3e7d49a3-80cc-404e-97d9-6dc1c9eb4e65
+			defaultHierarchy: LocalDateTable_3d8119aa-b5e9-4412-9570-414eb61d773d.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column RoleName
+		dataType: string
+		lineageTag: 31b057ac-d104-41df-9d98-932fad55679b
+		summarizeBy: none
+		sourceColumn: RoleName
+
+		annotation SummarizationSetBy = Automatic
+
+	column RoleLevel
+		dataType: int64
+		formatString: 0
+		lineageTag: c62b9a65-3d18-4c44-97c6-ef7541422b2c
+		summarizeBy: sum
+		sourceColumn: RoleLevel
+
+		annotation SummarizationSetBy = Automatic
+
+	column Department
+		dataType: string
+		lineageTag: 18cd9375-09d5-471e-8b4c-015150c32c48
+		summarizeBy: none
+		sourceColumn: Department
+
+		annotation SummarizationSetBy = Automatic
+
+	column RoleDesignation
+		dataType: string
+		lineageTag: b05a6222-9c28-4f56-a2d7-4d45d5575829
+		summarizeBy: none
+		sourceColumn: RoleDesignation
+
+		annotation SummarizationSetBy = Automatic
+
+	column EmployeeID
+		dataType: int64
+		formatString: 0
+		lineageTag: 30efb800-f538-489b-9472-0a1eb39a708e
+		summarizeBy: count
+		sourceColumn: EmployeeID
+
+		annotation SummarizationSetBy = Automatic
+
+	column DepartmentTrack
+		dataType: string
+		lineageTag: e4ead15b-cd9a-4d84-82b3-9e2920c635c5
+		summarizeBy: none
+		sourceColumn: DepartmentTrack
+
+		annotation SummarizationSetBy = Automatic
+
+	column RoleCategory
+		dataType: string
+		lineageTag: 179ed46c-3e0a-40cf-bc11-1ad80290e8a7
+		summarizeBy: none
+		sourceColumn: RoleCategory
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsFieldRole
+		dataType: int64
+		formatString: 0
+		lineageTag: 5dea4e82-b37f-41ef-b118-9d9c6d1c75b5
+		summarizeBy: sum
+		sourceColumn: IsFieldRole
+
+		annotation SummarizationSetBy = Automatic
+
+	column ManagementLevel
+		dataType: string
+		lineageTag: f5a20a8f-2f63-46be-92df-6b3cb5c82240
+		summarizeBy: none
+		sourceColumn: ManagementLevel
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_User = m
+		mode: import
+		source = ```
+				// ============================================================
+				// Dim_User - Employee Dimension
+				// Based on actual 'public users' table schema
+				// Includes Role lookup only (no territory joins to avoid duplicates)
+				// Two tracks: ORG (SR/ASM/ZSM) and BMD (BDO/CRO)
+				// 
+				// SCHEMA NOTES (Nov 2025):
+				// - users.id is the PRIMARY KEY (unique)
+				// - users.delete_status = "NO" (text)
+				// - role table has: id, name, level, department, designation
+				// - Territory info comes from users table directly (zone_id, region_id, area_id)
+				// ============================================================
+				
+				let
+				    // Reference the existing tables
+				    UsersSource = #"public users",
+				    RolesSource = #"public role",
+				    
+				    // ---- Select Core Columns from users ----
+				    SelectedColumns = Table.SelectColumns(UsersSource, {
+				        "id", "name", "email", "phone_number", "role_id", 
+				        "zone_id", "region_id", "area_id", "bd_territory_id",
+				        "user_designation", "line_manager",
+				        "delete_status", "created_at", "updated_at"
+				    }),
+				    
+				    // ---- Filter Active Users ----
+				    ActiveUsers = Table.SelectRows(SelectedColumns, each [delete_status] = "NO"),
+				    
+				    // ---- Join with Role table to get role details (1:1 relationship) ----
+				    WithRoleJoin = Table.NestedJoin(
+				        ActiveUsers, {"role_id"},
+				        RolesSource, {"id"},
+				        "RoleData", JoinKind.LeftOuter
+				    ),
+				    
+				    WithRoleExpanded = Table.ExpandTableColumn(
+				        WithRoleJoin, "RoleData",
+				        {"name", "level", "department", "designation"},
+				        {"RoleName", "RoleLevel", "Department", "RoleDesignation"}
+				    ),
+				    
+				    // ---- Rename Core Columns ----
+				    RenamedColumns = Table.RenameColumns(WithRoleExpanded, {
+				        {"id", "UserID"},
+				        {"name", "EmployeeName"},
+				        {"email", "EmployeeEmail"},
+				        {"phone_number", "EmployeePhone"},
+				        {"role_id", "RoleID"},
+				        {"zone_id", "ZoneID"},
+				        {"region_id", "RegionID"},
+				        {"area_id", "AreaID"},
+				        {"bd_territory_id", "BDTerritoryID"},
+				        {"user_designation", "Designation"},
+				        {"line_manager", "LineManager"}
+				    }),
+				    
+				    // ---- Add EmployeeID alias for Fact_Visit compatibility ----
+				    WithEmployeeID = Table.AddColumn(RenamedColumns, "EmployeeID", each [UserID], Int64.Type),
+				    
+				    // ---- Add Department Track ----
+				    WithTrack = Table.AddColumn(WithEmployeeID, "DepartmentTrack", each 
+				        if [Department] = "BMD" then "Business Development"
+				        else if [Department] = "ORG" then "Sales Organization"
+				        else "Other",
+				        type text
+				    ),
+				    
+				    // ---- Add Role Category based on PRD ----
+				    WithRoleCategory = Table.AddColumn(WithTrack, "RoleCategory", each 
+				        if [RoleName] = "SR" then "Field Sales"
+				        else if [RoleName] = "ASM" then "Area Management"
+				        else if [RoleName] = "ZSM" then "Zonal Management"
+				        else if [RoleName] = "BDO" then "Business Development"
+				        else if [RoleName] = "CRO" then "Customer Relations"
+				        else if [RoleName] = "AGM" or [RoleName] = "GM / DGM" then "Executive"
+				        else if Text.Contains([RoleName] ?? "", "ADMIN") then "Admin"
+				        else "Other",
+				        type text
+				    ),
+				    
+				    // ---- Add Is Field Role Flag ----
+				    WithFieldFlag = Table.AddColumn(WithRoleCategory, "IsFieldRole", each 
+				        if [RoleName] = "SR" or [RoleName] = "BDO" or [RoleName] = "CRO" then 1 else 0,
+				        Int64.Type
+				    ),
+				    
+				    // ---- Add Management Level ----
+				    WithMgmtLevel = Table.AddColumn(WithFieldFlag, "ManagementLevel", each 
+				        if [RoleLevel] >= 2040 and [RoleLevel] <= 2060 then "Field"
+				        else if [RoleLevel] >= 2020 and [RoleLevel] < 2040 then "Middle Management"
+				        else if [RoleLevel] >= 1030 and [RoleLevel] <= 1040 then "Field (BD)"
+				        else if [RoleLevel] < 1030 then "Senior Management"
+				        else "Other",
+				        type text
+				    ),
+				    
+				    // ---- Set Data Types ----
+				    TypedTable = Table.TransformColumnTypes(WithMgmtLevel, {
+				        {"UserID", Int64.Type},
+				        {"EmployeeID", Int64.Type},
+				        {"EmployeeName", type text},
+				        {"EmployeeEmail", type text},
+				        {"EmployeePhone", type text},
+				        {"RoleID", Int64.Type},
+				        {"ZoneID", Int64.Type},
+				        {"RegionID", Int64.Type},
+				        {"AreaID", Int64.Type},
+				        {"BDTerritoryID", Int64.Type},
+				        {"Designation", type text},
+				        {"LineManager", type text},
+				        {"RoleName", type text},
+				        {"RoleLevel", Int64.Type},
+				        {"Department", type text},
+				        {"RoleDesignation", type text},
+				        {"DepartmentTrack", type text},
+				        {"RoleCategory", type text},
+				        {"IsFieldRole", Int64.Type},
+				        {"ManagementLevel", type text},
+				        {"created_at", type datetime},
+				        {"updated_at", type datetime}
+				    }),
+				    
+				    // ---- Remove delete_status ----
+				    CleanedTable = Table.RemoveColumns(TypedTable, {"delete_status"})
+				in
+				    CleanedTable
+				```
+
+	annotation PBI_ResultType = Table
+

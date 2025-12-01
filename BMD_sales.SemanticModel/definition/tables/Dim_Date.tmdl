@@ -1,0 +1,514 @@
+table Dim_Date
+	lineageTag: 0b020ba2-3b0c-4252-b1ae-96eedaad2430
+
+	column DateKey
+		dataType: string
+		lineageTag: c2d7d341-b3e0-4bb9-8225-c3d0d52a1b2b
+		summarizeBy: none
+		sourceColumn: DateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 73847020-16a4-4045-9853-e5148e1a0ab1
+		summarizeBy: none
+		sourceColumn: Date
+
+		variation Variation
+			isDefault
+			relationship: 58d260ea-b678-4c83-9e26-c5f9af8e0001
+			defaultHierarchy: LocalDateTable_22c2caf5-f8e5-4900-a60d-bc50e672033d.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: fd4ea56a-4ce9-4f52-9018-d28a0c7d482b
+		summarizeBy: sum
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quarter
+		dataType: int64
+		formatString: 0
+		lineageTag: 21f5f7df-73e7-4a22-b80b-768afa476734
+		summarizeBy: sum
+		sourceColumn: Quarter
+
+		annotation SummarizationSetBy = Automatic
+
+	column QuarterName
+		dataType: string
+		lineageTag: 4e2a8896-7bfe-407d-85ac-3fe71c9f6b9c
+		summarizeBy: none
+		sourceColumn: QuarterName
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month
+		dataType: int64
+		formatString: 0
+		lineageTag: 1aee4b0f-581b-4e23-9e5d-000870158a80
+		summarizeBy: sum
+		sourceColumn: Month
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthName
+		dataType: string
+		lineageTag: badd0d43-225a-46bc-b130-02554dfe7030
+		summarizeBy: none
+		sourceColumn: MonthName
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthShort
+		dataType: string
+		lineageTag: 0abdd046-14bc-482f-a56b-2efc20960d43
+		summarizeBy: none
+		sourceColumn: MonthShort
+
+		annotation SummarizationSetBy = Automatic
+
+	column Day
+		dataType: int64
+		formatString: 0
+		lineageTag: 73ca22f2-ee57-4137-8fd1-a141b02a5d5b
+		summarizeBy: sum
+		sourceColumn: Day
+
+		annotation SummarizationSetBy = Automatic
+
+	column DayOfWeek
+		dataType: int64
+		formatString: 0
+		lineageTag: 484fc699-0b73-4a25-a206-d58b2f048d4e
+		summarizeBy: sum
+		sourceColumn: DayOfWeek
+
+		annotation SummarizationSetBy = Automatic
+
+	column DayName
+		dataType: string
+		lineageTag: 62065076-7de6-47fb-9c5b-03ed82de7146
+		summarizeBy: none
+		sourceColumn: DayName
+
+		annotation SummarizationSetBy = Automatic
+
+	column DayShort
+		dataType: string
+		lineageTag: 8f7c1766-e1bf-4c98-88a1-53343df990fd
+		summarizeBy: none
+		sourceColumn: DayShort
+
+		annotation SummarizationSetBy = Automatic
+
+	column DayOfYear
+		dataType: int64
+		formatString: 0
+		lineageTag: 04c7294e-8801-4f22-95fd-c21853ddae26
+		summarizeBy: sum
+		sourceColumn: DayOfYear
+
+		annotation SummarizationSetBy = Automatic
+
+	column WeekOfYear
+		dataType: int64
+		formatString: 0
+		lineageTag: edd7ce8d-5def-4a5d-91d7-7101127c75ab
+		summarizeBy: sum
+		sourceColumn: WeekOfYear
+
+		annotation SummarizationSetBy = Automatic
+
+	column FiscalYear
+		dataType: int64
+		formatString: 0
+		lineageTag: c2315049-5873-4918-8561-97f1a1ad4c6b
+		summarizeBy: sum
+		sourceColumn: FiscalYear
+
+		annotation SummarizationSetBy = Automatic
+
+	column FiscalYearLabel
+		dataType: string
+		lineageTag: 7503a966-00ef-48a3-b284-c95b1c6af15d
+		summarizeBy: none
+		sourceColumn: FiscalYearLabel
+
+		annotation SummarizationSetBy = Automatic
+
+	column FiscalQuarter
+		dataType: int64
+		formatString: 0
+		lineageTag: f3047586-a2f4-4a18-9974-3daa6d05451b
+		summarizeBy: sum
+		sourceColumn: FiscalQuarter
+
+		annotation SummarizationSetBy = Automatic
+
+	column FiscalQuarterLabel
+		dataType: string
+		lineageTag: ae58d427-d5d0-4e3b-a8c1-cf599de88594
+		summarizeBy: none
+		sourceColumn: FiscalQuarterLabel
+
+		annotation SummarizationSetBy = Automatic
+
+	column FiscalMonth
+		dataType: int64
+		formatString: 0
+		lineageTag: d5b1c3a2-ae35-4630-b3e3-3466896c6206
+		summarizeBy: sum
+		sourceColumn: FiscalMonth
+
+		annotation SummarizationSetBy = Automatic
+
+	column WeekStartDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: be535acb-4889-44f7-b70d-7537d685551e
+		summarizeBy: none
+		sourceColumn: WeekStartDate
+
+		variation Variation
+			isDefault
+			relationship: 229a7165-ba86-4b32-9dc3-547ac3168579
+			defaultHierarchy: LocalDateTable_0f31e1f2-b446-4b5f-a587-34c8a44ef186.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column WeekEndDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 7123f5e3-ffd4-4d0c-9586-6cc6c67e13bc
+		summarizeBy: none
+		sourceColumn: WeekEndDate
+
+		variation Variation
+			isDefault
+			relationship: f9b33966-a065-42dc-b7df-39ca1223bbfd
+			defaultHierarchy: LocalDateTable_f6ce140c-2b8d-46b6-915d-7be7f2c90b56.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column WeekLabel
+		dataType: string
+		lineageTag: d2b246b3-829e-4a95-87b8-c9d274c7f95b
+		summarizeBy: none
+		sourceColumn: WeekLabel
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthStartDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: d48845aa-672f-4692-960c-b7f12b8c91b4
+		summarizeBy: none
+		sourceColumn: MonthStartDate
+
+		variation Variation
+			isDefault
+			relationship: 947d6396-962b-4be7-ac5a-8983f4ddd6c2
+			defaultHierarchy: LocalDateTable_8e395ed7-28ec-41bf-91e5-b8283363fcf9.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column MonthEndDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 3a322362-2995-4934-ae15-2dfe38242777
+		summarizeBy: none
+		sourceColumn: MonthEndDate
+
+		variation Variation
+			isDefault
+			relationship: cdf8ad27-cfa2-4038-ab3c-958f4c7a1409
+			defaultHierarchy: LocalDateTable_3841d7cc-32c6-4e7e-a609-b9d1c47eb409.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column YearMonth
+		dataType: string
+		lineageTag: c0889264-6899-49fa-96aa-56b28b82cd96
+		summarizeBy: none
+		sourceColumn: YearMonth
+
+		annotation SummarizationSetBy = Automatic
+
+	column YearMonthNum
+		dataType: int64
+		formatString: 0
+		lineageTag: 1c93d029-c48d-4a00-9921-85b849ef51d5
+		summarizeBy: sum
+		sourceColumn: YearMonthNum
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthSortOrder
+		dataType: int64
+		formatString: 0
+		lineageTag: c32a8611-8243-4fd8-90e4-cc0468778203
+		summarizeBy: sum
+		sourceColumn: MonthSortOrder
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsToday
+		dataType: int64
+		formatString: 0
+		lineageTag: 780f869f-6af5-452d-a04d-8a2c170a5628
+		summarizeBy: sum
+		sourceColumn: IsToday
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsCurrentWeek
+		dataType: int64
+		formatString: 0
+		lineageTag: afc014bd-f0ae-491d-957a-809ea35c69b8
+		summarizeBy: sum
+		sourceColumn: IsCurrentWeek
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsCurrentMonth
+		dataType: int64
+		formatString: 0
+		lineageTag: b67c719b-8cc3-496d-a012-becaf7285d10
+		summarizeBy: sum
+		sourceColumn: IsCurrentMonth
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsCurrentQuarter
+		dataType: int64
+		formatString: 0
+		lineageTag: 7dc2947f-e184-40ea-b9c0-71485c83e692
+		summarizeBy: sum
+		sourceColumn: IsCurrentQuarter
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsCurrentYear
+		dataType: int64
+		formatString: 0
+		lineageTag: af227f41-15eb-4308-a409-aa8e4a7d235e
+		summarizeBy: sum
+		sourceColumn: IsCurrentYear
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsPreviousMonth
+		dataType: int64
+		formatString: 0
+		lineageTag: 130af9d5-a565-488b-bf22-54d026ee2635
+		summarizeBy: sum
+		sourceColumn: IsPreviousMonth
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsWeekend
+		dataType: int64
+		formatString: 0
+		lineageTag: e0e83d1e-83c0-4de5-8a63-c0b9e97704b7
+		summarizeBy: sum
+		sourceColumn: IsWeekend
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsWeekday
+		dataType: int64
+		formatString: 0
+		lineageTag: a4b9c9b6-0559-42e8-a2c4-49ff2a53df94
+		summarizeBy: sum
+		sourceColumn: IsWeekday
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsHoliday
+		dataType: int64
+		formatString: 0
+		lineageTag: 90b8d845-1d02-44eb-84eb-650a5a6ab489
+		summarizeBy: sum
+		sourceColumn: IsHoliday
+
+		annotation SummarizationSetBy = Automatic
+
+	column HolidayName
+		dataType: string
+		lineageTag: fcb3d0c3-7e5b-493f-a8d7-164f4a8c5be1
+		summarizeBy: none
+		sourceColumn: HolidayName
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_Date = m
+		mode: import
+		source = ```
+				// ============================================================
+				// Dim_Date - Date Dimension
+				// Standard date dimension with fiscal periods for Bangladesh
+				// Supports time intelligence measures
+				// Updated: Nov 2025 - Extended date range
+				// ============================================================
+				
+				let
+				    // Configuration
+				    StartDate = #date(2023, 1, 1),
+				    EndDate = #date(2026, 12, 31),  // Extended to cover future planning
+				    FiscalYearStartMonth = 7,  // Bangladesh fiscal year starts July 1
+				    
+				    // Generate date list
+				    DayCount = Duration.Days(EndDate - StartDate) + 1,
+				    DateList = List.Dates(StartDate, DayCount, #duration(1, 0, 0, 0)),
+				    
+				    // Convert to table
+				    TableFromList = Table.FromList(DateList, Splitter.SplitByNothing(), {"Date"}, null, ExtraValues.Error),
+				    ChangedType = Table.TransformColumnTypes(TableFromList, {{"Date", type date}}),
+				    
+				    // ---- Core Date Attributes ----
+				    AddDateKey = Table.TransformColumnTypes(Table.AddColumn(ChangedType, "DateKey", each Date.ToText([Date], "yyyyMMdd")), {{"DateKey", type text}}),
+				    AddYear = Table.AddColumn(AddDateKey, "Year", each Date.Year([Date]), Int64.Type),
+				    AddMonth = Table.AddColumn(AddYear, "Month", each Date.Month([Date]), Int64.Type),
+				    AddMonthName = Table.AddColumn(AddMonth, "MonthName", each Date.MonthName([Date]), type text),
+				    AddMonthShort = Table.AddColumn(AddMonthName, "MonthShort", each Text.Start(Date.MonthName([Date]), 3), type text),
+				    AddQuarter = Table.AddColumn(AddMonthShort, "Quarter", each Date.QuarterOfYear([Date]), Int64.Type),
+				    AddQuarterName = Table.AddColumn(AddQuarter, "QuarterName", each "Q" & Text.From(Date.QuarterOfYear([Date])), type text),
+				    AddDay = Table.AddColumn(AddQuarterName, "Day", each Date.Day([Date]), Int64.Type),
+				    AddDayOfWeek = Table.AddColumn(AddDay, "DayOfWeek", each Date.DayOfWeek([Date], Day.Monday) + 1, Int64.Type),
+				    AddDayName = Table.AddColumn(AddDayOfWeek, "DayName", each Date.DayOfWeekName([Date]), type text),
+				    AddDayShort = Table.AddColumn(AddDayName, "DayShort", each Text.Start(Date.DayOfWeekName([Date]), 3), type text),
+				    AddWeekOfYear = Table.AddColumn(AddDayShort, "WeekOfYear", each Date.WeekOfYear([Date]), Int64.Type),
+				    AddDayOfYear = Table.AddColumn(AddWeekOfYear, "DayOfYear", each Date.DayOfYear([Date]), Int64.Type),
+				    
+				    // ---- Fiscal Year Attributes (July-June for Bangladesh) ----
+				    AddFiscalYear = Table.AddColumn(AddDayOfYear, "FiscalYear", each 
+				        if Date.Month([Date]) >= FiscalYearStartMonth then Date.Year([Date]) + 1 else Date.Year([Date]), 
+				        Int64.Type),
+				    AddFiscalYearLabel = Table.AddColumn(AddFiscalYear, "FiscalYearLabel", each 
+				        "FY" & Text.From([FiscalYear] - 1) & "-" & Text.End(Text.From([FiscalYear]), 2), 
+				        type text),
+				    AddFiscalMonth = Table.AddColumn(AddFiscalYearLabel, "FiscalMonth", each 
+				        if Date.Month([Date]) >= FiscalYearStartMonth then Date.Month([Date]) - FiscalYearStartMonth + 1 
+				        else Date.Month([Date]) + (12 - FiscalYearStartMonth + 1), 
+				        Int64.Type),
+				    AddFiscalQuarter = Table.AddColumn(AddFiscalMonth, "FiscalQuarter", each 
+				        Number.RoundUp([FiscalMonth] / 3, 0), 
+				        Int64.Type),
+				    AddFiscalQuarterLabel = Table.AddColumn(AddFiscalQuarter, "FiscalQuarterLabel", each 
+				        "FQ" & Text.From([FiscalQuarter]), 
+				        type text),
+				    
+				    // ---- Week Attributes ----
+				    AddWeekStartDate = Table.AddColumn(AddFiscalQuarterLabel, "WeekStartDate", each 
+				        Date.StartOfWeek([Date], Day.Saturday),  // Bangladesh week starts Saturday
+				        type date),
+				    AddWeekEndDate = Table.AddColumn(AddWeekStartDate, "WeekEndDate", each 
+				        Date.EndOfWeek([Date], Day.Saturday), 
+				        type date),
+				    AddWeekLabel = Table.AddColumn(AddWeekEndDate, "WeekLabel", each 
+				        "W" & Text.PadStart(Text.From([WeekOfYear]), 2, "0") & "-" & Text.From([Year]), 
+				        type text),
+				    
+				    // ---- Month Attributes ----
+				    AddMonthStartDate = Table.AddColumn(AddWeekLabel, "MonthStartDate", each 
+				        Date.StartOfMonth([Date]), 
+				        type date),
+				    AddMonthEndDate = Table.AddColumn(AddMonthStartDate, "MonthEndDate", each 
+				        Date.EndOfMonth([Date]), 
+				        type date),
+				    AddYearMonth = Table.AddColumn(AddMonthEndDate, "YearMonth", each 
+				        Text.From([Year]) & "-" & Text.PadStart(Text.From([Month]), 2, "0"), 
+				        type text),
+				    AddYearMonthNum = Table.AddColumn(AddYearMonth, "YearMonthNum", each 
+				        [Year] * 100 + [Month], 
+				        Int64.Type),
+				    
+				    // ---- Relative Date Flags ----
+				    AddIsToday = Table.AddColumn(AddYearMonthNum, "IsToday", each 
+				        if [Date] = Date.From(DateTime.LocalNow()) then 1 else 0, 
+				        Int64.Type),
+				    AddIsCurrentWeek = Table.AddColumn(AddIsToday, "IsCurrentWeek", each 
+				        if Date.IsInCurrentWeek([Date]) then 1 else 0, 
+				        Int64.Type),
+				    AddIsCurrentMonth = Table.AddColumn(AddIsCurrentWeek, "IsCurrentMonth", each 
+				        if Date.IsInCurrentMonth([Date]) then 1 else 0, 
+				        Int64.Type),
+				    AddIsCurrentQuarter = Table.AddColumn(AddIsCurrentMonth, "IsCurrentQuarter", each 
+				        if Date.IsInCurrentQuarter([Date]) then 1 else 0, 
+				        Int64.Type),
+				    AddIsCurrentYear = Table.AddColumn(AddIsCurrentQuarter, "IsCurrentYear", each 
+				        if Date.IsInCurrentYear([Date]) then 1 else 0, 
+				        Int64.Type),
+				    AddIsPreviousMonth = Table.AddColumn(AddIsCurrentYear, "IsPreviousMonth", each 
+				        if Date.IsInPreviousMonth([Date]) then 1 else 0, 
+				        Int64.Type),
+				    
+				    // ---- Weekend/Weekday Flags ----
+				    // Bangladesh: Friday is weekend, Saturday is half-day
+				    AddIsWeekend = Table.AddColumn(AddIsPreviousMonth, "IsWeekend", each 
+				        if Date.DayOfWeek([Date], Day.Monday) = 4 then 1  // Friday
+				        else 0, 
+				        Int64.Type),
+				    AddIsWeekday = Table.AddColumn(AddIsWeekend, "IsWeekday", each 
+				        if [IsWeekend] = 0 then 1 else 0, 
+				        Int64.Type),
+				    
+				    // ---- Bangladesh Public Holidays (Major ones) ----
+				    AddIsHoliday = Table.AddColumn(AddIsWeekday, "IsHoliday", each 
+				        if Date.Month([Date]) = 2 and Date.Day([Date]) = 21 then 1  // Language Movement Day
+				        else if Date.Month([Date]) = 3 and Date.Day([Date]) = 26 then 1  // Independence Day
+				        else if Date.Month([Date]) = 4 and Date.Day([Date]) = 14 then 1  // Bengali New Year
+				        else if Date.Month([Date]) = 5 and Date.Day([Date]) = 1 then 1  // May Day
+				        else if Date.Month([Date]) = 8 and Date.Day([Date]) = 15 then 1  // National Mourning Day
+				        else if Date.Month([Date]) = 12 and Date.Day([Date]) = 16 then 1  // Victory Day
+				        else 0, 
+				        Int64.Type),
+				    AddHolidayName = Table.AddColumn(AddIsHoliday, "HolidayName", each 
+				        if Date.Month([Date]) = 2 and Date.Day([Date]) = 21 then "Language Movement Day"
+				        else if Date.Month([Date]) = 3 and Date.Day([Date]) = 26 then "Independence Day"
+				        else if Date.Month([Date]) = 4 and Date.Day([Date]) = 14 then "Bengali New Year"
+				        else if Date.Month([Date]) = 5 and Date.Day([Date]) = 1 then "May Day"
+				        else if Date.Month([Date]) = 8 and Date.Day([Date]) = 15 then "National Mourning Day"
+				        else if Date.Month([Date]) = 12 and Date.Day([Date]) = 16 then "Victory Day"
+				        else null, 
+				        type text),
+				    
+				    // ---- Sort Order Column for Month ----
+				    AddMonthSortOrder = Table.AddColumn(AddHolidayName, "MonthSortOrder", each 
+				        [Year] * 100 + [Month], 
+				        Int64.Type),
+				    
+				    // ---- Reorder Columns ----
+				    ReorderedColumns = Table.ReorderColumns(AddMonthSortOrder, {
+				        "DateKey", "Date", 
+				        "Year", "Quarter", "QuarterName", "Month", "MonthName", "MonthShort", 
+				        "Day", "DayOfWeek", "DayName", "DayShort", "DayOfYear", "WeekOfYear",
+				        "FiscalYear", "FiscalYearLabel", "FiscalQuarter", "FiscalQuarterLabel", "FiscalMonth",
+				        "WeekStartDate", "WeekEndDate", "WeekLabel",
+				        "MonthStartDate", "MonthEndDate", "YearMonth", "YearMonthNum", "MonthSortOrder",
+				        "IsToday", "IsCurrentWeek", "IsCurrentMonth", "IsCurrentQuarter", "IsCurrentYear", "IsPreviousMonth",
+				        "IsWeekend", "IsWeekday", "IsHoliday", "HolidayName"
+				    })
+				in
+				    ReorderedColumns
+				```
+
+	annotation PBI_ResultType = Table
+

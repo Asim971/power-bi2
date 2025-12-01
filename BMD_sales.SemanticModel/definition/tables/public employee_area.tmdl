@@ -1,0 +1,51 @@
+table 'public employee_area'
+	isHidden
+	lineageTag: 594c894d-4066-403d-9bd4-e5a44e461d7e
+
+	column id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 1fb61730-ddd2-4238-94dd-a3f84c44e9da
+		summarizeBy: sum
+		sourceColumn: id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column area_id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 796dd07f-17fc-439e-9f0f-b3aaef3e4934
+		summarizeBy: sum
+		sourceColumn: area_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column employee_id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 87bba522-146d-40dd-a1a7-13a4d736d106
+		summarizeBy: sum
+		sourceColumn: employee_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'public employee_area' = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("172.17.19.21", "bmdsalesdb"),
+				  #"Navigation 1" = Source{[Schema = "public", Item = "employee_area"]}[Data]
+				in
+				  #"Navigation 1"
+
+	changedProperty = IsHidden
+

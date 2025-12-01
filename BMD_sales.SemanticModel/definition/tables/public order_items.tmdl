@@ -1,0 +1,159 @@
+table 'public order_items'
+	isHidden
+	lineageTag: f0715273-94db-4f3e-9dac-c8bda9875492
+
+	column id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 3c17671a-d92d-45c6-8536-243ad9cf9c15
+		summarizeBy: sum
+		sourceColumn: id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column balance
+		dataType: double
+		isHidden
+		lineageTag: 80e09231-5862-4dd3-833e-edb01773179a
+		summarizeBy: sum
+		sourceColumn: balance
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column corteza_record_ref
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 9ed51df7-aed9-4101-a282-498a76b60d0b
+		summarizeBy: sum
+		sourceColumn: corteza_record_ref
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column points
+		dataType: double
+		isHidden
+		lineageTag: 26c3f011-dcdf-426e-a1ff-8b1508ee505a
+		summarizeBy: sum
+		sourceColumn: points
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column qty
+		dataType: double
+		isHidden
+		lineageTag: a2d7a71e-2e56-4aaa-97ab-14fb76d9cfb5
+		summarizeBy: sum
+		sourceColumn: qty
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column sku
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: c034faa6-73f0-46f3-8151-6eca2c0b99e6
+		summarizeBy: sum
+		sourceColumn: sku
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column sku_name
+		dataType: string
+		isHidden
+		lineageTag: f758464c-40bc-491b-8cba-d4ffd0d4a647
+		summarizeBy: none
+		sourceColumn: sku_name
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column unit_price
+		dataType: string
+		isHidden
+		lineageTag: a756e317-8a32-4ce9-a7e6-6d3e23f61ab5
+		summarizeBy: none
+		sourceColumn: unit_price
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column unit_type
+		dataType: string
+		isHidden
+		lineageTag: 0ce218e2-b140-4bfc-8ad6-17fd78c84df5
+		summarizeBy: none
+		sourceColumn: unit_type
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column project_conversion_id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 8ef1ae05-2017-4955-9fb1-b84118f51328
+		summarizeBy: sum
+		sourceColumn: project_conversion_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column sku_info_id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 39e71f04-fa7e-47d0-b966-3aa1871326ba
+		summarizeBy: sum
+		sourceColumn: sku_info_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column user_order_history_id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 4b7fdcee-16be-4430-b51b-dd466e2dc088
+		summarizeBy: sum
+		sourceColumn: user_order_history_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'public order_items' = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("172.17.19.21", "bmdsalesdb"),
+				  #"Navigation 1" = Source{[Schema = "public", Item = "order_items"]}[Data]
+				in
+				  #"Navigation 1"
+
+	changedProperty = IsHidden
+

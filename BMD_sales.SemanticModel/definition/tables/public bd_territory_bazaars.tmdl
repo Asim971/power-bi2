@@ -1,0 +1,39 @@
+table 'public bd_territory_bazaars'
+	isHidden
+	lineageTag: 7271340b-e18f-4fcf-aa94-4df44784cc5e
+
+	column bd_territory_id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: ca3d471f-b6a4-4669-9d2f-522e9320173d
+		summarizeBy: sum
+		sourceColumn: bd_territory_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column bazaar_id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: f465f8d4-decc-4f9d-95f4-b867c6c697a4
+		summarizeBy: sum
+		sourceColumn: bazaar_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'public bd_territory_bazaars' = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("172.17.19.21", "bmdsalesdb"),
+				  #"Navigation 1" = Source{[Schema = "public", Item = "bd_territory_bazaars"]}[Data]
+				in
+				  #"Navigation 1"
+
+	changedProperty = IsHidden
+

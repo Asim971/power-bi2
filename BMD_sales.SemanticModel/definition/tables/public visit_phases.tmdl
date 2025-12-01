@@ -1,0 +1,94 @@
+table 'public visit_phases'
+	isHidden
+	lineageTag: 13c5135e-26d7-4538-85bd-b15a8f773d37
+
+	column id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 0b590a11-7bb2-4976-89de-0980b81fa129
+		summarizeBy: sum
+		sourceColumn: id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column created_at
+		dataType: dateTime
+		isHidden
+		formatString: General Date
+		lineageTag: ebf681c8-92b4-490c-a4e4-557bc59fc654
+		summarizeBy: none
+		sourceColumn: created_at
+
+		variation Variation
+			isDefault
+			relationship: be298aef-01b3-422b-92fa-d2021af34a03
+			defaultHierarchy: LocalDateTable_8484f6a2-9aa7-4294-a060-594188c9d8c3.'Date Hierarchy'
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column delete_status
+		dataType: string
+		isHidden
+		lineageTag: 01ca3b56-77b7-46fe-b375-aafefe26b209
+		summarizeBy: none
+		sourceColumn: delete_status
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column description
+		dataType: string
+		isHidden
+		lineageTag: 13fb4b6b-aebc-491b-8a39-61c9fa626638
+		summarizeBy: none
+		sourceColumn: description
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column name
+		dataType: string
+		isHidden
+		lineageTag: 569df6ab-411a-4b4b-91fa-18392c7782a4
+		summarizeBy: none
+		sourceColumn: name
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column updated_at
+		dataType: dateTime
+		isHidden
+		formatString: General Date
+		lineageTag: 32b6f7a0-3820-4035-bdff-c8fcd65865db
+		summarizeBy: none
+		sourceColumn: updated_at
+
+		variation Variation
+			isDefault
+			relationship: 5b9595b6-a2ea-49c2-bbae-5067f200aa1e
+			defaultHierarchy: LocalDateTable_e78fd47b-88ff-4b8c-bcd4-1deef3cf193f.'Date Hierarchy'
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'public visit_phases' = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("172.17.19.21", "bmdsalesdb"),
+				  #"Navigation 1" = Source{[Schema = "public", Item = "visit_phases"]}[Data]
+				in
+				  #"Navigation 1"
+
+	changedProperty = IsHidden
+

@@ -1,0 +1,405 @@
+/// FACT TABLES
+/// 
+table Fact_ProjectConversion
+	lineageTag: 9e65a144-53c6-4509-8230-315bc142daf6
+
+	column ConversionID
+		dataType: int64
+		formatString: 0
+		lineageTag: cce26385-305f-4699-ba2e-f8e40dea0371
+		summarizeBy: count
+		sourceColumn: ConversionID
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrderStatus
+		dataType: string
+		lineageTag: 15e6f5ec-a79d-4196-9367-381df639ae02
+		summarizeBy: none
+		sourceColumn: OrderStatus
+
+		annotation SummarizationSetBy = Automatic
+
+	column DeliveryMethod
+		dataType: string
+		lineageTag: 9faacf23-70e9-4f17-aeb4-d34a9f58d0d9
+		summarizeBy: none
+		sourceColumn: DeliveryMethod
+
+		annotation SummarizationSetBy = Automatic
+
+	column delete_status
+		dataType: string
+		lineageTag: 3f0f1c5e-354a-405d-8728-36b3773c2eaf
+		summarizeBy: none
+		sourceColumn: delete_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column SiteID
+		dataType: int64
+		formatString: 0
+		lineageTag: 3edbcb3f-0040-453e-83b4-3b9960b3d840
+		summarizeBy: count
+		sourceColumn: SiteID
+
+		annotation SummarizationSetBy = Automatic
+
+	column EngineerID
+		dataType: int64
+		formatString: 0
+		lineageTag: 564aa26d-0a27-42d2-9471-f2d14d5b0018
+		summarizeBy: count
+		sourceColumn: EngineerID
+
+		annotation SummarizationSetBy = Automatic
+
+	column DealerID
+		dataType: int64
+		formatString: 0
+		lineageTag: 14db75c1-a0c7-4e09-857c-9601c4f288b2
+		summarizeBy: count
+		sourceColumn: DealerID
+
+		annotation SummarizationSetBy = Automatic
+
+	column RetailerID
+		dataType: int64
+		formatString: 0
+		lineageTag: ad9ee0c9-b2b4-4b0f-afab-6523082493aa
+		summarizeBy: count
+		sourceColumn: RetailerID
+
+		annotation SummarizationSetBy = Automatic
+
+	column BazaarID
+		dataType: int64
+		formatString: 0
+		lineageTag: 52ff5d65-41d0-4719-949a-3fe0341ed946
+		summarizeBy: count
+		sourceColumn: BazaarID
+
+		annotation SummarizationSetBy = Automatic
+
+	column created_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 0a9b1300-e572-498d-9837-eb5d0383ad4c
+		summarizeBy: none
+		sourceColumn: created_at
+
+		variation Variation
+			isDefault
+			relationship: 40e0b41f-2c92-480d-8ea9-bc5383ee8bb6
+			defaultHierarchy: LocalDateTable_0d8631db-0d2b-4bc9-83d7-7193d040d338.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column updated_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: a82998e0-4551-4273-a3d5-2205354e87b7
+		summarizeBy: none
+		sourceColumn: updated_at
+
+		variation Variation
+			isDefault
+			relationship: e7083863-fdf3-471b-8e7f-e490769e27a1
+			defaultHierarchy: LocalDateTable_4beddf4e-b976-4a3b-ac7d-2908f72fca86.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column EngineerLoyalty
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: cad10395-175a-4271-be08-d3d4545aedfc
+		summarizeBy: none
+		sourceColumn: EngineerLoyalty
+
+		annotation SummarizationSetBy = Automatic
+
+	column ContractorLoyalty
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: aa727c8e-5e02-42ba-96b9-5312ddf156c9
+		summarizeBy: none
+		sourceColumn: ContractorLoyalty
+
+		annotation SummarizationSetBy = Automatic
+
+	column assigned_sr
+		dataType: string
+		lineageTag: 5d976dda-718a-4679-a906-1d2c21dfa5bb
+		summarizeBy: none
+		sourceColumn: assigned_sr
+
+		annotation SummarizationSetBy = Automatic
+
+	column assigned_cro
+		dataType: string
+		lineageTag: b1412640-7414-4448-810a-d76706518550
+		summarizeBy: none
+		sourceColumn: assigned_cro
+
+		annotation SummarizationSetBy = Automatic
+
+	column assigned_bdo
+		dataType: string
+		lineageTag: adf7107e-c69f-497c-9462-d6507b9b798d
+		summarizeBy: none
+		sourceColumn: assigned_bdo
+
+		annotation SummarizationSetBy = Automatic
+
+	column assigned_asm
+		dataType: string
+		lineageTag: b9e4a6b1-3edf-4cf7-98f1-4976574305ed
+		summarizeBy: none
+		sourceColumn: assigned_asm
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_amount
+		dataType: string
+		lineageTag: f1bdc296-ef57-4ea5-bbe3-7152f19cc968
+		summarizeBy: none
+		sourceColumn: total_amount
+
+		annotation SummarizationSetBy = Automatic
+
+	column stage
+		dataType: string
+		lineageTag: f83a7ca6-863d-472e-ae5c-06092dea9354
+		summarizeBy: none
+		sourceColumn: stage
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConversionDateKey
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 2d508ee4-6c00-4041-ad9b-c92baa661900
+		summarizeBy: none
+		sourceColumn: ConversionDateKey
+
+		variation Variation
+			isDefault
+			relationship: 6192e0cc-d008-45a8-bc01-43f52982dc2a
+			defaultHierarchy: LocalDateTable_5ccc5a38-f435-4ea6-b281-a4a882463613.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column ClientKey
+		dataType: string
+		lineageTag: 46a44625-3ef9-4746-88f7-211cbfa3ad1a
+		summarizeBy: none
+		sourceColumn: ClientKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column DeliveryType
+		dataType: string
+		lineageTag: d652d6b0-3b4c-4470-84bc-494657708fb3
+		summarizeBy: none
+		sourceColumn: DeliveryType
+
+		annotation SummarizationSetBy = Automatic
+
+	column StatusGroup
+		dataType: string
+		lineageTag: f9242ed7-92ec-4977-9942-991ff2ae69d0
+		summarizeBy: none
+		sourceColumn: StatusGroup
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsConverted
+		dataType: int64
+		formatString: 0
+		lineageTag: f5d9e5e4-f5f9-42af-9bee-cd7286861254
+		summarizeBy: sum
+		sourceColumn: IsConverted
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsEngineerRewardEligible
+		dataType: int64
+		formatString: 0
+		lineageTag: 8f3d0008-df7c-43e9-b905-7ba6403f8883
+		summarizeBy: sum
+		sourceColumn: IsEngineerRewardEligible
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsContractorRewardEligible
+		dataType: int64
+		formatString: 0
+		lineageTag: 736df42f-0251-44b4-b011-32bd1b3554d6
+		summarizeBy: sum
+		sourceColumn: IsContractorRewardEligible
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Fact_ProjectConversion = m
+		mode: import
+		source = ```
+				// ============================================================
+				// Fact_ProjectConversion - Project Conversion Fact Table
+				// Source: public project_conversion (836 records)
+				// 
+				// PURPOSE:
+				// Tracks the conversion journey from Site visit to Order
+				// Links Engineers/Contractors to conversion rewards
+				// 
+				// KEY FIELDS (from ERD analysis):
+				// - order_status, delivery_method
+				// - loyalty_of_engineer, loyalty_of_contractor (reward eligibility)
+				// - assigned_sr, assigned_cro, assigned_bdo, assigned_asm (role assignments)
+				// - site_id, engineer_id, dealer_id, retailer_id, bazaar_id
+				// ============================================================
+				
+				let
+				    // Reference the existing 'public project_conversion' table in Power BI
+				    Source = #"public project_conversion",
+				    
+				    // ---- Get Available Columns ----
+				    AllColumns = Table.ColumnNames(Source),
+				    
+				    // ---- Define Expected Columns (based on ERD) ----
+				    ExpectedCoreColumns = {
+				        "id", "order_status", "delivery_method", "delete_status",
+				        "site_id", "engineer_id", "dealer_id", "retailer_id", "bazaar_id",
+				        "created_at", "updated_at"
+				    },
+				    
+				    // ---- Define Optional Columns ----
+				    OptionalColumns = {
+				        "loyalty_of_engineer", "loyalty_of_contractor",
+				        "assigned_sr", "assigned_cro", "assigned_bdo", "assigned_asm",
+				        "total_amount", "stage", "feedback"
+				    },
+				    
+				    // ---- Select Available Columns ----
+				    AvailableColumns = List.Select(
+				        ExpectedCoreColumns & OptionalColumns, 
+				        each List.Contains(AllColumns, _)
+				    ),
+				    
+				    SelectedColumns = Table.SelectColumns(Source, AvailableColumns),
+				    
+				    // ---- Rename Core Columns ----
+				    RenamedColumns = Table.RenameColumns(SelectedColumns, {
+				        {"id", "ConversionID"},
+				        {"order_status", "OrderStatus"},
+				        {"delivery_method", "DeliveryMethod"},
+				        {"site_id", "SiteID"},
+				        {"bazaar_id", "BazaarID"}
+				    }, MissingField.Ignore),
+				    
+				    // ---- Conditionally Rename Optional Columns ----
+				    WithRenames1 = if Table.HasColumns(RenamedColumns, "engineer_id") 
+				        then Table.RenameColumns(RenamedColumns, {{"engineer_id", "EngineerID"}})
+				        else RenamedColumns,
+				    
+				    WithRenames2 = if Table.HasColumns(WithRenames1, "dealer_id") 
+				        then Table.RenameColumns(WithRenames1, {{"dealer_id", "DealerID"}})
+				        else WithRenames1,
+				    
+				    WithRenames3 = if Table.HasColumns(WithRenames2, "retailer_id") 
+				        then Table.RenameColumns(WithRenames2, {{"retailer_id", "RetailerID"}})
+				        else WithRenames2,
+				    
+				    WithRenames4 = if Table.HasColumns(WithRenames3, "loyalty_of_engineer") 
+				        then Table.RenameColumns(WithRenames3, {{"loyalty_of_engineer", "EngineerLoyalty"}})
+				        else WithRenames3,
+				    
+				    WithRenames5 = if Table.HasColumns(WithRenames4, "loyalty_of_contractor") 
+				        then Table.RenameColumns(WithRenames4, {{"loyalty_of_contractor", "ContractorLoyalty"}})
+				        else WithRenames4,
+				    
+				    FinalRenames = WithRenames5,
+				    
+				    // ---- Check if loyalty columns exist (evaluate once) ----
+				    HasEngineerLoyalty = Table.HasColumns(FinalRenames, "EngineerLoyalty"),
+				    HasContractorLoyalty = Table.HasColumns(FinalRenames, "ContractorLoyalty"),
+				    
+				    // ---- Filter out deleted records ----
+				    ActiveRecords = Table.SelectRows(FinalRenames, each [delete_status] = "NO"),
+				    
+				    // ---- Extract Date Key ----
+				    WithDateKey = Table.AddColumn(ActiveRecords, "ConversionDateKey", each 
+				        Date.From([created_at]),
+				        type date
+				    ),
+				    
+				    // ---- Create Client Key (Site is primary for conversions) ----
+				    WithClientKey = Table.AddColumn(WithDateKey, "ClientKey", each 
+				        "Site-" & Text.From([SiteID]),
+				        type text
+				    ),
+				    
+				    // ---- Delivery Type Classification ----
+				    // Per PRD: "Factory DN" = Retail Delivery, "General Delivery" = CRO visit required
+				    WithDeliveryType = Table.AddColumn(WithClientKey, "DeliveryType", each 
+				        if [DeliveryMethod] = "Retail Delivery" then "Factory DN"
+				        else if [DeliveryMethod] = "General Delivery" then "General Delivery"
+				        else [DeliveryMethod],
+				        type text
+				    ),
+				    
+				    // ---- Conversion Status Group ----
+				    WithStatusGroup = Table.AddColumn(WithDeliveryType, "StatusGroup", each 
+				        if Text.Upper([OrderStatus]) = "PENDING" then "Pending"
+				        else if Text.Upper([OrderStatus]) = "APPROVED" or Text.Upper([OrderStatus]) = "COMPLETED" then "Converted"
+				        else if Text.Upper([OrderStatus]) = "CANCELLED" then "Cancelled"
+				        else "Other",
+				        type text
+				    ),
+				    
+				    // ---- Is Converted Flag ----
+				    WithConvertedFlag = Table.AddColumn(WithStatusGroup, "IsConverted", each 
+				        if [StatusGroup] = "Converted" then 1 else 0,
+				        Int64.Type
+				    ),
+				    
+				    // ---- Engineer Eligible for Reward ----
+				    WithEngineerReward = Table.AddColumn(WithConvertedFlag, "IsEngineerRewardEligible", each 
+				        if HasEngineerLoyalty then
+				            if [EngineerLoyalty] = true then 1 else 0
+				        else 0,
+				        Int64.Type
+				    ),
+				    
+				    // ---- Contractor Eligible for Reward ----
+				    WithContractorReward = Table.AddColumn(WithEngineerReward, "IsContractorRewardEligible", each 
+				        if HasContractorLoyalty then
+				            if [ContractorLoyalty] = true then 1 else 0
+				        else 0,
+				        Int64.Type
+				    ),
+				    
+				    // ---- Set Data Types ----
+				    TypedTable = Table.TransformColumnTypes(WithContractorReward, {
+				        {"ConversionID", Int64.Type},
+				        {"OrderStatus", type text},
+				        {"DeliveryMethod", type text},
+				        {"SiteID", Int64.Type},
+				        {"BazaarID", Int64.Type},
+				        {"ConversionDateKey", type date},
+				        {"ClientKey", type text},
+				        {"DeliveryType", type text},
+				        {"StatusGroup", type text},
+				        {"IsConverted", Int64.Type},
+				        {"IsEngineerRewardEligible", Int64.Type},
+				        {"IsContractorRewardEligible", Int64.Type},
+				        {"created_at", type datetime},
+				        {"updated_at", type datetime}
+				    })
+				in
+				    TypedTable
+				```
+
+	annotation PBI_ResultType = Table
+

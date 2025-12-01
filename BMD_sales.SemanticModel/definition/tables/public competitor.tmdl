@@ -1,0 +1,119 @@
+table 'public competitor'
+	isHidden
+	lineageTag: 6d881958-cc89-4837-9af0-63879a83b6a4
+
+	column id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 7906d5b2-0027-4793-bbe3-a39e86993981
+		summarizeBy: sum
+		sourceColumn: id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column created_at
+		dataType: dateTime
+		isHidden
+		formatString: General Date
+		lineageTag: 4385a225-52c2-4455-ac1a-d5d93576370e
+		summarizeBy: none
+		sourceColumn: created_at
+
+		variation Variation
+			isDefault
+			relationship: 767de876-410f-42d1-b9c9-46cd1bdef54e
+			defaultHierarchy: LocalDateTable_437b03b9-9eec-48b7-b0ef-fc2f9dc29f61.'Date Hierarchy'
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column delete_status
+		dataType: string
+		isHidden
+		lineageTag: 2740f610-1785-4707-b661-9d32e8405f5d
+		summarizeBy: none
+		sourceColumn: delete_status
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column name
+		dataType: string
+		isHidden
+		lineageTag: 546ed80e-a304-4605-9b0d-f9e7a40ec009
+		summarizeBy: none
+		sourceColumn: name
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column updated_at
+		dataType: dateTime
+		isHidden
+		formatString: General Date
+		lineageTag: 807fde04-12e6-4fe0-b7a5-4bfbde8ba7bd
+		summarizeBy: none
+		sourceColumn: updated_at
+
+		variation Variation
+			isDefault
+			relationship: c4045c13-e43d-4199-986a-1c20bdd520e2
+			defaultHierarchy: LocalDateTable_88cc9a87-6c1c-4005-97d8-73cb5027cd1a.'Date Hierarchy'
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column created_by_id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: e9068e82-83ea-44fe-b995-6f55bb44700a
+		summarizeBy: sum
+		sourceColumn: created_by_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column organization_id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 1656e5b8-ad57-4bf6-88af-4108f7d95fc8
+		summarizeBy: sum
+		sourceColumn: organization_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column updated_by_id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: b690b029-c84e-46d0-a259-d550f129b1bc
+		summarizeBy: sum
+		sourceColumn: updated_by_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'public competitor' = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("172.17.19.21", "bmdsalesdb"),
+				  #"Navigation 1" = Source{[Schema = "public", Item = "competitor"]}[Data]
+				in
+				  #"Navigation 1"
+
+	changedProperty = IsHidden
+

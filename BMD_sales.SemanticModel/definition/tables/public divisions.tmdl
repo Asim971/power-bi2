@@ -1,0 +1,154 @@
+table 'public divisions'
+	isHidden
+	lineageTag: d2015f06-82d6-4fdd-8036-b6caf2e30e5d
+
+	column id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 72b9da2f-c01f-460f-ba67-e6a4e7783b44
+		summarizeBy: sum
+		sourceColumn: id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column assigned_agm
+		dataType: string
+		isHidden
+		lineageTag: 10e3ba3a-21f6-41ce-96fe-d48b53910cbd
+		summarizeBy: none
+		sourceColumn: assigned_agm
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column created_at
+		dataType: string
+		isHidden
+		lineageTag: ae70478e-ab76-4187-9d25-8ccfb9fe6835
+		summarizeBy: none
+		sourceColumn: created_at
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column created_by
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: e54ea06d-5623-4c36-a9ff-a5365eeee947
+		summarizeBy: sum
+		sourceColumn: created_by
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column division_name
+		dataType: string
+		isHidden
+		lineageTag: 6a91331a-8adf-43f0-8328-6212d49a6a51
+		summarizeBy: none
+		sourceColumn: division_name
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column moduleid
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 2d7ae156-02d7-4c04-9b87-0eb7cf76ab8c
+		summarizeBy: sum
+		sourceColumn: moduleid
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column namespaceid
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 4027384c-3907-4318-bc3b-349a6ee859c8
+		summarizeBy: sum
+		sourceColumn: namespaceid
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column nation_record_ref
+		dataType: string
+		isHidden
+		lineageTag: a99de140-67bf-4e9c-9d98-3b664f370f9d
+		summarizeBy: none
+		sourceColumn: nation_record_ref
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column owned_by
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 65e09d91-30ae-4a13-9914-eb3f09499592
+		summarizeBy: sum
+		sourceColumn: owned_by
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column recordid
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: b396d632-18c5-4383-8883-24851a4c4447
+		summarizeBy: sum
+		sourceColumn: recordid
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column status
+		dataType: string
+		isHidden
+		lineageTag: caa71a44-4d48-4d85-817f-69c90169dab7
+		summarizeBy: none
+		sourceColumn: status
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column nation_id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: a0daa1b1-5847-4ce9-8584-e023a84a363f
+		summarizeBy: sum
+		sourceColumn: nation_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'public divisions' = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("172.17.19.21", "bmdsalesdb"),
+				  #"Navigation 1" = Source{[Schema = "public", Item = "divisions"]}[Data]
+				in
+				  #"Navigation 1"
+
+	changedProperty = IsHidden
+

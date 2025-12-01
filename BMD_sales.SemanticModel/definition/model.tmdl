@@ -1,0 +1,184 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	discourageImplicitMeasures
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["public areas","public bank","public bazaars","public bd_territory","public bd_territory_bazaars","public brands","public client","public competitor","public contractor","public customers","public dealer_so","public dealer_so_image","public dealer_so_order_details","public dealer_upazilla","public dealers","public delivery_order","public delivery_order_details","public delivery_order_image_url_list","public disbursements","public districts","public divisions","public employee_area","public employee_bd_territory","public employee_territory","public employees","public end_user","public engineers","public gift","public gift_slabs","public handed_over_site","public head_masons","public ihb_registration","public modules","public money_receipt","public nations","public order_attachments","public order_items","public orders","public organization","public potential_site","public product_acl","public product_ail","public project","public project_conversion","public project_handover","public region","public retailer_order","public retailer_order_details","public retailer_order_image_url_list","public retailers","public reward","public role","public role_modules","public site_managers","public sku_data","public territory","public territory_bazaar_list","public territory_bd_territory","public territory_upazilla","public uncovered_retailer","public uncovered_retailer_competitors","public uncovered_retailer_organizations","public upazilla","public user_credential","public user_orders","public users","public users_bd_territory","public users_territory","public visit_access_acl","public visit_access_acsl","public visit_access_ail","public visit_access_aop","public visit_access_bmd","public visit_categories","public visit_phases","public visit_site_stock_records","public visit_site_stocks","public visit_stage_activities","public visit_stages","public visit_sub_stage_record_histories","public visit_sub_stage_record_sub_stage_photos","public visit_sub_stage_records","public visits","public zone","Dim_Client_Simple","Dim_Date","Dim_Territory","Dim_User","Dim_VisitCategory","Dim_VisitPhase","Dim_VisitStage","Fact_Order","Fact_ProjectConversion","Fact_Visit","USER-ZONE"]
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_ProTooling = ["WebModelingEdit","CalcGroup","DaxQueryView_Desktop"]
+
+ref table 'public areas'
+ref table 'public bank'
+ref table 'public bazaars'
+ref table 'public bd_territory'
+ref table DateTableTemplate_7437c060-ed56-488f-8ed3-630a4622a4c8
+ref table LocalDateTable_9b88220e-3a30-4e47-aa74-fd06b3dfbffc
+ref table LocalDateTable_3933c8a2-48ca-40a1-821d-309263541f6a
+ref table 'public bd_territory_bazaars'
+ref table 'public brands'
+ref table 'public client'
+ref table LocalDateTable_ddef1d47-51ab-4c4d-9a85-94acc7207125
+ref table LocalDateTable_06cfc82c-1850-4478-94f5-d7ded18a5485
+ref table 'public competitor'
+ref table LocalDateTable_437b03b9-9eec-48b7-b0ef-fc2f9dc29f61
+ref table LocalDateTable_88cc9a87-6c1c-4005-97d8-73cb5027cd1a
+ref table 'public contractor'
+ref table 'public customers'
+ref table 'public dealer_so'
+ref table LocalDateTable_73f73b84-2d30-49d3-8d7e-719aaa38f913
+ref table LocalDateTable_a46524ef-3b0d-4bbd-986c-a8c383008780
+ref table LocalDateTable_6f8e5297-4fa6-4f1d-bee8-906022b4fb1d
+ref table LocalDateTable_eef03136-6f3d-4ece-905c-1100217c92a4
+ref table LocalDateTable_dadce756-3998-4181-867a-ec255a95e44c
+ref table 'public dealer_so_image'
+ref table 'public dealer_so_order_details'
+ref table 'public dealer_upazilla'
+ref table 'public dealers'
+ref table LocalDateTable_b59de126-cfb7-48f2-a067-a1673ccd0319
+ref table LocalDateTable_1f773804-8318-4f5e-afa3-321caaf0fe5c
+ref table 'public delivery_order'
+ref table LocalDateTable_f4cf36a9-1260-4047-b5fa-5927ae1bc9d9
+ref table LocalDateTable_b5706066-0ed5-4879-91d6-ac867f197be7
+ref table 'public delivery_order_details'
+ref table 'public delivery_order_image_url_list'
+ref table 'public disbursements'
+ref table LocalDateTable_45bc60a7-4c3c-498a-99ce-9c4ecbca84d9
+ref table 'public districts'
+ref table 'public divisions'
+ref table 'public employee_area'
+ref table 'public employee_bd_territory'
+ref table 'public employee_territory'
+ref table 'public employees'
+ref table 'public end_user'
+ref table 'public engineers'
+ref table 'public gift'
+ref table 'public gift_slabs'
+ref table 'public handed_over_site'
+ref table LocalDateTable_8e7f91ba-7bb6-4dce-878f-277644b6caff
+ref table 'public head_masons'
+ref table 'public ihb_registration'
+ref table 'public modules'
+ref table 'public money_receipt'
+ref table LocalDateTable_bb19429c-818c-460f-b1be-238a4629c8b4
+ref table LocalDateTable_1aa2ac6a-9616-466d-81f0-6f1d9a42cb88
+ref table LocalDateTable_117a39c9-56f0-4b99-9277-e217eaaddf6a
+ref table LocalDateTable_44256a2a-a98d-4750-8838-7271e7d77f49
+ref table LocalDateTable_748c3280-4bb2-4ae2-83f4-dae7ae57dd1d
+ref table 'public nations'
+ref table LocalDateTable_aa96a396-ce05-47d2-a1b6-117a9e9bfd63
+ref table 'public order_attachments'
+ref table 'public order_items'
+ref table 'public orders'
+ref table LocalDateTable_fe701380-f3ae-4287-a279-cf28cf8fbe39
+ref table LocalDateTable_e5023c53-dde6-43c8-9259-02d8369978f2
+ref table 'public organization'
+ref table LocalDateTable_38dfd1f8-62aa-44c3-9c5d-15a7a0bafa6d
+ref table LocalDateTable_c6aaf8fd-a34a-481b-adce-8985f99eafb7
+ref table 'public potential_site'
+ref table LocalDateTable_d6210dcb-fb04-44b7-8b89-192a719cf7a9
+ref table LocalDateTable_1f2ac2e0-3f13-4f39-8838-68fbd1eb283e
+ref table 'public product_acl'
+ref table 'public product_ail'
+ref table 'public project'
+ref table LocalDateTable_a8bfa095-0f64-42fa-a7cd-ef42547289ef
+ref table LocalDateTable_be712ada-04d5-415e-8518-e02912c87d9c
+ref table 'public project_conversion'
+ref table LocalDateTable_0ce45fed-867a-4c6b-8d6f-897b3ca570b4
+ref table LocalDateTable_52b0b932-92f2-4469-a908-710fa9eaf185
+ref table 'public project_handover'
+ref table LocalDateTable_a87ee6c7-eb96-4623-8d48-1729e5a04ae5
+ref table LocalDateTable_779b0b5d-a944-4613-bfc2-e374f0393ffa
+ref table 'public region'
+ref table 'public retailer_order'
+ref table LocalDateTable_b16b785f-373e-4855-9f8c-76a8460b9e36
+ref table LocalDateTable_ac297264-562f-4440-bc1e-8d9125ac8e9e
+ref table 'public retailer_order_details'
+ref table 'public retailer_order_image_url_list'
+ref table 'public retailers'
+ref table LocalDateTable_60a98303-bc45-4256-85db-aa03a6a9c1b9
+ref table LocalDateTable_6e3cb1a4-aa77-4112-bdb5-d2b1db0c5b65
+ref table 'public reward'
+ref table 'public role'
+ref table 'public role_modules'
+ref table 'public site_managers'
+ref table 'public sku_data'
+ref table 'public territory'
+ref table 'public territory_bazaar_list'
+ref table 'public territory_bd_territory'
+ref table 'public territory_upazilla'
+ref table 'public uncovered_retailer'
+ref table 'public uncovered_retailer_competitors'
+ref table 'public uncovered_retailer_organizations'
+ref table 'public upazilla'
+ref table 'public user_credential'
+ref table 'public user_orders'
+ref table LocalDateTable_23ef06b9-c79c-46d0-a2a8-53d8397deec9
+ref table LocalDateTable_d714eaa1-fafb-4160-a48b-0779102214e0
+ref table 'public users'
+ref table LocalDateTable_3c15039e-a1ab-484b-b96c-e63633d22063
+ref table LocalDateTable_f0e41ccc-1cde-49c5-bfab-16ab31bc87bb
+ref table 'public users_bd_territory'
+ref table 'public users_territory'
+ref table 'public visit_access_acl'
+ref table 'public visit_access_acsl'
+ref table 'public visit_access_ail'
+ref table 'public visit_access_aop'
+ref table 'public visit_access_bmd'
+ref table 'public visit_categories'
+ref table LocalDateTable_c6774d43-2286-4e4c-8557-ef22a148db0a
+ref table LocalDateTable_0c866f1c-c864-4527-a777-f9471678da3f
+ref table 'public visit_phases'
+ref table LocalDateTable_8484f6a2-9aa7-4294-a060-594188c9d8c3
+ref table LocalDateTable_e78fd47b-88ff-4b8c-bcd4-1deef3cf193f
+ref table 'public visit_site_stock_records'
+ref table 'public visit_site_stocks'
+ref table 'public visit_stage_activities'
+ref table LocalDateTable_9c0a0468-1a0f-4d16-ac8f-47948f9e6c5a
+ref table LocalDateTable_048ea326-98b0-4539-bf52-0b9a06a0b41c
+ref table 'public visit_stages'
+ref table LocalDateTable_b56b1495-d1d3-4b3c-8886-75d3f62619a9
+ref table LocalDateTable_7e4c0c37-f537-4816-892c-2fe2d6ee10d2
+ref table 'public visit_sub_stage_record_histories'
+ref table 'public visit_sub_stage_record_sub_stage_photos'
+ref table 'public visit_sub_stage_records'
+ref table 'public visits'
+ref table LocalDateTable_4ff2a9dd-527f-4851-bfbd-491ba008777f
+ref table LocalDateTable_756f7cc1-2c39-41b9-b721-a18bd72aee92
+ref table LocalDateTable_edeabc03-7638-4fd9-a371-a86e8dd65833
+ref table LocalDateTable_74bb562f-c78c-469c-87e2-319f69c775a2
+ref table 'public zone'
+ref table Dim_Territory
+ref table Dim_Date
+ref table LocalDateTable_22c2caf5-f8e5-4900-a60d-bc50e672033d
+ref table LocalDateTable_0f31e1f2-b446-4b5f-a587-34c8a44ef186
+ref table LocalDateTable_f6ce140c-2b8d-46b6-915d-7be7f2c90b56
+ref table LocalDateTable_8e395ed7-28ec-41bf-91e5-b8283363fcf9
+ref table LocalDateTable_3841d7cc-32c6-4e7e-a609-b9d1c47eb409
+ref table Dim_Client_Simple
+ref table Dim_User
+ref table LocalDateTable_9b5f3741-9efa-4402-933e-a3106abe5657
+ref table LocalDateTable_3d8119aa-b5e9-4412-9570-414eb61d773d
+ref table Dim_VisitCategory
+ref table Dim_VisitPhase
+ref table Dim_VisitStage
+ref table Fact_ProjectConversion
+ref table LocalDateTable_0d8631db-0d2b-4bc9-83d7-7193d040d338
+ref table LocalDateTable_4beddf4e-b976-4a3b-ac7d-2908f72fca86
+ref table LocalDateTable_5ccc5a38-f435-4ea6-b281-a4a882463613
+ref table Fact_Visit
+ref table LocalDateTable_b78652d6-96b5-4ce0-b950-81d1fcd8e989
+ref table LocalDateTable_4ccd853a-ffaa-4612-9342-019595dc6792
+ref table LocalDateTable_80dc7739-add9-4cfa-bfd4-0f267802e538
+ref table LocalDateTable_f8d9e743-e68c-4f07-9f25-9ac4ce880065
+ref table USER-ZONE
+ref table 'Calculation group'
+ref table Fact_Order
+ref table LocalDateTable_9f773199-6de7-48ee-ac31-6425d910fbe6
+ref table LocalDateTable_4749dcd2-f816-46b4-abfb-37e7c17c89ae
+

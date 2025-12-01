@@ -1,0 +1,39 @@
+table 'public uncovered_retailer_competitors'
+	isHidden
+	lineageTag: e3a72706-28e5-49a3-8f83-3c72cd5b2ef2
+
+	column uncovered_retailer_id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 5024339d-578f-46b2-8f3e-87ef96fe9258
+		summarizeBy: sum
+		sourceColumn: uncovered_retailer_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column competitor_id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 9f40ecac-aa84-4a55-8521-1b4ea9e9a740
+		summarizeBy: sum
+		sourceColumn: competitor_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'public uncovered_retailer_competitors' = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("172.17.19.21", "bmdsalesdb"),
+				  #"Navigation 1" = Source{[Schema = "public", Item = "uncovered_retailer_competitors"]}[Data]
+				in
+				  #"Navigation 1"
+
+	changedProperty = IsHidden
+

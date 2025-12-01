@@ -1,0 +1,99 @@
+table 'public delivery_order_details'
+	isHidden
+	lineageTag: 872222c3-cff9-4f8d-9c61-8f52fe72db31
+
+	column id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: f54ad581-6c9a-428a-a168-6198f47f02ac
+		summarizeBy: sum
+		sourceColumn: id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column quantity
+		dataType: double
+		isHidden
+		lineageTag: d9f38f66-83f5-415c-b03b-c76846305461
+		summarizeBy: sum
+		sourceColumn: quantity
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column sku_name
+		dataType: string
+		isHidden
+		lineageTag: 48b1fa54-2719-4469-8bd7-9642de1e46d4
+		summarizeBy: none
+		sourceColumn: sku_name
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column unit_price
+		dataType: double
+		isHidden
+		lineageTag: 20b1c1a7-56cd-4d1c-8d6d-e3bc0756f2ae
+		summarizeBy: sum
+		sourceColumn: unit_price
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column unit_type
+		dataType: string
+		isHidden
+		lineageTag: 2a0757c8-5443-4991-9e56-c33cc3d0487e
+		summarizeBy: none
+		sourceColumn: unit_type
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column delivery_order_id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 9c92c99a-967d-4c3b-b106-aff011c74937
+		summarizeBy: sum
+		sourceColumn: delivery_order_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column sku_id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 6544f15a-a3da-4ff9-bbc7-058463660134
+		summarizeBy: sum
+		sourceColumn: sku_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'public delivery_order_details' = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("172.17.19.21", "bmdsalesdb"),
+				  #"Navigation 1" = Source{[Schema = "public", Item = "delivery_order_details"]}[Data]
+				in
+				  #"Navigation 1"
+
+	changedProperty = IsHidden
+

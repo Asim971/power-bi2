@@ -1,0 +1,677 @@
+table 'public project'
+	isHidden
+	lineageTag: eaf5db41-6a0e-4e6a-9811-56f3d25142b8
+
+	column id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 7a468012-c096-4f08-bf65-ee1657dcfde6
+		summarizeBy: sum
+		sourceColumn: id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column address
+		dataType: string
+		isHidden
+		lineageTag: 95d4ee63-417c-4e32-972e-923d1dcd6507
+		summarizeBy: none
+		sourceColumn: address
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column area_name
+		dataType: string
+		isHidden
+		lineageTag: cae0d0a4-17f1-4744-a340-e377f48f261a
+		summarizeBy: none
+		sourceColumn: area_name
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column assigned_agm
+		dataType: string
+		isHidden
+		lineageTag: ee1df7c0-dbc1-4340-af39-d74505633cb2
+		summarizeBy: none
+		sourceColumn: assigned_agm
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column assigned_asm
+		dataType: string
+		isHidden
+		lineageTag: e5ff9b35-b5d0-4e39-bc59-131fdec55e2c
+		summarizeBy: none
+		sourceColumn: assigned_asm
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column assigned_gm
+		dataType: string
+		isHidden
+		lineageTag: 43955268-723f-45d6-8bcf-0fcb8a798f46
+		summarizeBy: none
+		sourceColumn: assigned_gm
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column assigned_sr
+		dataType: string
+		isHidden
+		lineageTag: 88bcc48c-f1b6-485c-9158-aa5d659600ad
+		summarizeBy: none
+		sourceColumn: assigned_sr
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column assigned_zsm
+		dataType: string
+		isHidden
+		lineageTag: de8e1d3a-72b4-4273-9ee9-bc8fcc55fe95
+		summarizeBy: none
+		sourceColumn: assigned_zsm
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column bd_team
+		dataType: string
+		isHidden
+		lineageTag: 96fda7f7-e828-4df3-a6cf-b346b6b0459b
+		summarizeBy: none
+		sourceColumn: bd_team
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column bd_territory
+		dataType: string
+		isHidden
+		lineageTag: 35c9b09e-63bf-4013-a66f-ed2fc228bc4d
+		summarizeBy: none
+		sourceColumn: bd_territory
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column bd_territory_name
+		dataType: string
+		isHidden
+		lineageTag: d93319fc-60bd-4f6f-aa2b-6ddd049f0eef
+		summarizeBy: none
+		sourceColumn: bd_territory_name
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column cement_territory
+		dataType: string
+		isHidden
+		lineageTag: 070f2735-ffa8-4e33-acd7-ba5f9c540aac
+		summarizeBy: none
+		sourceColumn: cement_territory
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column contractor
+		dataType: string
+		isHidden
+		lineageTag: 0cbcf824-0584-4a42-a939-73cc340ca462
+		summarizeBy: none
+		sourceColumn: contractor
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column created_at
+		dataType: dateTime
+		isHidden
+		formatString: General Date
+		lineageTag: 3a82d096-dd5d-4f20-a0e8-3e9fbe7a26e5
+		summarizeBy: none
+		sourceColumn: created_at
+
+		variation Variation
+			isDefault
+			relationship: da2faa37-4983-4dc6-86f0-faabd66b53d4
+			defaultHierarchy: LocalDateTable_a8bfa095-0f64-42fa-a7cd-ef42547289ef.'Date Hierarchy'
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column created_by
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 6e2a9d22-8499-4f14-8f06-92a5d0702249
+		summarizeBy: sum
+		sourceColumn: created_by
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column delete_status
+		dataType: string
+		isHidden
+		lineageTag: 9430a065-c5bb-416d-a455-8eb5d83b9004
+		summarizeBy: none
+		sourceColumn: delete_status
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column end_stage
+		dataType: string
+		isHidden
+		lineageTag: bd524a6f-3c82-4d1c-8de8-4121f714e513
+		summarizeBy: none
+		sourceColumn: end_stage
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column end_user
+		dataType: string
+		isHidden
+		lineageTag: f8f645c9-57d6-486b-8b8d-d96e40cb1442
+		summarizeBy: none
+		sourceColumn: end_user
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column engineer
+		dataType: string
+		isHidden
+		lineageTag: 4344d32c-bd47-40d4-923f-edab08ce22ec
+		summarizeBy: none
+		sourceColumn: engineer
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column engineer_type
+		dataType: string
+		isHidden
+		lineageTag: 0a5153e7-6f2a-4df1-b903-665a54fdca9b
+		summarizeBy: none
+		sourceColumn: engineer_type
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column est_vol_cmt
+		dataType: string
+		isHidden
+		lineageTag: f6dadb58-fff5-4964-a3e3-56aff7f5652e
+		summarizeBy: none
+		sourceColumn: est_vol_cmt
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column est_vol_ispat
+		dataType: string
+		isHidden
+		lineageTag: b4f85245-7967-47a6-bffe-da2bab6e4fe3
+		summarizeBy: none
+		sourceColumn: est_vol_ispat
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column head_mason
+		dataType: string
+		isHidden
+		lineageTag: d65411ed-317d-448b-92f4-c070777feffa
+		summarizeBy: none
+		sourceColumn: head_mason
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column ispat_territory
+		dataType: string
+		isHidden
+		lineageTag: 06bcc7f0-587d-41ac-8e05-77c9514a56a5
+		summarizeBy: none
+		sourceColumn: ispat_territory
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column ispat_territory_id
+		dataType: string
+		isHidden
+		lineageTag: 44bd9925-1220-462a-ae90-4754ff097aed
+		summarizeBy: none
+		sourceColumn: ispat_territory_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column ispat_territory_name
+		dataType: string
+		isHidden
+		lineageTag: 46929eac-97c4-4555-8cfc-c07a774da40e
+		summarizeBy: none
+		sourceColumn: ispat_territory_name
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column meta
+		dataType: string
+		isHidden
+		lineageTag: 25766d83-3ac2-427a-8706-c139d26c39d1
+		summarizeBy: none
+		sourceColumn: meta
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column moduleid
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: daa4ac8e-582b-4ce1-b22c-c2e97397bb92
+		summarizeBy: sum
+		sourceColumn: moduleid
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column namespaceid
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 13c8f42f-fd19-43da-bfa0-5f24bebaa236
+		summarizeBy: sum
+		sourceColumn: namespaceid
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column notes
+		dataType: string
+		isHidden
+		lineageTag: 7c1bc991-5306-4f92-a9e7-b7f5fea55e87
+		summarizeBy: none
+		sourceColumn: notes
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column owned_by
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 7f55ac68-4135-4848-a6a1-f625771d7c66
+		summarizeBy: sum
+		sourceColumn: owned_by
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column potential_site
+		dataType: string
+		isHidden
+		lineageTag: c327a048-d277-427b-86b3-cda9faa0d131
+		summarizeBy: none
+		sourceColumn: potential_site
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column project_contact_name
+		dataType: string
+		isHidden
+		lineageTag: 81437d39-d957-48e3-96ca-eaaff01144dc
+		summarizeBy: none
+		sourceColumn: project_contact_name
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column project_contact_number
+		dataType: string
+		isHidden
+		lineageTag: 6e5dfc22-cf3e-4a92-9775-ba659794f977
+		summarizeBy: none
+		sourceColumn: project_contact_number
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column project_name
+		dataType: string
+		isHidden
+		lineageTag: ec228c93-766b-499a-99ba-732ba89da5af
+		summarizeBy: none
+		sourceColumn: project_name
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column project_size
+		dataType: string
+		isHidden
+		lineageTag: 5cdcd81f-9bae-4e81-b393-930aa9fef564
+		summarizeBy: none
+		sourceColumn: project_size
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column recordid
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 65577fd2-6d62-4eea-a423-9a2cd2ab69af
+		summarizeBy: sum
+		sourceColumn: recordid
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column ref_engineer
+		dataType: string
+		isHidden
+		lineageTag: 56dc2d50-0ede-4918-84a9-c6897fb5e339
+		summarizeBy: none
+		sourceColumn: ref_engineer
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column revision
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 3ed06f6c-84cf-4d91-aed1-e1f91c5819fe
+		summarizeBy: sum
+		sourceColumn: revision
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column site_management_status
+		dataType: string
+		isHidden
+		lineageTag: a56508d5-b401-479c-97c1-7b8735111fcd
+		summarizeBy: none
+		sourceColumn: site_management_status
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column site_manager
+		dataType: string
+		isHidden
+		lineageTag: f51204d2-4164-497a-9171-0b3b9ce5b488
+		summarizeBy: none
+		sourceColumn: site_manager
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column site_owner_name
+		dataType: string
+		isHidden
+		lineageTag: 4a63332c-e0d5-48ad-986f-8387fc3c5c64
+		summarizeBy: none
+		sourceColumn: site_owner_name
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column site_type
+		dataType: string
+		isHidden
+		lineageTag: 0538c0a5-fcd5-406e-9a05-3adbe8a26b6a
+		summarizeBy: none
+		sourceColumn: site_type
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column site_update_status
+		dataType: string
+		isHidden
+		lineageTag: 15ee738f-9750-4297-af69-50b9f53b8c3c
+		summarizeBy: none
+		sourceColumn: site_update_status
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column start_stage
+		dataType: string
+		isHidden
+		lineageTag: babeb21a-eff6-4b7f-8708-cb04b2f27da2
+		summarizeBy: none
+		sourceColumn: start_stage
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column status
+		dataType: string
+		isHidden
+		lineageTag: c75181f2-4ea3-4f46-bb59-1281767b5487
+		summarizeBy: none
+		sourceColumn: status
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column storied_building
+		dataType: string
+		isHidden
+		lineageTag: 69875e97-f2ef-4f91-9659-c52ce61b434c
+		summarizeBy: none
+		sourceColumn: storied_building
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column submitted_by
+		dataType: string
+		isHidden
+		lineageTag: 8c3bda30-614b-4b8f-b846-ca6934c69c18
+		summarizeBy: none
+		sourceColumn: submitted_by
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column territory_name
+		dataType: string
+		isHidden
+		lineageTag: 4524daa0-5fbd-422b-a776-a6e646943ce6
+		summarizeBy: none
+		sourceColumn: territory_name
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column updated_at
+		dataType: dateTime
+		isHidden
+		formatString: General Date
+		lineageTag: c66fdec4-caba-4402-9311-3ae74e3f4595
+		summarizeBy: none
+		sourceColumn: updated_at
+
+		variation Variation
+			isDefault
+			relationship: 3d297c96-402c-41a5-a41b-c4cb8c1ed2e3
+			defaultHierarchy: LocalDateTable_be712ada-04d5-415e-8518-e02912c87d9c.'Date Hierarchy'
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column updated_by
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: b285f2fa-5f65-4f3e-9e5a-091682cf2784
+		summarizeBy: sum
+		sourceColumn: updated_by
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column visit_images
+		dataType: string
+		isHidden
+		lineageTag: 7bc05e24-6119-4fc4-98fc-2a4e47d06f23
+		summarizeBy: none
+		sourceColumn: visit_images
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column visit_photo
+		dataType: string
+		isHidden
+		lineageTag: 4a8732ab-d3c2-4017-9e83-237ce6ea9995
+		summarizeBy: none
+		sourceColumn: visit_photo
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column visited_sr
+		dataType: string
+		isHidden
+		lineageTag: e75d41e9-2cc0-47ea-9f4e-1ac42eea5b5b
+		summarizeBy: none
+		sourceColumn: visited_sr
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column area_id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 9b0f39d6-2ea7-48b7-929e-e1f686093891
+		summarizeBy: sum
+		sourceColumn: area_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column bd_territory_entity_id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 3f8761f9-7eec-40e5-8c59-1868c3fb6a45
+		summarizeBy: sum
+		sourceColumn: bd_territory_entity_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column employee_id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 44142672-6015-4a5b-994e-58a0de668690
+		summarizeBy: sum
+		sourceColumn: employee_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column territory_id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: f002ca5e-9fb0-4cdb-85d3-411bc0064266
+		summarizeBy: sum
+		sourceColumn: territory_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'public project' = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("172.17.19.21", "bmdsalesdb"),
+				  #"Navigation 1" = Source{[Schema = "public", Item = "project"]}[Data]
+				in
+				  #"Navigation 1"
+
+	changedProperty = IsHidden
+

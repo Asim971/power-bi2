@@ -1,0 +1,106 @@
+table 'public visit_stage_activities'
+	isHidden
+	lineageTag: 1dd22367-cd30-4ff4-85d8-e335af5aa9f5
+
+	column id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: a1311470-5514-45b6-8b1f-0a71157d1ef5
+		summarizeBy: sum
+		sourceColumn: id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column created_at
+		dataType: dateTime
+		isHidden
+		formatString: General Date
+		lineageTag: 440f96cc-4ea7-4a58-b8e7-a369957b7615
+		summarizeBy: none
+		sourceColumn: created_at
+
+		variation Variation
+			isDefault
+			relationship: 512ee2c4-c78f-46e4-90e1-9322e02626ed
+			defaultHierarchy: LocalDateTable_9c0a0468-1a0f-4d16-ac8f-47948f9e6c5a.'Date Hierarchy'
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column delete_status
+		dataType: string
+		isHidden
+		lineageTag: 935513dd-414d-4715-be8c-35fde57d872c
+		summarizeBy: none
+		sourceColumn: delete_status
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column description
+		dataType: string
+		isHidden
+		lineageTag: f6f26d17-d6c1-4ac8-895f-f2a4d040ff54
+		summarizeBy: none
+		sourceColumn: description
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column name
+		dataType: string
+		isHidden
+		lineageTag: bd2a51a4-6afc-47d0-bd9d-c67d2132daf7
+		summarizeBy: none
+		sourceColumn: name
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column updated_at
+		dataType: dateTime
+		isHidden
+		formatString: General Date
+		lineageTag: 4d8dd4e4-6624-49ad-822f-964547fe7170
+		summarizeBy: none
+		sourceColumn: updated_at
+
+		variation Variation
+			isDefault
+			relationship: 7c070152-f777-47a2-9673-9ce082b8b048
+			defaultHierarchy: LocalDateTable_048ea326-98b0-4539-bf52-0b9a06a0b41c.'Date Hierarchy'
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column visit_stage_id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 5f63479c-af13-440c-b52f-9f9871e589b0
+		summarizeBy: sum
+		sourceColumn: visit_stage_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'public visit_stage_activities' = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("172.17.19.21", "bmdsalesdb"),
+				  #"Navigation 1" = Source{[Schema = "public", Item = "visit_stage_activities"]}[Data]
+				in
+				  #"Navigation 1"
+
+	changedProperty = IsHidden
+

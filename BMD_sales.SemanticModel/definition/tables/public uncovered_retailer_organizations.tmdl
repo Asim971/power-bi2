@@ -1,0 +1,39 @@
+table 'public uncovered_retailer_organizations'
+	isHidden
+	lineageTag: a9d306a8-e192-4241-ba7b-33c56ed5bcc2
+
+	column uncovered_retailer_id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: a21cc657-7fe7-4b3a-8d32-60c9769b2e5d
+		summarizeBy: sum
+		sourceColumn: uncovered_retailer_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column organization_id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 94e6121c-e892-496c-80f8-5b3166da8fb7
+		summarizeBy: sum
+		sourceColumn: organization_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'public uncovered_retailer_organizations' = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("172.17.19.21", "bmdsalesdb"),
+				  #"Navigation 1" = Source{[Schema = "public", Item = "uncovered_retailer_organizations"]}[Data]
+				in
+				  #"Navigation 1"
+
+	changedProperty = IsHidden
+
