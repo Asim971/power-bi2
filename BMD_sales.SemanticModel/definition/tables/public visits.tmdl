@@ -3,6 +3,7 @@ table 'public visits'
 
 	column id
 		dataType: int64
+		isKey
 		formatString: 0
 		lineageTag: ae3292fe-1128-45b9-90eb-52baec404035
 		summarizeBy: sum
@@ -454,9 +455,12 @@ table 'public visits'
 		source =
 				let
 				  Source = PostgreSQL.Database("172.17.19.21", "bmdsalesdb"),
-				  #"Navigation 1" = Source{[Schema = "public", Item = "visits"]}[Data]
+				  #"Navigation 1" = Source{[Schema = "public", Item = "visits"]}[Data],
+				  #"Changed column type" = Table.TransformColumnTypes(#"Navigation 1", {{"latitude", type number}, {"longitude", type number}}, "bn-BD")
 				in
-				  #"Navigation 1"
+				  #"Changed column type"
 
 	changedProperty = IsHidden
+
+	annotation PBI_ResultType = Table
 
