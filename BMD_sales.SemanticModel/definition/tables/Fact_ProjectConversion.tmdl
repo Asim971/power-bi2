@@ -242,6 +242,121 @@ table Fact_ProjectConversion
 
 		annotation SummarizationSetBy = Automatic
 
+	measure Total_Conversions = COUNTROWS('Fact_ProjectConversion')
+		formatString: 0
+		lineageTag: 1a1b1c1d-1e1f-1a1b-1c1d-1e1f1a1b1c1d
+
+	measure Converted_Projects = ```
+			CALCULATE(
+			    COUNTROWS('Fact_ProjectConversion'),
+			    'Fact_ProjectConversion'[IsConverted] = 1
+			)
+			```
+		formatString: 0
+		lineageTag: 2a2b2c2d-2e2f-2a2b-2c2d-2e2f2a2b2c2d
+
+	measure Project_Conversion_Rate = ```
+			DIVIDE([Converted_Projects], [Total_Conversions], 0)
+			```
+		formatString: 0.0%
+		lineageTag: 3a3b3c3d-3e3f-3a3b-3c3d-3e3f3a3b3c3d
+
+	measure Engineer_Reward_Eligible_Count = ```
+			CALCULATE(
+			    COUNTROWS('Fact_ProjectConversion'),
+			    'Fact_ProjectConversion'[IsEngineerRewardEligible] = 1
+			)
+			```
+		formatString: 0
+		lineageTag: 4a4b4c4d-4e4f-4a4b-4c4d-4e4f4a4b4c4d
+
+	measure Contractor_Reward_Eligible_Count = ```
+			CALCULATE(
+			    COUNTROWS('Fact_ProjectConversion'),
+			    'Fact_ProjectConversion'[IsContractorRewardEligible] = 1
+			)
+			```
+		formatString: 0
+		lineageTag: 5a5b5c5d-5e5f-5a5b-5c5d-5e5f5a5b5c5d
+
+	measure Conversion_Funnel_Stage_Distribution = ```
+			VAR TotalByStage = COUNTROWS('Fact_ProjectConversion')
+			VAR GrandTotal = CALCULATE(COUNTROWS('Fact_ProjectConversion'), ALL('Fact_ProjectConversion'[stage]))
+			RETURN
+			DIVIDE(TotalByStage, GrandTotal, 0)
+			```
+		formatString: 0.0%
+		lineageTag: 6a6b6c6d-6e6f-6a6b-6c6d-6e6f6a6b6c6d
+
+	measure Conversion_Velocity_Days = ```
+			VAR AvgDaysToConvert = 
+			    AVERAGEX(
+			        FILTER('Fact_ProjectConversion', 'Fact_ProjectConversion'[IsConverted] = 1),
+			        DATEDIFF('Fact_ProjectConversion'[created_at], 'Fact_ProjectConversion'[updated_at], DAY)
+			    )
+			RETURN
+			IF(ISBLANK(AvgDaysToConvert), 0, AvgDaysToConvert)
+			```
+		formatString: 0.0
+		lineageTag: 7a7b7c7d-7e7f-7a7b-7c7d-7e7f7a7b7c7d
+
+	measure Conversion_Trend_MoM = ```
+			VAR CurrentMonthConversions = [Converted_Projects]
+			VAR PreviousMonthConversions = CALCULATE([Converted_Projects], PREVIOUSMONTH('Dim_Date'[Date]))
+			RETURN
+			DIVIDE(CurrentMonthConversions - PreviousMonthConversions, PreviousMonthConversions, 0)
+			```
+		formatString: +0.0%;-0.0%;0.0%
+		lineageTag: 8a8b8c8d-8e8f-8a8b-8c8d-8e8f8a8b8c8d
+
+	measure Retail_Delivery_Rate = ```
+			VAR RetailDeliveries = CALCULATE(
+			    COUNTROWS('Fact_ProjectConversion'),
+			    'Fact_ProjectConversion'[DeliveryType] = "Factory DN"
+			)
+			RETURN
+			DIVIDE(RetailDeliveries, [Total_Conversions], 0)
+			```
+		formatString: 0.0%
+		lineageTag: 9a9b9c9d-9e9f-9a9b-9c9d-9e9f9a9b9c9d
+
+	measure Pending_Conversions = ```
+			CALCULATE(
+			    COUNTROWS('Fact_ProjectConversion'),
+			    'Fact_ProjectConversion'[StatusGroup] = "Pending"
+			)
+			```
+		formatString: 0
+		lineageTag: 0b0c0d0e-0f0a-0b0c-0d0e-0f0a0b0c0d0e
+
+	measure Conversion_Anomaly_Flag = ```
+			VAR AvgConversions = AVERAGEX(ALL('Dim_Date'[Date]), [Converted_Projects])
+			VAR StdDeviation = STDEVX.P(ALL('Dim_Date'[Date]), [Converted_Projects])
+			VAR CurrentConversions = [Converted_Projects]
+			VAR ZScore = DIVIDE(CurrentConversions - AvgConversions, StdDeviation, 0)
+			RETURN
+			IF(ABS(ZScore) > 2, 1, 0)
+			```
+		formatString: 0
+		lineageTag: 1c1d1e1f-1a1b-1c1d-1e1f-1a1b1c1d1e1f
+
+	measure Site_Conversion_Pareto = ```
+			VAR CurrentSiteConversions = [Converted_Projects]
+			VAR AllSiteConversions = 
+			    ADDCOLUMNS(
+			        SUMMARIZE(ALL('Fact_ProjectConversion'), 'Fact_ProjectConversion'[SiteID]),
+			        "@Conversions", CALCULATE([Converted_Projects])
+			    )
+			VAR RankedSites = 
+			    FILTER(AllSiteConversions, [@Conversions] >= CurrentSiteConversions)
+			VAR RunningTotal = SUMX(RankedSites, [@Conversions])
+			VAR GrandTotal = CALCULATE([Converted_Projects], ALL('Fact_ProjectConversion'))
+			RETURN
+			DIVIDE(RunningTotal, GrandTotal, 0)
+			```
+		formatString: 0.0%
+		lineageTag: 2d2e2f2a-2b2c-2d2e-2f2a-2b2c2d2e2f2a
+
 	partition Fact_ProjectConversion = m
 		mode: import
 		source = ```
