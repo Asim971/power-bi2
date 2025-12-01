@@ -1,0 +1,612 @@
+{
+    "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/1.0.0/schema.json",
+    "name": "ExecutiveCommandCenter",
+    "displayName": "Executive Command Center",
+    "displayOption": "FitToPage",
+    "height": 720,
+    "width": 1280,
+    "visuals": [
+        {
+            "name": "HeaderText",
+            "x": 0,
+            "y": 0,
+            "z": 1,
+            "width": 1280,
+            "height": 50,
+            "visual": {
+                "visualType": "textbox",
+                "paragraphs": [
+                    {
+                        "textRuns": [
+                            {
+                                "value": "🏭 BMD SALES | EXECUTIVE COMMAND CENTER",
+                                "textStyle": {
+                                    "fontFamily": "Segoe UI Semibold",
+                                    "fontSize": "18pt",
+                                    "color": "#0066CC"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "name": "KPIVisits",
+            "x": 20,
+            "y": 80,
+            "z": 2,
+            "width": 230,
+            "height": 120,
+            "visual": {
+                "visualType": "card",
+                "vcObjects": {
+                    "categoryLabels": [
+                        {
+                            "properties": {
+                                "show": {
+                                    "expr": {
+                                        "Literal": {
+                                            "Value": "true"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "wordWrap": [
+                        {
+                            "properties": {
+                                "show": {
+                                    "expr": {
+                                        "Literal": {
+                                            "Value": "true"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                },
+                "prototypeQuery": {
+                    "Version": 2,
+                    "From": [
+                        {
+                            "Name": "v",
+                            "Entity": "Fact_Visit",
+                            "Type": 0
+                        }
+                    ],
+                    "Select": [
+                        {
+                            "Measure": {
+                                "Expression": {
+                                    "SourceRef": {
+                                        "Source": "v"
+                                    }
+                                },
+                                "Property": "Total Visits"
+                            },
+                            "Name": "Fact_Visit.Total Visits"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "KPIOrders",
+            "x": 270,
+            "y": 80,
+            "z": 3,
+            "width": 230,
+            "height": 120,
+            "visual": {
+                "visualType": "card",
+                "prototypeQuery": {
+                    "Version": 2,
+                    "From": [
+                        {
+                            "Name": "o",
+                            "Entity": "Fact_Order",
+                            "Type": 0
+                        }
+                    ],
+                    "Select": [
+                        {
+                            "Measure": {
+                                "Expression": {
+                                    "SourceRef": {
+                                        "Source": "o"
+                                    }
+                                },
+                                "Property": "Total Orders"
+                            },
+                            "Name": "Fact_Order.Total Orders"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "KPIConversions",
+            "x": 520,
+            "y": 80,
+            "z": 4,
+            "width": 230,
+            "height": 120,
+            "visual": {
+                "visualType": "card",
+                "prototypeQuery": {
+                    "Version": 2,
+                    "From": [
+                        {
+                            "Name": "c",
+                            "Entity": "Fact_ProjectConversion",
+                            "Type": 0
+                        }
+                    ],
+                    "Select": [
+                        {
+                            "Measure": {
+                                "Expression": {
+                                    "SourceRef": {
+                                        "Source": "c"
+                                    }
+                                },
+                                "Property": "Total Conversions"
+                            },
+                            "Name": "Fact_ProjectConversion.Total Conversions"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "KPIConvRate",
+            "x": 770,
+            "y": 80,
+            "z": 5,
+            "width": 230,
+            "height": 120,
+            "visual": {
+                "visualType": "card",
+                "prototypeQuery": {
+                    "Version": 2,
+                    "From": [
+                        {
+                            "Name": "v",
+                            "Entity": "Fact_Visit",
+                            "Type": 0
+                        }
+                    ],
+                    "Select": [
+                        {
+                            "Measure": {
+                                "Expression": {
+                                    "SourceRef": {
+                                        "Source": "v"
+                                    }
+                                },
+                                "Property": "Conversion Rate 60D %"
+                            },
+                            "Name": "Fact_Visit.Conversion Rate 60D %"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "KPIRevenue",
+            "x": 1020,
+            "y": 80,
+            "z": 6,
+            "width": 230,
+            "height": 120,
+            "visual": {
+                "visualType": "card",
+                "prototypeQuery": {
+                    "Version": 2,
+                    "From": [
+                        {
+                            "Name": "o",
+                            "Entity": "Fact_Order",
+                            "Type": 0
+                        }
+                    ],
+                    "Select": [
+                        {
+                            "Measure": {
+                                "Expression": {
+                                    "SourceRef": {
+                                        "Source": "o"
+                                    }
+                                },
+                                "Property": "Total Order Amount"
+                            },
+                            "Name": "Fact_Order.Total Order Amount"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "PerformancePulse",
+            "x": 20,
+            "y": 220,
+            "z": 7,
+            "width": 620,
+            "height": 260,
+            "visual": {
+                "visualType": "lineChart",
+                "title": "Performance Pulse",
+                "prototypeQuery": {
+                    "Version": 2,
+                    "From": [
+                        {
+                            "Name": "d",
+                            "Entity": "Dim_Date",
+                            "Type": 0
+                        },
+                        {
+                            "Name": "v",
+                            "Entity": "Fact_Visit",
+                            "Type": 0
+                        },
+                        {
+                            "Name": "o",
+                            "Entity": "Fact_Order",
+                            "Type": 0
+                        }
+                    ],
+                    "Select": [
+                        {
+                            "Column": {
+                                "Expression": {
+                                    "SourceRef": {
+                                        "Source": "d"
+                                    }
+                                },
+                                "Property": "MonthName"
+                            },
+                            "Name": "Dim_Date.MonthName"
+                        },
+                        {
+                            "Measure": {
+                                "Expression": {
+                                    "SourceRef": {
+                                        "Source": "v"
+                                    }
+                                },
+                                "Property": "Total Visits"
+                            },
+                            "Name": "Visits"
+                        },
+                        {
+                            "Measure": {
+                                "Expression": {
+                                    "SourceRef": {
+                                        "Source": "o"
+                                    }
+                                },
+                                "Property": "Total Orders"
+                            },
+                            "Name": "Orders"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "ZoneHeatmap",
+            "x": 660,
+            "y": 220,
+            "z": 8,
+            "width": 600,
+            "height": 260,
+            "visual": {
+                "visualType": "filledMap",
+                "title": "Zone Performance Heatmap",
+                "prototypeQuery": {
+                    "Version": 2,
+                    "From": [
+                        {
+                            "Name": "t",
+                            "Entity": "Dim_Territory",
+                            "Type": 0
+                        },
+                        {
+                            "Name": "v",
+                            "Entity": "Fact_Visit",
+                            "Type": 0
+                        }
+                    ],
+                    "Select": [
+                        {
+                            "Column": {
+                                "Expression": {
+                                    "SourceRef": {
+                                        "Source": "t"
+                                    }
+                                },
+                                "Property": "ZoneName"
+                            },
+                            "Name": "Zone"
+                        },
+                        {
+                            "Measure": {
+                                "Expression": {
+                                    "SourceRef": {
+                                        "Source": "v"
+                                    }
+                                },
+                                "Property": "Conversion Rate 60D %"
+                            },
+                            "Name": "Conv Rate"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "ClientMixDonut",
+            "x": 20,
+            "y": 500,
+            "z": 9,
+            "width": 400,
+            "height": 200,
+            "visual": {
+                "visualType": "donutChart",
+                "title": "Client Mix",
+                "prototypeQuery": {
+                    "Version": 2,
+                    "From": [
+                        {
+                            "Name": "c",
+                            "Entity": "Dim_Client",
+                            "Type": 0
+                        },
+                        {
+                            "Name": "v",
+                            "Entity": "Fact_Visit",
+                            "Type": 0
+                        }
+                    ],
+                    "Select": [
+                        {
+                            "Column": {
+                                "Expression": {
+                                    "SourceRef": {
+                                        "Source": "c"
+                                    }
+                                },
+                                "Property": "ClientType"
+                            },
+                            "Name": "ClientType"
+                        },
+                        {
+                            "Measure": {
+                                "Expression": {
+                                    "SourceRef": {
+                                        "Source": "v"
+                                    }
+                                },
+                                "Property": "Total Visits"
+                            },
+                            "Name": "Visits"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "RolePerformance",
+            "x": 440,
+            "y": 500,
+            "z": 10,
+            "width": 400,
+            "height": 200,
+            "visual": {
+                "visualType": "barChart",
+                "title": "Role Performance vs Target",
+                "prototypeQuery": {
+                    "Version": 2,
+                    "From": [
+                        {
+                            "Name": "u",
+                            "Entity": "Dim_User",
+                            "Type": 0
+                        },
+                        {
+                            "Name": "v",
+                            "Entity": "Fact_Visit",
+                            "Type": 0
+                        }
+                    ],
+                    "Select": [
+                        {
+                            "Column": {
+                                "Expression": {
+                                    "SourceRef": {
+                                        "Source": "u"
+                                    }
+                                },
+                                "Property": "RoleName"
+                            },
+                            "Name": "Role"
+                        },
+                        {
+                            "Measure": {
+                                "Expression": {
+                                    "SourceRef": {
+                                        "Source": "v"
+                                    }
+                                },
+                                "Property": "Target Achievement %"
+                            },
+                            "Name": "Achievement"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "QuickFunnel",
+            "x": 860,
+            "y": 500,
+            "z": 11,
+            "width": 400,
+            "height": 200,
+            "visual": {
+                "visualType": "funnel",
+                "title": "Quick Funnel",
+                "prototypeQuery": {
+                    "Version": 2,
+                    "From": [
+                        {
+                            "Name": "v",
+                            "Entity": "Fact_Visit",
+                            "Type": 0
+                        }
+                    ],
+                    "Select": [
+                        {
+                            "Aggregation": {
+                                "Expression": {
+                                    "Column": {
+                                        "Expression": {
+                                            "SourceRef": {
+                                                "Source": "v"
+                                            }
+                                        },
+                                        "Property": "Stage"
+                                    }
+                                },
+                                "Function": 0
+                            },
+                            "Name": "Stage"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "DateSlicer",
+            "x": 20,
+            "y": 710,
+            "z": 12,
+            "width": 300,
+            "height": 50,
+            "visual": {
+                "visualType": "slicer",
+                "prototypeQuery": {
+                    "Version": 2,
+                    "From": [
+                        {
+                            "Name": "d",
+                            "Entity": "Dim_Date",
+                            "Type": 0
+                        }
+                    ],
+                    "Select": [
+                        {
+                            "Column": {
+                                "Expression": {
+                                    "SourceRef": {
+                                        "Source": "d"
+                                    }
+                                },
+                                "Property": "Date"
+                            },
+                            "Name": "Dim_Date.Date"
+                        }
+                    ]
+                },
+                "objects": {
+                    "data": [
+                        {
+                            "properties": {
+                                "mode": {
+                                    "expr": {
+                                        "Literal": {
+                                            "Value": "'Basic'"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "ZoneSlicer",
+            "x": 340,
+            "y": 710,
+            "z": 13,
+            "width": 200,
+            "height": 50,
+            "visual": {
+                "visualType": "slicer",
+                "prototypeQuery": {
+                    "Version": 2,
+                    "From": [
+                        {
+                            "Name": "t",
+                            "Entity": "Dim_Territory",
+                            "Type": 0
+                        }
+                    ],
+                    "Select": [
+                        {
+                            "Column": {
+                                "Expression": {
+                                    "SourceRef": {
+                                        "Source": "t"
+                                    }
+                                },
+                                "Property": "ZoneName"
+                            },
+                            "Name": "Dim_Territory.ZoneName"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "RoleSlicer",
+            "x": 560,
+            "y": 710,
+            "z": 14,
+            "width": 200,
+            "height": 50,
+            "visual": {
+                "visualType": "slicer",
+                "prototypeQuery": {
+                    "Version": 2,
+                    "From": [
+                        {
+                            "Name": "u",
+                            "Entity": "Dim_User",
+                            "Type": 0
+                        }
+                    ],
+                    "Select": [
+                        {
+                            "Column": {
+                                "Expression": {
+                                    "SourceRef": {
+                                        "Source": "u"
+                                    }
+                                },
+                                "Property": "RoleName"
+                            },
+                            "Name": "Dim_User.RoleName"
+                        }
+                    ]
+                }
+            }
+        }
+    ],
+    "filters": [],
+    "ordinal": 0
+}

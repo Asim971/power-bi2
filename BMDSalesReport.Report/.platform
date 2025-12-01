@@ -1,0 +1,11 @@
+{
+    "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+    "metadata": {
+        "type": "Report",
+        "displayName": "BMD Sales Report"
+    },
+    "config": {
+        "version": "2.0",
+        "logicalId": "dcd4d7a3-e911-49e1-847a-1feb594f1616"
+    }
+}

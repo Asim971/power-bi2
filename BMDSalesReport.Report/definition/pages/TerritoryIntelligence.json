@@ -1,0 +1,307 @@
+{
+    "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/1.0.0/schema.json",
+    "name": "TerritoryIntelligence",
+    "displayName": "Territory Intelligence",
+    "displayOption": "FitToPage",
+    "height": 720,
+    "width": 1280,
+    "visuals": [
+        {
+            "name": "HeaderText",
+            "x": 0,
+            "y": 0,
+            "z": 1,
+            "width": 1280,
+            "height": 50,
+            "visual": {
+                "visualType": "textbox",
+                "paragraphs": [
+                    {
+                        "textRuns": [
+                            {
+                                "value": "🗺️ TERRITORY INTELLIGENCE",
+                                "textStyle": {
+                                    "fontFamily": "Segoe UI Semibold",
+                                    "fontSize": "18pt",
+                                    "color": "#0066CC"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "name": "InteractiveMap",
+            "x": 20,
+            "y": 60,
+            "z": 2,
+            "width": 1240,
+            "height": 320,
+            "visual": {
+                "visualType": "filledMap",
+                "title": "Interactive Zone Map",
+                "prototypeQuery": {
+                    "Version": 2,
+                    "From": [
+                        {
+                            "Name": "t",
+                            "Entity": "Dim_Territory",
+                            "Type": 0
+                        },
+                        {
+                            "Name": "v",
+                            "Entity": "Fact_Visit",
+                            "Type": 0
+                        }
+                    ],
+                    "Select": [
+                        {
+                            "Column": {
+                                "Expression": {
+                                    "SourceRef": {
+                                        "Source": "t"
+                                    }
+                                },
+                                "Property": "ZoneName"
+                            },
+                            "Name": "Zone"
+                        },
+                        {
+                            "Measure": {
+                                "Expression": {
+                                    "SourceRef": {
+                                        "Source": "v"
+                                    }
+                                },
+                                "Property": "Total Visits"
+                            },
+                            "Name": "Visits"
+                        },
+                        {
+                            "Measure": {
+                                "Expression": {
+                                    "SourceRef": {
+                                        "Source": "v"
+                                    }
+                                },
+                                "Property": "Conversion Rate 60D %"
+                            },
+                            "Name": "Conv Rate"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "TerritoryMatrix",
+            "x": 20,
+            "y": 400,
+            "z": 3,
+            "width": 1240,
+            "height": 260,
+            "visual": {
+                "visualType": "pivotTable",
+                "title": "Territory Matrix (Expandable Hierarchy)",
+                "prototypeQuery": {
+                    "Version": 2,
+                    "From": [
+                        {
+                            "Name": "t",
+                            "Entity": "Dim_Territory",
+                            "Type": 0
+                        },
+                        {
+                            "Name": "v",
+                            "Entity": "Fact_Visit",
+                            "Type": 0
+                        }
+                    ],
+                    "Select": [
+                        {
+                            "Column": {
+                                "Expression": {
+                                    "SourceRef": {
+                                        "Source": "t"
+                                    }
+                                },
+                                "Property": "ZoneName"
+                            },
+                            "Name": "Zone"
+                        },
+                        {
+                            "Column": {
+                                "Expression": {
+                                    "SourceRef": {
+                                        "Source": "t"
+                                    }
+                                },
+                                "Property": "RegionName"
+                            },
+                            "Name": "Region"
+                        },
+                        {
+                            "Column": {
+                                "Expression": {
+                                    "SourceRef": {
+                                        "Source": "t"
+                                    }
+                                },
+                                "Property": "AreaName"
+                            },
+                            "Name": "Area"
+                        },
+                        {
+                            "Measure": {
+                                "Expression": {
+                                    "SourceRef": {
+                                        "Source": "v"
+                                    }
+                                },
+                                "Property": "Total Visits"
+                            },
+                            "Name": "Visits"
+                        },
+                        {
+                            "Measure": {
+                                "Expression": {
+                                    "SourceRef": {
+                                        "Source": "v"
+                                    }
+                                },
+                                "Property": "Conversion Rate 60D %"
+                            },
+                            "Name": "Conv %"
+                        },
+                        {
+                            "Measure": {
+                                "Expression": {
+                                    "SourceRef": {
+                                        "Source": "v"
+                                    }
+                                },
+                                "Property": "Visit Quality Score"
+                            },
+                            "Name": "Quality %"
+                        },
+                        {
+                            "Measure": {
+                                "Expression": {
+                                    "SourceRef": {
+                                        "Source": "v"
+                                    }
+                                },
+                                "Property": "GPS Capture %"
+                            },
+                            "Name": "GPS %"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "ZoneSlicer",
+            "x": 20,
+            "y": 670,
+            "z": 4,
+            "width": 250,
+            "height": 40,
+            "visual": {
+                "visualType": "slicer",
+                "prototypeQuery": {
+                    "Version": 2,
+                    "From": [
+                        {
+                            "Name": "t",
+                            "Entity": "Dim_Territory",
+                            "Type": 0
+                        }
+                    ],
+                    "Select": [
+                        {
+                            "Column": {
+                                "Expression": {
+                                    "SourceRef": {
+                                        "Source": "t"
+                                    }
+                                },
+                                "Property": "ZoneName"
+                            },
+                            "Name": "Zone"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "PeriodSlicer",
+            "x": 290,
+            "y": 670,
+            "z": 5,
+            "width": 200,
+            "height": 40,
+            "visual": {
+                "visualType": "slicer",
+                "prototypeQuery": {
+                    "Version": 2,
+                    "From": [
+                        {
+                            "Name": "d",
+                            "Entity": "Dim_Date",
+                            "Type": 0
+                        }
+                    ],
+                    "Select": [
+                        {
+                            "Column": {
+                                "Expression": {
+                                    "SourceRef": {
+                                        "Source": "d"
+                                    }
+                                },
+                                "Property": "MonthName"
+                            },
+                            "Name": "Month"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "RoleSlicer",
+            "x": 510,
+            "y": 670,
+            "z": 6,
+            "width": 200,
+            "height": 40,
+            "visual": {
+                "visualType": "slicer",
+                "prototypeQuery": {
+                    "Version": 2,
+                    "From": [
+                        {
+                            "Name": "u",
+                            "Entity": "Dim_User",
+                            "Type": 0
+                        }
+                    ],
+                    "Select": [
+                        {
+                            "Column": {
+                                "Expression": {
+                                    "SourceRef": {
+                                        "Source": "u"
+                                    }
+                                },
+                                "Property": "RoleName"
+                            },
+                            "Name": "Role"
+                        }
+                    ]
+                }
+            }
+        }
+    ],
+    "filters": [],
+    "ordinal": 1
+}

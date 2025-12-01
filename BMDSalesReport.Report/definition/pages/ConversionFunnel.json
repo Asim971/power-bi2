@@ -1,0 +1,608 @@
+{
+    "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/1.0.0/schema.json",
+    "name": "ConversionFunnel",
+    "displayName": "Conversion Journey",
+    "displayOption": "FitToPage",
+    "height": 720,
+    "width": 1280,
+    "visuals": [
+        {
+            "name": "HeaderText",
+            "x": 0,
+            "y": 0,
+            "z": 1,
+            "width": 1280,
+            "height": 50,
+            "visual": {
+                "visualType": "textbox",
+                "paragraphs": [
+                    {
+                        "textRuns": [
+                            {
+                                "value": "🔻 60-DAY CONVERSION FUNNEL",
+                                "textStyle": {
+                                    "fontFamily": "Segoe UI Semibold",
+                                    "fontSize": "18pt",
+                                    "color": "#0066CC"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "name": "KPISiteVisits",
+            "x": 20,
+            "y": 60,
+            "z": 2,
+            "width": 170,
+            "height": 80,
+            "visual": {
+                "visualType": "card",
+                "prototypeQuery": {
+                    "Version": 2,
+                    "From": [
+                        {
+                            "Name": "v",
+                            "Entity": "Fact_Visit",
+                            "Type": 0
+                        }
+                    ],
+                    "Select": [
+                        {
+                            "Measure": {
+                                "Expression": {
+                                    "SourceRef": {
+                                        "Source": "v"
+                                    }
+                                },
+                                "Property": "Site Visits"
+                            },
+                            "Name": "Site Visits"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "KPIConversions",
+            "x": 200,
+            "y": 60,
+            "z": 3,
+            "width": 170,
+            "height": 80,
+            "visual": {
+                "visualType": "card",
+                "prototypeQuery": {
+                    "Version": 2,
+                    "From": [
+                        {
+                            "Name": "c",
+                            "Entity": "Fact_ProjectConversion",
+                            "Type": 0
+                        }
+                    ],
+                    "Select": [
+                        {
+                            "Measure": {
+                                "Expression": {
+                                    "SourceRef": {
+                                        "Source": "c"
+                                    }
+                                },
+                                "Property": "Total Conversions"
+                            },
+                            "Name": "Conversions"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "KPIOrders",
+            "x": 380,
+            "y": 60,
+            "z": 4,
+            "width": 170,
+            "height": 80,
+            "visual": {
+                "visualType": "card",
+                "prototypeQuery": {
+                    "Version": 2,
+                    "From": [
+                        {
+                            "Name": "o",
+                            "Entity": "Fact_Order",
+                            "Type": 0
+                        }
+                    ],
+                    "Select": [
+                        {
+                            "Measure": {
+                                "Expression": {
+                                    "SourceRef": {
+                                        "Source": "o"
+                                    }
+                                },
+                                "Property": "Total Orders"
+                            },
+                            "Name": "Orders"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "KPIDelivered",
+            "x": 560,
+            "y": 60,
+            "z": 5,
+            "width": 170,
+            "height": 80,
+            "visual": {
+                "visualType": "card",
+                "prototypeQuery": {
+                    "Version": 2,
+                    "From": [
+                        {
+                            "Name": "o",
+                            "Entity": "Fact_Order",
+                            "Type": 0
+                        }
+                    ],
+                    "Select": [
+                        {
+                            "Measure": {
+                                "Expression": {
+                                    "SourceRef": {
+                                        "Source": "o"
+                                    }
+                                },
+                                "Property": "Completed Orders"
+                            },
+                            "Name": "Delivered"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "KPIConvRate",
+            "x": 740,
+            "y": 60,
+            "z": 6,
+            "width": 170,
+            "height": 80,
+            "visual": {
+                "visualType": "card",
+                "prototypeQuery": {
+                    "Version": 2,
+                    "From": [
+                        {
+                            "Name": "v",
+                            "Entity": "Fact_Visit",
+                            "Type": 0
+                        }
+                    ],
+                    "Select": [
+                        {
+                            "Measure": {
+                                "Expression": {
+                                    "SourceRef": {
+                                        "Source": "v"
+                                    }
+                                },
+                                "Property": "Conversion Rate 60D %"
+                            },
+                            "Name": "Conv Rate 60D"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "KPIAvgDays",
+            "x": 920,
+            "y": 60,
+            "z": 7,
+            "width": 170,
+            "height": 80,
+            "visual": {
+                "visualType": "card",
+                "prototypeQuery": {
+                    "Version": 2,
+                    "From": [
+                        {
+                            "Name": "c",
+                            "Entity": "Fact_ProjectConversion",
+                            "Type": 0
+                        }
+                    ],
+                    "Select": [
+                        {
+                            "Measure": {
+                                "Expression": {
+                                    "SourceRef": {
+                                        "Source": "c"
+                                    }
+                                },
+                                "Property": "Avg Days to Convert"
+                            },
+                            "Name": "Avg Days"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "KPICompleteRate",
+            "x": 1100,
+            "y": 60,
+            "z": 8,
+            "width": 160,
+            "height": 80,
+            "visual": {
+                "visualType": "card",
+                "prototypeQuery": {
+                    "Version": 2,
+                    "From": [
+                        {
+                            "Name": "o",
+                            "Entity": "Fact_Order",
+                            "Type": 0
+                        }
+                    ],
+                    "Select": [
+                        {
+                            "Measure": {
+                                "Expression": {
+                                    "SourceRef": {
+                                        "Source": "o"
+                                    }
+                                },
+                                "Property": "Order Complete Rate"
+                            },
+                            "Name": "Complete Rate"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "ConversionFunnel",
+            "x": 20,
+            "y": 160,
+            "z": 9,
+            "width": 1240,
+            "height": 280,
+            "visual": {
+                "visualType": "funnel",
+                "title": "Conversion Funnel",
+                "prototypeQuery": {
+                    "Version": 2,
+                    "From": [
+                        {
+                            "Name": "v",
+                            "Entity": "Fact_Visit",
+                            "Type": 0
+                        },
+                        {
+                            "Name": "c",
+                            "Entity": "Fact_ProjectConversion",
+                            "Type": 0
+                        },
+                        {
+                            "Name": "o",
+                            "Entity": "Fact_Order",
+                            "Type": 0
+                        }
+                    ],
+                    "Select": [
+                        {
+                            "Measure": {
+                                "Expression": {
+                                    "SourceRef": {
+                                        "Source": "v"
+                                    }
+                                },
+                                "Property": "Site Visits"
+                            },
+                            "Name": "Stage1_SiteVisits"
+                        },
+                        {
+                            "Measure": {
+                                "Expression": {
+                                    "SourceRef": {
+                                        "Source": "c"
+                                    }
+                                },
+                                "Property": "Total Conversions"
+                            },
+                            "Name": "Stage2_Conversions"
+                        },
+                        {
+                            "Measure": {
+                                "Expression": {
+                                    "SourceRef": {
+                                        "Source": "o"
+                                    }
+                                },
+                                "Property": "Total Orders"
+                            },
+                            "Name": "Stage3_Orders"
+                        },
+                        {
+                            "Measure": {
+                                "Expression": {
+                                    "SourceRef": {
+                                        "Source": "o"
+                                    }
+                                },
+                                "Property": "Completed Orders"
+                            },
+                            "Name": "Stage4_Delivered"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "RewardEligibility",
+            "x": 20,
+            "y": 460,
+            "z": 10,
+            "width": 400,
+            "height": 200,
+            "visual": {
+                "visualType": "clusteredBarChart",
+                "title": "🎖️ Reward Eligibility",
+                "prototypeQuery": {
+                    "Version": 2,
+                    "From": [
+                        {
+                            "Name": "o",
+                            "Entity": "Fact_Order",
+                            "Type": 0
+                        }
+                    ],
+                    "Select": [
+                        {
+                            "Measure": {
+                                "Expression": {
+                                    "SourceRef": {
+                                        "Source": "o"
+                                    }
+                                },
+                                "Property": "Engineer Reward Eligible Orders"
+                            },
+                            "Name": "Engineer Eligible"
+                        },
+                        {
+                            "Measure": {
+                                "Expression": {
+                                    "SourceRef": {
+                                        "Source": "o"
+                                    }
+                                },
+                                "Property": "Partner Reward Eligible Orders"
+                            },
+                            "Name": "Partner Eligible"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "DeliveryMethodConversion",
+            "x": 440,
+            "y": 460,
+            "z": 11,
+            "width": 400,
+            "height": 200,
+            "visual": {
+                "visualType": "clusteredColumnChart",
+                "title": "📊 Conversion by Delivery Method",
+                "prototypeQuery": {
+                    "Version": 2,
+                    "From": [
+                        {
+                            "Name": "o",
+                            "Entity": "Fact_Order",
+                            "Type": 0
+                        }
+                    ],
+                    "Select": [
+                        {
+                            "Column": {
+                                "Expression": {
+                                    "SourceRef": {
+                                        "Source": "o"
+                                    }
+                                },
+                                "Property": "DeliveryMethod"
+                            },
+                            "Name": "Method"
+                        },
+                        {
+                            "Measure": {
+                                "Expression": {
+                                    "SourceRef": {
+                                        "Source": "o"
+                                    }
+                                },
+                                "Property": "Total Orders"
+                            },
+                            "Name": "Orders"
+                        },
+                        {
+                            "Measure": {
+                                "Expression": {
+                                    "SourceRef": {
+                                        "Source": "o"
+                                    }
+                                },
+                                "Property": "Order Complete Rate"
+                            },
+                            "Name": "Complete %"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "DaysToConversionHist",
+            "x": 860,
+            "y": 460,
+            "z": 12,
+            "width": 400,
+            "height": 200,
+            "visual": {
+                "visualType": "clusteredColumnChart",
+                "title": "📅 Days-to-Conversion Distribution",
+                "prototypeQuery": {
+                    "Version": 2,
+                    "From": [
+                        {
+                            "Name": "c",
+                            "Entity": "Fact_ProjectConversion",
+                            "Type": 0
+                        }
+                    ],
+                    "Select": [
+                        {
+                            "Column": {
+                                "Expression": {
+                                    "SourceRef": {
+                                        "Source": "c"
+                                    }
+                                },
+                                "Property": "DaysBucket"
+                            },
+                            "Name": "Days Bucket"
+                        },
+                        {
+                            "Aggregation": {
+                                "Expression": {
+                                    "Column": {
+                                        "Expression": {
+                                            "SourceRef": {
+                                                "Source": "c"
+                                            }
+                                        },
+                                        "Property": "ConversionID"
+                                    }
+                                },
+                                "Function": 5
+                            },
+                            "Name": "Count"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "DateSlicer",
+            "x": 20,
+            "y": 680,
+            "z": 13,
+            "width": 250,
+            "height": 30,
+            "visual": {
+                "visualType": "slicer",
+                "prototypeQuery": {
+                    "Version": 2,
+                    "From": [
+                        {
+                            "Name": "d",
+                            "Entity": "Dim_Date",
+                            "Type": 0
+                        }
+                    ],
+                    "Select": [
+                        {
+                            "Column": {
+                                "Expression": {
+                                    "SourceRef": {
+                                        "Source": "d"
+                                    }
+                                },
+                                "Property": "Date"
+                            },
+                            "Name": "Date"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "ZoneSlicer",
+            "x": 290,
+            "y": 680,
+            "z": 14,
+            "width": 200,
+            "height": 30,
+            "visual": {
+                "visualType": "slicer",
+                "prototypeQuery": {
+                    "Version": 2,
+                    "From": [
+                        {
+                            "Name": "t",
+                            "Entity": "Dim_Territory",
+                            "Type": 0
+                        }
+                    ],
+                    "Select": [
+                        {
+                            "Column": {
+                                "Expression": {
+                                    "SourceRef": {
+                                        "Source": "t"
+                                    }
+                                },
+                                "Property": "ZoneName"
+                            },
+                            "Name": "Zone"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "DeliveryMethodSlicer",
+            "x": 510,
+            "y": 680,
+            "z": 15,
+            "width": 200,
+            "height": 30,
+            "visual": {
+                "visualType": "slicer",
+                "prototypeQuery": {
+                    "Version": 2,
+                    "From": [
+                        {
+                            "Name": "o",
+                            "Entity": "Fact_Order",
+                            "Type": 0
+                        }
+                    ],
+                    "Select": [
+                        {
+                            "Column": {
+                                "Expression": {
+                                    "SourceRef": {
+                                        "Source": "o"
+                                    }
+                                },
+                                "Property": "DeliveryMethod"
+                            },
+                            "Name": "Delivery Method"
+                        }
+                    ]
+                }
+            }
+        }
+    ],
+    "ordinal": 3
+}

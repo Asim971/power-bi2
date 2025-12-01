@@ -1,0 +1,87 @@
+{
+    "name": "BMDSalesTheme",
+    "dataColors": [
+        "#0066CC",
+        "#2ECC71",
+        "#F39C12",
+        "#E74C3C",
+        "#1ABC9C",
+        "#3498DB",
+        "#9B59B6",
+        "#E67E22",
+        "#E91E63",
+        "#00BCD4",
+        "#2C3E50",
+        "#8E44AD"
+    ],
+    "good": "#2ECC71",
+    "neutral": "#F39C12",
+    "bad": "#E74C3C",
+    "maximum": "#2ECC71",
+    "center": "#F39C12",
+    "minimum": "#E74C3C",
+    "background": "#FFFFFF",
+    "foreground": "#2C3E50",
+    "tableAccent": "#0066CC",
+    "visualStyles": {
+        "*": {
+            "*": {
+                "*": [
+                    {
+                        "fontFamily": "Segoe UI",
+                        "fontSize": 12
+                    }
+                ]
+            }
+        },
+        "card": {
+            "*": {
+                "calloutValue": [
+                    {
+                        "fontFamily": "Segoe UI Semibold",
+                        "fontSize": 24
+                    }
+                ],
+                "categoryLabels": [
+                    {
+                        "fontFamily": "Segoe UI",
+                        "fontSize": 11,
+                        "color": "#7F8C8D"
+                    }
+                ]
+            }
+        },
+        "page": {
+            "*": {
+                "background": [
+                    {
+                        "color": "#F8F9FA",
+                        "transparency": 0
+                    }
+                ]
+            }
+        }
+    },
+    "textClasses": {
+        "title": {
+            "fontFace": "Segoe UI Semibold",
+            "fontSize": 16,
+            "color": "#2C3E50"
+        },
+        "header": {
+            "fontFace": "Segoe UI Semibold",
+            "fontSize": 14,
+            "color": "#0066CC"
+        },
+        "label": {
+            "fontFace": "Segoe UI",
+            "fontSize": 12,
+            "color": "#2C3E50"
+        },
+        "callout": {
+            "fontFace": "Segoe UI Light",
+            "fontSize": 32,
+            "color": "#2C3E50"
+        }
+    }
+}
