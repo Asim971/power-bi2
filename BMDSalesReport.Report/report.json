@@ -267,6 +267,117 @@
         }
       ],
       "width": 1280.00
+    },
+    {
+      "config": "{\"objects\":{\"background\":[{\"properties\":{\"color\":{\"solid\":{\"color\":{\"expr\":{\"ThemeDataColor\":{\"ColorId\":0,\"Percent\":0}}}}}}}]}}",
+      "displayName": "Quality Scorecard",
+      "displayOption": 1,
+      "filters": "[]",
+      "height": 720.00,
+      "name": "page_quality",
+      "ordinal": 2,
+      "visualContainers": [
+        {
+          "config": "{\"name\":\"header_p3\",\"layouts\":[{\"id\":0,\"position\":{\"x\":0,\"y\":0,\"z\":1000,\"width\":1280,\"height\":60}}],\"singleVisual\":{\"visualType\":\"textbox\",\"drillFilterOtherVisuals\":true,\"objects\":{\"general\":[{\"properties\":{\"paragraphs\":[{\"textRuns\":[{\"value\":\"✅ QUALITY SCORECARD\",\"textStyle\":{\"fontWeight\":\"bold\",\"fontSize\":\"16pt\"}}],\"horizontalTextAlignment\":\"center\"}]}}]},\"vcObjects\":{\"background\":[{\"properties\":{\"color\":{\"solid\":{\"color\":{\"expr\":{\"Literal\":{\"Value\":\"'#9B59B6'\"}}}}}}}]}}}",
+          "filters": "[]",
+          "height": 60.00,
+          "width": 1280.00,
+          "x": 0.00,
+          "y": 0.00,
+          "z": 1000.00
+        },
+        {
+          "config": "{\"name\":\"kpi_photo_rate\",\"layouts\":[{\"id\":0,\"position\":{\"x\":20,\"y\":80,\"z\":2000,\"width\":300,\"height\":120}}],\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"Fact_Visit.Photo_Compliance_Rate\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"v\",\"Entity\":\"Fact_Visit\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"Photo_Compliance_Rate\"},\"Name\":\"Fact_Visit.Photo_Compliance_Rate\"}]},\"drillFilterOtherVisuals\":true,\"objects\":{\"labels\":[{\"properties\":{\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"28D\"}}},\"color\":{\"solid\":{\"color\":{\"expr\":{\"Literal\":{\"Value\":\"'#E74C3C'\"}}}}}}}],\"categoryLabels\":[{\"properties\":{\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"12D\"}}}}}]},\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'📸 Photo Capture Rate'\"}}}}}],\"border\":[{\"properties\":{\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"radius\":{\"expr\":{\"Literal\":{\"Value\":\"10D\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 120.00,
+          "width": 300.00,
+          "x": 20.00,
+          "y": 80.00,
+          "z": 2000.00
+        },
+        {
+          "config": "{\"name\":\"kpi_gps_rate\",\"layouts\":[{\"id\":0,\"position\":{\"x\":340,\"y\":80,\"z\":2001,\"width\":300,\"height\":120}}],\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"Fact_Visit.GPS_Capture_Rate\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"v\",\"Entity\":\"Fact_Visit\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"GPS_Capture_Rate\"},\"Name\":\"Fact_Visit.GPS_Capture_Rate\"}]},\"drillFilterOtherVisuals\":true,\"objects\":{\"labels\":[{\"properties\":{\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"28D\"}}},\"color\":{\"solid\":{\"color\":{\"expr\":{\"Literal\":{\"Value\":\"'#F39C12'\"}}}}}}}],\"categoryLabels\":[{\"properties\":{\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"12D\"}}}}}]},\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'📍 GPS Capture Rate'\"}}}}}],\"border\":[{\"properties\":{\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"radius\":{\"expr\":{\"Literal\":{\"Value\":\"10D\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 120.00,
+          "width": 300.00,
+          "x": 340.00,
+          "y": 80.00,
+          "z": 2001.00
+        },
+        {
+          "config": "{\"name\":\"kpi_feedback_rate\",\"layouts\":[{\"id\":0,\"position\":{\"x\":660,\"y\":80,\"z\":2002,\"width\":300,\"height\":120}}],\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"Fact_Visit.Feedback_Rate\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"v\",\"Entity\":\"Fact_Visit\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"Feedback_Rate\"},\"Name\":\"Fact_Visit.Feedback_Rate\"}]},\"drillFilterOtherVisuals\":true,\"objects\":{\"labels\":[{\"properties\":{\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"28D\"}}},\"color\":{\"solid\":{\"color\":{\"expr\":{\"Literal\":{\"Value\":\"'#3498DB'\"}}}}}}}],\"categoryLabels\":[{\"properties\":{\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"12D\"}}}}}]},\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'💬 Feedback Rate'\"}}}}}],\"border\":[{\"properties\":{\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"radius\":{\"expr\":{\"Literal\":{\"Value\":\"10D\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 120.00,
+          "width": 300.00,
+          "x": 660.00,
+          "y": 80.00,
+          "z": 2002.00
+        },
+        {
+          "config": "{\"name\":\"kpi_quality_score\",\"layouts\":[{\"id\":0,\"position\":{\"x\":980,\"y\":80,\"z\":2003,\"width\":280,\"height\":120}}],\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"Fact_Visit.Visit_Quality_Score\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"v\",\"Entity\":\"Fact_Visit\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"Visit_Quality_Score\"},\"Name\":\"Fact_Visit.Visit_Quality_Score\"}]},\"drillFilterOtherVisuals\":true,\"objects\":{\"labels\":[{\"properties\":{\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"28D\"}}},\"color\":{\"solid\":{\"color\":{\"expr\":{\"Literal\":{\"Value\":\"'#2ECC71'\"}}}}}}}],\"categoryLabels\":[{\"properties\":{\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"12D\"}}}}}]},\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'⭐ Overall Quality Score'\"}}}}}],\"border\":[{\"properties\":{\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"radius\":{\"expr\":{\"Literal\":{\"Value\":\"10D\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 120.00,
+          "width": 280.00,
+          "x": 980.00,
+          "y": 80.00,
+          "z": 2003.00
+        },
+        {
+          "config": "{\"name\":\"chart_quality_by_client\",\"layouts\":[{\"id\":0,\"position\":{\"x\":20,\"y\":220,\"z\":3000,\"width\":600,\"height\":250}}],\"singleVisual\":{\"visualType\":\"clusteredBarChart\",\"projections\":{\"Category\":[{\"queryRef\":\"Fact_Visit.ClientType\"}],\"Y\":[{\"queryRef\":\"Fact_Visit.Photo_Compliance_Rate\"},{\"queryRef\":\"Fact_Visit.GPS_Capture_Rate\"},{\"queryRef\":\"Fact_Visit.Feedback_Rate\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"v\",\"Entity\":\"Fact_Visit\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"ClientType\"},\"Name\":\"Fact_Visit.ClientType\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"Photo_Compliance_Rate\"},\"Name\":\"Fact_Visit.Photo_Compliance_Rate\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"GPS_Capture_Rate\"},\"Name\":\"Fact_Visit.GPS_Capture_Rate\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"Feedback_Rate\"},\"Name\":\"Fact_Visit.Feedback_Rate\"}]},\"drillFilterOtherVisuals\":true,\"objects\":{\"legend\":[{\"properties\":{\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"position\":{\"expr\":{\"Literal\":{\"Value\":\"'Top'\"}}}}}]},\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Quality Metrics by Client Type'\"}}}}}],\"border\":[{\"properties\":{\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"radius\":{\"expr\":{\"Literal\":{\"Value\":\"10D\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 250.00,
+          "width": 600.00,
+          "x": 20.00,
+          "y": 220.00,
+          "z": 3000.00
+        },
+        {
+          "config": "{\"name\":\"table_top_performers\",\"layouts\":[{\"id\":0,\"position\":{\"x\":640,\"y\":220,\"z\":3001,\"width\":620,\"height\":250}}],\"singleVisual\":{\"visualType\":\"tableEx\",\"projections\":{\"Values\":[{\"queryRef\":\"Dim_User.EmployeeName\"},{\"queryRef\":\"Fact_Visit.Total_Visits\"},{\"queryRef\":\"Fact_Visit.Photo_Compliance_Rate\"},{\"queryRef\":\"Fact_Visit.GPS_Capture_Rate\"},{\"queryRef\":\"Fact_Visit.Feedback_Rate\"},{\"queryRef\":\"Fact_Visit.Visit_Quality_Score\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"u\",\"Entity\":\"Dim_User\",\"Type\":0},{\"Name\":\"v\",\"Entity\":\"Fact_Visit\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"u\"}},\"Property\":\"EmployeeName\"},\"Name\":\"Dim_User.EmployeeName\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"Total_Visits\"},\"Name\":\"Fact_Visit.Total_Visits\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"Photo_Compliance_Rate\"},\"Name\":\"Fact_Visit.Photo_Compliance_Rate\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"GPS_Capture_Rate\"},\"Name\":\"Fact_Visit.GPS_Capture_Rate\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"Feedback_Rate\"},\"Name\":\"Fact_Visit.Feedback_Rate\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"Visit_Quality_Score\"},\"Name\":\"Fact_Visit.Visit_Quality_Score\"}]},\"drillFilterOtherVisuals\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'🏆 Employee Quality Rankings'\"}}}}}],\"border\":[{\"properties\":{\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"radius\":{\"expr\":{\"Literal\":{\"Value\":\"10D\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 250.00,
+          "width": 620.00,
+          "x": 640.00,
+          "y": 220.00,
+          "z": 3001.00
+        },
+        {
+          "config": "{\"name\":\"chart_quality_trend\",\"layouts\":[{\"id\":0,\"position\":{\"x\":20,\"y\":490,\"z\":4000,\"width\":920,\"height\":200}}],\"singleVisual\":{\"visualType\":\"lineChart\",\"projections\":{\"Category\":[{\"queryRef\":\"Fact_Visit.visit_date_time\"}],\"Y\":[{\"queryRef\":\"Fact_Visit.Photo_Compliance_Rate\"},{\"queryRef\":\"Fact_Visit.GPS_Capture_Rate\"},{\"queryRef\":\"Fact_Visit.Feedback_Rate\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"v\",\"Entity\":\"Fact_Visit\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"visit_date_time\"},\"Name\":\"Fact_Visit.visit_date_time\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"Photo_Compliance_Rate\"},\"Name\":\"Fact_Visit.Photo_Compliance_Rate\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"GPS_Capture_Rate\"},\"Name\":\"Fact_Visit.GPS_Capture_Rate\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"Feedback_Rate\"},\"Name\":\"Fact_Visit.Feedback_Rate\"}]},\"drillFilterOtherVisuals\":true,\"objects\":{\"legend\":[{\"properties\":{\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"position\":{\"expr\":{\"Literal\":{\"Value\":\"'Top'\"}}}}}]},\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'📈 Quality Metrics Trend'\"}}}}}],\"border\":[{\"properties\":{\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"radius\":{\"expr\":{\"Literal\":{\"Value\":\"10D\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 200.00,
+          "width": 920.00,
+          "x": 20.00,
+          "y": 490.00,
+          "z": 4000.00
+        },
+        {
+          "config": "{\"name\":\"slicer_date_p3\",\"layouts\":[{\"id\":0,\"position\":{\"x\":960,\"y\":490,\"z\":5000,\"width\":300,\"height\":50}}],\"singleVisual\":{\"visualType\":\"slicer\",\"projections\":{\"Values\":[{\"queryRef\":\"Fact_Visit.visit_date_time\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"v\",\"Entity\":\"Fact_Visit\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"visit_date_time\"},\"Name\":\"Fact_Visit.visit_date_time\"}]},\"drillFilterOtherVisuals\":true,\"objects\":{\"data\":[{\"properties\":{\"mode\":{\"expr\":{\"Literal\":{\"Value\":\"'Between'\"}}}}}]},\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Date Range'\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 50.00,
+          "width": 300.00,
+          "x": 960.00,
+          "y": 490.00,
+          "z": 5000.00
+        },
+        {
+          "config": "{\"name\":\"slicer_employee_p3\",\"layouts\":[{\"id\":0,\"position\":{\"x\":960,\"y\":560,\"z\":5001,\"width\":300,\"height\":50}}],\"singleVisual\":{\"visualType\":\"slicer\",\"projections\":{\"Values\":[{\"queryRef\":\"Dim_User.EmployeeName\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"u\",\"Entity\":\"Dim_User\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"u\"}},\"Property\":\"EmployeeName\"},\"Name\":\"Dim_User.EmployeeName\"}]},\"drillFilterOtherVisuals\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Employee'\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 50.00,
+          "width": 300.00,
+          "x": 960.00,
+          "y": 560.00,
+          "z": 5001.00
+        },
+        {
+          "config": "{\"name\":\"slicer_client_p3\",\"layouts\":[{\"id\":0,\"position\":{\"x\":960,\"y\":630,\"z\":5002,\"width\":300,\"height\":50}}],\"singleVisual\":{\"visualType\":\"slicer\",\"projections\":{\"Values\":[{\"queryRef\":\"Fact_Visit.ClientType\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"v\",\"Entity\":\"Fact_Visit\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"v\"}},\"Property\":\"ClientType\"},\"Name\":\"Fact_Visit.ClientType\"}]},\"drillFilterOtherVisuals\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Client Type'\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 50.00,
+          "width": 300.00,
+          "x": 960.00,
+          "y": 630.00,
+          "z": 5002.00
+        }
+      ],
+      "width": 1280.00
     }
   ]
 }
