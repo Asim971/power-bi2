@@ -11,7 +11,7 @@ annotation PBI_QueryOrder = ["public areas","public bank","public bazaars","publ
 
 annotation __PBI_TimeIntelligenceEnabled = 1
 
-annotation PBI_ProTooling = ["WebModelingEdit","CalcGroup","DaxQueryView_Desktop"]
+annotation PBI_ProTooling = ["WebModelingEdit","CalcGroup","DaxQueryView_Desktop","TMDL-Extension"]
 
 ref table 'public areas'
 ref table 'public bank'
