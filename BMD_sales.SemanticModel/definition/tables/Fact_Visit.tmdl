@@ -10,6 +10,7 @@ table Fact_Visit
 						'Fact_Visit'[ClientType] = "Retailer"
 					)
 			```
+		displayFolder: Visit Counts
 		formatString: 0
 		lineageTag: 54fe40e6-9db7-466a-99e5-ab9705614664
 
@@ -20,6 +21,7 @@ table Fact_Visit
 						'Fact_Visit'[ClientType] = "Dealer"
 					)
 			```
+		displayFolder: Visit Counts
 		formatString: 0
 		lineageTag: a5e4d983-80ab-4b70-b9fb-7f624ba43ae4
 
@@ -30,6 +32,7 @@ table Fact_Visit
 			            'Fact_Visit'[HasTerritory] = 1
 			        )
 			```
+		displayFolder: GPS & Territory
 		formatString: 0
 		lineageTag: 398beba9-89ad-4586-ae55-85f3dfd8e803
 
@@ -40,6 +43,7 @@ table Fact_Visit
 			            'Fact_Visit'[HasTerritory] = 0
 			        )
 			```
+		displayFolder: GPS & Territory
 		formatString: 0
 		lineageTag: 6f8dc6b2-dce7-4366-b1f2-eb3a53e3a142
 
@@ -47,6 +51,7 @@ table Fact_Visit
 			
 			        DIVIDE([Territory_Captured_Visits], [Total_Visits], 0)
 			```
+		displayFolder: Rates
 		lineageTag: 06f8ac33-1b5f-46bf-b782-ee4f31e8c4d5
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -357,6 +362,7 @@ table Fact_Visit
 			RETURN
 			ROUND(VisitScore + QualityScore + ClientCoverage, 1)
 			```
+		displayFolder: Analytics
 		formatString: 0.0
 		lineageTag: e1a2b3c4-d5e6-f7a8-b9c0-d1e2f3a4b5c6
 
@@ -376,6 +382,7 @@ table Fact_Visit
 			RETURN
 			DIVIDE(RunningTotal, GrandTotal, 0)
 			```
+		displayFolder: Analytics
 		formatString: 0.0%
 		lineageTag: f2a3b4c5-e6d7-a8b9-c0d1-e2f3a4b5c6d7
 
@@ -387,6 +394,7 @@ table Fact_Visit
 			RETURN
 			IF(ABS(ZScore) > 2, 1, 0)
 			```
+		displayFolder: Analytics
 		formatString: 0
 		lineageTag: a3b4c5d6-e7f8-a9b0-c1d2-e3f4a5b6c7d8
 
@@ -406,6 +414,7 @@ table Fact_Visit
 			RETURN
 			DATEDIFF(LastVisitDate, Today, DAY)
 			```
+		displayFolder: Analytics
 		formatString: 0
 		lineageTag: c5d6e7f8-a9b0-c1d2-e3f4-a5b6c7d8e9f0
 
