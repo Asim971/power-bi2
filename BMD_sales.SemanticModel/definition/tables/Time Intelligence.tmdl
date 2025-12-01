@@ -1,0 +1,61 @@
+table 'Time Intelligence'
+	lineageTag: a0dc1616-58e0-438c-8ddd-6e7bffc3548e
+
+	calculationGroup
+		precedence: 10
+
+		calculationItem Current
+			expression = SELECTEDMEASURE()
+			ordinal: 0
+
+		calculationItem 'Previous Month'
+			expression = CALCULATE(SELECTEDMEASURE(), PREVIOUSMONTH('Dim_Date'[Date]))
+			ordinal: 1
+
+		calculationItem 'Previous Year'
+			expression = CALCULATE(SELECTEDMEASURE(), PREVIOUSYEAR('Dim_Date'[Date]))
+			ordinal: 2
+
+		calculationItem MTD
+			expression = CALCULATE(SELECTEDMEASURE(), DATESMTD('Dim_Date'[Date]))
+			ordinal: 3
+
+		calculationItem QTD
+			expression = CALCULATE(SELECTEDMEASURE(), DATESQTD('Dim_Date'[Date]))
+			ordinal: 4
+
+		calculationItem YTD
+			expression = CALCULATE(SELECTEDMEASURE(), DATESYTD('Dim_Date'[Date]))
+			ordinal: 5
+
+		calculationItem 'Rolling 7 Days'
+			expression = CALCULATE(SELECTEDMEASURE(), DATESINPERIOD('Dim_Date'[Date], MAX('Dim_Date'[Date]), -7, DAY))
+			ordinal: 6
+
+		calculationItem 'Rolling 30 Days'
+			expression = CALCULATE(SELECTEDMEASURE(), DATESINPERIOD('Dim_Date'[Date], MAX('Dim_Date'[Date]), -30, DAY))
+			ordinal: 7
+
+	measure 'Time Measure'
+		lineageTag: 44600855-7524-4263-bb44-244bebe327c9
+
+		annotation 436ba87b-9c83-4389-a31b-ebd06a36be98 = {"Expression":null}
+
+	column 'Time Period'
+		dataType: string
+		lineageTag: 5ff33d74-147a-482e-bbc0-aa1fc3b277ec
+		summarizeBy: none
+		sourceColumn: Name
+		sortByColumn: Ordinal
+
+		annotation SummarizationSetBy = Automatic
+
+	column Ordinal
+		dataType: int64
+		formatString: 0
+		lineageTag: 8b2a1565-7c88-404f-ad2b-722b21f59127
+		summarizeBy: none
+		sourceColumn: Ordinal
+
+		annotation SummarizationSetBy = Automatic
+
