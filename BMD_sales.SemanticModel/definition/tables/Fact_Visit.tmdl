@@ -380,26 +380,27 @@ table Fact_Visit
 		lineageTag: f2a3b4c5-e6d7-a8b9-c0d1-e2f3a4b5c6d7
 
 	measure Visits_Anomaly_Flag = ```
-			
-VAR AvgVisits = AVERAGEX(ALL('Dim_Date'[Date]), [Total_Visits])
-VAR StdDeviation = STDEVX.P(ALL('Dim_Date'[Date]), [Total_Visits])
-VAR CurrentVisits = [Total_Visits]
-VAR ZScore = DIVIDE(CurrentVisits - AvgVisits, StdDeviation, 0)
-RETURN
-IF(ABS(ZScore) > 2, 1, 0)
+			VAR AvgVisits = AVERAGEX(ALL('Dim_Date'[Date]), [Total_Visits])
+			VAR StdDeviation = STDEVX.P(ALL('Dim_Date'[Date]), [Total_Visits])
+			VAR CurrentVisits = [Total_Visits]
+			VAR ZScore = DIVIDE(CurrentVisits - AvgVisits, StdDeviation, 0)
+			RETURN
+			IF(ABS(ZScore) > 2, 1, 0)
 			```
 		formatString: 0
-		lineageTag: a3b4c5d6-e7f8-a9b0-c1d2-e3f4a5b6c7d8	measure Visits_Anomaly_Direction = ```
-			
-VAR AvgVisits = AVERAGEX(ALL('Dim_Date'[Date]), [Total_Visits])
-VAR StdDeviation = STDEVX.P(ALL('Dim_Date'[Date]), [Total_Visits])
-VAR CurrentVisits = [Total_Visits]
-VAR ZScore = DIVIDE(CurrentVisits - AvgVisits, StdDeviation, 0)
-RETURN
-IF(ZScore > 2, "High", IF(ZScore < -2, "Low", "Normal"))
+		lineageTag: a3b4c5d6-e7f8-a9b0-c1d2-e3f4a5b6c7d8
+
+	measure Visits_Anomaly_Direction = ```
+			VAR AvgVisits = AVERAGEX(ALL('Dim_Date'[Date]), [Total_Visits])
+			VAR StdDeviation = STDEVX.P(ALL('Dim_Date'[Date]), [Total_Visits])
+			VAR CurrentVisits = [Total_Visits]
+			VAR ZScore = DIVIDE(CurrentVisits - AvgVisits, StdDeviation, 0)
+			RETURN
+			IF(ZScore > 2, "High", IF(ZScore < -2, "Low", "Normal"))
 			```
-		lineageTag: b4c5d6e7-f8a9-b0c1-d2e3-f4a5b6c7d8e9	measure Days_Since_Last_Visit = ```
-			
+		lineageTag: b4c5d6e7-f8a9-b0c1-d2e3-f4a5b6c7d8e9
+
+	measure Days_Since_Last_Visit = ```
 			VAR LastVisitDate = MAX('Fact_Visit'[DateKey])
 			VAR Today = TODAY()
 			RETURN
