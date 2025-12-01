@@ -549,6 +549,145 @@ table Fact_Order
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	measure Visit_to_Order_Conversion = ```
+			
+			VAR ClientsVisited = CALCULATE(DISTINCTCOUNT('Fact_Visit'[ClientKey]), ALL('Fact_Visit'))
+			VAR ClientsWithOrders = CALCULATE(DISTINCTCOUNT('Fact_Order'[ClientKey]), ALL('Fact_Order'))
+			RETURN
+			DIVIDE(ClientsWithOrders, ClientsVisited, 0)
+			```
+		formatString: 0.0%
+		lineageTag: 1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d
+
+	measure Visits_Before_First_Order = ```
+			
+			VAR ClientsWithOrders = 
+			    CALCULATETABLE(
+			        DISTINCT('Fact_Order'[ClientKey]),
+			        ALL('Fact_Order')
+			    )
+			VAR VisitsBeforeOrder = 
+			    SUMX(
+			        ClientsWithOrders,
+			        VAR Client = [ClientKey]
+			        VAR FirstOrderDate = CALCULATE(MIN('Fact_Order'[OrderDateKey]), 'Fact_Order'[ClientKey] = Client)
+			        RETURN CALCULATE(
+			            COUNTROWS('Fact_Visit'),
+			            'Fact_Visit'[ClientKey] = Client,
+			            'Fact_Visit'[DateKey] < FirstOrderDate
+			        )
+			    )
+			VAR ClientCount = COUNTROWS(ClientsWithOrders)
+			RETURN
+			DIVIDE(VisitsBeforeOrder, ClientCount, 0)
+			```
+		formatString: 0.0
+		lineageTag: 2b3c4d5e-6f7a-8b9c-0d1e-2f3a4b5c6d7e
+
+	measure Order_Amount_Pareto = ```
+			
+			VAR CurrentAmount = [Total_Order_Amount]
+			VAR AllClientAmounts = 
+			    ADDCOLUMNS(
+			        SUMMARIZE(ALL('Fact_Order'), 'Fact_Order'[ClientKey]),
+			        "@Amount", CALCULATE([Total_Order_Amount])
+			    )
+			VAR RankedClients = 
+			    FILTER(AllClientAmounts, [@Amount] >= CurrentAmount)
+			VAR RunningTotal = SUMX(RankedClients, [@Amount])
+			VAR GrandTotal = CALCULATE([Total_Order_Amount], ALL('Fact_Order'))
+			RETURN
+			DIVIDE(RunningTotal, GrandTotal, 0)
+			```
+		formatString: 0.0%
+		lineageTag: 3c4d5e6f-7a8b-9c0d-1e2f-3a4b5c6d7e8f
+
+	measure Order_Amount_Anomaly = ```
+			
+			VAR AvgAmount = AVERAGEX(ALL('Dim_Date'[Date]), [Total_Order_Amount])
+			VAR StdDev = STDEVX.P(ALL('Dim_Date'[Date]), [Total_Order_Amount])
+			VAR CurrentAmount = [Total_Order_Amount]
+			VAR ZScore = DIVIDE(CurrentAmount - AvgAmount, StdDev, 0)
+			RETURN
+			IF(ABS(ZScore) > 2, 1, 0)
+			```
+		formatString: 0
+		lineageTag: 4d5e6f7a-8b9c-0d1e-2f3a-4b5c6d7e8f9a
+
+	measure Avg_Order_Value_Trend = ```
+			
+			VAR CurrentAOV = [Avg_Order_Amount]
+			VAR PreviousMonthAOV = CALCULATE([Avg_Order_Amount], PREVIOUSMONTH('Dim_Date'[Date]))
+			RETURN
+			DIVIDE(CurrentAOV - PreviousMonthAOV, PreviousMonthAOV, 0)
+			```
+		formatString: +0.0%;-0.0%;0.0%
+		lineageTag: 5e6f7a8b-9c0d-1e2f-3a4b-5c6d7e8f9a0b
+
+	measure Client_Lifetime_Value = ```
+			
+			VAR TotalClientOrders = [Total_Order_Amount]
+			VAR ClientTenureDays = DATEDIFF(MIN('Fact_Order'[OrderDateKey]), MAX('Fact_Order'[OrderDateKey]), DAY) + 1
+			VAR MonthlyValue = DIVIDE(TotalClientOrders, ClientTenureDays, 0) * 30
+			RETURN
+			MonthlyValue * 12
+			```
+		formatString: ₹#,##0
+		lineageTag: 6f7a8b9c-0d1e-2f3a-4b5c-6d7e8f9a0b1c
+
+	measure Top_10_Clients_Revenue_Share = ```
+			
+			VAR Top10 = 
+			    TOPN(
+			        10,
+			        SUMMARIZE(ALL('Fact_Order'), 'Fact_Order'[ClientKey], "@A", [Total_Order_Amount]),
+			        [@A], DESC
+			    )
+			VAR Top10Total = SUMX(Top10, [@A])
+			VAR GrandTotal = CALCULATE([Total_Order_Amount], ALL('Fact_Order'))
+			RETURN
+			DIVIDE(Top10Total, GrandTotal, 0)
+			```
+		formatString: 0.0%
+		lineageTag: 7a8b9c0d-1e2f-3a4b-5c6d-7e8f9a0b1c2d
+
+	measure Order_Velocity = ```
+			
+			VAR DateRange = DATEDIFF(MIN('Fact_Order'[OrderDateKey]), MAX('Fact_Order'[OrderDateKey]), DAY) + 1
+			VAR OrderCount = [Total_Orders]
+			RETURN
+			DIVIDE(OrderCount, DateRange, 0) * 7
+			```
+		formatString: 0.0
+		lineageTag: 8b9c0d1e-2f3a-4b5c-6d7e-8f9a0b1c2d3e
+
+	measure Revenue_at_Risk = ```
+			
+			VAR ClientsNoRecentOrder = 
+			    COUNTROWS(
+			        FILTER(
+			            SUMMARIZE(ALL('Fact_Order'), 'Fact_Order'[ClientKey], "@LastOrder", MAX('Fact_Order'[OrderDateKey])),
+			            DATEDIFF([@LastOrder], TODAY(), DAY) > 90
+			        )
+			    )
+			VAR AvgClientValue = [Amount_Per_Client]
+			RETURN
+			ClientsNoRecentOrder * AvgClientValue
+			```
+		formatString: ₹#,##0
+		lineageTag: 9c0d1e2f-3a4b-5c6d-7e8f-9a0b1c2d3e4f
+
+	measure New_Clients_This_Month = ```
+			
+			VAR CurrentMonthStart = DATE(YEAR(TODAY()), MONTH(TODAY()), 1)
+			VAR AllTimeClients = CALCULATE(DISTINCTCOUNT('Fact_Order'[ClientKey]), FILTER(ALL('Dim_Date'), 'Dim_Date'[Date] < CurrentMonthStart))
+			VAR CurrentClients = DISTINCTCOUNT('Fact_Order'[ClientKey])
+			RETURN
+			CurrentClients - AllTimeClients
+			```
+		formatString: 0
+		lineageTag: 0d1e2f3a-4b5c-6d7e-8f9a-0b1c2d3e4f5a
+
 	column OrderID
 		dataType: int64
 		formatString: 0
