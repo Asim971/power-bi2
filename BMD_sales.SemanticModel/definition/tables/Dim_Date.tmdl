@@ -2,12 +2,15 @@ table Dim_Date
 	lineageTag: 0b020ba2-3b0c-4252-b1ae-96eedaad2430
 
 	column DateKey
-		dataType: string
+		dataType: dateTime
+		formatString: Long Date
 		lineageTag: c2d7d341-b3e0-4bb9-8225-c3d0d52a1b2b
 		summarizeBy: none
 		sourceColumn: DateKey
 
 		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
 
 	column Date
 		dataType: dateTime
@@ -383,7 +386,7 @@ table Dim_Date
 				    ChangedType = Table.TransformColumnTypes(TableFromList, {{"Date", type date}}),
 				    
 				    // ---- Core Date Attributes ----
-				    AddDateKey = Table.TransformColumnTypes(Table.AddColumn(ChangedType, "DateKey", each Date.ToText([Date], "yyyyMMdd")), {{"DateKey", type text}}),
+				    AddDateKey = Table.AddColumn(ChangedType, "DateKey", each [Date], type date),
 				    AddYear = Table.AddColumn(AddDateKey, "Year", each Date.Year([Date]), Int64.Type),
 				    AddMonth = Table.AddColumn(AddYear, "Month", each Date.Month([Date]), Int64.Type),
 				    AddMonthName = Table.AddColumn(AddMonth, "MonthName", each Date.MonthName([Date]), type text),
