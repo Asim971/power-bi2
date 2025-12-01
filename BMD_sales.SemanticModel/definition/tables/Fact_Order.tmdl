@@ -604,17 +604,15 @@ table Fact_Order
 
 	measure Order_Amount_Anomaly = ```
 			
-			VAR AvgAmount = AVERAGEX(ALL('Dim_Date'[Date]), [Total_Order_Amount])
-			VAR StdDev = STDEVX.P(ALL('Dim_Date'[Date]), [Total_Order_Amount])
-			VAR CurrentAmount = [Total_Order_Amount]
-			VAR ZScore = DIVIDE(CurrentAmount - AvgAmount, StdDev, 0)
-			RETURN
-			IF(ABS(ZScore) > 2, 1, 0)
+VAR AvgAmount = AVERAGEX(ALL('Dim_Date'[Date]), [Total_Order_Amount])
+VAR StdDeviation = STDEVX.P(ALL('Dim_Date'[Date]), [Total_Order_Amount])
+VAR CurrentAmount = [Total_Order_Amount]
+VAR ZScore = DIVIDE(CurrentAmount - AvgAmount, StdDeviation, 0)
+RETURN
+IF(ABS(ZScore) > 2, 1, 0)
 			```
 		formatString: 0
-		lineageTag: 4d5e6f7a-8b9c-0d1e-2f3a-4b5c6d7e8f9a
-
-	measure Avg_Order_Value_Trend = ```
+		lineageTag: 4d5e6f7a-8b9c-0d1e-2f3a-4b5c6d7e8f9a	measure Avg_Order_Value_Trend = ```
 			
 			VAR CurrentAOV = [Avg_Order_Amount]
 			VAR PreviousMonthAOV = CALCULATE([Avg_Order_Amount], PREVIOUSMONTH('Dim_Date'[Date]))
