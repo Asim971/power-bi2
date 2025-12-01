@@ -1,99 +1,51 @@
-// ============================================================
-// RELATIONSHIPS.TMDL - BMD Sales Data Model
-// Star Schema Relationship Definitions
-// 
-// CLEANED: Removed 65+ auto-generated LocalDateTable relationships
-// ENHANCED: Added missing critical relationships
-// Last Updated: Dec 2025
-// ============================================================
-
-// ============================================================
-// SECTION 1: CORE FACT-TO-DATE RELATIONSHIPS
-// Central Dim_Date table used for all time intelligence
-// ============================================================
-
-// Fact_Visit -> Dim_Date (Primary Date Relationship)
 relationship 9f6d8aeb-4c79-c167-c7d9-7f8716100e93
 	fromColumn: Fact_Visit.DateKey
 	toColumn: Dim_Date.Date
 
-// Fact_Order -> Dim_Date (Order Date Relationship)
 relationship 4ad75096-392b-c092-50bf-e49fe9152507
 	fromColumn: Fact_Order.OrderDateKey
 	toColumn: Dim_Date.Date
 
-// Fact_ProjectConversion -> Dim_Date (Conversion Date Relationship)
 relationship e7a2f3b1-8c4d-5e6f-9a0b-1c2d3e4f5678
 	fromColumn: Fact_ProjectConversion.ConversionDateKey
 	toColumn: Dim_Date.Date
 
-// ============================================================
-// SECTION 2: FACT-TO-USER (EMPLOYEE) RELATIONSHIPS
-// Links facts to the Dim_User dimension for employee analysis
-// ============================================================
-
-// Fact_Visit -> Dim_User (Employee who made the visit)
 relationship b8d6c3c7-fd9a-f9b8-289c-0b3d03647bcd
 	fromColumn: Fact_Visit.EmployeeID
 	toColumn: Dim_User.UserID
 
-// Fact_Order -> Dim_User (Employee associated with order)
 relationship aaf7a7ea-7077-9514-d293-7e60d0ad09d6
 	fromColumn: Fact_Order.UserID
 	toColumn: Dim_User.UserID
 
-// ============================================================
-// SECTION 3: FACT-TO-CLIENT RELATIONSHIPS
-// Links facts to the unified client dimension
-// ============================================================
-
-// Fact_Order -> Dim_Client_Simple (Order Client)
 relationship 4527ae37-192e-b7f2-acbf-539c061d30b9
 	fromColumn: Fact_Order.ClientKey
 	toColumn: 'Dim_Client_Simple'.ClientKey
 
-// Fact_Visit -> Dim_Client_Simple (Visit Client) - NEW
 relationship a1b2c3d4-e5f6-7890-abcd-ef1234567890
 	fromColumn: Fact_Visit.ClientKey
 	toColumn: 'Dim_Client_Simple'.ClientKey
 
-// Fact_ProjectConversion -> Dim_Client_Simple (Conversion Client) - NEW
 relationship b2c3d4e5-f678-9012-bcde-f12345678901
 	fromColumn: Fact_ProjectConversion.ClientKey
 	toColumn: 'Dim_Client_Simple'.ClientKey
 
-// ============================================================
-// SECTION 4: VISIT DIMENSION RELATIONSHIPS
-// Links Fact_Visit to visit-specific dimensions
-// ============================================================
-
-// Fact_Visit -> Dim_VisitCategory
 relationship a763fcdb-f284-17ec-e74a-65d52e17ed6d
 	fromColumn: Fact_Visit.VisitCategoryID
 	toColumn: Dim_VisitCategory.VisitCategoryID
 
-// Fact_Visit -> Dim_VisitPhase
 relationship b2be16bb-8052-2c34-e100-8d85e7ab7a34
 	fromColumn: Fact_Visit.VisitPhaseID
 	toColumn: Dim_VisitPhase.VisitPhaseID
 
-// Fact_Visit -> Dim_VisitStage - NEW (CRITICAL: Missing relationship)
 relationship c3d4e5f6-7890-1234-cdef-234567890123
 	fromColumn: Fact_Visit.VisitStageID
 	toColumn: Dim_VisitStage.VisitStageID
 
-// ============================================================
-// SECTION 5: DIMENSION-TO-DIMENSION RELATIONSHIPS
-// Hierarchical relationships within dimensions
-// ============================================================
-
-// Dim_User -> Dim_Territory (User's assigned territory)
 relationship 81378734-7063-5c9b-ca88-715e3d19ee6c
 	fromColumn: Dim_User.AreaID
 	toColumn: Dim_Territory.AreaID
 
-// Dim_VisitStage -> Dim_VisitPhase (Stage belongs to Phase)
 relationship 6792aed9-a286-29f3-b7e7-5d654435e4a4
 	fromColumn: Dim_VisitStage.VisitPhaseID
 	toColumn: Dim_VisitPhase.VisitPhaseID
-
