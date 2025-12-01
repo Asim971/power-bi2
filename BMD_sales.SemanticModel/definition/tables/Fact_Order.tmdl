@@ -49,37 +49,31 @@ table Fact_Order
 			
 			        DIVIDE([Completed_Orders], [Total_Orders], 0)
 			```
+		formatString: 0.0%
 		lineageTag: 57e3750e-a5d9-4d35-97a9-d1f8f488277a
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Cancellation_Rate = ```
 			
 			        DIVIDE([Cancelled_Orders], [Total_Orders], 0)
 			```
+		formatString: 0.0%
 		lineageTag: c6fc47b5-c2e4-4c88-87df-a5c7fd8d38ac
 
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
 	measure Total_Order_Amount = SUM('Fact_Order'[TotalAmount])
+		formatString: ₹#,##0
 		lineageTag: c7da7101-da82-4eee-b7af-43298f8751fe
 
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
 	measure Avg_Order_Amount = AVERAGE('Fact_Order'[TotalAmount])
+		formatString: ₹#,##0
 		lineageTag: d0c7ee2f-cee0-4619-b9cc-c86a94628b0c
 
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
 	measure Max_Order_Amount = MAX('Fact_Order'[TotalAmount])
+		formatString: ₹#,##0
 		lineageTag: ebe9ff6a-2b10-4b1a-b94b-ea21c4f63fd6
 
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
 	measure Min_Order_Amount = MIN('Fact_Order'[TotalAmount])
+		formatString: ₹#,##0
 		lineageTag: da41962e-d4f6-46b5-9e76-3c5a361ee673
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Completed_Order_Amount = ```
 			
@@ -88,9 +82,8 @@ table Fact_Order
 			            'Fact_Order'[StatusGroup] = "Completed"
 			        )
 			```
+		formatString: ₹#,##0
 		lineageTag: cdbbbee6-5442-41f1-99ad-e96d790efa9f
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Pending_Order_Amount = ```
 			
@@ -99,9 +92,8 @@ table Fact_Order
 			            'Fact_Order'[StatusGroup] = "Open"
 			        )
 			```
+		formatString: ₹#,##0
 		lineageTag: 4caa44c5-780c-4342-9c8f-ed155fae138f
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Cancelled_Order_Amount = ```
 			
@@ -110,17 +102,15 @@ table Fact_Order
 			            'Fact_Order'[StatusGroup] = "Cancelled"
 			        )
 			```
+		formatString: ₹#,##0
 		lineageTag: 8eb29ea4-b623-4036-ad7e-c198cb1226f1
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Amount_Per_Order = ```
 			
 			        DIVIDE([Total_Order_Amount], [Total_Orders], 0)
 			```
+		formatString: ₹#,##0
 		lineageTag: ad6eaad7-b342-42ad-a88d-083c3533f418
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Factory_DN_Orders =
 			CALCULATE(
@@ -147,9 +137,8 @@ table Fact_Order
 		lineageTag: 66edd5ed-04ba-48d0-8721-3feb7fba6b5c
 
 	measure Factory_DN_Rate = DIVIDE([Factory_DN_Orders], [Total_Orders], 0)
+		formatString: 0.0%
 		lineageTag: 1828bf08-cee6-46a1-a6c5-038c2ff8daa1
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Site_DN_Rate = DIVIDE([Site_DN_Orders], [Total_Orders], 0)
 		lineageTag: befca123-f34b-4a5d-a2fc-4cf5d897ee8f
