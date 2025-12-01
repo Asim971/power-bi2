@@ -84,6 +84,16 @@
             margin-bottom: 15px;
         }
 
+        .form-group-spaced {
+            margin-top: 15px;
+        }
+
+        .position-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
         .form-group label {
             display: block;
             margin-bottom: 5px;
@@ -346,19 +356,22 @@
                     <h2>📊 Dataset Configuration</h2>
                     <div class="form-group">
                         <label>Workspace ID</label>
-                        <input type="text" id="workspaceId" value="276a43e7-e0e3-4366-9ac1-40d1bf52182f">
+                        <input type="text" id="workspaceId" value="276a43e7-e0e3-4366-9ac1-40d1bf52182f"
+                            placeholder="Enter workspace ID">
                     </div>
                     <div class="form-group">
                         <label>Dataset ID</label>
-                        <input type="text" id="datasetId" value="3477f170-bf61-42a4-b7a6-4414d7bf8881">
+                        <input type="text" id="datasetId" value="3477f170-bf61-42a4-b7a6-4414d7bf8881"
+                            placeholder="Enter dataset ID">
                     </div>
 
                     <button class="btn btn-primary" id="btnCreateReport">🚀 Create New Report</button>
                     <button class="btn btn-warning" id="btnEditExisting">✏️ Edit Existing Report</button>
 
-                    <div class="form-group" style="margin-top: 15px;">
+                    <div class="form-group form-group-spaced">
                         <label>Existing Report ID (for editing)</label>
-                        <input type="text" id="reportId" value="dcd4d7a3-e911-49e1-847a-1feb594f1616">
+                        <input type="text" id="reportId" value="dcd4d7a3-e911-49e1-847a-1feb594f1616"
+                            placeholder="Enter report ID">
                     </div>
 
                     <div class="progress-bar">
@@ -459,7 +472,7 @@
                     </div>
 
                     <h2>📐 Visual Position</h2>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <div class="position-grid">
                         <div class="form-group">
                             <label>X</label>
                             <input type="number" id="visualX" value="40">
