@@ -425,6 +425,30 @@ table 'public visits'
 
 		annotation SummarizationSetBy = Automatic
 
+	column latitude
+		dataType: double
+		lineageTag: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+		summarizeBy: none
+		sourceColumn: latitude
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column longitude
+		dataType: double
+		lineageTag: b2c3d4e5-f678-90ab-cdef-123456789012
+		summarizeBy: none
+		sourceColumn: longitude
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
 	partition 'public visits' = m
 		mode: import
 		source =

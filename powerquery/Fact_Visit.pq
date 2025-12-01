@@ -24,6 +24,8 @@ let
         "site_manager_id", "organization_id",
         // Territory info
         "territory_id", "territory_name", "role_level",
+        // GPS Coordinates - NEW
+        "latitude", "longitude",
         // Metadata
         "origin", "delete_status", "created_at", "updated_at"
     }),
@@ -151,7 +153,7 @@ let
         "VisitCategoryID", "VisitPhaseID", "VisitStageID", "status",
         "feedback", "visit_photo", "product_photo",
         "HasPhoto", "HasProductPhoto", "HasFeedback", "HasTerritory",
-        "territory_id", "territory_name", "followup_date",
+        "territory_id", "territory_name", "latitude", "longitude", "followup_date",
         "origin", "visit_date_time", "created_at", "updated_at"
     }),
     
@@ -180,6 +182,8 @@ let
         {"HasTerritory", Int64.Type},
         {"territory_id", Int64.Type},
         {"territory_name", type text},
+        {"latitude", type number},
+        {"longitude", type number},
         {"followup_date", type datetime},
         {"origin", type text},
         {"visit_date_time", type datetime},

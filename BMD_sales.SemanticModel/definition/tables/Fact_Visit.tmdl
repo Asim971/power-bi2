@@ -403,8 +403,7 @@ table Fact_Visit
 			VAR ZScore = DIVIDE(CurrentVisits - AvgVisits, StdDeviation, 0)
 			RETURN
 			IF(ZScore > 2, "High", IF(ZScore < -2, "Low", "Normal"))
-		lineageTag: b4c5d6e7-f8a9-b0c1-d2e3-f4a5b6c7d8e9
-
+		
 	measure Days_Since_Last_Visit =
 			VAR LastVisitDate = MAX('Fact_Visit'[DateKey])
 			VAR Today = TODAY()
@@ -687,6 +686,26 @@ table Fact_Visit
 
 		annotation SummarizationSetBy = Automatic
 
+	column latitude
+		dataType: double
+		lineageTag: c3d4e5f6-7890-abcd-ef12-345678901234
+		summarizeBy: none
+		sourceColumn: latitude
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column longitude
+		dataType: double
+		lineageTag: d4e5f678-90ab-cdef-1234-567890123456
+		summarizeBy: none
+		sourceColumn: longitude
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
 	column followup_date
 		dataType: dateTime
 		formatString: General Date
@@ -780,6 +799,8 @@ table Fact_Visit
 				        "site_manager_id", "organization_id",
 				        // Territory info
 				        "territory_id", "territory_name", "role_level",
+				        // GPS Coordinates
+				        "latitude", "longitude",
 				        // Metadata
 				        "origin", "delete_status", "created_at", "updated_at"
 				    }),
@@ -907,7 +928,7 @@ table Fact_Visit
 				        "VisitCategoryID", "VisitPhaseID", "VisitStageID", "status",
 				        "feedback", "visit_photo", "product_photo",
 				        "HasPhoto", "HasProductPhoto", "HasFeedback", "HasTerritory",
-				        "territory_id", "territory_name", "followup_date",
+				        "territory_id", "territory_name", "latitude", "longitude", "followup_date",
 				        "origin", "visit_date_time", "created_at", "updated_at"
 				    }),
 				    
@@ -936,6 +957,8 @@ table Fact_Visit
 				        {"HasTerritory", Int64.Type},
 				        {"territory_id", Int64.Type},
 				        {"territory_name", type text},
+				        {"latitude", type number},
+				        {"longitude", type number},
 				        {"followup_date", type datetime},
 				        {"origin", type text},
 				        {"visit_date_time", type datetime},
