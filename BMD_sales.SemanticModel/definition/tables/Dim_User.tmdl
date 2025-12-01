@@ -135,7 +135,7 @@ table Dim_User
 		dataType: int64
 		formatString: 0
 		lineageTag: c62b9a65-3d18-4c44-97c6-ef7541422b2c
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: RoleLevel
 
 		annotation SummarizationSetBy = Automatic
@@ -185,7 +185,7 @@ table Dim_User
 		dataType: int64
 		formatString: 0
 		lineageTag: 5dea4e82-b37f-41ef-b118-9d9c6d1c75b5
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: IsFieldRole
 
 		annotation SummarizationSetBy = Automatic

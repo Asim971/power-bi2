@@ -390,7 +390,7 @@ table Fact_Visit
 		dataType: int64
 		formatString: 0
 		lineageTag: 1765b72a-1d08-4220-8ce0-7e66db466411
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: RoleLevel
 
 		annotation SummarizationSetBy = Automatic
@@ -467,7 +467,7 @@ table Fact_Visit
 		dataType: int64
 		formatString: 0
 		lineageTag: 53f429e7-23bb-40cc-a22f-d4c956fc11e1
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: organization_id
 
 		annotation SummarizationSetBy = Automatic
@@ -552,7 +552,7 @@ table Fact_Visit
 		dataType: int64
 		formatString: 0
 		lineageTag: 0ec2e29b-23a6-4b38-a6db-7d11bc622979
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: territory_id
 
 		annotation SummarizationSetBy = Automatic
