@@ -1,11 +1,12 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
   "metadata": {
-    "type": "Report",
-    "displayName": "BMD Sales Report"
+    "type": "Eventstream",
+    "displayName": "Monitoring_Eventstream",
+    "description": "Monitoring_Eventstream"
   },
   "config": {
     "version": "2.0",
-    "logicalId": "dcd4d7a3-e911-49e1-847a-1feb594f1616"
+    "logicalId": "afff1512-6f95-a48a-434f-1624aba86336"
   }
 }
