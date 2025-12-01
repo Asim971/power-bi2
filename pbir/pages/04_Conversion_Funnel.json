@@ -1,0 +1,419 @@
+{
+    "objectType": "page",
+    "name": "Conversion Funnel",
+    "displayName": "Conversion Journey",
+    "displayOption": "FitToPage",
+    "width": 1920,
+    "height": 1080,
+    "ordinal": 3,
+    "config": {
+        "background": {
+            "color": "#F5F7FA",
+            "transparency": 0
+        },
+        "visibility": "visible"
+    },
+    "visuals": [
+        {
+            "name": "Header",
+            "type": "textbox",
+            "x": 0,
+            "y": 0,
+            "width": 1920,
+            "height": 60,
+            "config": {
+                "textbox": {
+                    "paragraphs": [
+                        {
+                            "textRuns": [
+                                {
+                                    "value": "🔻 60-DAY CONVERSION FUNNEL    |    Site Visit → Project Conversion → Order → Delivery",
+                                    "textStyle": {
+                                        "fontFamily": "Segoe UI Semibold",
+                                        "fontSize": 16,
+                                        "fontColor": "#FFFFFF"
+                                    }
+                                }
+                            ]
+                        }
+                    ],
+                    "backgroundColor": "#9B59B6"
+                }
+            }
+        },
+        {
+            "name": "KPI_Site_Visits",
+            "type": "card",
+            "x": 40,
+            "y": 80,
+            "width": 250,
+            "height": 120,
+            "config": {
+                "title": "SITE VISITS",
+                "dataField": "Measures[Site Visits]",
+                "icon": "🏗️"
+            }
+        },
+        {
+            "name": "KPI_Conversions",
+            "type": "card",
+            "x": 310,
+            "y": 80,
+            "width": 250,
+            "height": 120,
+            "config": {
+                "title": "PROJECT CONVERSIONS",
+                "dataField": "Fact_ProjectConversion[Total Conversions]",
+                "icon": "📋"
+            }
+        },
+        {
+            "name": "KPI_Orders",
+            "type": "card",
+            "x": 580,
+            "y": 80,
+            "width": 250,
+            "height": 120,
+            "config": {
+                "title": "ORDERS",
+                "dataField": "Fact_Order[Total Orders]",
+                "icon": "📦"
+            }
+        },
+        {
+            "name": "KPI_Delivered",
+            "type": "card",
+            "x": 850,
+            "y": 80,
+            "width": 250,
+            "height": 120,
+            "config": {
+                "title": "DELIVERED",
+                "dataField": "Measures[Completed Orders]",
+                "icon": "✅"
+            }
+        },
+        {
+            "name": "KPI_Conv_Rate",
+            "type": "kpi",
+            "x": 1120,
+            "y": 80,
+            "width": 250,
+            "height": 120,
+            "config": {
+                "title": "CONV RATE 60D",
+                "value": "Fact_Visit[Conversion Rate 60D %]",
+                "target": 0.05,
+                "format": "0.0%"
+            }
+        },
+        {
+            "name": "KPI_Avg_Days",
+            "type": "card",
+            "x": 1390,
+            "y": 80,
+            "width": 250,
+            "height": 120,
+            "config": {
+                "title": "AVG DAYS TO CONVERT",
+                "dataField": "Measures[Avg Days to Conversion]",
+                "icon": "⏱️"
+            }
+        },
+        {
+            "name": "KPI_Order_Complete",
+            "type": "gauge",
+            "x": 1660,
+            "y": 80,
+            "width": 220,
+            "height": 120,
+            "config": {
+                "title": "ORDER COMPLETE %",
+                "value": "Measures[Order Completion Rate]",
+                "min": 0,
+                "max": 1,
+                "target": 0.80
+            }
+        },
+        {
+            "name": "Main_Funnel",
+            "type": "funnel",
+            "x": 40,
+            "y": 220,
+            "width": 900,
+            "height": 400,
+            "config": {
+                "title": "🔻 CONVERSION FUNNEL",
+                "orientation": "vertical",
+                "stages": [
+                    {
+                        "name": "Site Visits",
+                        "field": "Measures[Site Visits]",
+                        "color": "#1ABC9C",
+                        "percentage": "100%"
+                    },
+                    {
+                        "name": "Project Conversions",
+                        "field": "Fact_ProjectConversion[Total Conversions]",
+                        "color": "#3498DB",
+                        "showDropoff": true
+                    },
+                    {
+                        "name": "Orders Placed",
+                        "field": "Fact_Order[Total Orders]",
+                        "color": "#9B59B6",
+                        "showDropoff": true
+                    },
+                    {
+                        "name": "Orders Delivered",
+                        "field": "Measures[Completed Orders]",
+                        "color": "#2ECC71",
+                        "showDropoff": true
+                    }
+                ],
+                "dataLabels": {
+                    "showValue": true,
+                    "showPercentage": true,
+                    "position": "inside"
+                },
+                "animation": {
+                    "enabled": true,
+                    "duration": 1000,
+                    "type": "slideIn"
+                }
+            }
+        },
+        {
+            "name": "Reward_Eligibility",
+            "type": "stackedBarChart",
+            "x": 960,
+            "y": 220,
+            "width": 450,
+            "height": 200,
+            "config": {
+                "title": "🎖️ REWARD ELIGIBILITY",
+                "yAxis": {
+                    "categories": [
+                        "Engineer Eligible",
+                        "Partner Eligible",
+                        "Both Eligible"
+                    ]
+                },
+                "series": [
+                    {
+                        "name": "Eligible",
+                        "field": "Measures[Reward Eligible Count]",
+                        "color": "#2ECC71"
+                    },
+                    {
+                        "name": "Not Eligible",
+                        "field": "Measures[Not Eligible Count]",
+                        "color": "#E0E0E0"
+                    }
+                ],
+                "dataLabels": {
+                    "showValue": true
+                }
+            }
+        },
+        {
+            "name": "Delivery_Method_Comparison",
+            "type": "clusteredColumnChart",
+            "x": 1430,
+            "y": 220,
+            "width": 450,
+            "height": 200,
+            "config": {
+                "title": "📊 CONVERSION BY DELIVERY METHOD",
+                "xAxis": {
+                    "categories": [
+                        "Factory DN",
+                        "General Delivery"
+                    ]
+                },
+                "series": [
+                    {
+                        "name": "Orders",
+                        "field": "Fact_Order[Total Orders]",
+                        "color": "#0066CC"
+                    }
+                ],
+                "dataLabels": {
+                    "showValue": true,
+                    "showPercentage": true
+                },
+                "annotations": [
+                    {
+                        "type": "text",
+                        "label": "Direct Approval",
+                        "position": "Factory DN"
+                    },
+                    {
+                        "type": "text",
+                        "label": "CRO Visit Required",
+                        "position": "General Delivery"
+                    }
+                ]
+            }
+        },
+        {
+            "name": "Days_Distribution",
+            "type": "histogram",
+            "x": 960,
+            "y": 440,
+            "width": 920,
+            "height": 180,
+            "config": {
+                "title": "📅 DAYS-TO-CONVERSION DISTRIBUTION",
+                "xAxis": {
+                    "field": "Measures[Days to Convert Bin]",
+                    "bins": [
+                        "0-7",
+                        "8-14",
+                        "15-21",
+                        "22-30",
+                        "31-45",
+                        "46-60",
+                        ">60"
+                    ]
+                },
+                "yAxis": {
+                    "title": "# of Conversions"
+                },
+                "referenceLine": {
+                    "value": "60",
+                    "label": "60-Day Cutoff",
+                    "color": "#E74C3C",
+                    "lineStyle": "dashed"
+                },
+                "color": "#3498DB",
+                "insight": {
+                    "enabled": true,
+                    "text": "72% of conversions happen within first 30 days"
+                }
+            }
+        },
+        {
+            "name": "Conversion_Timeline",
+            "type": "lineChart",
+            "x": 40,
+            "y": 640,
+            "width": 1840,
+            "height": 380,
+            "config": {
+                "title": "📈 CONVERSION TREND OVER TIME",
+                "xAxis": {
+                    "field": "Dim_Date[Date]",
+                    "granularity": "week"
+                },
+                "yAxis": [
+                    {
+                        "title": "Count",
+                        "position": "left"
+                    },
+                    {
+                        "title": "Conversion Rate",
+                        "position": "right",
+                        "format": "0.0%"
+                    }
+                ],
+                "series": [
+                    {
+                        "name": "Site Visits",
+                        "field": "Measures[Site Visits]",
+                        "color": "#1ABC9C",
+                        "axis": "left"
+                    },
+                    {
+                        "name": "Conversions",
+                        "field": "Fact_ProjectConversion[Total Conversions]",
+                        "color": "#3498DB",
+                        "axis": "left"
+                    },
+                    {
+                        "name": "Orders",
+                        "field": "Fact_Order[Total Orders]",
+                        "color": "#9B59B6",
+                        "axis": "left"
+                    },
+                    {
+                        "name": "Conv Rate 60D",
+                        "field": "Fact_Visit[Conversion Rate 60D %]",
+                        "color": "#E74C3C",
+                        "axis": "right",
+                        "lineStyle": "dashed"
+                    }
+                ],
+                "legend": {
+                    "show": true,
+                    "position": "top"
+                }
+            }
+        },
+        {
+            "name": "Filter_Panel",
+            "type": "slicerPanel",
+            "x": 0,
+            "y": 1040,
+            "width": 1920,
+            "height": 40,
+            "config": {
+                "slicers": [
+                    {
+                        "title": "📅 Date Range",
+                        "field": "Dim_Date[Date]",
+                        "type": "relativeDatetime",
+                        "default": "Last 90 Days"
+                    },
+                    {
+                        "title": "🗺️ Zone",
+                        "field": "Dim_Territory[ZoneName]",
+                        "type": "dropdown"
+                    },
+                    {
+                        "title": "📦 Delivery Method",
+                        "field": "Fact_Order[DeliveryMethod]",
+                        "type": "dropdown"
+                    },
+                    {
+                        "title": "🎖️ Reward Type",
+                        "field": "Measures[Reward Type]",
+                        "type": "dropdown"
+                    },
+                    {
+                        "title": "📊 Order Status",
+                        "field": "Fact_Order[OrderStatus]",
+                        "type": "dropdown"
+                    }
+                ]
+            }
+        }
+    ],
+    "drillThrough": {
+        "fields": [
+            "Fact_Order[OrderID]",
+            "Dim_Client[ClientKey]",
+            "Dim_Territory[ZoneName]"
+        ],
+        "keepAllFilters": true
+    },
+    "interactions": [
+        {
+            "source": "Main_Funnel",
+            "target": [
+                "Reward_Eligibility",
+                "Delivery_Method_Comparison",
+                "Days_Distribution"
+            ],
+            "type": "filter"
+        },
+        {
+            "source": "Delivery_Method_Comparison",
+            "target": [
+                "Main_Funnel",
+                "Reward_Eligibility"
+            ],
+            "type": "highlight"
+        }
+    ]
+}

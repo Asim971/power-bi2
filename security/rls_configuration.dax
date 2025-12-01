@@ -1,0 +1,293 @@
+// ============================================================
+// ROW-LEVEL SECURITY (RLS) CONFIGURATION
+// Zone-based security for Cross-Role Visit Reporting
+// 
+// INFLUENCER SEGREGATION (per PRD.MD):
+// - BDO: Manages Engineers, Sites (Potential Sites)
+// - CRO: Manages Contractors/Partners, Dealers, IHB
+// - SR:  Manages Retailers
+// 
+// SCHEMA UPDATES (Nov 2025):
+// - Dim_Client uses ResponsibleRoleRLS column for role-based filtering
+// - Dim_Territory uses ZoneID, RegionID, AreaID from public areas
+// - Delete filters: Retailers/Dealers use is_deleted="NO" (text)
+// - IHB, Engineers, Contractors have no delete status column
+// ============================================================
+
+
+// ================================================================
+// RLS ROLE DEFINITIONS - ZONE BASED
+// ================================================================
+
+/*
+ROLE: Zone Manager
+PURPOSE: Restrict data to user's assigned zone only
+TABLES AFFECTED: Fact_Visit, Dim_Client, Dim_User, Dim_Territory
+
+DAX FILTER EXPRESSION:
+*/
+
+// Role: Zone_RLS
+// Apply to: Dim_Territory table
+[ZoneID] = LOOKUPVALUE(
+    'Dim_User'[ZoneID],
+    'Dim_User'[EmployeeEmail], USERPRINCIPALNAME()
+)
+
+
+/*
+ROLE: Regional Manager
+PURPOSE: Restrict data to user's assigned region(s)
+TABLES AFFECTED: Same as Zone Manager, but at Region level
+
+DAX FILTER EXPRESSION:
+*/
+
+// Role: Region_RLS
+// Apply to: Dim_Territory table
+[RegionID] IN 
+VALUES(
+    FILTER(
+        'UserRegionMapping',
+        'UserRegionMapping'[EmployeeEmail] = USERPRINCIPALNAME()
+    )[RegionID]
+)
+
+
+/*
+ROLE: Executive
+PURPOSE: Full access to all data (no filter)
+DAX FILTER EXPRESSION: (none - leave blank or use TRUE())
+*/
+
+// Role: Executive_Full_Access
+// No filter applied - sees all data
+
+
+// ================================================================
+// RLS ROLE DEFINITIONS - CLIENT TYPE BASED (per PRD.MD)
+// ================================================================
+
+/*
+ROLE: BDO (Business Development Officer)
+PURPOSE: Restrict to BDO-managed clients (Sites, Engineers)
+TABLES AFFECTED: Fact_Visit, Dim_Client
+CLIENT TYPES MANAGED: Site, Engineer
+DAX FILTER EXPRESSION:
+*/
+
+// Role: BDO_Client_RLS
+// Apply to: Fact_Visit table (recommended - filters flow to facts)
+[ResponsibleRole] = "BDO" || [ResponsibleRole] = "CRO,BDO"
+
+// Alternative: Apply to Dim_Client table
+// [ResponsibleRoleRLS] = "BDO" || CONTAINSSTRING([ResponsibleRoleRLS], "BDO")
+
+// NEW: Direct ClientType filter (more explicit)
+// Apply to: Dim_Client table
+[ClientType] IN {"Site", "Engineer"}
+
+
+/*
+ROLE: CRO (Customer Relations Officer)
+PURPOSE: Restrict to CRO-managed clients (Contractors, Dealers, IHB)
+TABLES AFFECTED: Fact_Visit, Dim_Client
+CLIENT TYPES MANAGED: Contractor, Dealer, IHB
+DAX FILTER EXPRESSION:
+*/
+
+// Role: CRO_Client_RLS
+// Apply to: Fact_Visit table (recommended - filters flow to facts)
+[ResponsibleRole] = "CRO" || [ResponsibleRole] = "CRO,BDO"
+
+// Alternative: Apply to Dim_Client table
+// [ResponsibleRoleRLS] = "CRO" || CONTAINSSTRING([ResponsibleRoleRLS], "CRO")
+
+// NEW: Direct ClientType filter (more explicit)
+// Apply to: Dim_Client table
+[ClientType] IN {"Contractor", "Dealer", "IHB"}
+
+
+/*
+ROLE: SR (Sales Representative)
+PURPOSE: Restrict to SR-managed clients (Retailers)
+TABLES AFFECTED: Fact_Visit, Dim_Client
+CLIENT TYPES MANAGED: Retailer
+DAX FILTER EXPRESSION:
+*/
+
+// Role: SR_Client_RLS
+// Apply to: Fact_Visit table (recommended - filters flow to facts)
+[ResponsibleRole] = "SR"
+
+// Alternative: Apply to Dim_Client table
+// [ResponsibleRoleRLS] = "SR"
+
+// NEW: Direct ClientType filter (more explicit)
+// Apply to: Dim_Client table
+[ClientType] = "Retailer"
+
+
+// ================================================================
+// USER-ZONE MAPPING TABLE (Create in Power Query)
+// ================================================================
+
+/*
+Create a table: UserZoneMapping
+Columns:
+- EmployeeEmail (text) - matches USERPRINCIPALNAME()
+- ZoneID (int) - assigned zone
+- ZoneName (text) - for display
+- AccessLevel (text) - "Zone", "Region", "All"
+
+Example Data:
+| EmployeeEmail                     | ZoneID | ZoneName  | AccessLevel |
+|-----------------------------------|--------|-----------|-------------|
+| zm.dhaka@anwargroup.onmicrosoft.com | 1      | Dhaka     | Zone        |
+| zm.ctg@anwargroup.onmicrosoft.com   | 2      | Chittagong| Zone        |
+| rm.central@anwargroup.onmicrosoft.com | NULL  | NULL      | Region      |
+| exec@anwargroup.onmicrosoft.com     | NULL   | NULL      | All         |
+*/
+
+
+// ================================================================
+// RLS SETUP STEPS IN POWER BI DESKTOP
+// ================================================================
+
+/*
+1. Go to Modeling tab → Manage roles
+2. Create role: "Zone_Manager"
+3. Select table: Dim_Territory
+4. Enter DAX filter:
+   
+   [ZoneID] = LOOKUPVALUE(
+       'UserZoneMapping'[ZoneID],
+       'UserZoneMapping'[EmployeeEmail], USERPRINCIPALNAME()
+   )
+
+5. Create role: "Regional_Manager"
+6. Select table: Dim_Territory
+7. Enter DAX filter (for multiple regions):
+   
+   CONTAINS(
+       FILTER('UserRegionMapping', 
+           'UserRegionMapping'[EmployeeEmail] = USERPRINCIPALNAME()
+       ),
+       'UserRegionMapping'[RegionID], [RegionID]
+   )
+
+8. Create role: "Executive" (no filter - leave empty)
+
+9. Test with "View as" → Select role → Enter test email
+*/
+
+
+// ================================================================
+// DYNAMIC RLS ALTERNATIVE (More Flexible)
+// ================================================================
+
+// Create calculated column in Dim_Territory:
+HasAccess = 
+VAR CurrentUserEmail = USERPRINCIPALNAME()
+VAR UserAccessLevel = 
+    LOOKUPVALUE(
+        'UserZoneMapping'[AccessLevel],
+        'UserZoneMapping'[EmployeeEmail], CurrentUserEmail
+    )
+VAR UserZone = 
+    LOOKUPVALUE(
+        'UserZoneMapping'[ZoneID],
+        'UserZoneMapping'[EmployeeEmail], CurrentUserEmail
+    )
+RETURN
+SWITCH(
+    UserAccessLevel,
+    "All", TRUE(),
+    "Zone", [ZoneID] = UserZone,
+    "Region", 
+        CONTAINS(
+            FILTER('UserRegionMapping', 
+                'UserRegionMapping'[EmployeeEmail] = CurrentUserEmail
+            ),
+            'UserRegionMapping'[RegionID], [RegionID]
+        ),
+    FALSE()
+)
+
+// Then use single role with filter:
+// [HasAccess] = TRUE()
+
+
+// ================================================================
+// PERFORMANCE OPTIMIZATION FOR RLS
+// ================================================================
+
+/*
+Best Practices:
+1. Apply RLS to dimension tables (Dim_Territory), not fact tables
+   - Relationships propagate filter automatically
+   
+2. Use LOOKUPVALUE instead of CALCULATE for simple lookups
+   - More efficient for single value returns
+   
+3. Create indexed UserMapping table
+   - Small table, loaded in-memory
+   
+4. Avoid complex DAX in RLS filters
+   - Pre-compute access flags where possible
+   
+5. Test with large datasets before deployment
+   - Use Performance Analyzer in Power BI Desktop
+*/
+
+
+// ================================================================
+// PHASE & STAGE BASED FILTERING (Optional)
+// For construction phase-specific reports
+// ================================================================
+
+/*
+ROLE: Super Structure Team
+PURPOSE: Only see Super Structure phase visits
+TABLES AFFECTED: Dim_VisitPhase
+DAX FILTER EXPRESSION:
+*/
+
+// Apply to: Dim_VisitPhase table
+[PhaseName] = "Super Structure"
+
+/*
+ROLE: Sub Structure Team  
+PURPOSE: Only see Sub Structure phase visits
+TABLES AFFECTED: Dim_VisitPhase
+DAX FILTER EXPRESSION:
+*/
+
+// Apply to: Dim_VisitPhase table
+[PhaseName] = "Sub Structure"
+
+
+// ================================================================
+// CLIENT CATEGORY BASED FILTERING
+// For category-specific dashboards
+// ================================================================
+
+/*
+ROLE: Channel Partner Manager
+PURPOSE: See only Dealer and Retailer data
+TABLES AFFECTED: Dim_Client
+DAX FILTER EXPRESSION:
+*/
+
+// Apply to: Dim_Client table
+[ClientCategory] = "Channel Partner"
+
+/*
+ROLE: Influencer Manager
+PURPOSE: See only Engineer and Contractor data
+TABLES AFFECTED: Dim_Client
+DAX FILTER EXPRESSION:
+*/
+
+// Apply to: Dim_Client table
+[ClientCategory] IN {"Influencer-Technical", "Influencer-Partner"}

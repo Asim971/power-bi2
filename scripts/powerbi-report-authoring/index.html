@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMD Sales Report Builder - Power BI Embedded</title>
+    <script src="https://cdn.jsdelivr.net/npm/powerbi-client@2.23.0/dist/powerbi.min.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/powerbi-report-authoring@3.0.0/dist/powerbi-report-authoring.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            color: #2c3e50;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #0066cc, #004499);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 24px;
+        }
+
+        .container {
+            display: flex;
+            height: calc(100vh - 80px);
+        }
+
+        .sidebar {
+            width: 350px;
+            background: white;
+            border-right: 1px solid #e0e0e0;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .main {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #reportContainer {
+            flex: 1;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background: white;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+        .section h3 {
+            color: #0066cc;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #0066cc;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 16px;
+            margin: 5px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #0066cc;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #004499;
+        }
+
+        .btn-success {
+            background: #2ecc71;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #27ae60;
+        }
+
+        .btn-warning {
+            background: #f39c12;
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background: #d68910;
+        }
+
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+
+        .btn-block {
+            display: block;
+            width: 100%;
+            margin: 5px 0;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .visual-type-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+        }
+
+        .visual-type-btn {
+            padding: 8px;
+            font-size: 12px;
+            text-align: center;
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .visual-type-btn:hover {
+            background: #e9ecef;
+            border-color: #0066cc;
+        }
+
+        .visual-type-btn.selected {
+            background: #0066cc;
+            color: white;
+            border-color: #0066cc;
+        }
+
+        .log {
+            background: #2c3e50;
+            color: #2ecc71;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .status {
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+        .status.connected {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status.disconnected {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .page-list {
+            list-style: none;
+        }
+
+        .page-list li {
+            padding: 8px 12px;
+            margin: 2px 0;
+            background: #f8f9fa;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .page-list li:hover {
+            background: #e9ecef;
+        }
+
+        .page-list li.active {
+            background: #0066cc;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>🏭 BMD Sales Report Builder</h1>
+        <div>
+            <span id="connectionStatus" class="status disconnected">● Disconnected</span>
+            <button class="btn btn-success" onclick="connectToDataset()">Connect to Dataset</button>
+            <button class="btn btn-primary" onclick="saveReport()">💾 Save Report</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="sidebar">
+            <!-- Connection Section -->
+            <div class="section">
+                <h3>🔗 Connection</h3>
+                <div class="form-group">
+                    <label for="datasetId">Dataset ID</label>
+                    <input type="text" id="datasetId" value="3477f170-bf61-42a4-b7a6-4414d7bf8881"
+                        title="Power BI Dataset ID" placeholder="Enter dataset ID">
+                </div>
+                <div class="form-group">
+                    <label>Workspace ID (optional)</label>
+                    <input type="text" id="workspaceId" placeholder="Leave empty for My Workspace">
+                </div>
+                <div class="form-group">
+                    <label>Access Token</label>
+                    <textarea id="accessToken" rows="3" placeholder="Paste your Azure AD access token"></textarea>
+                </div>
+                <button class="btn btn-primary btn-block" onclick="createNewReport()">📄 Create New Report</button>
+            </div>
+
+            <!-- Pages Section -->
+            <div class="section">
+                <h3>📑 Pages</h3>
+                <ul class="page-list" id="pageList">
+                    <li>Loading...</li>
+                </ul>
+                <button class="btn btn-success btn-block" onclick="addPage()">+ Add Page</button>
+            </div>
+
+            <!-- Add Visual Section -->
+            <div class="section">
+                <h3>📊 Add Visual</h3>
+                <div class="visual-type-grid" id="visualTypes">
+                    <div class="visual-type-btn" data-type="card" onclick="selectVisualType('card')">📋 Card</div>
+                    <div class="visual-type-btn" data-type="kpi" onclick="selectVisualType('kpi')">📈 KPI</div>
+                    <div class="visual-type-btn" data-type="gauge" onclick="selectVisualType('gauge')">⏱️ Gauge</div>
+                    <div class="visual-type-btn" data-type="funnel" onclick="selectVisualType('funnel')">🔻 Funnel</div>
+                    <div class="visual-type-btn" data-type="lineChart" onclick="selectVisualType('lineChart')">📉 Line
+                    </div>
+                    <div class="visual-type-btn" data-type="clusteredColumnChart"
+                        onclick="selectVisualType('clusteredColumnChart')">📊 Column</div>
+                    <div class="visual-type-btn" data-type="clusteredBarChart"
+                        onclick="selectVisualType('clusteredBarChart')">📊 Bar</div>
+                    <div class="visual-type-btn" data-type="donutChart" onclick="selectVisualType('donutChart')">🍩
+                        Donut</div>
+                    <div class="visual-type-btn" data-type="pieChart" onclick="selectVisualType('pieChart')">🥧 Pie
+                    </div>
+                    <div class="visual-type-btn" data-type="filledMap" onclick="selectVisualType('filledMap')">🗺️ Map
+                    </div>
+                    <div class="visual-type-btn" data-type="tableEx" onclick="selectVisualType('tableEx')">📋 Table
+                    </div>
+                    <div class="visual-type-btn" data-type="pivotTable" onclick="selectVisualType('pivotTable')">📑
+                        Matrix</div>
+                    <div class="visual-type-btn" data-type="slicer" onclick="selectVisualType('slicer')">🎚️ Slicer
+                    </div>
+                    <div class="visual-type-btn" data-type="textbox" onclick="selectVisualType('textbox')">📝 Text</div>
+                    <div class="visual-type-btn" data-type="areaChart" onclick="selectVisualType('areaChart')">📈 Area
+                    </div>
+                </div>
+                <button class="btn btn-primary btn-block" onclick="addSelectedVisual()" id="addVisualBtn" disabled>+ Add
+                    Selected Visual</button>
+            </div>
+
+            <!-- Quick Build Section -->
+            <div class="section">
+                <h3>⚡ Quick Build</h3>
+                <button class="btn btn-warning btn-block" onclick="buildExecutiveDashboard()">Build Executive
+                    Dashboard</button>
+                <button class="btn btn-warning btn-block" onclick="buildConversionFunnel()">Build Conversion
+                    Funnel</button>
+                <button class="btn btn-warning btn-block" onclick="buildQualityScorecard()">Build Quality
+                    Scorecard</button>
+                <button class="btn btn-danger btn-block" onclick="buildAllPages()">🚀 Build All 6 Pages</button>
+            </div>
+
+            <!-- Console -->
+            <div class="section">
+                <h3>📜 Console</h3>
+                <div class="log" id="console">Ready to build report...</div>
+            </div>
+        </div>
+
+        <div class="main">
+            <div id="reportContainer"></div>
+        </div>
+    </div>
+
+    <script src="report-builder.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,404 @@
+{
+    "objectType": "page",
+    "name": "Executive Command Center",
+    "displayName": "Executive Command Center",
+    "displayOption": "FitToPage",
+    "width": 1920,
+    "height": 1080,
+    "ordinal": 0,
+    "config": {
+        "background": {
+            "color": "#F5F7FA",
+            "transparency": 0
+        },
+        "visibility": "visible"
+    },
+    "visuals": [
+        {
+            "name": "Header",
+            "type": "textbox",
+            "x": 0,
+            "y": 0,
+            "width": 1920,
+            "height": 60,
+            "config": {
+                "textbox": {
+                    "paragraphs": [
+                        {
+                            "textRuns": [
+                                {
+                                    "value": "🏭 BMD SALES    |    EXECUTIVE COMMAND CENTER    |    ",
+                                    "textStyle": {
+                                        "fontFamily": "Segoe UI Semibold",
+                                        "fontSize": 16,
+                                        "fontColor": "#FFFFFF"
+                                    }
+                                }
+                            ]
+                        }
+                    ],
+                    "backgroundColor": "#0066CC"
+                }
+            }
+        },
+        {
+            "name": "AI_Insight_Box",
+            "type": "textbox",
+            "x": 40,
+            "y": 80,
+            "width": 1840,
+            "height": 60,
+            "config": {
+                "textbox": {
+                    "paragraphs": [
+                        {
+                            "textRuns": [
+                                {
+                                    "value": "🤖 AI INSIGHT: \"Dhaka Zone leads with 6.2% conversion - 23% above target. Consider replicating BDO training program to Chittagong for potential 15% uplift.\"",
+                                    "textStyle": {
+                                        "fontFamily": "Segoe UI",
+                                        "fontSize": 12,
+                                        "fontColor": "#2C3E50",
+                                        "fontStyle": "italic"
+                                    }
+                                }
+                            ]
+                        }
+                    ],
+                    "backgroundColor": "#E3F2FD",
+                    "borderColor": "#2196F3",
+                    "borderRadius": 8
+                }
+            }
+        },
+        {
+            "name": "KPI_Total_Visits",
+            "type": "card",
+            "x": 40,
+            "y": 160,
+            "width": 340,
+            "height": 150,
+            "config": {
+                "title": "VISITS",
+                "dataField": "Fact_Visit[Total Visits]",
+                "trend": {
+                    "enabled": true,
+                    "calculation": "MoM%"
+                },
+                "sparkline": {
+                    "enabled": true,
+                    "period": "30D"
+                },
+                "conditionalFormatting": {
+                    "positive": "#2ECC71",
+                    "negative": "#E74C3C"
+                }
+            }
+        },
+        {
+            "name": "KPI_Total_Orders",
+            "type": "card",
+            "x": 400,
+            "y": 160,
+            "width": 340,
+            "height": 150,
+            "config": {
+                "title": "ORDERS",
+                "dataField": "Fact_Order[Total Orders]",
+                "trend": {
+                    "enabled": true,
+                    "calculation": "MoM%"
+                },
+                "sparkline": {
+                    "enabled": true,
+                    "period": "30D"
+                }
+            }
+        },
+        {
+            "name": "KPI_Conversions",
+            "type": "card",
+            "x": 760,
+            "y": 160,
+            "width": 340,
+            "height": 150,
+            "config": {
+                "title": "CONVERSIONS",
+                "dataField": "Fact_ProjectConversion[Total Conversions]",
+                "trend": {
+                    "enabled": true,
+                    "calculation": "MoM%"
+                }
+            }
+        },
+        {
+            "name": "KPI_Conversion_Rate",
+            "type": "kpi",
+            "x": 1120,
+            "y": 160,
+            "width": 340,
+            "height": 150,
+            "config": {
+                "title": "CONV RATE 60D",
+                "value": "Fact_Visit[Conversion Rate 60D %]",
+                "target": 0.05,
+                "trendAxis": true
+            }
+        },
+        {
+            "name": "KPI_Revenue",
+            "type": "card",
+            "x": 1480,
+            "y": 160,
+            "width": 380,
+            "height": 150,
+            "config": {
+                "title": "REVENUE YTD",
+                "dataField": "Fact_Order[Order Amount YTD]",
+                "format": "৳#,##0",
+                "trend": {
+                    "enabled": true,
+                    "calculation": "YoY%"
+                }
+            }
+        },
+        {
+            "name": "Performance_Pulse_Chart",
+            "type": "lineChart",
+            "x": 40,
+            "y": 340,
+            "width": 900,
+            "height": 350,
+            "config": {
+                "title": "📈 PERFORMANCE PULSE",
+                "xAxis": {
+                    "field": "Dim_Date[Date]",
+                    "title": "Month"
+                },
+                "yAxis": {
+                    "title": "Count"
+                },
+                "series": [
+                    {
+                        "name": "Visits",
+                        "field": "Fact_Visit[Total Visits]",
+                        "color": "#0066CC"
+                    },
+                    {
+                        "name": "Orders",
+                        "field": "Fact_Order[Total Orders]",
+                        "color": "#2ECC71"
+                    },
+                    {
+                        "name": "Target",
+                        "field": "Measures[Visit Target]",
+                        "color": "#E74C3C",
+                        "lineStyle": "dashed"
+                    }
+                ],
+                "legend": {
+                    "show": true,
+                    "position": "bottom"
+                }
+            }
+        },
+        {
+            "name": "Zone_Heatmap",
+            "type": "filledMap",
+            "x": 960,
+            "y": 340,
+            "width": 900,
+            "height": 350,
+            "config": {
+                "title": "🗺️ ZONE PERFORMANCE HEATMAP",
+                "location": {
+                    "field": "Dim_Territory[ZoneName]"
+                },
+                "colorSaturation": {
+                    "field": "Fact_Visit[Conversion Rate 60D %]",
+                    "min": "#E74C3C",
+                    "mid": "#F39C12",
+                    "max": "#2ECC71"
+                },
+                "tooltips": [
+                    "Dim_Territory[ZoneName]",
+                    "Fact_Visit[Total Visits]",
+                    "Fact_Order[Total Orders]",
+                    "Fact_Visit[Conversion Rate 60D %]"
+                ],
+                "drillThrough": {
+                    "enabled": true,
+                    "targetPage": "Territory Intelligence"
+                }
+            }
+        },
+        {
+            "name": "Client_Mix_Donut",
+            "type": "donutChart",
+            "x": 40,
+            "y": 710,
+            "width": 580,
+            "height": 330,
+            "config": {
+                "title": "🍩 CLIENT MIX",
+                "legend": {
+                    "field": "Dim_Client[ClientType]"
+                },
+                "values": {
+                    "field": "Fact_Visit[Total Visits]"
+                },
+                "innerRadius": 60,
+                "colors": {
+                    "Site": "#1ABC9C",
+                    "Engineer": "#3498DB",
+                    "Contractor": "#9B59B6",
+                    "Dealer": "#E67E22",
+                    "Retailer": "#E91E63",
+                    "IHB": "#00BCD4"
+                }
+            }
+        },
+        {
+            "name": "Role_Performance_Bar",
+            "type": "clusteredBarChart",
+            "x": 640,
+            "y": 710,
+            "width": 620,
+            "height": 330,
+            "config": {
+                "title": "📊 ROLE PERFORMANCE vs TARGET",
+                "yAxis": {
+                    "field": "Dim_User[RoleName]"
+                },
+                "xAxis": {
+                    "field": "Measures[Role Target Achievement %]"
+                },
+                "referenceLine": {
+                    "value": 100,
+                    "label": "Target",
+                    "color": "#2C3E50",
+                    "lineStyle": "dashed"
+                },
+                "conditionalFormatting": {
+                    "rules": [
+                        {
+                            "min": 100,
+                            "color": "#2ECC71"
+                        },
+                        {
+                            "min": 80,
+                            "max": 100,
+                            "color": "#F39C12"
+                        },
+                        {
+                            "max": 80,
+                            "color": "#E74C3C"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Quick_Funnel",
+            "type": "funnel",
+            "x": 1280,
+            "y": 710,
+            "width": 580,
+            "height": 330,
+            "config": {
+                "title": "⚡ QUICK FUNNEL",
+                "stages": [
+                    {
+                        "name": "Site Visits",
+                        "field": "Measures[Site Visits]",
+                        "color": "#1ABC9C"
+                    },
+                    {
+                        "name": "Conversions",
+                        "field": "Fact_ProjectConversion[Total Conversions]",
+                        "color": "#3498DB"
+                    },
+                    {
+                        "name": "Orders",
+                        "field": "Fact_Order[Total Orders]",
+                        "color": "#9B59B6"
+                    },
+                    {
+                        "name": "Delivered",
+                        "field": "Measures[Completed Orders]",
+                        "color": "#2ECC71"
+                    }
+                ],
+                "showPercentages": true,
+                "drillThrough": {
+                    "enabled": true,
+                    "targetPage": "Conversion Funnel"
+                }
+            }
+        },
+        {
+            "name": "Filter_Panel",
+            "type": "slicerPanel",
+            "x": 0,
+            "y": 1040,
+            "width": 1920,
+            "height": 40,
+            "config": {
+                "slicers": [
+                    {
+                        "title": "📅 Date",
+                        "field": "Dim_Date[Date]",
+                        "type": "relativeDatetime",
+                        "default": "Last 30 Days"
+                    },
+                    {
+                        "title": "🗺️ Zone",
+                        "field": "Dim_Territory[ZoneName]",
+                        "type": "dropdown",
+                        "default": "All"
+                    },
+                    {
+                        "title": "👤 Role",
+                        "field": "Dim_User[RoleName]",
+                        "type": "dropdown",
+                        "default": "All"
+                    },
+                    {
+                        "title": "🏢 Client Type",
+                        "field": "Dim_Client[ClientType]",
+                        "type": "dropdown",
+                        "default": "All"
+                    }
+                ]
+            }
+        }
+    ],
+    "interactions": [
+        {
+            "source": "Zone_Heatmap",
+            "target": [
+                "Performance_Pulse_Chart",
+                "Client_Mix_Donut",
+                "Role_Performance_Bar",
+                "Quick_Funnel"
+            ],
+            "type": "filter"
+        },
+        {
+            "source": "Client_Mix_Donut",
+            "target": [
+                "Performance_Pulse_Chart",
+                "Zone_Heatmap"
+            ],
+            "type": "highlight"
+        }
+    ],
+    "bookmarks": [
+        {
+            "name": "DefaultView",
+            "displayName": "Executive View",
+            "description": "Default landing page with all KPIs",
+            "isDefault": true
+        }
+    ]
+}

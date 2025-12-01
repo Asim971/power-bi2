@@ -1,0 +1,408 @@
+// ============================================
+// VISIT MEASURES - Cross-Role Visit Reporting
+// ============================================
+// Execute via: POST https://api.powerbi.com/v1.0/myorg/datasets/{datasetId}/executeQueries
+// Each section is a separate executable query block
+//
+// Fact_Visit columns: VisitID, DateKey, EmployeeID, EmployeeName, RoleLevel, ClientKey, ClientType,
+//   ClientID, ResponsibleRole, visit_type, VisitCategoryID, VisitPhaseID, VisitStageID, status,
+//   feedback, visit_photo, product_photo, HasPhoto, HasProductPhoto, HasFeedback, HasTerritory,
+//   territory_id, territory_name, followup_date, origin, visit_date_time, created_at, updated_at
+// ============================================
+
+// ============================================
+// SECTION 1: CORE VISIT VOLUME MEASURES
+// ============================================
+DEFINE
+    MEASURE 'Fact_Visit'[Total_Visits] = COUNTROWS('Fact_Visit')
+    
+    MEASURE 'Fact_Visit'[Unique_Clients_Visited] = DISTINCTCOUNT('Fact_Visit'[ClientKey])
+    
+    MEASURE 'Fact_Visit'[Active_Employees] = DISTINCTCOUNT('Fact_Visit'[EmployeeID])
+    
+    MEASURE 'Fact_Visit'[Visits_Per_Employee] = 
+        DIVIDE([Total_Visits], [Active_Employees], 0)
+    
+    MEASURE 'Fact_Visit'[Visits_Per_Client] = 
+        DIVIDE([Total_Visits], [Unique_Clients_Visited], 0)
+    
+    MEASURE 'Fact_Visit'[Clients_Per_Employee] = 
+        DIVIDE([Unique_Clients_Visited], [Active_Employees], 0)
+
+EVALUATE
+    SUMMARIZECOLUMNS(
+        "Total_Visits", [Total_Visits],
+        "Unique_Clients_Visited", [Unique_Clients_Visited],
+        "Active_Employees", [Active_Employees],
+        "Visits_Per_Employee", [Visits_Per_Employee],
+        "Visits_Per_Client", [Visits_Per_Client],
+        "Clients_Per_Employee", [Clients_Per_Employee]
+    )
+
+// ============================================
+// SECTION 2: VISIT QUALITY MEASURES
+// ============================================
+DEFINE
+    MEASURE 'Fact_Visit'[Total_Visits] = COUNTROWS('Fact_Visit')
+    
+    MEASURE 'Fact_Visit'[Visits_With_Photos] = 
+        CALCULATE(
+            COUNTROWS('Fact_Visit'),
+            'Fact_Visit'[HasPhoto] = 1
+        )
+    
+    MEASURE 'Fact_Visit'[Photo_Compliance_Rate] = 
+        DIVIDE([Visits_With_Photos], [Total_Visits], 0)
+    
+    MEASURE 'Fact_Visit'[Visits_With_Product_Photos] = 
+        CALCULATE(
+            COUNTROWS('Fact_Visit'),
+            'Fact_Visit'[HasProductPhoto] = 1
+        )
+    
+    MEASURE 'Fact_Visit'[Product_Photo_Rate] = 
+        DIVIDE([Visits_With_Product_Photos], [Total_Visits], 0)
+    
+    MEASURE 'Fact_Visit'[Visits_With_Feedback] = 
+        CALCULATE(
+            COUNTROWS('Fact_Visit'),
+            'Fact_Visit'[HasFeedback] = 1
+        )
+    
+    MEASURE 'Fact_Visit'[Feedback_Rate] = 
+        DIVIDE([Visits_With_Feedback], [Total_Visits], 0)
+    
+    MEASURE 'Fact_Visit'[Visit_Quality_Score] = 
+        (
+            [Photo_Compliance_Rate] * 0.4 +
+            [Product_Photo_Rate] * 0.3 +
+            [Feedback_Rate] * 0.3
+        )
+
+EVALUATE
+    SUMMARIZECOLUMNS(
+        "Total_Visits", [Total_Visits],
+        "Visits_With_Photos", [Visits_With_Photos],
+        "Photo_Compliance_Rate", [Photo_Compliance_Rate],
+        "Visits_With_Product_Photos", [Visits_With_Product_Photos],
+        "Product_Photo_Rate", [Product_Photo_Rate],
+        "Visits_With_Feedback", [Visits_With_Feedback],
+        "Feedback_Rate", [Feedback_Rate],
+        "Visit_Quality_Score", [Visit_Quality_Score]
+    )
+
+// ============================================
+// SECTION 3: VISIT FREQUENCY MEASURES
+// ============================================
+DEFINE
+    MEASURE 'Fact_Visit'[Unique_Clients_Visited] = DISTINCTCOUNT('Fact_Visit'[ClientKey])
+    
+    MEASURE 'Fact_Visit'[Clients_Visited_Once] = 
+        COUNTROWS(
+            FILTER(
+                VALUES('Fact_Visit'[ClientKey]),
+                CALCULATE(COUNTROWS('Fact_Visit')) = 1
+            )
+        )
+    
+    MEASURE 'Fact_Visit'[Clients_Visited_Multiple] = 
+        COUNTROWS(
+            FILTER(
+                VALUES('Fact_Visit'[ClientKey]),
+                CALCULATE(COUNTROWS('Fact_Visit')) > 1
+            )
+        )
+    
+    MEASURE 'Fact_Visit'[Repeat_Visit_Rate] = 
+        DIVIDE([Clients_Visited_Multiple], [Unique_Clients_Visited], 0)
+
+EVALUATE
+    SUMMARIZECOLUMNS(
+        "Unique_Clients_Visited", [Unique_Clients_Visited],
+        "Clients_Visited_Once", [Clients_Visited_Once],
+        "Clients_Visited_Multiple", [Clients_Visited_Multiple],
+        "Repeat_Visit_Rate", [Repeat_Visit_Rate]
+    )
+
+// ============================================
+// SECTION 4: TIME INTELLIGENCE - PERIOD COMPARISONS
+// ============================================
+DEFINE
+    MEASURE 'Fact_Visit'[Total_Visits] = COUNTROWS('Fact_Visit')
+    
+    MEASURE 'Fact_Visit'[Visits_MTD] = 
+        CALCULATE(
+            [Total_Visits],
+            DATESMTD('Dim_Date'[Date])
+        )
+    
+    MEASURE 'Fact_Visit'[Visits_QTD] = 
+        CALCULATE(
+            [Total_Visits],
+            DATESQTD('Dim_Date'[Date])
+        )
+    
+    MEASURE 'Fact_Visit'[Visits_YTD] = 
+        CALCULATE(
+            [Total_Visits],
+            DATESYTD('Dim_Date'[Date])
+        )
+    
+    MEASURE 'Fact_Visit'[Visits_Previous_Month] = 
+        CALCULATE(
+            [Total_Visits],
+            PREVIOUSMONTH('Dim_Date'[Date])
+        )
+    
+    MEASURE 'Fact_Visit'[Visits_Previous_Quarter] = 
+        CALCULATE(
+            [Total_Visits],
+            PREVIOUSQUARTER('Dim_Date'[Date])
+        )
+    
+    MEASURE 'Fact_Visit'[Visits_Previous_Year] = 
+        CALCULATE(
+            [Total_Visits],
+            PREVIOUSYEAR('Dim_Date'[Date])
+        )
+
+EVALUATE
+    SUMMARIZECOLUMNS(
+        "Total_Visits", [Total_Visits],
+        "Visits_MTD", [Visits_MTD],
+        "Visits_QTD", [Visits_QTD],
+        "Visits_YTD", [Visits_YTD],
+        "Visits_Previous_Month", [Visits_Previous_Month],
+        "Visits_Previous_Quarter", [Visits_Previous_Quarter],
+        "Visits_Previous_Year", [Visits_Previous_Year]
+    )
+
+// ============================================
+// SECTION 5: TIME INTELLIGENCE - GROWTH RATES
+// ============================================
+DEFINE
+    MEASURE 'Fact_Visit'[Total_Visits] = COUNTROWS('Fact_Visit')
+    
+    MEASURE 'Fact_Visit'[Visits_Previous_Month] = 
+        CALCULATE(
+            [Total_Visits],
+            PREVIOUSMONTH('Dim_Date'[Date])
+        )
+    
+    MEASURE 'Fact_Visit'[Visits_Previous_Year] = 
+        CALCULATE(
+            [Total_Visits],
+            PREVIOUSYEAR('Dim_Date'[Date])
+        )
+    
+    MEASURE 'Fact_Visit'[Visits_MoM_Growth] = 
+        DIVIDE(
+            [Total_Visits] - [Visits_Previous_Month],
+            [Visits_Previous_Month],
+            0
+        )
+    
+    MEASURE 'Fact_Visit'[Visits_YoY_Growth] = 
+        DIVIDE(
+            [Total_Visits] - [Visits_Previous_Year],
+            [Visits_Previous_Year],
+            0
+        )
+    
+    MEASURE 'Fact_Visit'[Visits_Rolling_7_Days] = 
+        CALCULATE(
+            [Total_Visits],
+            DATESINPERIOD('Dim_Date'[Date], MAX('Dim_Date'[Date]), -7, DAY)
+        )
+    
+    MEASURE 'Fact_Visit'[Visits_Rolling_30_Days] = 
+        CALCULATE(
+            [Total_Visits],
+            DATESINPERIOD('Dim_Date'[Date], MAX('Dim_Date'[Date]), -30, DAY)
+        )
+
+EVALUATE
+    SUMMARIZECOLUMNS(
+        "Visits_MoM_Growth", [Visits_MoM_Growth],
+        "Visits_YoY_Growth", [Visits_YoY_Growth],
+        "Visits_Rolling_7_Days", [Visits_Rolling_7_Days],
+        "Visits_Rolling_30_Days", [Visits_Rolling_30_Days]
+    )
+
+// ============================================
+// SECTION 6: TERRITORY & GPS MEASURES
+// ============================================
+DEFINE
+    MEASURE 'Fact_Visit'[Total_Visits] = COUNTROWS('Fact_Visit')
+    
+    MEASURE 'Fact_Visit'[Territory_Captured_Visits] = 
+        CALCULATE(
+            COUNTROWS('Fact_Visit'),
+            'Fact_Visit'[HasTerritory] = 1
+        )
+    
+    MEASURE 'Fact_Visit'[GPS_Capture_Rate] = 
+        DIVIDE([Territory_Captured_Visits], [Total_Visits], 0)
+    
+    MEASURE 'Fact_Visit'[No_Territory_Visits] = 
+        CALCULATE(
+            COUNTROWS('Fact_Visit'),
+            'Fact_Visit'[HasTerritory] = 0
+        )
+    
+    MEASURE 'Fact_Visit'[Unique_Territories] = DISTINCTCOUNT('Fact_Visit'[territory_id])
+
+EVALUATE
+    SUMMARIZECOLUMNS(
+        "Total_Visits", [Total_Visits],
+        "Territory_Captured_Visits", [Territory_Captured_Visits],
+        "GPS_Capture_Rate", [GPS_Capture_Rate],
+        "No_Territory_Visits", [No_Territory_Visits],
+        "Unique_Territories", [Unique_Territories]
+    )
+
+// ============================================
+// SECTION 7: EMPLOYEE PERFORMANCE MEASURES
+// ============================================
+DEFINE
+    MEASURE 'Fact_Visit'[Total_Visits] = COUNTROWS('Fact_Visit')
+    MEASURE 'Fact_Visit'[Unique_Clients_Visited] = DISTINCTCOUNT('Fact_Visit'[ClientKey])
+    MEASURE 'Fact_Visit'[Active_Employees] = DISTINCTCOUNT('Fact_Visit'[EmployeeID])
+    
+    MEASURE 'Fact_Visit'[Avg_Visits_Per_Day] = 
+        DIVIDE(
+            [Total_Visits],
+            DISTINCTCOUNT('Fact_Visit'[DateKey])
+        )
+    
+    MEASURE 'Fact_Visit'[Top_Performer_Visits] = 
+        MAXX(
+            VALUES('Fact_Visit'[EmployeeID]),
+            CALCULATE([Total_Visits])
+        )
+    
+    MEASURE 'Fact_Visit'[Bottom_Performer_Visits] = 
+        MINX(
+            VALUES('Fact_Visit'[EmployeeID]),
+            CALCULATE([Total_Visits])
+        )
+    
+    MEASURE 'Fact_Visit'[Employees_Above_Target] = 
+        VAR TargetVisits = 50
+        RETURN
+        COUNTROWS(
+            FILTER(
+                VALUES('Fact_Visit'[EmployeeID]),
+                CALCULATE([Total_Visits]) >= TargetVisits
+            )
+        )
+
+EVALUATE
+    SUMMARIZECOLUMNS(
+        "Total_Visits", [Total_Visits],
+        "Active_Employees", [Active_Employees],
+        "Avg_Visits_Per_Day", [Avg_Visits_Per_Day],
+        "Top_Performer_Visits", [Top_Performer_Visits],
+        "Bottom_Performer_Visits", [Bottom_Performer_Visits],
+        "Employees_Above_Target", [Employees_Above_Target]
+    )
+
+// ============================================
+// SECTION 8: VISIT TYPE ANALYSIS
+// ============================================
+DEFINE
+    MEASURE 'Fact_Visit'[Total_Visits] = COUNTROWS('Fact_Visit')
+    MEASURE 'Fact_Visit'[Unique_Clients_Visited] = DISTINCTCOUNT('Fact_Visit'[ClientKey])
+
+EVALUATE
+    SUMMARIZECOLUMNS(
+        'Fact_Visit'[visit_type],
+        "Total_Visits", [Total_Visits],
+        "Unique_Clients", [Unique_Clients_Visited]
+    )
+
+// ============================================
+// SECTION 9: CLIENT TYPE ANALYSIS
+// ============================================
+DEFINE
+    MEASURE 'Fact_Visit'[Total_Visits] = COUNTROWS('Fact_Visit')
+    MEASURE 'Fact_Visit'[Unique_Clients_Visited] = DISTINCTCOUNT('Fact_Visit'[ClientKey])
+    MEASURE 'Fact_Visit'[Active_Employees] = DISTINCTCOUNT('Fact_Visit'[EmployeeID])
+    
+    MEASURE 'Fact_Visit'[Visits_With_Photos] = 
+        CALCULATE(
+            COUNTROWS('Fact_Visit'),
+            'Fact_Visit'[HasPhoto] = 1
+        )
+    
+    MEASURE 'Fact_Visit'[Photo_Compliance_Rate] = 
+        DIVIDE([Visits_With_Photos], [Total_Visits], 0)
+
+EVALUATE
+    SUMMARIZECOLUMNS(
+        'Fact_Visit'[ClientType],
+        "Total_Visits", [Total_Visits],
+        "Unique_Clients", [Unique_Clients_Visited],
+        "Active_Employees", [Active_Employees],
+        "Photo_Compliance_Rate", [Photo_Compliance_Rate]
+    )
+
+// ============================================
+// SECTION 10: RESPONSIBLE ROLE ANALYSIS
+// ============================================
+DEFINE
+    MEASURE 'Fact_Visit'[Total_Visits] = COUNTROWS('Fact_Visit')
+    MEASURE 'Fact_Visit'[Unique_Clients_Visited] = DISTINCTCOUNT('Fact_Visit'[ClientKey])
+    MEASURE 'Fact_Visit'[Active_Employees] = DISTINCTCOUNT('Fact_Visit'[EmployeeID])
+    
+    MEASURE 'Fact_Visit'[Territory_Captured_Visits] = 
+        CALCULATE(
+            COUNTROWS('Fact_Visit'),
+            'Fact_Visit'[HasTerritory] = 1
+        )
+    
+    MEASURE 'Fact_Visit'[GPS_Capture_Rate] = 
+        DIVIDE([Territory_Captured_Visits], [Total_Visits], 0)
+
+EVALUATE
+    SUMMARIZECOLUMNS(
+        'Fact_Visit'[ResponsibleRole],
+        "Total_Visits", [Total_Visits],
+        "Unique_Clients", [Unique_Clients_Visited],
+        "Active_Employees", [Active_Employees],
+        "GPS_Capture_Rate", [GPS_Capture_Rate]
+    )
+
+// ============================================
+// SECTION 11: VISIT STATUS ANALYSIS
+// ============================================
+DEFINE
+    MEASURE 'Fact_Visit'[Total_Visits] = COUNTROWS('Fact_Visit')
+    MEASURE 'Fact_Visit'[Unique_Clients_Visited] = DISTINCTCOUNT('Fact_Visit'[ClientKey])
+
+EVALUATE
+    SUMMARIZECOLUMNS(
+        'Fact_Visit'[status],
+        "Total_Visits", [Total_Visits],
+        "Unique_Clients", [Unique_Clients_Visited]
+    )
+
+// ============================================
+// SECTION 12: ROLE LEVEL ANALYSIS
+// ============================================
+DEFINE
+    MEASURE 'Fact_Visit'[Total_Visits] = COUNTROWS('Fact_Visit')
+    MEASURE 'Fact_Visit'[Unique_Clients_Visited] = DISTINCTCOUNT('Fact_Visit'[ClientKey])
+    MEASURE 'Fact_Visit'[Active_Employees] = DISTINCTCOUNT('Fact_Visit'[EmployeeID])
+    
+    MEASURE 'Fact_Visit'[Visits_Per_Employee] = 
+        DIVIDE([Total_Visits], [Active_Employees], 0)
+
+EVALUATE
+    SUMMARIZECOLUMNS(
+        'Fact_Visit'[RoleLevel],
+        "Total_Visits", [Total_Visits],
+        "Unique_Clients", [Unique_Clients_Visited],
+        "Active_Employees", [Active_Employees],
+        "Visits_Per_Employee", [Visits_Per_Employee]
+    )

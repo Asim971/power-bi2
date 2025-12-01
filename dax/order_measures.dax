@@ -1,0 +1,444 @@
+// ============================================
+// ORDER MEASURES - Cross-Role Visit Reporting
+// ============================================
+// Execute via: POST https://api.powerbi.com/v1.0/myorg/datasets/{datasetId}/executeQueries
+// Each section is a separate executable query block
+//
+// Fact_Order columns: OrderID, OrderDateKey, UserID, ClientKey, SiteID, DealerID, RetailerID,
+//   BazaarID, ProjectConversionID, OrderStatus, StatusGroup, OrderType, OrderCategory,
+//   DeliveryMethod, DeliveryAddress, Stage, TotalAmount, IsConverted, HasMemoPhoto,
+//   IsEngineerEligible, IsPartnerEligible, MemoPhoto, Feedback, created_at, updated_at
+// ============================================
+
+// ============================================
+// SECTION 1: ORDER COUNT MEASURES
+// ============================================
+DEFINE
+    MEASURE 'Fact_Order'[Total_Orders] = COUNTROWS('Fact_Order')
+    
+    MEASURE 'Fact_Order'[Completed_Orders] = 
+        CALCULATE(
+            COUNTROWS('Fact_Order'),
+            'Fact_Order'[StatusGroup] = "Completed"
+        )
+    
+    MEASURE 'Fact_Order'[Pending_Orders] = 
+        CALCULATE(
+            COUNTROWS('Fact_Order'),
+            'Fact_Order'[StatusGroup] = "Open"
+        )
+    
+    MEASURE 'Fact_Order'[Cancelled_Orders] = 
+        CALCULATE(
+            COUNTROWS('Fact_Order'),
+            'Fact_Order'[StatusGroup] = "Cancelled"
+        )
+    
+    MEASURE 'Fact_Order'[Completion_Rate] = 
+        DIVIDE([Completed_Orders], [Total_Orders], 0)
+    
+    MEASURE 'Fact_Order'[Cancellation_Rate] = 
+        DIVIDE([Cancelled_Orders], [Total_Orders], 0)
+
+EVALUATE
+    SUMMARIZECOLUMNS(
+        "Total_Orders", [Total_Orders],
+        "Completed_Orders", [Completed_Orders],
+        "Pending_Orders", [Pending_Orders],
+        "Cancelled_Orders", [Cancelled_Orders],
+        "Completion_Rate", [Completion_Rate],
+        "Cancellation_Rate", [Cancellation_Rate]
+    )
+
+// ============================================
+// SECTION 2: ORDER AMOUNT MEASURES
+// ============================================
+DEFINE
+    MEASURE 'Fact_Order'[Total_Order_Amount] = SUM('Fact_Order'[TotalAmount])
+    
+    MEASURE 'Fact_Order'[Avg_Order_Amount] = AVERAGE('Fact_Order'[TotalAmount])
+    
+    MEASURE 'Fact_Order'[Max_Order_Amount] = MAX('Fact_Order'[TotalAmount])
+    
+    MEASURE 'Fact_Order'[Min_Order_Amount] = MIN('Fact_Order'[TotalAmount])
+    
+    MEASURE 'Fact_Order'[Total_Orders] = COUNTROWS('Fact_Order')
+    
+    MEASURE 'Fact_Order'[Completed_Order_Amount] = 
+        CALCULATE(
+            SUM('Fact_Order'[TotalAmount]),
+            'Fact_Order'[StatusGroup] = "Completed"
+        )
+    
+    MEASURE 'Fact_Order'[Pending_Order_Amount] = 
+        CALCULATE(
+            SUM('Fact_Order'[TotalAmount]),
+            'Fact_Order'[StatusGroup] = "Open"
+        )
+    
+    MEASURE 'Fact_Order'[Cancelled_Order_Amount] = 
+        CALCULATE(
+            SUM('Fact_Order'[TotalAmount]),
+            'Fact_Order'[StatusGroup] = "Cancelled"
+        )
+    
+    MEASURE 'Fact_Order'[Amount_Per_Order] = 
+        DIVIDE([Total_Order_Amount], [Total_Orders], 0)
+
+EVALUATE
+    SUMMARIZECOLUMNS(
+        "Total_Order_Amount", [Total_Order_Amount],
+        "Avg_Order_Amount", [Avg_Order_Amount],
+        "Max_Order_Amount", [Max_Order_Amount],
+        "Min_Order_Amount", [Min_Order_Amount],
+        "Completed_Order_Amount", [Completed_Order_Amount],
+        "Pending_Order_Amount", [Pending_Order_Amount],
+        "Cancelled_Order_Amount", [Cancelled_Order_Amount],
+        "Amount_Per_Order", [Amount_Per_Order]
+    )
+
+// ============================================
+// SECTION 3: DELIVERY METHOD MEASURES
+// ============================================
+DEFINE
+    MEASURE 'Fact_Order'[Total_Orders] = COUNTROWS('Fact_Order')
+    
+    MEASURE 'Fact_Order'[Unique_Delivery_Methods] = DISTINCTCOUNT('Fact_Order'[DeliveryMethod])
+
+EVALUATE
+    SUMMARIZECOLUMNS(
+        'Fact_Order'[DeliveryMethod],
+        "Order_Count", [Total_Orders]
+    )
+
+// ============================================
+// SECTION 4: DELIVERY AMOUNT BY METHOD
+// ============================================
+DEFINE
+    MEASURE 'Fact_Order'[Total_Order_Amount] = SUM('Fact_Order'[TotalAmount])
+    
+    MEASURE 'Fact_Order'[Avg_Order_Amount] = AVERAGE('Fact_Order'[TotalAmount])
+    
+    MEASURE 'Fact_Order'[Total_Orders] = COUNTROWS('Fact_Order')
+
+EVALUATE
+    SUMMARIZECOLUMNS(
+        'Fact_Order'[DeliveryMethod],
+        "Total_Amount", [Total_Order_Amount],
+        "Avg_Amount", [Avg_Order_Amount],
+        "Order_Count", [Total_Orders]
+    )
+
+// ============================================
+// SECTION 5: ELIGIBILITY MEASURES (Engineer & Partner)
+// ============================================
+DEFINE
+    MEASURE 'Fact_Order'[Total_Orders] = COUNTROWS('Fact_Order')
+    
+    MEASURE 'Fact_Order'[Engineer_Eligible_Orders] = 
+        CALCULATE(
+            COUNTROWS('Fact_Order'),
+            'Fact_Order'[IsEngineerEligible] = TRUE()
+        )
+    
+    MEASURE 'Fact_Order'[Partner_Eligible_Orders] = 
+        CALCULATE(
+            COUNTROWS('Fact_Order'),
+            'Fact_Order'[IsPartnerEligible] = TRUE()
+        )
+    
+    MEASURE 'Fact_Order'[Engineer_Eligibility_Rate] = 
+        DIVIDE([Engineer_Eligible_Orders], [Total_Orders], 0)
+    
+    MEASURE 'Fact_Order'[Partner_Eligibility_Rate] = 
+        DIVIDE([Partner_Eligible_Orders], [Total_Orders], 0)
+    
+    MEASURE 'Fact_Order'[Total_Order_Amount] = SUM('Fact_Order'[TotalAmount])
+    
+    MEASURE 'Fact_Order'[Engineer_Eligible_Amount] = 
+        CALCULATE(
+            SUM('Fact_Order'[TotalAmount]),
+            'Fact_Order'[IsEngineerEligible] = TRUE()
+        )
+    
+    MEASURE 'Fact_Order'[Partner_Eligible_Amount] = 
+        CALCULATE(
+            SUM('Fact_Order'[TotalAmount]),
+            'Fact_Order'[IsPartnerEligible] = TRUE()
+        )
+
+EVALUATE
+    SUMMARIZECOLUMNS(
+        "Total_Orders", [Total_Orders],
+        "Engineer_Eligible_Orders", [Engineer_Eligible_Orders],
+        "Partner_Eligible_Orders", [Partner_Eligible_Orders],
+        "Engineer_Eligibility_Rate", [Engineer_Eligibility_Rate],
+        "Partner_Eligibility_Rate", [Partner_Eligibility_Rate],
+        "Engineer_Eligible_Amount", [Engineer_Eligible_Amount],
+        "Partner_Eligible_Amount", [Partner_Eligible_Amount]
+    )
+
+// ============================================
+// SECTION 6: ORDER TYPE & CATEGORY ANALYSIS
+// ============================================
+DEFINE
+    MEASURE 'Fact_Order'[Total_Orders] = COUNTROWS('Fact_Order')
+    
+    MEASURE 'Fact_Order'[Total_Order_Amount] = SUM('Fact_Order'[TotalAmount])
+    
+    MEASURE 'Fact_Order'[Avg_Order_Amount] = AVERAGE('Fact_Order'[TotalAmount])
+
+EVALUATE
+    SUMMARIZECOLUMNS(
+        'Fact_Order'[OrderType],
+        'Fact_Order'[OrderCategory],
+        "Order_Count", [Total_Orders],
+        "Total_Amount", [Total_Order_Amount],
+        "Avg_Amount", [Avg_Order_Amount]
+    )
+
+// ============================================
+// SECTION 7: TIME INTELLIGENCE - ORDER TRENDS
+// ============================================
+DEFINE
+    MEASURE 'Fact_Order'[Total_Orders] = COUNTROWS('Fact_Order')
+    MEASURE 'Fact_Order'[Total_Order_Amount] = SUM('Fact_Order'[TotalAmount])
+    
+    MEASURE 'Fact_Order'[Orders_MTD] = 
+        CALCULATE(
+            [Total_Orders],
+            DATESMTD('Dim_Date'[Date])
+        )
+    
+    MEASURE 'Fact_Order'[Orders_QTD] = 
+        CALCULATE(
+            [Total_Orders],
+            DATESQTD('Dim_Date'[Date])
+        )
+    
+    MEASURE 'Fact_Order'[Orders_YTD] = 
+        CALCULATE(
+            [Total_Orders],
+            DATESYTD('Dim_Date'[Date])
+        )
+    
+    MEASURE 'Fact_Order'[Amount_MTD] = 
+        CALCULATE(
+            [Total_Order_Amount],
+            DATESMTD('Dim_Date'[Date])
+        )
+    
+    MEASURE 'Fact_Order'[Amount_QTD] = 
+        CALCULATE(
+            [Total_Order_Amount],
+            DATESQTD('Dim_Date'[Date])
+        )
+    
+    MEASURE 'Fact_Order'[Amount_YTD] = 
+        CALCULATE(
+            [Total_Order_Amount],
+            DATESYTD('Dim_Date'[Date])
+        )
+
+EVALUATE
+    SUMMARIZECOLUMNS(
+        "Orders_MTD", [Orders_MTD],
+        "Orders_QTD", [Orders_QTD],
+        "Orders_YTD", [Orders_YTD],
+        "Amount_MTD", [Amount_MTD],
+        "Amount_QTD", [Amount_QTD],
+        "Amount_YTD", [Amount_YTD]
+    )
+
+// ============================================
+// SECTION 8: TIME INTELLIGENCE - ORDER GROWTH
+// ============================================
+DEFINE
+    MEASURE 'Fact_Order'[Total_Orders] = COUNTROWS('Fact_Order')
+    MEASURE 'Fact_Order'[Total_Order_Amount] = SUM('Fact_Order'[TotalAmount])
+    
+    MEASURE 'Fact_Order'[Orders_Previous_Month] = 
+        CALCULATE(
+            [Total_Orders],
+            PREVIOUSMONTH('Dim_Date'[Date])
+        )
+    
+    MEASURE 'Fact_Order'[Orders_Previous_Year] = 
+        CALCULATE(
+            [Total_Orders],
+            PREVIOUSYEAR('Dim_Date'[Date])
+        )
+    
+    MEASURE 'Fact_Order'[Amount_Previous_Month] = 
+        CALCULATE(
+            [Total_Order_Amount],
+            PREVIOUSMONTH('Dim_Date'[Date])
+        )
+    
+    MEASURE 'Fact_Order'[Amount_Previous_Year] = 
+        CALCULATE(
+            [Total_Order_Amount],
+            PREVIOUSYEAR('Dim_Date'[Date])
+        )
+    
+    MEASURE 'Fact_Order'[Orders_MoM_Growth] = 
+        DIVIDE(
+            [Total_Orders] - [Orders_Previous_Month],
+            [Orders_Previous_Month],
+            0
+        )
+    
+    MEASURE 'Fact_Order'[Orders_YoY_Growth] = 
+        DIVIDE(
+            [Total_Orders] - [Orders_Previous_Year],
+            [Orders_Previous_Year],
+            0
+        )
+    
+    MEASURE 'Fact_Order'[Amount_MoM_Growth] = 
+        DIVIDE(
+            [Total_Order_Amount] - [Amount_Previous_Month],
+            [Amount_Previous_Month],
+            0
+        )
+    
+    MEASURE 'Fact_Order'[Amount_YoY_Growth] = 
+        DIVIDE(
+            [Total_Order_Amount] - [Amount_Previous_Year],
+            [Amount_Previous_Year],
+            0
+        )
+
+EVALUATE
+    SUMMARIZECOLUMNS(
+        "Orders_MoM_Growth", [Orders_MoM_Growth],
+        "Orders_YoY_Growth", [Orders_YoY_Growth],
+        "Amount_MoM_Growth", [Amount_MoM_Growth],
+        "Amount_YoY_Growth", [Amount_YoY_Growth]
+    )
+
+// ============================================
+// SECTION 9: CLIENT-BASED ORDER ANALYSIS
+// ============================================
+DEFINE
+    MEASURE 'Fact_Order'[Total_Orders] = COUNTROWS('Fact_Order')
+    MEASURE 'Fact_Order'[Total_Order_Amount] = SUM('Fact_Order'[TotalAmount])
+    MEASURE 'Fact_Order'[Unique_Clients_With_Orders] = DISTINCTCOUNT('Fact_Order'[ClientKey])
+    
+    MEASURE 'Fact_Order'[Orders_Per_Client] = 
+        DIVIDE([Total_Orders], [Unique_Clients_With_Orders], 0)
+    
+    MEASURE 'Fact_Order'[Amount_Per_Client] = 
+        DIVIDE([Total_Order_Amount], [Unique_Clients_With_Orders], 0)
+    
+    MEASURE 'Fact_Order'[Single_Order_Clients] = 
+        COUNTROWS(
+            FILTER(
+                VALUES('Fact_Order'[ClientKey]),
+                CALCULATE(COUNTROWS('Fact_Order')) = 1
+            )
+        )
+    
+    MEASURE 'Fact_Order'[Repeat_Order_Clients] = 
+        COUNTROWS(
+            FILTER(
+                VALUES('Fact_Order'[ClientKey]),
+                CALCULATE(COUNTROWS('Fact_Order')) > 1
+            )
+        )
+    
+    MEASURE 'Fact_Order'[Repeat_Order_Rate] = 
+        DIVIDE([Repeat_Order_Clients], [Unique_Clients_With_Orders], 0)
+
+EVALUATE
+    SUMMARIZECOLUMNS(
+        "Unique_Clients_With_Orders", [Unique_Clients_With_Orders],
+        "Orders_Per_Client", [Orders_Per_Client],
+        "Amount_Per_Client", [Amount_Per_Client],
+        "Single_Order_Clients", [Single_Order_Clients],
+        "Repeat_Order_Clients", [Repeat_Order_Clients],
+        "Repeat_Order_Rate", [Repeat_Order_Rate]
+    )
+
+// ============================================
+// SECTION 10: ORDER STATUS BREAKDOWN
+// ============================================
+DEFINE
+    MEASURE 'Fact_Order'[Total_Orders] = COUNTROWS('Fact_Order')
+    MEASURE 'Fact_Order'[Total_Order_Amount] = SUM('Fact_Order'[TotalAmount])
+    MEASURE 'Fact_Order'[Avg_Order_Amount] = AVERAGE('Fact_Order'[TotalAmount])
+
+EVALUATE
+    SUMMARIZECOLUMNS(
+        'Fact_Order'[OrderStatus],
+        'Fact_Order'[StatusGroup],
+        "Order_Count", [Total_Orders],
+        "Total_Amount", [Total_Order_Amount],
+        "Avg_Amount", [Avg_Order_Amount]
+    )
+
+// ============================================
+// SECTION 11: CONVERSION & MEMO PHOTO ANALYSIS
+// ============================================
+DEFINE
+    MEASURE 'Fact_Order'[Total_Orders] = COUNTROWS('Fact_Order')
+    
+    MEASURE 'Fact_Order'[Converted_Orders] = 
+        CALCULATE(
+            COUNTROWS('Fact_Order'),
+            'Fact_Order'[IsConverted] = 1
+        )
+    
+    MEASURE 'Fact_Order'[Conversion_Rate] = 
+        DIVIDE([Converted_Orders], [Total_Orders], 0)
+    
+    MEASURE 'Fact_Order'[Orders_With_Memo_Photo] = 
+        CALCULATE(
+            COUNTROWS('Fact_Order'),
+            'Fact_Order'[HasMemoPhoto] = 1
+        )
+    
+    MEASURE 'Fact_Order'[Memo_Photo_Rate] = 
+        DIVIDE([Orders_With_Memo_Photo], [Total_Orders], 0)
+    
+    MEASURE 'Fact_Order'[Total_Order_Amount] = SUM('Fact_Order'[TotalAmount])
+    
+    MEASURE 'Fact_Order'[Converted_Amount] = 
+        CALCULATE(
+            SUM('Fact_Order'[TotalAmount]),
+            'Fact_Order'[IsConverted] = 1
+        )
+
+EVALUATE
+    SUMMARIZECOLUMNS(
+        "Total_Orders", [Total_Orders],
+        "Converted_Orders", [Converted_Orders],
+        "Conversion_Rate", [Conversion_Rate],
+        "Orders_With_Memo_Photo", [Orders_With_Memo_Photo],
+        "Memo_Photo_Rate", [Memo_Photo_Rate],
+        "Total_Order_Amount", [Total_Order_Amount],
+        "Converted_Amount", [Converted_Amount]
+    )
+
+// ============================================
+// SECTION 12: ORDERS BY USER
+// ============================================
+DEFINE
+    MEASURE 'Fact_Order'[Total_Orders] = COUNTROWS('Fact_Order')
+    MEASURE 'Fact_Order'[Total_Order_Amount] = SUM('Fact_Order'[TotalAmount])
+    MEASURE 'Fact_Order'[Active_Users] = DISTINCTCOUNT('Fact_Order'[UserID])
+    
+    MEASURE 'Fact_Order'[Orders_Per_User] = 
+        DIVIDE([Total_Orders], [Active_Users], 0)
+    
+    MEASURE 'Fact_Order'[Amount_Per_User] = 
+        DIVIDE([Total_Order_Amount], [Active_Users], 0)
+
+EVALUATE
+    SUMMARIZECOLUMNS(
+        "Total_Orders", [Total_Orders],
+        "Total_Order_Amount", [Total_Order_Amount],
+        "Active_Users", [Active_Users],
+        "Orders_Per_User", [Orders_Per_User],
+        "Amount_Per_User", [Amount_Per_User]
+    )

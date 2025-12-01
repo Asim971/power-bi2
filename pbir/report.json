@@ -1,0 +1,15 @@
+{
+    "version": "4.0",
+    "name": "BMD Sales Cross-Role Visit Reporting",
+    "description": "Cross-role visit reporting with 60-day conversion tracking for BMD Sales",
+    "datasetBinding": {
+        "byPath": null,
+        "byConnection": {
+            "connectionString": null,
+            "pbiServiceModelId": "3477f170-bf61-42a4-b7a6-4414d7bf8881",
+            "pbiModelVirtualServerName": "sobe_wowvirtualserver",
+            "pbiModelDatabaseName": "3477f170-bf61-42a4-b7a6-4414d7bf8881"
+        }
+    },
+    "themeFile": "BMD_Sales_Theme.json"
+}

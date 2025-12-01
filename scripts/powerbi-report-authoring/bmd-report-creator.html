@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMD Sales - Power BI Report Creator</title>
+    <script src="https://cdn.jsdelivr.net/npm/powerbi-client@2.23.1/dist/powerbi.min.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/powerbi-report-authoring@3.0.0/dist/powerbi-report-authoring.min.js"></script>
+    <style>
+        :root {
+            --primary: #0066CC;
+            --success: #2ECC71;
+            --warning: #F39C12;
+            --danger: #E74C3C;
+            --dark: #2C3E50;
+            --light: #ECF0F1;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            border-radius: 12px;
+            padding: 20px 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            color: var(--dark);
+            font-size: 24px;
+        }
+
+        .header .subtitle {
+            color: #7F8C8D;
+            font-size: 14px;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 20px;
+            height: calc(100vh - 150px);
+        }
+
+        .sidebar {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            color: var(--dark);
+            font-size: 16px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--light);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid var(--light);
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #0066CC, #0052A3);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 102, 204, 0.4);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #2ECC71, #27AE60);
+            color: white;
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #F39C12, #E67E22);
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #E74C3C, #C0392B);
+            color: white;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .report-container {
+            background: white;
+            border-radius: 12px;
+            padding: 0;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        #embedContainer {
+            width: 100%;
+            height: 100%;
+            min-height: 600px;
+        }
+
+        .page-list {
+            margin: 15px 0;
+        }
+
+        .page-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            margin-bottom: 8px;
+            background: var(--light);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .page-item:hover {
+            background: #D5DBDB;
+        }
+
+        .page-item.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .page-item .page-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .status-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--dark);
+            color: white;
+            padding: 10px 20px;
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .log-container {
+            margin-top: 15px;
+            background: #1a1a2e;
+            border-radius: 8px;
+            padding: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .log-entry {
+            font-family: 'Consolas', monospace;
+            font-size: 11px;
+            padding: 3px 0;
+            border-bottom: 1px solid #2a2a4e;
+        }
+
+        .log-entry.info {
+            color: #4FC3F7;
+        }
+
+        .log-entry.success {
+            color: #81C784;
+        }
+
+        .log-entry.warning {
+            color: #FFB74D;
+        }
+
+        .log-entry.error {
+            color: #E57373;
+        }
+
+        .visual-palette {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin: 15px 0;
+        }
+
+        .visual-type {
+            padding: 8px;
+            text-align: center;
+            background: var(--light);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 11px;
+            transition: all 0.3s;
+        }
+
+        .visual-type:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .visual-type .icon {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: var(--light);
+            border-radius: 2px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        .progress-bar .fill {
+            height: 100%;
+            background: linear-gradient(90deg, #2ECC71, #27AE60);
+            width: 0%;
+            transition: width 0.5s;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+
+        .tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <div>
+                <h1>🏭 BMD Sales - Power BI Report Creator</h1>
+                <div class="subtitle">Cross-Role Visit Reporting Dashboard Builder</div>
+            </div>
+            <div>
+                <span id="connectionStatus">⚪ Not Connected</span>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="sidebar">
+                <div class="tabs">
+                    <div class="tab active" data-tab="config">Config</div>
+                    <div class="tab" data-tab="pages">Pages</div>
+                    <div class="tab" data-tab="visuals">Visuals</div>
+                </div>
+
+                <!-- Config Tab -->
+                <div class="tab-content active" id="config-tab">
+                    <h2>🔐 Authentication</h2>
+                    <div class="form-group">
+                        <label>Access Token</label>
+                        <input type="password" id="accessToken" placeholder="Paste Azure AD token here...">
+                    </div>
+
+                    <h2>📊 Dataset Configuration</h2>
+                    <div class="form-group">
+                        <label>Workspace ID</label>
+                        <input type="text" id="workspaceId" value="276a43e7-e0e3-4366-9ac1-40d1bf52182f">
+                    </div>
+                    <div class="form-group">
+                        <label>Dataset ID</label>
+                        <input type="text" id="datasetId" value="3477f170-bf61-42a4-b7a6-4414d7bf8881">
+                    </div>
+
+                    <button class="btn btn-primary" id="btnCreateReport">🚀 Create New Report</button>
+                    <button class="btn btn-warning" id="btnEditExisting">✏️ Edit Existing Report</button>
+
+                    <div class="form-group" style="margin-top: 15px;">
+                        <label>Existing Report ID (for editing)</label>
+                        <input type="text" id="reportId" value="dcd4d7a3-e911-49e1-847a-1feb594f1616">
+                    </div>
+
+                    <div class="progress-bar">
+                        <div class="fill" id="progressFill"></div>
+                    </div>
+
+                    <div class="log-container" id="logContainer">
+                        <div class="log-entry info">Ready to create report...</div>
+                    </div>
+                </div>
+
+                <!-- Pages Tab -->
+                <div class="tab-content" id="pages-tab">
+                    <h2>📄 Report Pages</h2>
+                    <div class="page-list" id="pageList">
+                        <div class="page-item" data-page="executive">
+                            <span class="page-icon">📊</span>
+                            <span>Executive Command Center</span>
+                        </div>
+                        <div class="page-item" data-page="territory">
+                            <span class="page-icon">🗺️</span>
+                            <span>Territory Intelligence</span>
+                        </div>
+                        <div class="page-item" data-page="quality">
+                            <span class="page-icon">✅</span>
+                            <span>Quality Scorecard</span>
+                        </div>
+                        <div class="page-item" data-page="conversion">
+                            <span class="page-icon">🔻</span>
+                            <span>Conversion Journey</span>
+                        </div>
+                        <div class="page-item" data-page="orders">
+                            <span class="page-icon">📦</span>
+                            <span>Order Analytics</span>
+                        </div>
+                        <div class="page-item" data-page="performance">
+                            <span class="page-icon">👤</span>
+                            <span>My Performance</span>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-success" id="btnBuildAllPages">🏗️ Build All Pages</button>
+                    <button class="btn btn-primary" id="btnBuildCurrentPage">📝 Build Selected Page</button>
+                </div>
+
+                <!-- Visuals Tab -->
+                <div class="tab-content" id="visuals-tab">
+                    <h2>🎨 Visual Palette</h2>
+                    <div class="visual-palette">
+                        <div class="visual-type" data-visual="card">
+                            <div class="icon">🔢</div>
+                            <div>Card</div>
+                        </div>
+                        <div class="visual-type" data-visual="kpi">
+                            <div class="icon">📈</div>
+                            <div>KPI</div>
+                        </div>
+                        <div class="visual-type" data-visual="gauge">
+                            <div class="icon">⏱️</div>
+                            <div>Gauge</div>
+                        </div>
+                        <div class="visual-type" data-visual="funnel">
+                            <div class="icon">🔻</div>
+                            <div>Funnel</div>
+                        </div>
+                        <div class="visual-type" data-visual="lineChart">
+                            <div class="icon">📉</div>
+                            <div>Line</div>
+                        </div>
+                        <div class="visual-type" data-visual="clusteredColumnChart">
+                            <div class="icon">📊</div>
+                            <div>Column</div>
+                        </div>
+                        <div class="visual-type" data-visual="clusteredBarChart">
+                            <div class="icon">📶</div>
+                            <div>Bar</div>
+                        </div>
+                        <div class="visual-type" data-visual="donutChart">
+                            <div class="icon">🍩</div>
+                            <div>Donut</div>
+                        </div>
+                        <div class="visual-type" data-visual="pieChart">
+                            <div class="icon">🥧</div>
+                            <div>Pie</div>
+                        </div>
+                        <div class="visual-type" data-visual="filledMap">
+                            <div class="icon">🗺️</div>
+                            <div>Map</div>
+                        </div>
+                        <div class="visual-type" data-visual="tableEx">
+                            <div class="icon">📋</div>
+                            <div>Table</div>
+                        </div>
+                        <div class="visual-type" data-visual="slicer">
+                            <div class="icon">🎚️</div>
+                            <div>Slicer</div>
+                        </div>
+                    </div>
+
+                    <h2>📐 Visual Position</h2>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <div class="form-group">
+                            <label>X</label>
+                            <input type="number" id="visualX" value="40">
+                        </div>
+                        <div class="form-group">
+                            <label>Y</label>
+                            <input type="number" id="visualY" value="100">
+                        </div>
+                        <div class="form-group">
+                            <label>Width</label>
+                            <input type="number" id="visualWidth" value="300">
+                        </div>
+                        <div class="form-group">
+                            <label>Height</label>
+                            <input type="number" id="visualHeight" value="200">
+                        </div>
+                    </div>
+
+                    <button class="btn btn-success" id="btnAddVisual">➕ Add Visual</button>
+                </div>
+            </div>
+
+            <div class="report-container">
+                <div id="embedContainer"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="status-bar">
+        <span id="statusMessage">Ready</span>
+        <span id="reportInfo"></span>
+    </div>
+
+    <script>
+        // Initialize Power BI service - the library exposes 'powerbi' globally
+        let pbi, models, powerbiService;
+
+        // State
+        let report = null;
+        let activePage = null;
+        let selectedVisualType = 'card';
+
+        // DOM Elements - initialized after DOM ready
+        let embedContainer, logContainer, progressFill, connectionStatus, statusMessage, reportInfo;
+
+        // Logging utility
+        function log(message, type = 'info') {
+            if (!logContainer) {
+                console.log(`[${type.toUpperCase()}] ${message}`);
+                return;
+            }
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${type}`;
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            logContainer.appendChild(entry);
+            logContainer.scrollTop = logContainer.scrollHeight;
+            console.log(`[${type.toUpperCase()}] ${message}`);
+        }
+
+        function updateProgress(percent) {
+            if (progressFill) progressFill.style.width = `${percent}%`;
+        }
+
+        function updateStatus(message) {
+            if (statusMessage) statusMessage.textContent = message;
+        }
+
+        // Wait for DOM to be ready, then initialize everything
+        document.addEventListener('DOMContentLoaded', function () {
+            // Get DOM elements
+            embedContainer = document.getElementById('embedContainer');
+            logContainer = document.getElementById('logContainer');
+            progressFill = document.getElementById('progressFill');
+            connectionStatus = document.getElementById('connectionStatus');
+            statusMessage = document.getElementById('statusMessage');
+            reportInfo = document.getElementById('reportInfo');
+
+            // Initialize Power BI
+            try {
+                // Debug: log what's available
+                console.log('window.powerbi:', window.powerbi);
+                console.log('window[powerbi-client]:', window['powerbi-client']);
+
+                // When loaded via CDN:
+                // - window['powerbi-client'] contains the module exports (models, factories, etc.)
+                // - window.powerbi is already an instance of the Service
+                const powerbiClient = window['powerbi-client'];
+                powerbiService = window.powerbi;
+
+                if (!powerbiService) {
+                    throw new Error('Power BI service not found on window.powerbi');
+                }
+
+                // Try to get models from various sources
+                if (powerbiClient && powerbiClient.models) {
+                    models = powerbiClient.models;
+                    console.log('Models from powerbi-client:', models);
+                } else if (powerbiService.models) {
+                    models = powerbiService.models;
+                    console.log('Models from powerbiService:', models);
+                } else {
+                    // Define models manually based on Power BI API documentation
+                    models = {
+                        TokenType: { Aad: 0, Embed: 1 },
+                        Permissions: { All: 7, Read: 0, ReadWrite: 1, Copy: 2, Create: 4 },
+                        ViewMode: { View: 0, Edit: 1 }
+                    };
+                    console.log('Using fallback models');
+                }
+
+                log('Power BI library loaded', 'success');
+                console.log('Final models object:', models);
+            } catch (e) {
+                console.error('Failed to initialize Power BI:', e);
+                log('Failed to load Power BI library: ' + e.message, 'error');
+            }
+
+            // Initialize UI
+            log('BMD Sales Report Creator ready', 'info');
+            log('Get token: az account get-access-token --resource https://analysis.windows.net/powerbi/api', 'info');
+
+            // Setup event listeners
+            setupEventListeners();
+        });
+
+        function setupEventListeners() {
+            // Tab switching
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    tab.classList.add('active');
+                    document.getElementById(`${tab.dataset.tab}-tab`).classList.add('active');
+                });
+            });
+
+            // Page selection
+            document.querySelectorAll('.page-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    document.querySelectorAll('.page-item').forEach(i => i.classList.remove('active'));
+                    item.classList.add('active');
+                });
+            });
+
+            // Visual type selection
+            document.querySelectorAll('.visual-type').forEach(item => {
+                item.addEventListener('click', () => {
+                    document.querySelectorAll('.visual-type').forEach(i => i.style.background = '');
+                    item.style.background = '#0066CC';
+                    item.style.color = 'white';
+                    selectedVisualType = item.dataset.visual;
+                    log(`Selected visual type: ${selectedVisualType}`);
+                });
+            });
+
+            // Create new report
+            document.getElementById('btnCreateReport').addEventListener('click', async () => {
+                const token = document.getElementById('accessToken').value;
+                const datasetId = document.getElementById('datasetId').value;
+                const workspaceId = document.getElementById('workspaceId').value;
+
+                if (!token) {
+                    log('Please enter an access token', 'error');
+                    alert('Please enter an access token. Run: az account get-access-token --resource https://analysis.windows.net/powerbi/api');
+                    return;
+                }
+
+                try {
+                    log('Creating new report...', 'info');
+                    updateProgress(10);
+
+                    const embedUrl = `https://app.powerbi.com/reportEmbed?groupId=${workspaceId}`;
+
+                    const config = {
+                        type: 'report',
+                        tokenType: models.TokenType.Aad,
+                        accessToken: token,
+                        embedUrl: embedUrl,
+                        datasetId: datasetId,
+                        permissions: models.Permissions.All,
+                        viewMode: models.ViewMode.Edit,
+                        settings: {
+                            panes: {
+                                filters: { visible: true, expanded: false },
+                                pageNavigation: { visible: true },
+                                fields: { visible: true, expanded: true },
+                                visualizations: { visible: true, expanded: true }
+                            },
+                            bars: {
+                                statusBar: { visible: true }
+                            },
+                            localeSettings: {
+                                language: "en",
+                                formatLocale: "en-US"
+                            }
+                        }
+                    };
+
+                    log('Embedding report in edit mode...', 'info');
+                    updateProgress(30);
+
+                    // Create report using powerbi service
+                    report = powerbiService.createReport(embedContainer, config);
+
+                    report.on('loaded', async () => {
+                        log('Report loaded successfully!', 'success');
+                        updateProgress(100);
+                        connectionStatus.textContent = '🟢 Connected';
+                        connectionStatus.style.color = '#2ECC71';
+                        updateStatus('Report ready for editing');
+
+                        // Get initial pages
+                        const pages = await report.getPages();
+                        reportInfo.textContent = `Pages: ${pages.length}`;
+
+                        activePage = pages.find(p => p.isActive);
+                        if (activePage) {
+                            log(`Active page: ${activePage.displayName}`, 'info');
+                        }
+                    });
+
+                    report.on('error', (event) => {
+                        log(`Error: ${event.detail.message}`, 'error');
+                        console.error('Report error:', event.detail);
+                    });
+
+                    report.on('saved', () => {
+                        log('Report saved!', 'success');
+                    });
+
+                } catch (error) {
+                    log(`Failed to create report: ${error.message}`, 'error');
+                    console.error(error);
+                }
+            });
+
+            // Edit existing report
+            document.getElementById('btnEditExisting').addEventListener('click', async () => {
+                const token = document.getElementById('accessToken').value;
+                const reportId = document.getElementById('reportId').value;
+                const workspaceId = document.getElementById('workspaceId').value;
+
+                if (!token) {
+                    log('Please enter an access token', 'error');
+                    return;
+                }
+
+                try {
+                    log('Loading existing report for editing...', 'info');
+                    updateProgress(10);
+
+                    const embedUrl = `https://app.powerbi.com/reportEmbed?reportId=${reportId}&groupId=${workspaceId}`;
+
+                    const config = {
+                        type: 'report',
+                        tokenType: models.TokenType.Aad,
+                        accessToken: token,
+                        embedUrl: embedUrl,
+                        id: reportId,
+                        permissions: models.Permissions.All,
+                        viewMode: models.ViewMode.Edit,
+                        settings: {
+                            panes: {
+                                filters: { visible: true },
+                                pageNavigation: { visible: true },
+                                fields: { visible: true },
+                                visualizations: { visible: true }
+                            }
+                        }
+                    };
+
+                    log('Embedding report...', 'info');
+                    updateProgress(50);
+
+                    // Embed report using powerbi service
+                    report = powerbiService.embed(embedContainer, config);
+
+                    report.on('loaded', async () => {
+                        log('Existing report loaded!', 'success');
+                        updateProgress(100);
+                        connectionStatus.textContent = '🟢 Connected';
+                        connectionStatus.style.color = '#2ECC71';
+
+                        const pages = await report.getPages();
+                        reportInfo.textContent = `Report: ${reportId} | Pages: ${pages.length}`;
+
+                        pages.forEach(p => {
+                            log(`Page: ${p.displayName} (${p.name})`, 'info');
+                        });
+
+                        activePage = pages.find(p => p.isActive);
+                    });
+
+                    report.on('error', (event) => {
+                        log(`Error: ${event.detail.message}`, 'error');
+                    });
+
+                } catch (error) {
+                    log(`Failed to load report: ${error.message}`, 'error');
+                }
+            });
+
+            // Add visual to current page
+            document.getElementById('btnAddVisual').addEventListener('click', async () => {
+                if (!report || !activePage) {
+                    log('No report or page active', 'error');
+                    return;
+                }
+
+                const x = parseInt(document.getElementById('visualX').value);
+                const y = parseInt(document.getElementById('visualY').value);
+                const width = parseInt(document.getElementById('visualWidth').value);
+                const height = parseInt(document.getElementById('visualHeight').value);
+
+                try {
+                    log(`Creating ${selectedVisualType} at (${x}, ${y})...`, 'info');
+
+                    const layout = { x, y, width, height };
+                    const response = await activePage.createVisual(selectedVisualType, layout);
+
+                    log(`Visual created: ${response.visual.name}`, 'success');
+
+                } catch (error) {
+                    log(`Failed to create visual: ${error.message}`, 'error');
+                }
+            });
+
+            // Build all pages
+            document.getElementById('btnBuildAllPages').addEventListener('click', async () => {
+                if (!report) {
+                    log('No report loaded', 'error');
+                    return;
+                }
+
+                log('Building all pages...', 'info');
+                updateProgress(0);
+
+                const pageConfigs = [
+                    { name: 'ExecutiveCommandCenter', displayName: 'Executive Command Center' },
+                    { name: 'TerritoryIntelligence', displayName: 'Territory Intelligence' },
+                    { name: 'QualityScorecard', displayName: 'Quality Scorecard' },
+                    { name: 'ConversionJourney', displayName: 'Conversion Journey' },
+                    { name: 'OrderAnalytics', displayName: 'Order Analytics' },
+                    { name: 'MyPerformance', displayName: 'My Performance' }
+                ];
+
+                const pages = await report.getPages();
+
+                for (let i = 0; i < pageConfigs.length; i++) {
+                    const config = pageConfigs[i];
+                    const progress = ((i + 1) / pageConfigs.length) * 100;
+
+                    try {
+                        // Check if page exists
+                        let page = pages.find(p => p.displayName === config.displayName);
+
+                        if (!page) {
+                            log(`Creating page: ${config.displayName}`, 'info');
+                            page = await report.addPage(config.displayName);
+                        }
+
+                        // Switch to page and build visuals
+                        await page.setActive();
+                        activePage = page;
+
+                        await buildPageVisuals(config.name, page);
+
+                        updateProgress(progress);
+                        log(`Page ${i + 1}/${pageConfigs.length} complete`, 'success');
+
+                    } catch (error) {
+                        log(`Error building ${config.displayName}: ${error.message}`, 'error');
+                    }
+                }
+
+                log('All pages built!', 'success');
+                updateStatus('Report build complete');
+            });
+
+            // Build visuals for a specific page
+            async function buildPageVisuals(pageName, page) {
+                const visualConfigs = getPageVisualConfigs(pageName);
+
+                for (const config of visualConfigs) {
+                    try {
+                        const response = await page.createVisual(config.type, config.layout);
+                        const visual = response.visual;
+
+                        // Add data fields if specified
+                        if (config.dataFields) {
+                            for (const field of config.dataFields) {
+                                try {
+                                    await visual.addDataField(field.role, field.field);
+                                } catch (e) {
+                                    log(`Field binding error: ${e.message}`, 'warning');
+                                }
+                            }
+                        }
+
+                        log(`Created ${config.type}: ${config.title || visual.name}`, 'info');
+
+                        // Small delay to avoid overwhelming the API
+                        await new Promise(resolve => setTimeout(resolve, 200));
+
+                    } catch (error) {
+                        log(`Visual creation error: ${error.message}`, 'error');
+                    }
+                }
+            }
+
+            // Visual configurations for each page
+            function getPageVisualConfigs(pageName) {
+                const configs = {
+                    ExecutiveCommandCenter: [
+                        // Row 1: KPI Cards
+                        {
+                            type: 'card',
+                            layout: { x: 40, y: 100, width: 300, height: 120 },
+                            title: 'Total Visits',
+                            dataFields: [
+                                { role: 'Values', field: { $schema: 'http://powerbi.com/product/schema#column', table: 'Fact_Visit', column: 'VisitID' } }
+                            ]
+                        },
+                        {
+                            type: 'card',
+                            layout: { x: 360, y: 100, width: 300, height: 120 },
+                            title: 'Total Orders'
+                        },
+                        {
+                            type: 'card',
+                            layout: { x: 680, y: 100, width: 300, height: 120 },
+                            title: 'Conversions'
+                        },
+                        {
+                            type: 'kpi',
+                            layout: { x: 1000, y: 100, width: 300, height: 120 },
+                            title: 'Conversion Rate'
+                        },
+                        {
+                            type: 'card',
+                            layout: { x: 1320, y: 100, width: 300, height: 120 },
+                            title: 'Revenue YTD'
+                        },
+                        // Row 2: Charts
+                        {
+                            type: 'lineChart',
+                            layout: { x: 40, y: 240, width: 800, height: 300 },
+                            title: 'Performance Trend'
+                        },
+                        {
+                            type: 'filledMap',
+                            layout: { x: 860, y: 240, width: 760, height: 300 },
+                            title: 'Zone Heatmap'
+                        },
+                        // Row 3: Analysis
+                        {
+                            type: 'donutChart',
+                            layout: { x: 40, y: 560, width: 500, height: 280 },
+                            title: 'Client Mix'
+                        },
+                        {
+                            type: 'clusteredBarChart',
+                            layout: { x: 560, y: 560, width: 520, height: 280 },
+                            title: 'Role Performance'
+                        },
+                        {
+                            type: 'funnel',
+                            layout: { x: 1100, y: 560, width: 520, height: 280 },
+                            title: 'Conversion Funnel'
+                        }
+                    ],
+
+                    TerritoryIntelligence: [
+                        {
+                            type: 'filledMap',
+                            layout: { x: 40, y: 80, width: 1540, height: 450 },
+                            title: 'Interactive Territory Map'
+                        },
+                        {
+                            type: 'pivotTable',
+                            layout: { x: 40, y: 550, width: 1540, height: 380 },
+                            title: 'Territory Matrix'
+                        }
+                    ],
+
+                    QualityScorecard: [
+                        // Gauges
+                        {
+                            type: 'gauge',
+                            layout: { x: 40, y: 80, width: 480, height: 220 },
+                            title: 'Photo Rate'
+                        },
+                        {
+                            type: 'gauge',
+                            layout: { x: 540, y: 80, width: 480, height: 220 },
+                            title: 'GPS Rate'
+                        },
+                        {
+                            type: 'gauge',
+                            layout: { x: 1040, y: 80, width: 480, height: 220 },
+                            title: 'Feedback Rate'
+                        },
+                        // Charts
+                        {
+                            type: 'clusteredBarChart',
+                            layout: { x: 40, y: 320, width: 740, height: 280 },
+                            title: 'Quality by Client Type'
+                        },
+                        {
+                            type: 'tableEx',
+                            layout: { x: 800, y: 320, width: 720, height: 280 },
+                            title: 'Top Performers'
+                        },
+                        {
+                            type: 'lineChart',
+                            layout: { x: 40, y: 620, width: 1480, height: 280 },
+                            title: 'Quality Trend'
+                        }
+                    ],
+
+                    ConversionJourney: [
+                        // KPI Row
+                        {
+                            type: 'card',
+                            layout: { x: 40, y: 80, width: 200, height: 100 },
+                            title: 'Site Visits'
+                        },
+                        {
+                            type: 'card',
+                            layout: { x: 260, y: 80, width: 200, height: 100 },
+                            title: 'Conversions'
+                        },
+                        {
+                            type: 'card',
+                            layout: { x: 480, y: 80, width: 200, height: 100 },
+                            title: 'Orders'
+                        },
+                        {
+                            type: 'card',
+                            layout: { x: 700, y: 80, width: 200, height: 100 },
+                            title: 'Delivered'
+                        },
+                        {
+                            type: 'kpi',
+                            layout: { x: 920, y: 80, width: 200, height: 100 },
+                            title: 'Conv Rate'
+                        },
+                        {
+                            type: 'card',
+                            layout: { x: 1140, y: 80, width: 200, height: 100 },
+                            title: 'Avg Days'
+                        },
+                        {
+                            type: 'gauge',
+                            layout: { x: 1360, y: 80, width: 200, height: 100 },
+                            title: 'Complete %'
+                        },
+                        // Main funnel
+                        {
+                            type: 'funnel',
+                            layout: { x: 40, y: 200, width: 700, height: 350 },
+                            title: 'Conversion Funnel'
+                        },
+                        // Supporting charts
+                        {
+                            type: 'clusteredColumnChart',
+                            layout: { x: 760, y: 200, width: 380, height: 170 },
+                            title: 'By Reward Type'
+                        },
+                        {
+                            type: 'clusteredColumnChart',
+                            layout: { x: 1160, y: 200, width: 380, height: 170 },
+                            title: 'By Delivery Method'
+                        },
+                        {
+                            type: 'clusteredColumnChart',
+                            layout: { x: 760, y: 380, width: 780, height: 170 },
+                            title: 'Days to Conversion'
+                        },
+                        // Trend
+                        {
+                            type: 'lineChart',
+                            layout: { x: 40, y: 570, width: 1500, height: 280 },
+                            title: 'Weekly Trend'
+                        }
+                    ],
+
+                    OrderAnalytics: [
+                        // KPIs
+                        {
+                            type: 'card',
+                            layout: { x: 40, y: 80, width: 200, height: 100 },
+                            title: 'Total Orders'
+                        },
+                        {
+                            type: 'card',
+                            layout: { x: 260, y: 80, width: 200, height: 100 },
+                            title: 'Total Amount'
+                        },
+                        {
+                            type: 'card',
+                            layout: { x: 480, y: 80, width: 200, height: 100 },
+                            title: 'Avg Order'
+                        },
+                        {
+                            type: 'card',
+                            layout: { x: 700, y: 80, width: 200, height: 100 },
+                            title: 'Factory DN'
+                        },
+                        {
+                            type: 'card',
+                            layout: { x: 920, y: 80, width: 200, height: 100 },
+                            title: 'General Delivery'
+                        },
+                        {
+                            type: 'kpi',
+                            layout: { x: 1140, y: 80, width: 200, height: 100 },
+                            title: 'Engineer Eligible'
+                        },
+                        {
+                            type: 'kpi',
+                            layout: { x: 1360, y: 80, width: 200, height: 100 },
+                            title: 'Partner Eligible'
+                        },
+                        // Charts
+                        {
+                            type: 'areaChart',
+                            layout: { x: 40, y: 200, width: 700, height: 300 },
+                            title: 'Order Trend by Delivery'
+                        },
+                        {
+                            type: 'donutChart',
+                            layout: { x: 760, y: 200, width: 380, height: 300 },
+                            title: 'Order Status'
+                        },
+                        {
+                            type: 'clusteredBarChart',
+                            layout: { x: 1160, y: 200, width: 380, height: 300 },
+                            title: 'Amount by Zone'
+                        },
+                        // Table
+                        {
+                            type: 'tableEx',
+                            layout: { x: 40, y: 520, width: 1500, height: 350 },
+                            title: 'Order Details'
+                        }
+                    ],
+
+                    MyPerformance: [
+                        // Header cards
+                        {
+                            type: 'card',
+                            layout: { x: 40, y: 80, width: 180, height: 100 },
+                            title: 'Role'
+                        },
+                        {
+                            type: 'card',
+                            layout: { x: 240, y: 80, width: 300, height: 100 },
+                            title: 'Territory'
+                        },
+                        {
+                            type: 'gauge',
+                            layout: { x: 560, y: 80, width: 200, height: 100 },
+                            title: 'Performance Score'
+                        },
+                        // Role-specific KPIs (6 cards)
+                        {
+                            type: 'card',
+                            layout: { x: 40, y: 200, width: 240, height: 120 },
+                            title: 'KPI 1'
+                        },
+                        {
+                            type: 'card',
+                            layout: { x: 300, y: 200, width: 240, height: 120 },
+                            title: 'KPI 2'
+                        },
+                        {
+                            type: 'card',
+                            layout: { x: 560, y: 200, width: 240, height: 120 },
+                            title: 'KPI 3'
+                        },
+                        {
+                            type: 'card',
+                            layout: { x: 820, y: 200, width: 240, height: 120 },
+                            title: 'KPI 4'
+                        },
+                        {
+                            type: 'card',
+                            layout: { x: 1080, y: 200, width: 240, height: 120 },
+                            title: 'KPI 5'
+                        },
+                        {
+                            type: 'card',
+                            layout: { x: 1340, y: 200, width: 200, height: 120 },
+                            title: 'KPI 6'
+                        },
+                        // Performance charts
+                        {
+                            type: 'clusteredBarChart',
+                            layout: { x: 40, y: 340, width: 1500, height: 200 },
+                            title: 'Performance vs Target'
+                        },
+                        // Gamification
+                        {
+                            type: 'multiRowCard',
+                            layout: { x: 40, y: 560, width: 1500, height: 150 },
+                            title: 'Achievement Badges'
+                        }
+                    ]
+                };
+
+                return configs[pageName] || [];
+            }
+
+            // Build selected page
+            document.getElementById('btnBuildCurrentPage').addEventListener('click', async () => {
+                if (!report) {
+                    log('No report loaded', 'error');
+                    return;
+                }
+
+                const selectedItem = document.querySelector('.page-item.active');
+                if (!selectedItem) {
+                    log('No page selected', 'warning');
+                    return;
+                }
+
+                const pageName = selectedItem.dataset.page;
+                const pageDisplayName = selectedItem.textContent.trim();
+
+                log(`Building page: ${pageDisplayName}`, 'info');
+
+                try {
+                    const pages = await report.getPages();
+                    let page = pages.find(p => p.displayName === pageDisplayName);
+
+                    if (!page) {
+                        page = await report.addPage(pageDisplayName);
+                        log(`Created new page: ${pageDisplayName}`, 'success');
+                    }
+
+                    await page.setActive();
+                    activePage = page;
+
+                    // Map dataset page name to config name
+                    const configName = {
+                        'executive': 'ExecutiveCommandCenter',
+                        'territory': 'TerritoryIntelligence',
+                        'quality': 'QualityScorecard',
+                        'conversion': 'ConversionJourney',
+                        'orders': 'OrderAnalytics',
+                        'performance': 'MyPerformance'
+                    }[pageName];
+
+                    await buildPageVisuals(configName, page);
+
+                    log(`Page "${pageDisplayName}" built successfully!`, 'success');
+
+                } catch (error) {
+                    log(`Error building page: ${error.message}`, 'error');
+                }
+            });
+        } // End of setupEventListeners function
+    </script>
+</body>
+
+</html>

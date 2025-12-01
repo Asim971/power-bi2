@@ -1,0 +1,767 @@
+{
+    "objectType": "page",
+    "name": "My Performance Hub",
+    "displayName": "My Performance",
+    "displayOption": "FitToPage",
+    "width": 1920,
+    "height": 1080,
+    "ordinal": 5,
+    "config": {
+        "background": {
+            "color": "#F5F7FA",
+            "transparency": 0
+        },
+        "visibility": "visible"
+    },
+    "dynamicContent": {
+        "enabled": true,
+        "roleField": "Dim_User[RoleName]",
+        "sections": {
+            "BDO": {
+                "visible": true,
+                "metrics": [
+                    "Site Visits",
+                    "Engineer Visits",
+                    "New Engineers",
+                    "Conversions 60D",
+                    "Conv Rate",
+                    "Engineer Rewards"
+                ]
+            },
+            "CRO": {
+                "visible": true,
+                "metrics": [
+                    "Dealer Visits",
+                    "Contractor Visits",
+                    "IHB Visits",
+                    "General Delivery",
+                    "Delivery Complete %",
+                    "Partner Rewards"
+                ]
+            },
+            "SR": {
+                "visible": true,
+                "metrics": [
+                    "Retailer Visits",
+                    "New Retailers",
+                    "Follow Ups",
+                    "Coverage Rate",
+                    "Repeat Visit %",
+                    "Orders Assisted"
+                ]
+            }
+        }
+    },
+    "visuals": [
+        {
+            "name": "Header",
+            "type": "textbox",
+            "x": 0,
+            "y": 0,
+            "width": 1920,
+            "height": 60,
+            "config": {
+                "textbox": {
+                    "paragraphs": [
+                        {
+                            "textRuns": [
+                                {
+                                    "value": "👤 MY PERFORMANCE DASHBOARD    |    ",
+                                    "textStyle": {
+                                        "fontFamily": "Segoe UI Semibold",
+                                        "fontSize": 16,
+                                        "fontColor": "#FFFFFF"
+                                    }
+                                },
+                                {
+                                    "value": "[Role: Dynamic]",
+                                    "textStyle": {
+                                        "fontFamily": "Segoe UI",
+                                        "fontSize": 12,
+                                        "fontColor": "#FFFFFF"
+                                    },
+                                    "dynamicBinding": "Dim_User[RoleName]"
+                                }
+                            ]
+                        }
+                    ],
+                    "backgroundColor": "#2C3E50"
+                }
+            }
+        },
+        {
+            "name": "Role_Summary_Container",
+            "type": "container",
+            "x": 40,
+            "y": 80,
+            "width": 1840,
+            "height": 100,
+            "config": {
+                "layout": "horizontal",
+                "gap": 20
+            },
+            "children": [
+                {
+                    "name": "Role_Badge",
+                    "type": "card",
+                    "width": 200,
+                    "height": 80,
+                    "config": {
+                        "dynamicContent": {
+                            "BDO": {
+                                "title": "BDO",
+                                "subtitle": "Business Development Officer",
+                                "icon": "🏗️",
+                                "color": "#3498DB"
+                            },
+                            "CRO": {
+                                "title": "CRO",
+                                "subtitle": "Channel Relations Officer",
+                                "icon": "🤝",
+                                "color": "#9B59B6"
+                            },
+                            "SR": {
+                                "title": "SR",
+                                "subtitle": "Sales Representative",
+                                "icon": "🛒",
+                                "color": "#E91E63"
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "Territory_Badge",
+                    "type": "card",
+                    "width": 300,
+                    "height": 80,
+                    "config": {
+                        "title": "MY TERRITORY",
+                        "dataField": "Dim_Territory[TerritoryName]",
+                        "icon": "📍"
+                    }
+                },
+                {
+                    "name": "Performance_Score",
+                    "type": "gauge",
+                    "width": 250,
+                    "height": 80,
+                    "config": {
+                        "title": "PERFORMANCE SCORE",
+                        "value": "Measures[Overall Performance Score]",
+                        "min": 0,
+                        "max": 100,
+                        "target": 80,
+                        "colorRules": {
+                            "green": {
+                                "min": 80
+                            },
+                            "amber": {
+                                "min": 60,
+                                "max": 80
+                            },
+                            "red": {
+                                "max": 60
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "BDO_Section",
+            "type": "container",
+            "x": 40,
+            "y": 200,
+            "width": 1840,
+            "height": 400,
+            "visibility": {
+                "condition": "Dim_User[RoleName] = 'BDO'"
+            },
+            "children": [
+                {
+                    "name": "BDO_Title",
+                    "type": "textbox",
+                    "x": 0,
+                    "y": 0,
+                    "width": 1840,
+                    "height": 40,
+                    "config": {
+                        "text": "🏗️ BDO PERFORMANCE - Site & Engineer Management",
+                        "style": {
+                            "fontFamily": "Segoe UI Semibold",
+                            "fontSize": 14,
+                            "fontColor": "#3498DB"
+                        }
+                    }
+                },
+                {
+                    "name": "BDO_KPI_1",
+                    "type": "card",
+                    "x": 0,
+                    "y": 50,
+                    "width": 280,
+                    "height": 120,
+                    "config": {
+                        "title": "SITE VISITS",
+                        "dataField": "Measures[BDO Site Visits]",
+                        "trend": {
+                            "enabled": true,
+                            "calculation": "MoM%"
+                        }
+                    }
+                },
+                {
+                    "name": "BDO_KPI_2",
+                    "type": "card",
+                    "x": 300,
+                    "y": 50,
+                    "width": 280,
+                    "height": 120,
+                    "config": {
+                        "title": "ENGINEER VISITS",
+                        "dataField": "Measures[BDO Engineer Visits]",
+                        "trend": {
+                            "enabled": true
+                        }
+                    }
+                },
+                {
+                    "name": "BDO_KPI_3",
+                    "type": "card",
+                    "x": 600,
+                    "y": 50,
+                    "width": 280,
+                    "height": 120,
+                    "config": {
+                        "title": "NEW ENGINEERS",
+                        "dataField": "Measures[New Engineer Registrations]",
+                        "icon": "👷"
+                    }
+                },
+                {
+                    "name": "BDO_KPI_4",
+                    "type": "card",
+                    "x": 900,
+                    "y": 50,
+                    "width": 280,
+                    "height": 120,
+                    "config": {
+                        "title": "CONVERSIONS 60D",
+                        "dataField": "Measures[BDO Conversions 60D]"
+                    }
+                },
+                {
+                    "name": "BDO_KPI_5",
+                    "type": "kpi",
+                    "x": 1200,
+                    "y": 50,
+                    "width": 280,
+                    "height": 120,
+                    "config": {
+                        "title": "CONV RATE",
+                        "value": "Measures[BDO Conversion Rate]",
+                        "target": 0.05,
+                        "format": "0.0%"
+                    }
+                },
+                {
+                    "name": "BDO_KPI_6",
+                    "type": "card",
+                    "x": 1500,
+                    "y": 50,
+                    "width": 280,
+                    "height": 120,
+                    "config": {
+                        "title": "ENGINEER REWARDS",
+                        "dataField": "Measures[Engineer Reward Eligible Orders]",
+                        "icon": "🎖️",
+                        "color": "#2ECC71"
+                    }
+                },
+                {
+                    "name": "BDO_Pipeline",
+                    "type": "funnel",
+                    "x": 0,
+                    "y": 180,
+                    "width": 600,
+                    "height": 200,
+                    "config": {
+                        "title": "My Site Pipeline",
+                        "stages": [
+                            "Sites Visited",
+                            "Project Created",
+                            "Order Placed",
+                            "Delivered"
+                        ]
+                    }
+                },
+                {
+                    "name": "BDO_Engineer_Trend",
+                    "type": "lineChart",
+                    "x": 620,
+                    "y": 180,
+                    "width": 600,
+                    "height": 200,
+                    "config": {
+                        "title": "Engineer Engagement Trend",
+                        "xAxis": {
+                            "field": "Dim_Date[WeekOfYear]"
+                        },
+                        "series": [
+                            {
+                                "name": "Engineer Visits",
+                                "color": "#3498DB"
+                            },
+                            {
+                                "name": "New Registrations",
+                                "color": "#2ECC71"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "BDO_Conversion_Chart",
+                    "type": "clusteredColumnChart",
+                    "x": 1240,
+                    "y": 180,
+                    "width": 600,
+                    "height": 200,
+                    "config": {
+                        "title": "Conversion by Week",
+                        "xAxis": {
+                            "field": "Dim_Date[WeekOfYear]"
+                        },
+                        "series": [
+                            {
+                                "name": "Conversions",
+                                "color": "#9B59B6"
+                            },
+                            {
+                                "name": "Target",
+                                "color": "#E74C3C",
+                                "type": "line"
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "CRO_Section",
+            "type": "container",
+            "x": 40,
+            "y": 200,
+            "width": 1840,
+            "height": 400,
+            "visibility": {
+                "condition": "Dim_User[RoleName] = 'CRO'"
+            },
+            "children": [
+                {
+                    "name": "CRO_Title",
+                    "type": "textbox",
+                    "x": 0,
+                    "y": 0,
+                    "width": 1840,
+                    "height": 40,
+                    "config": {
+                        "text": "🤝 CRO PERFORMANCE - Partner & Dealer Management",
+                        "style": {
+                            "fontFamily": "Segoe UI Semibold",
+                            "fontSize": 14,
+                            "fontColor": "#9B59B6"
+                        }
+                    }
+                },
+                {
+                    "name": "CRO_KPI_1",
+                    "type": "card",
+                    "x": 0,
+                    "y": 50,
+                    "width": 280,
+                    "height": 120,
+                    "config": {
+                        "title": "DEALER VISITS",
+                        "dataField": "Measures[CRO Dealer Visits]"
+                    }
+                },
+                {
+                    "name": "CRO_KPI_2",
+                    "type": "card",
+                    "x": 300,
+                    "y": 50,
+                    "width": 280,
+                    "height": 120,
+                    "config": {
+                        "title": "CONTRACTOR VISITS",
+                        "dataField": "Measures[CRO Contractor Visits]"
+                    }
+                },
+                {
+                    "name": "CRO_KPI_3",
+                    "type": "card",
+                    "x": 600,
+                    "y": 50,
+                    "width": 280,
+                    "height": 120,
+                    "config": {
+                        "title": "IHB VISITS",
+                        "dataField": "Measures[CRO IHB Visits]"
+                    }
+                },
+                {
+                    "name": "CRO_KPI_4",
+                    "type": "card",
+                    "x": 900,
+                    "y": 50,
+                    "width": 280,
+                    "height": 120,
+                    "config": {
+                        "title": "GENERAL DELIVERY",
+                        "dataField": "Measures[General Delivery Orders]"
+                    }
+                },
+                {
+                    "name": "CRO_KPI_5",
+                    "type": "gauge",
+                    "x": 1200,
+                    "y": 50,
+                    "width": 280,
+                    "height": 120,
+                    "config": {
+                        "title": "DELIVERY COMPLETE %",
+                        "value": "Measures[CRO Delivery Completion Rate]",
+                        "target": 0.80
+                    }
+                },
+                {
+                    "name": "CRO_KPI_6",
+                    "type": "card",
+                    "x": 1500,
+                    "y": 50,
+                    "width": 280,
+                    "height": 120,
+                    "config": {
+                        "title": "PARTNER REWARDS",
+                        "dataField": "Measures[Partner Reward Eligible Orders]",
+                        "icon": "🎖️",
+                        "color": "#9B59B6"
+                    }
+                },
+                {
+                    "name": "CRO_Pipeline",
+                    "type": "funnel",
+                    "x": 0,
+                    "y": 180,
+                    "width": 600,
+                    "height": 200,
+                    "config": {
+                        "title": "My Partner Pipeline"
+                    }
+                },
+                {
+                    "name": "CRO_Delivery_Tracking",
+                    "type": "stackedColumnChart",
+                    "x": 620,
+                    "y": 180,
+                    "width": 600,
+                    "height": 200,
+                    "config": {
+                        "title": "Delivery Tracking",
+                        "xAxis": {
+                            "field": "Dim_Date[WeekOfYear]"
+                        },
+                        "series": [
+                            {
+                                "name": "Pending",
+                                "color": "#F39C12"
+                            },
+                            {
+                                "name": "Approved",
+                                "color": "#3498DB"
+                            },
+                            {
+                                "name": "Delivered",
+                                "color": "#2ECC71"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "CRO_Channel_Health",
+                    "type": "heatmap",
+                    "x": 1240,
+                    "y": 180,
+                    "width": 600,
+                    "height": 200,
+                    "config": {
+                        "title": "Channel Health Matrix",
+                        "rows": {
+                            "field": "Dim_Client[ClientType]"
+                        },
+                        "columns": {
+                            "field": "Dim_Date[WeekOfYear]"
+                        },
+                        "values": {
+                            "field": "Measures[Visit Quality Score]"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "SR_Section",
+            "type": "container",
+            "x": 40,
+            "y": 200,
+            "width": 1840,
+            "height": 400,
+            "visibility": {
+                "condition": "Dim_User[RoleName] = 'SR'"
+            },
+            "children": [
+                {
+                    "name": "SR_Title",
+                    "type": "textbox",
+                    "x": 0,
+                    "y": 0,
+                    "width": 1840,
+                    "height": 40,
+                    "config": {
+                        "text": "🛒 SR PERFORMANCE - Retailer Management",
+                        "style": {
+                            "fontFamily": "Segoe UI Semibold",
+                            "fontSize": 14,
+                            "fontColor": "#E91E63"
+                        }
+                    }
+                },
+                {
+                    "name": "SR_KPI_1",
+                    "type": "card",
+                    "x": 0,
+                    "y": 50,
+                    "width": 280,
+                    "height": 120,
+                    "config": {
+                        "title": "RETAILER VISITS",
+                        "dataField": "Measures[SR Retailer Visits]"
+                    }
+                },
+                {
+                    "name": "SR_KPI_2",
+                    "type": "card",
+                    "x": 300,
+                    "y": 50,
+                    "width": 280,
+                    "height": 120,
+                    "config": {
+                        "title": "NEW RETAILERS",
+                        "dataField": "Measures[New Retailer Registrations]"
+                    }
+                },
+                {
+                    "name": "SR_KPI_3",
+                    "type": "card",
+                    "x": 600,
+                    "y": 50,
+                    "width": 280,
+                    "height": 120,
+                    "config": {
+                        "title": "FOLLOW UPS",
+                        "dataField": "Measures[SR Follow Up Visits]"
+                    }
+                },
+                {
+                    "name": "SR_KPI_4",
+                    "type": "gauge",
+                    "x": 900,
+                    "y": 50,
+                    "width": 280,
+                    "height": 120,
+                    "config": {
+                        "title": "COVERAGE RATE",
+                        "value": "Measures[Retailer Coverage Rate]",
+                        "target": 0.85
+                    }
+                },
+                {
+                    "name": "SR_KPI_5",
+                    "type": "kpi",
+                    "x": 1200,
+                    "y": 50,
+                    "width": 280,
+                    "height": 120,
+                    "config": {
+                        "title": "REPEAT VISIT %",
+                        "value": "Measures[Repeat Visit Rate]",
+                        "target": 0.50
+                    }
+                },
+                {
+                    "name": "SR_KPI_6",
+                    "type": "card",
+                    "x": 1500,
+                    "y": 50,
+                    "width": 280,
+                    "height": 120,
+                    "config": {
+                        "title": "ORDERS ASSISTED",
+                        "dataField": "Measures[SR Assisted Orders]"
+                    }
+                },
+                {
+                    "name": "SR_Coverage_Map",
+                    "type": "filledMap",
+                    "x": 0,
+                    "y": 180,
+                    "width": 600,
+                    "height": 200,
+                    "config": {
+                        "title": "Retailer Coverage"
+                    }
+                },
+                {
+                    "name": "SR_Visit_Schedule",
+                    "type": "calendar",
+                    "x": 620,
+                    "y": 180,
+                    "width": 600,
+                    "height": 200,
+                    "config": {
+                        "title": "Visit Schedule"
+                    }
+                },
+                {
+                    "name": "SR_Order_Pipeline",
+                    "type": "clusteredBarChart",
+                    "x": 1240,
+                    "y": 180,
+                    "width": 600,
+                    "height": 200,
+                    "config": {
+                        "title": "Order Pipeline by Retailer"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Performance_vs_Target",
+            "type": "bulletChart",
+            "x": 40,
+            "y": 620,
+            "width": 1840,
+            "height": 200,
+            "config": {
+                "title": "📊 MY PERFORMANCE VS TARGET",
+                "categories": [
+                    {
+                        "name": "Visits",
+                        "actual": "Measures[My Total Visits]",
+                        "target": "Measures[My Visit Target]",
+                        "comparison": "Measures[Team Avg Visits]"
+                    },
+                    {
+                        "name": "Conversions",
+                        "actual": "Measures[My Conversions]",
+                        "target": "Measures[My Conversion Target]",
+                        "comparison": "Measures[Team Avg Conversions]"
+                    },
+                    {
+                        "name": "Quality",
+                        "actual": "Measures[My Quality Score]",
+                        "target": "Measures[Quality Target]",
+                        "comparison": "Measures[Team Avg Quality]"
+                    },
+                    {
+                        "name": "Orders",
+                        "actual": "Measures[My Orders]",
+                        "target": "Measures[My Order Target]",
+                        "comparison": "Measures[Team Avg Orders]"
+                    }
+                ],
+                "legend": {
+                    "show": true,
+                    "items": [
+                        "Actual",
+                        "Target",
+                        "Team Avg"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Gamification_Badges",
+            "type": "container",
+            "x": 40,
+            "y": 840,
+            "width": 1840,
+            "height": 180,
+            "config": {
+                "title": "🏆 MY ACHIEVEMENTS",
+                "layout": "horizontal",
+                "gap": 20
+            },
+            "children": [
+                {
+                    "name": "Badge_Top_Performer",
+                    "type": "imageCard",
+                    "config": {
+                        "title": "TOP PERFORMER",
+                        "condition": "Measures[Is Top Performer] = TRUE",
+                        "icon": "🥇",
+                        "backgroundColor": "#FFD700"
+                    }
+                },
+                {
+                    "name": "Badge_Quality_Star",
+                    "type": "imageCard",
+                    "config": {
+                        "title": "QUALITY STAR",
+                        "condition": "Measures[Quality Score] >= 0.90",
+                        "icon": "⭐",
+                        "backgroundColor": "#2ECC71"
+                    }
+                },
+                {
+                    "name": "Badge_Streak",
+                    "type": "imageCard",
+                    "config": {
+                        "title": "30-DAY STREAK",
+                        "condition": "Measures[Daily Streak] >= 30",
+                        "icon": "🔥",
+                        "backgroundColor": "#E74C3C"
+                    }
+                },
+                {
+                    "name": "Badge_Conversion_King",
+                    "type": "imageCard",
+                    "config": {
+                        "title": "CONVERSION KING",
+                        "condition": "Measures[Monthly Conversions] >= 50",
+                        "icon": "👑",
+                        "backgroundColor": "#9B59B6"
+                    }
+                }
+            ]
+        }
+    ],
+    "rls": {
+        "enabled": true,
+        "autoFilterByUser": true,
+        "expressions": [
+            {
+                "role": "BDO",
+                "filter": "Dim_Client[ResponsibleRoleRLS] IN {'BDO', 'CRO,BDO'}"
+            },
+            {
+                "role": "CRO",
+                "filter": "Dim_Client[ResponsibleRoleRLS] IN {'CRO', 'CRO,BDO'}"
+            },
+            {
+                "role": "SR",
+                "filter": "Dim_Client[ResponsibleRoleRLS] = 'SR'"
+            }
+        ]
+    }
+}
