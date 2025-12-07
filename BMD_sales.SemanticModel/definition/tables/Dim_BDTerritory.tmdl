@@ -1,0 +1,161 @@
+table Dim_BDTerritory
+	lineageTag: 8a9b0c1d-2e3f-4567-89ab-cdef01234567
+
+	column BDTerritoryID
+		dataType: int64
+		formatString: 0
+		isKey
+		lineageTag: 9b0c1d2e-3f4a-5678-9abc-def012345678
+		summarizeBy: none
+		sourceColumn: BDTerritoryID
+
+		annotation SummarizationSetBy = Automatic
+
+	column BDTerritoryName
+		dataType: string
+		lineageTag: 0c1d2e3f-4a5b-6789-abcd-ef0123456789
+		summarizeBy: none
+		sourceColumn: BDTerritoryName
+
+		annotation SummarizationSetBy = Automatic
+
+	column DistrictID
+		dataType: int64
+		formatString: 0
+		lineageTag: 1d2e3f4a-5b6c-789a-bcde-f01234567890
+		summarizeBy: none
+		sourceColumn: DistrictID
+
+		annotation SummarizationSetBy = Automatic
+
+	column DistrictName
+		dataType: string
+		lineageTag: 2e3f4a5b-6c7d-89ab-cdef-012345678901
+		summarizeBy: none
+		sourceColumn: DistrictName
+
+		annotation SummarizationSetBy = Automatic
+
+	column UpazillaID
+		dataType: int64
+		formatString: 0
+		lineageTag: 3f4a5b6c-7d8e-9abc-def0-123456789012
+		summarizeBy: none
+		sourceColumn: UpazillaID
+
+		annotation SummarizationSetBy = Automatic
+
+	column UpazillaName
+		dataType: string
+		lineageTag: 4a5b6c7d-8e9f-abcd-ef01-234567890123
+		summarizeBy: none
+		sourceColumn: UpazillaName
+
+		annotation SummarizationSetBy = Automatic
+
+	column delete_status
+		dataType: string
+		lineageTag: 5b6c7d8e-9f0a-bcde-f012-345678901234
+		summarizeBy: none
+		sourceColumn: delete_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column created_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 6c7d8e9f-0a1b-cdef-0123-456789012345
+		summarizeBy: none
+		sourceColumn: created_at
+
+		annotation SummarizationSetBy = Automatic
+
+	column updated_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 7d8e9f0a-1b2c-def0-1234-567890123456
+		summarizeBy: none
+		sourceColumn: updated_at
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_BDTerritory = m
+		mode: import
+		source = ```
+				// ============================================================
+				// Dim_BDTerritory - Business Development Territory Dimension
+				// Source: public bd_territory
+				// 
+				// PURPOSE:
+				// Dimension for BMD track (BDO/CRO/BD Incharge) territory filtering
+				// BD Territory links to Bazaars which bridges to ORG Territory
+				// 
+				// HIERARCHY:
+				// District → Upazilla → BD Territory
+				// ============================================================
+				
+				let
+				    // Reference the existing tables
+				    BDTerritorySource = #"public bd_territory",
+				    DistrictSource = #"public districts",
+				    UpazillaSource = #"public upazilla",
+				    
+				    // ---- Select Core Columns from bd_territory ----
+				    SelectedColumns = Table.SelectColumns(BDTerritorySource, {
+				        "id", "bd_territory_name", "district_id", "upazilla_id",
+				        "delete_status", "created_at", "updated_at"
+				    }),
+				    
+				    // ---- Filter Active BD Territories ----
+				    ActiveTerritories = Table.SelectRows(SelectedColumns, each [delete_status] = "NO"),
+				    
+				    // ---- Join with District table ----
+				    WithDistrictJoin = Table.NestedJoin(
+				        ActiveTerritories, {"district_id"},
+				        DistrictSource, {"id"},
+				        "DistrictData", JoinKind.LeftOuter
+				    ),
+				    
+    WithDistrictExpanded = Table.ExpandTableColumn(
+        WithDistrictJoin, "DistrictData",
+        {"district_name"},
+        {"DistrictName"}
+    ),
+    
+    // ---- Join with Upazilla table ----
+    WithUpazillaJoin = Table.NestedJoin(
+        WithDistrictExpanded, {"upazilla_id"},
+        UpazillaSource, {"id"},
+        "UpazillaData", JoinKind.LeftOuter
+    ),
+    
+    WithUpazillaExpanded = Table.ExpandTableColumn(
+        WithUpazillaJoin, "UpazillaData",
+        {"upazilla_name"},
+        {"UpazillaName"}
+    ),				    // ---- Rename Columns ----
+				    RenamedColumns = Table.RenameColumns(WithUpazillaExpanded, {
+				        {"id", "BDTerritoryID"},
+				        {"bd_territory_name", "BDTerritoryName"},
+				        {"district_id", "DistrictID"},
+				        {"upazilla_id", "UpazillaID"}
+				    }),
+				    
+				    // ---- Set Data Types ----
+				    TypedTable = Table.TransformColumnTypes(RenamedColumns, {
+				        {"BDTerritoryID", Int64.Type},
+				        {"BDTerritoryName", type text},
+				        {"DistrictID", Int64.Type},
+				        {"DistrictName", type text},
+				        {"UpazillaID", Int64.Type},
+				        {"UpazillaName", type text},
+				        {"delete_status", type text},
+				        {"created_at", type datetime},
+				        {"updated_at", type datetime}
+				    })
+				in
+				    TypedTable
+				```
+
+	annotation PBI_ResultType = Table
+

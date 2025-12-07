@@ -198,39 +198,105 @@ table Dim_User
 
 		annotation SummarizationSetBy = Automatic
 
+	column OrganizationID
+		dataType: int64
+		formatString: 0
+		lineageTag: 1a2b3c4d-5e6f-7890-abcd-ef1234567801
+		summarizeBy: none
+		sourceColumn: OrganizationID
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrganizationName
+		dataType: string
+		lineageTag: 2b3c4d5e-6f7a-8901-bcde-f12345678902
+		summarizeBy: none
+		sourceColumn: OrganizationName
+
+		annotation SummarizationSetBy = Automatic
+
+	column ZoneName
+		dataType: string
+		lineageTag: 3c4d5e6f-7a8b-9012-cdef-123456789003
+		summarizeBy: none
+		sourceColumn: ZoneName
+
+		annotation SummarizationSetBy = Automatic
+
+	column RegionName
+		dataType: string
+		lineageTag: 4d5e6f7a-8b9c-0123-def0-234567890104
+		summarizeBy: none
+		sourceColumn: RegionName
+
+		annotation SummarizationSetBy = Automatic
+
+	column AreaName
+		dataType: string
+		lineageTag: 5e6f7a8b-9c0d-1234-ef01-345678901205
+		summarizeBy: none
+		sourceColumn: AreaName
+
+		annotation SummarizationSetBy = Automatic
+
+	column BDTerritoryName
+		dataType: string
+		lineageTag: 6f7a8b9c-0d1e-2345-f012-456789012306
+		summarizeBy: none
+		sourceColumn: BDTerritoryName
+
+		annotation SummarizationSetBy = Automatic
+
+	column TerritoryLayerName
+		dataType: string
+		lineageTag: 7a8b9c0d-1e2f-3456-0123-567890123407
+		summarizeBy: none
+		sourceColumn: TerritoryLayerName
+
+		annotation SummarizationSetBy = Automatic
+
 	partition Dim_User = m
 		mode: import
 		source = ```
 				// ============================================================
 				// Dim_User - Employee Dimension
 				// Based on actual 'public users' table schema
-				// Includes Role lookup only (no territory joins to avoid duplicates)
+				// Includes Role, Organization, Territory lookups
 				// Two tracks: ORG (SR/ASM/ZSM) and BMD (BDO/CRO)
 				// 
-				// SCHEMA NOTES (Nov 2025):
+				// SCHEMA NOTES (Dec 2025):
 				// - users.id is the PRIMARY KEY (unique)
 				// - users.delete_status = "NO" (text)
+				// - users.organization_id links to organization table (ACL=1, AIL=2)
 				// - role table has: id, name, level, department, designation
-				// - Territory info comes from users table directly (zone_id, region_id, area_id)
+				// - ORG Track: zone_id → region_id → area_id (SR works at territory within area)
+				// - BMD Track: users_bd_territory bridge table links users to bd_territory
+				// - Bazaar is the bridge between territory and bd_territory
 				// ============================================================
 				
 				let
 				    // Reference the existing tables
 				    UsersSource = #"public users",
 				    RolesSource = #"public role",
+				    OrgSource = #"public organization",
+				    ZoneSource = #"public zone",
+				    RegionSource = #"public region",
+				    AreaSource = #"public areas",
+				    BDTerritorySource = #"public bd_territory",
+				    UsersBDTerritoryBridge = #"public users_bd_territory",
 				    
 				    // ---- Select Core Columns from users ----
 				    SelectedColumns = Table.SelectColumns(UsersSource, {
 				        "id", "name", "email", "phone_number", "role_id", 
-				        "zone_id", "region_id", "area_id", "bd_territory_id",
-				        "user_designation", "line_manager",
+				        "zone_id", "region_id", "area_id",
+				        "user_designation", "line_manager", "organization_id",
 				        "delete_status", "created_at", "updated_at"
 				    }),
 				    
 				    // ---- Filter Active Users ----
 				    ActiveUsers = Table.SelectRows(SelectedColumns, each [delete_status] = "NO"),
 				    
-				    // ---- Join with Role table to get role details (1:1 relationship) ----
+				    // ---- Join with Role table to get role details ----
 				    WithRoleJoin = Table.NestedJoin(
 				        ActiveUsers, {"role_id"},
 				        RolesSource, {"id"},
@@ -243,8 +309,87 @@ table Dim_User
 				        {"RoleName", "RoleLevel", "Department", "RoleDesignation"}
 				    ),
 				    
+				    // ---- Join with Organization table to get org name ----
+				    WithOrgJoin = Table.NestedJoin(
+				        WithRoleExpanded, {"organization_id"},
+				        OrgSource, {"id"},
+				        "OrgData", JoinKind.LeftOuter
+				    ),
+				    
+				    WithOrgExpanded = Table.ExpandTableColumn(
+				        WithOrgJoin, "OrgData",
+				        {"organization_name"},
+				        {"OrganizationName"}
+				    ),
+				    
+				    // ---- Join with Zone table to get zone name ----
+				    WithZoneJoin = Table.NestedJoin(
+				        WithOrgExpanded, {"zone_id"},
+				        ZoneSource, {"id"},
+				        "ZoneData", JoinKind.LeftOuter
+				    ),
+				    
+				    WithZoneExpanded = Table.ExpandTableColumn(
+				        WithZoneJoin, "ZoneData",
+				        {"zone_name"},
+				        {"ZoneName"}
+				    ),
+				    
+				    // ---- Join with Region table to get region name ----
+				    WithRegionJoin = Table.NestedJoin(
+				        WithZoneExpanded, {"region_id"},
+				        RegionSource, {"id"},
+				        "RegionData", JoinKind.LeftOuter
+				    ),
+				    
+				    WithRegionExpanded = Table.ExpandTableColumn(
+				        WithRegionJoin, "RegionData",
+				        {"region_name"},
+				        {"RegionName"}
+				    ),
+				    
+				    // ---- Join with Area table to get area name ----
+				    WithAreaJoin = Table.NestedJoin(
+				        WithRegionExpanded, {"area_id"},
+				        AreaSource, {"id"},
+				        "AreaData", JoinKind.LeftOuter
+				    ),
+				    
+				    WithAreaExpanded = Table.ExpandTableColumn(
+				        WithAreaJoin, "AreaData",
+				        {"name"},
+				        {"AreaName"}
+				    ),
+				    
+				    // ---- Join with users_bd_territory bridge table ----
+				    // This links users to BD territories via the bridge table
+				    WithBDTerritoryBridgeJoin = Table.NestedJoin(
+				        WithAreaExpanded, {"id"},
+				        UsersBDTerritoryBridge, {"users_id"},
+				        "BDTerritoryBridgeData", JoinKind.LeftOuter
+				    ),
+				    
+				    WithBDTerritoryBridgeExpanded = Table.ExpandTableColumn(
+				        WithBDTerritoryBridgeJoin, "BDTerritoryBridgeData",
+				        {"bd_territory_id"},
+				        {"BDTerritoryID"}
+				    ),
+				    
+				    // ---- Join with BD Territory table to get bd_territory_name ----
+				    WithBDTerritoryJoin = Table.NestedJoin(
+				        WithBDTerritoryBridgeExpanded, {"BDTerritoryID"},
+				        BDTerritorySource, {"id"},
+				        "BDTerritoryData", JoinKind.LeftOuter
+				    ),
+				    
+				    WithBDTerritoryExpanded = Table.ExpandTableColumn(
+				        WithBDTerritoryJoin, "BDTerritoryData",
+				        {"bd_territory_name"},
+				        {"BDTerritoryName"}
+				    ),
+				    
 				    // ---- Rename Core Columns ----
-				    RenamedColumns = Table.RenameColumns(WithRoleExpanded, {
+				    RenamedColumns = Table.RenameColumns(WithBDTerritoryExpanded, {
 				        {"id", "UserID"},
 				        {"name", "EmployeeName"},
 				        {"email", "EmployeeEmail"},
@@ -253,9 +398,9 @@ table Dim_User
 				        {"zone_id", "ZoneID"},
 				        {"region_id", "RegionID"},
 				        {"area_id", "AreaID"},
-				        {"bd_territory_id", "BDTerritoryID"},
 				        {"user_designation", "Designation"},
-				        {"line_manager", "LineManager"}
+				        {"line_manager", "LineManager"},
+				        {"organization_id", "OrganizationID"}
 				    }),
 				    
 				    // ---- Add EmployeeID alias for Fact_Visit compatibility ----
@@ -290,7 +435,7 @@ table Dim_User
 				    
 				    // ---- Add Management Level ----
 				    WithMgmtLevel = Table.AddColumn(WithFieldFlag, "ManagementLevel", each 
-				        if [RoleLevel] >= 2040 and [RoleLevel] <= 2060 then "Field"
+                        if [RoleLevel] >= 2040 and [RoleLevel] <= 2060 then "Field"
 				        else if [RoleLevel] >= 2020 and [RoleLevel] < 2040 then "Middle Management"
 				        else if [RoleLevel] >= 1030 and [RoleLevel] <= 1040 then "Field (BD)"
 				        else if [RoleLevel] < 1030 then "Senior Management"
@@ -298,8 +443,26 @@ table Dim_User
 				        type text
 				    ),
 				    
+				    // ---- Add TerritoryLayerName - Dynamic based on role ----
+				    // For ORG (SR/ASM/ZSM): Shows Area hierarchy
+				    // For BMD (BDO/CRO): Shows BD Territory
+				    WithTerritoryLayer = Table.AddColumn(WithMgmtLevel, "TerritoryLayerName", each 
+				        if [Department] = "BMD" then 
+				            if [BDTerritoryName] <> null then [BDTerritoryName] else "Unassigned BD Territory"
+				        else if [Department] = "ORG" then 
+				            if [RoleName] = "SR" then 
+				                if [AreaName] <> null then [AreaName] else "Unassigned Area"
+				            else if [RoleName] = "ASM" then 
+				                if [AreaName] <> null then [AreaName] else "Unassigned Area"
+				            else if [RoleName] = "ZSM" then 
+				                if [ZoneName] <> null then [ZoneName] else "Unassigned Zone"
+				            else if [AreaName] <> null then [AreaName] else "Unassigned"
+				        else "N/A",
+				        type text
+				    ),
+				    
 				    // ---- Set Data Types ----
-				    TypedTable = Table.TransformColumnTypes(WithMgmtLevel, {
+				    TypedTable = Table.TransformColumnTypes(WithTerritoryLayer, {
 				        {"UserID", Int64.Type},
 				        {"EmployeeID", Int64.Type},
 				        {"EmployeeName", type text},
@@ -307,11 +470,17 @@ table Dim_User
 				        {"EmployeePhone", type text},
 				        {"RoleID", Int64.Type},
 				        {"ZoneID", Int64.Type},
+				        {"ZoneName", type text},
 				        {"RegionID", Int64.Type},
+				        {"RegionName", type text},
 				        {"AreaID", Int64.Type},
+				        {"AreaName", type text},
 				        {"BDTerritoryID", Int64.Type},
+				        {"BDTerritoryName", type text},
 				        {"Designation", type text},
 				        {"LineManager", type text},
+				        {"OrganizationID", Int64.Type},
+				        {"OrganizationName", type text},
 				        {"RoleName", type text},
 				        {"RoleLevel", Int64.Type},
 				        {"Department", type text},
@@ -320,6 +489,7 @@ table Dim_User
 				        {"RoleCategory", type text},
 				        {"IsFieldRole", Int64.Type},
 				        {"ManagementLevel", type text},
+				        {"TerritoryLayerName", type text},
 				        {"created_at", type datetime},
 				        {"updated_at", type datetime}
 				    }),

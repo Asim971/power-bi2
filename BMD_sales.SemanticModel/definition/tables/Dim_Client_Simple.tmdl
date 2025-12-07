@@ -1,18 +1,21 @@
 table Dim_Client_Simple
 	lineageTag: 2b116964-7d92-44bc-877a-08c63930e55d
 
-	measure Visits_by_Type =
+	measure Visits_by_Type = ```
 			CALCULATE(
 			    [Total_Visits],
 			    ALLEXCEPT('Fact_Visit', 'Fact_Visit'[visit_type])
 			)
+			```
 		formatString: 0
 		lineageTag: d8252c2a-daea-40a9-8d01-a8dbc6364f9d
 
-	measure Total_Site_Visits =
+	measure Total_Site_Visits = ```
 			CALCULATE(
 			    [Total_Visits],
-			    'Fact_Visit'[ClientType] = "Site")
+			    'Fact_Visit'[ClientType] = "Site"
+			)
+			```
 		formatString: 0
 		lineageTag: 1d887731-4d05-4abc-9a84-9ec92770e978
 
