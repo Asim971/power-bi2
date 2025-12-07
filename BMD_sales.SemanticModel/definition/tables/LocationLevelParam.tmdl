@@ -1,8 +1,3 @@
-/// LocationLevelParam - Disconnected Parameter Table for Location Level Selection
-/// This table is intentionally NOT connected to any other table (no relationships)
-/// Used for FR-11-15: Location filter with dynamic level (Area, Zone, Territory)
-/// Reference: FRD_IMPLEMENTATION_GUIDE.md - Phase 5.5 Relationship Schema Verification
-
 table LocationLevelParam
 	lineageTag: 1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d
 
@@ -47,4 +42,3 @@ table LocationLevelParam
 	annotation PBI_ResultType = Table
 
 	annotation IsDisconnectedParameterTable = true
-
