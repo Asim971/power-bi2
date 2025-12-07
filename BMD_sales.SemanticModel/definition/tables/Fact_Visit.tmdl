@@ -231,6 +231,59 @@ table Fact_Visit
 		formatString: 0
 		lineageTag: 0e81e912-4474-4b27-93a2-7c09d6f4ba0c
 
+	/// Week-To-Date Visits - FR-7-10 Date Filter
+	/// Uses WeekStartDate from Dim_Date (Saturday start per Bangladesh fiscal calendar)
+	measure Visits_WTD = ```
+			CALCULATE(
+			    [Total_Visits],
+			    DATESBETWEEN(
+			        'Dim_Date'[Date],
+			        MAX('Dim_Date'[WeekStartDate]),
+			        TODAY()
+			    )
+			)
+			```
+		formatString: 0
+		displayFolder: Time Intelligence
+		lineageTag: 4d5e6f7a-8b9c-0d1e-2f3a-4b5c6d7e8f9a
+
+	/// Dynamic Date Filter Measure - responds to DateFilterParam selection
+	/// FR-7-10: Radio buttons for Daily, WTD, MTD, YTD
+	measure Visits_DateFiltered = ```
+			VAR SelectedFilter = SELECTEDVALUE('DateFilterParam'[FilterOption], "MTD")
+			RETURN
+			SWITCH(
+			    SelectedFilter,
+			    "Daily", CALCULATE(
+			        [Total_Visits],
+			        'Dim_Date'[Date] = TODAY()
+			    ),
+			    "WTD", [Visits_WTD],
+			    "MTD", [Visits_MTD],
+			    "YTD", [Visits_YTD],
+			    [Visits_MTD]
+			)
+			```
+		formatString: 0
+		displayFolder: FRD Dashboard
+		lineageTag: 5e6f7a8b-9c0d-1e2f-3a4b-5c6d7e8f9a0b
+
+	/// Territory Filtering via Dim_User bridge
+	/// Phase 5.5: Uses TREATAS for virtual relationship to Dim_Territory
+	/// This avoids adding redundant direct relationship from Fact_Visit to Dim_Territory
+	measure Visits_By_Territory = ```
+			CALCULATE(
+			    [Total_Visits],
+			    TREATAS(
+			        VALUES('Dim_Territory'[ZoneName]),
+			        'Dim_User'[ZoneName]
+			    )
+			)
+			```
+		formatString: 0
+		displayFolder: FRD Dashboard
+		lineageTag: 6f7a8b9c-0d1e-2f3a-4b5c-6d7e8f9a0b1c
+
 	measure Visits_Previous_Month = ```
 			
 			        CALCULATE(
