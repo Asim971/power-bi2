@@ -1,84 +1,84 @@
 {
   "name": "CY25SU11",
   "dataColors": [
-    "#118DFF",
-    "#12239E",
-    "#E66C37",
-    "#6B007B",
-    "#E044A7",
-    "#744EC2",
-    "#D9B300",
-    "#D64550",
-    "#197278",
-    "#1AAB40",
-    "#15C6F4",
-    "#4092FF",
-    "#FFA058",
-    "#BE5DC9",
-    "#F472D0",
-    "#B5A1FF",
-    "#C4A200",
-    "#FF8080",
-    "#00DBBC",
-    "#5BD667",
-    "#0091D5",
-    "#4668C5",
-    "#FF6300",
-    "#99008A",
-    "#EC008C",
-    "#533285",
-    "#99700A",
-    "#FF4141",
-    "#1F9A85",
-    "#25891C",
-    "#0057A2",
-    "#002050",
-    "#C94F0F",
-    "#450F54",
-    "#B60064",
-    "#34124F",
-    "#6A5A29",
-    "#1AAB40",
-    "#BA141A",
-    "#0C3D37",
-    "#0B511F"
+    "#C67B4E",
+    "#E8A87C",
+    "#2D4739",
+    "#B8860B",
+    "#6B4423",
+    "#D4A574",
+    "#8B5A2B",
+    "#F4A460",
+    "#CD853F",
+    "#DEB887",
+    "#A0522D",
+    "#D2691E",
+    "#BC8F8F",
+    "#F5DEB3",
+    "#DAA520",
+    "#B87333",
+    "#CC7722",
+    "#8B4513",
+    "#CD5C5C",
+    "#E9967A",
+    "#FA8072",
+    "#FFA07A",
+    "#FF7F50",
+    "#FF6347",
+    "#E2725B",
+    "#CB6D51",
+    "#A45A52",
+    "#8B0000",
+    "#556B2F",
+    "#6B8E23",
+    "#808000",
+    "#BDB76B",
+    "#2D6A4F",
+    "#40916C",
+    "#52B788",
+    "#74C69D",
+    "#95D5B2",
+    "#B7E4C7",
+    "#D8F3DC",
+    "#1B4332",
+    "#081C15"
   ],
-  "foreground": "#252423",
-  "foregroundNeutralSecondary": "#605E5C",
-  "foregroundNeutralTertiary": "#B3B0AD",
-  "background": "#FFFFFF",
-  "backgroundLight": "#F3F2F1",
-  "backgroundNeutral": "#C8C6C4",
-  "tableAccent": "#118DFF",
-  "good": "#1AAB40",
-  "neutral": "#D9B300",
-  "bad": "#D64554",
-  "maximum": "#118DFF",
-  "center": "#D9B300",
-  "minimum": "#DEEFFF",
-  "null": "#FF7F48",
-  "hyperlink": "#0078d4",
-  "visitedHyperlink": "#0078d4",
+  "foreground": "#3D2914",
+  "foregroundNeutralSecondary": "#6B5344",
+  "foregroundNeutralTertiary": "#A89485",
+  "background": "#FFFBF5",
+  "backgroundLight": "#FFF8F0",
+  "backgroundNeutral": "#E8DDD3",
+  "tableAccent": "#C67B4E",
+  "good": "#2D6A4F",
+  "neutral": "#B8860B",
+  "bad": "#A4161A",
+  "maximum": "#C67B4E",
+  "center": "#E8A87C",
+  "minimum": "#FFF5EB",
+  "null": "#D4A574",
+  "hyperlink": "#8B5A2B",
+  "visitedHyperlink": "#6B4423",
   "textClasses": {
     "callout": {
-      "fontSize": 24,
-      "fontFace": "DIN",
-      "color": "#252423"
+      "fontSize": 28,
+      "fontFace": "Segoe UI Semibold",
+      "color": "#3D2914"
     },
     "title": {
-      "fontSize": 12,
-      "fontFace": "DIN",
-      "color": "#252423"
+      "fontSize": 14,
+      "fontFace": "Segoe UI Semibold",
+      "color": "#3D2914"
     },
     "header": {
       "fontSize": 12,
       "fontFace": "Segoe UI Semibold",
-      "color": "#252423"
+      "color": "#3D2914"
     },
     "label": {
       "fontSize": 10,
       "fontFace": "Segoe UI",
-      "color": "#252423"
+      "color": "#6B5344"
     }
   },
   "visualStyles": {
@@ -152,14 +152,14 @@
           {
             "backgroundColor": {
               "solid": {
-                "color": "#ffffff"
+                "color": "#FFF8F0"
               }
             },
             "transparency": 0,
             "border": true,
             "borderColor": {
               "solid": {
-                "color": "#B3B0AD"
+                "color": "#E8DDD3"
               }
             }
           }
@@ -170,7 +170,7 @@
             "transparency": 0,
             "foregroundColor": {
               "solid": {
-                "color": "#252423"
+                "color": "#3D2914"
               }
             },
             "border": true
@@ -180,7 +180,7 @@
             "transparency": 0,
             "foregroundColor": {
               "solid": {
-                "color": "#252423"
+                "color": "#3D2914"
               }
             },
             "border": true
@@ -924,14 +924,19 @@
           {
             "color": {
               "solid": {
-                "color": "#FFFFFF"
+                "color": "#FFF8F0"
               }
             }
           }
         ],
         "background": [
           {
-            "transparency": 100
+            "transparency": 0,
+            "color": {
+              "solid": {
+                "color": "#FFFBF5"
+              }
+            }
           }
         ]
       }
