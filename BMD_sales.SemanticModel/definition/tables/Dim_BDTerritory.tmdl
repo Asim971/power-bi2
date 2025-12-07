@@ -3,8 +3,8 @@ table Dim_BDTerritory
 
 	column BDTerritoryID
 		dataType: int64
-		formatString: 0
 		isKey
+		formatString: 0
 		lineageTag: 9b0c1d2e-3f4a-5678-9abc-def012345678
 		summarizeBy: none
 		sourceColumn: BDTerritoryID
@@ -23,7 +23,7 @@ table Dim_BDTerritory
 		dataType: int64
 		formatString: 0
 		lineageTag: 1d2e3f4a-5b6c-789a-bcde-f01234567890
-		summarizeBy: none
+		summarizeBy: count
 		sourceColumn: DistrictID
 
 		annotation SummarizationSetBy = Automatic
@@ -40,7 +40,7 @@ table Dim_BDTerritory
 		dataType: int64
 		formatString: 0
 		lineageTag: 3f4a5b6c-7d8e-9abc-def0-123456789012
-		summarizeBy: none
+		summarizeBy: count
 		sourceColumn: UpazillaID
 
 		annotation SummarizationSetBy = Automatic
@@ -68,6 +68,11 @@ table Dim_BDTerritory
 		summarizeBy: none
 		sourceColumn: created_at
 
+		variation Variation
+			isDefault
+			relationship: f23e599f-aaf9-4af1-a7d3-0fa21d772a6a
+			defaultHierarchy: LocalDateTable_6b557a37-7f28-4406-a625-9e11636f1b65.'Date Hierarchy'
+
 		annotation SummarizationSetBy = Automatic
 
 	column updated_at
@@ -77,84 +82,89 @@ table Dim_BDTerritory
 		summarizeBy: none
 		sourceColumn: updated_at
 
+		variation Variation
+			isDefault
+			relationship: 8ff1e17a-f6f8-4b1b-b8ae-6053232adb6f
+			defaultHierarchy: LocalDateTable_3659c85e-9252-4f34-8368-9a9fb5cb76c8.'Date Hierarchy'
+
 		annotation SummarizationSetBy = Automatic
 
 	partition Dim_BDTerritory = m
 		mode: import
 		source = ```
-				// ============================================================
-				// Dim_BDTerritory - Business Development Territory Dimension
-				// Source: public bd_territory
-				// 
-				// PURPOSE:
-				// Dimension for BMD track (BDO/CRO/BD Incharge) territory filtering
-				// BD Territory links to Bazaars which bridges to ORG Territory
-				// 
-				// HIERARCHY:
-				// District → Upazilla → BD Territory
-				// ============================================================
-				
-				let
-				    // Reference the existing tables
-				    BDTerritorySource = #"public bd_territory",
-				    DistrictSource = #"public districts",
-				    UpazillaSource = #"public upazilla",
-				    
-				    // ---- Select Core Columns from bd_territory ----
-				    SelectedColumns = Table.SelectColumns(BDTerritorySource, {
-				        "id", "bd_territory_name", "district_id", "upazilla_id",
-				        "delete_status", "created_at", "updated_at"
-				    }),
-				    
-				    // ---- Filter Active BD Territories ----
-				    ActiveTerritories = Table.SelectRows(SelectedColumns, each [delete_status] = "NO"),
-				    
-				    // ---- Join with District table ----
-				    WithDistrictJoin = Table.NestedJoin(
-				        ActiveTerritories, {"district_id"},
-				        DistrictSource, {"id"},
-				        "DistrictData", JoinKind.LeftOuter
+								// ============================================================
+								// Dim_BDTerritory - Business Development Territory Dimension
+								// Source: public bd_territory
+								// 
+								// PURPOSE:
+								// Dimension for BMD track (BDO/CRO/BD Incharge) territory filtering
+								// BD Territory links to Bazaars which bridges to ORG Territory
+								// 
+								// HIERARCHY:
+								// District → Upazilla → BD Territory
+								// ============================================================
+								
+								let
+								    // Reference the existing tables
+								    BDTerritorySource = #"public bd_territory",
+								    DistrictSource = #"public districts",
+								    UpazillaSource = #"public upazilla",
+								    
+								    // ---- Select Core Columns from bd_territory ----
+								    SelectedColumns = Table.SelectColumns(BDTerritorySource, {
+								        "id", "bd_territory_name", "district_id", "upazilla_id",
+								        "delete_status", "created_at", "updated_at"
+								    }),
+								    
+								    // ---- Filter Active BD Territories ----
+								    ActiveTerritories = Table.SelectRows(SelectedColumns, each [delete_status] = "NO"),
+								    
+								    // ---- Join with District table ----
+								    WithDistrictJoin = Table.NestedJoin(
+								        ActiveTerritories, {"district_id"},
+								        DistrictSource, {"id"},
+								        "DistrictData", JoinKind.LeftOuter
+								    ),
+								    
+				    WithDistrictExpanded = Table.ExpandTableColumn(
+				        WithDistrictJoin, "DistrictData",
+				        {"district_name"},
+				        {"DistrictName"}
 				    ),
 				    
-    WithDistrictExpanded = Table.ExpandTableColumn(
-        WithDistrictJoin, "DistrictData",
-        {"district_name"},
-        {"DistrictName"}
-    ),
-    
-    // ---- Join with Upazilla table ----
-    WithUpazillaJoin = Table.NestedJoin(
-        WithDistrictExpanded, {"upazilla_id"},
-        UpazillaSource, {"id"},
-        "UpazillaData", JoinKind.LeftOuter
-    ),
-    
-    WithUpazillaExpanded = Table.ExpandTableColumn(
-        WithUpazillaJoin, "UpazillaData",
-        {"upazilla_name"},
-        {"UpazillaName"}
-    ),				    // ---- Rename Columns ----
-				    RenamedColumns = Table.RenameColumns(WithUpazillaExpanded, {
-				        {"id", "BDTerritoryID"},
-				        {"bd_territory_name", "BDTerritoryName"},
-				        {"district_id", "DistrictID"},
-				        {"upazilla_id", "UpazillaID"}
-				    }),
+				    // ---- Join with Upazilla table ----
+				    WithUpazillaJoin = Table.NestedJoin(
+				        WithDistrictExpanded, {"upazilla_id"},
+				        UpazillaSource, {"id"},
+				        "UpazillaData", JoinKind.LeftOuter
+				    ),
 				    
-				    // ---- Set Data Types ----
-				    TypedTable = Table.TransformColumnTypes(RenamedColumns, {
-				        {"BDTerritoryID", Int64.Type},
-				        {"BDTerritoryName", type text},
-				        {"DistrictID", Int64.Type},
-				        {"DistrictName", type text},
-				        {"UpazillaID", Int64.Type},
-				        {"UpazillaName", type text},
-				        {"delete_status", type text},
-				        {"created_at", type datetime},
-				        {"updated_at", type datetime}
-				    })
-				in
-				    TypedTable
+				    WithUpazillaExpanded = Table.ExpandTableColumn(
+				        WithUpazillaJoin, "UpazillaData",
+				        {"upazilla_name"},
+				        {"UpazillaName"}
+				    ),				    // ---- Rename Columns ----
+								    RenamedColumns = Table.RenameColumns(WithUpazillaExpanded, {
+								        {"id", "BDTerritoryID"},
+								        {"bd_territory_name", "BDTerritoryName"},
+								        {"district_id", "DistrictID"},
+								        {"upazilla_id", "UpazillaID"}
+								    }),
+								    
+								    // ---- Set Data Types ----
+								    TypedTable = Table.TransformColumnTypes(RenamedColumns, {
+								        {"BDTerritoryID", Int64.Type},
+								        {"BDTerritoryName", type text},
+								        {"DistrictID", Int64.Type},
+								        {"DistrictName", type text},
+								        {"UpazillaID", Int64.Type},
+								        {"UpazillaName", type text},
+								        {"delete_status", type text},
+								        {"created_at", type datetime},
+								        {"updated_at", type datetime}
+								    })
+								in
+								    TypedTable
 				```
 
 	annotation PBI_ResultType = Table

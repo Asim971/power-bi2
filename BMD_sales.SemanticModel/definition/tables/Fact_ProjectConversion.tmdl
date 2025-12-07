@@ -287,11 +287,6 @@ table Fact_ProjectConversion
 		summarizeBy: none
 		sourceColumn: ConversionDateKey
 
-		variation Variation
-			isDefault
-			relationship: 6192e0cc-d008-45a8-bc01-43f52982dc2a
-			defaultHierarchy: LocalDateTable_5ccc5a38-f435-4ea6-b281-a4a882463613.'Date Hierarchy'
-
 		annotation SummarizationSetBy = Automatic
 
 		annotation UnderlyingDateTimeDataType = Date

@@ -7,7 +7,7 @@ model Model
 		legacyRedirects
 		returnErrorValuesAsNull
 
-annotation PBI_QueryOrder = ["public areas","public bank","public bazaars","public bd_territory","public bd_territory_bazaars","public brands","public client","public competitor","public contractor","public customers","public dealer_so","public dealer_so_image","public dealer_so_order_details","public dealer_upazilla","public dealers","public delivery_order","public delivery_order_details","public delivery_order_image_url_list","public disbursements","public districts","public divisions","public employee_area","public employee_bd_territory","public employee_territory","public employees","public end_user","public engineers","public gift","public gift_slabs","public handed_over_site","public head_masons","public ihb_registration","public modules","public money_receipt","public nations","public order_attachments","public order_items","public orders","public organization","public potential_site","public product_acl","public product_ail","public project","public project_conversion","public project_handover","public region","public retailer_order","public retailer_order_details","public retailer_order_image_url_list","public retailers","public reward","public role","public role_modules","public site_managers","public sku_data","public territory","public territory_bazaar_list","public territory_bd_territory","public territory_upazilla","public uncovered_retailer","public uncovered_retailer_competitors","public uncovered_retailer_organizations","public upazilla","public user_credential","public user_orders","public users","public users_bd_territory","public users_territory","public visit_access_acl","public visit_access_acsl","public visit_access_ail","public visit_access_aop","public visit_access_bmd","public visit_categories","public visit_phases","public visit_site_stock_records","public visit_site_stocks","public visit_stage_activities","public visit_stages","public visit_sub_stage_record_histories","public visit_sub_stage_record_sub_stage_photos","public visit_sub_stage_records","public visits","public zone","Dim_Client_Simple","Dim_Date","Dim_Territory","Dim_User","Dim_VisitCategory","Dim_VisitPhase","Dim_VisitStage","Fact_Order","Fact_ProjectConversion","Fact_Visit","USER-ZONE"]
+annotation PBI_QueryOrder = ["public areas","public bank","public bazaars","public bd_territory","public bd_territory_bazaars","public brands","public client","public competitor","public contractor","public customers","public dealer_so","public dealer_so_image","public dealer_so_order_details","public dealer_upazilla","public dealers","public delivery_order","public delivery_order_details","public delivery_order_image_url_list","public disbursements","public districts","public divisions","public employee_area","public employee_bd_territory","public employee_territory","public employees","public end_user","public engineers","public gift","public gift_slabs","public handed_over_site","public head_masons","public ihb_registration","public modules","public money_receipt","public nations","public order_attachments","public order_items","public orders","public organization","public potential_site","public product_acl","public product_ail","public project","public project_conversion","public project_handover","public region","public retailer_order","public retailer_order_details","public retailer_order_image_url_list","public retailers","public reward","public role","public role_modules","public site_managers","public sku_data","public territory","public territory_bazaar_list","public territory_bd_territory","public territory_upazilla","public uncovered_retailer","public uncovered_retailer_competitors","public uncovered_retailer_organizations","public upazilla","public user_credential","public user_orders","public users","public users_bd_territory","public users_territory","public visit_access_acl","public visit_access_acsl","public visit_access_ail","public visit_access_aop","public visit_access_bmd","public visit_categories","public visit_phases","public visit_site_stock_records","public visit_site_stocks","public visit_stage_activities","public visit_stages","public visit_sub_stage_record_histories","public visit_sub_stage_record_sub_stage_photos","public visit_sub_stage_records","public visits","public zone","Dim_Client_Simple","Dim_Date","Dim_Territory","Dim_User","Dim_VisitCategory","Dim_VisitPhase","Dim_VisitStage","Fact_Order","Fact_ProjectConversion","Fact_Visit","USER-ZONE","Dim_BDTerritory","Time Intelligence_2"]
 
 annotation __PBI_TimeIntelligenceEnabled = 1
 
@@ -170,15 +170,20 @@ ref table Dim_VisitStage
 ref table Fact_ProjectConversion
 ref table LocalDateTable_0d8631db-0d2b-4bc9-83d7-7193d040d338
 ref table LocalDateTable_4beddf4e-b976-4a3b-ac7d-2908f72fca86
-ref table LocalDateTable_5ccc5a38-f435-4ea6-b281-a4a882463613
 ref table Fact_Visit
 ref table LocalDateTable_b78652d6-96b5-4ce0-b950-81d1fcd8e989
 ref table LocalDateTable_4ccd853a-ffaa-4612-9342-019595dc6792
-ref table LocalDateTable_80dc7739-add9-4cfa-bfd4-0f267802e538
 ref table LocalDateTable_f8d9e743-e68c-4f07-9f25-9ac4ce880065
 ref table USER-ZONE
 ref table 'Time Intelligence'
 ref table Fact_Order
 ref table LocalDateTable_9f773199-6de7-48ee-ac31-6425d910fbe6
 ref table LocalDateTable_4749dcd2-f816-46b4-abfb-37e7c17c89ae
+ref table LocalDateTable_80dc7739-add9-4cfa-bfd4-0f267802e538
+ref table Dim_BDTerritory
+ref table 'Time Intelligence_2'
+ref table LocalDateTable_18d3c4d4-711b-4d62-a639-a03c78a557be
+ref table LocalDateTable_6b557a37-7f28-4406-a625-9e11636f1b65
+ref table LocalDateTable_3659c85e-9252-4f34-8368-9a9fb5cb76c8
+ref table switch
 

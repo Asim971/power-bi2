@@ -24,13 +24,14 @@ table 'Time Intelligence_2'
 		lineageTag: f6a7b8c9-d0e1-2345-f012-6789abcdef01
 		summarizeBy: none
 		sourceColumn: Time Group Order
-		isHidden
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
 	partition 'Time Intelligence_2' = m
 		mode: import
-		source = ```
+		source =
 				let
 				    Source = #table(
 				        type table [
@@ -50,7 +51,6 @@ table 'Time Intelligence_2'
 				    )
 				in
 				    Source
-				```
 
 	annotation PBI_NavigationStepName = Navigation
 

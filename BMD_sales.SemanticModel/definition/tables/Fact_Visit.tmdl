@@ -231,59 +231,6 @@ table Fact_Visit
 		formatString: 0
 		lineageTag: 0e81e912-4474-4b27-93a2-7c09d6f4ba0c
 
-	/// Week-To-Date Visits - FR-7-10 Date Filter
-	/// Uses WeekStartDate from Dim_Date (Saturday start per Bangladesh fiscal calendar)
-	measure Visits_WTD = ```
-			CALCULATE(
-			    [Total_Visits],
-			    DATESBETWEEN(
-			        'Dim_Date'[Date],
-			        MAX('Dim_Date'[WeekStartDate]),
-			        TODAY()
-			    )
-			)
-			```
-		formatString: 0
-		displayFolder: Time Intelligence
-		lineageTag: 4d5e6f7a-8b9c-0d1e-2f3a-4b5c6d7e8f9a
-
-	/// Dynamic Date Filter Measure - responds to DateFilterParam selection
-	/// FR-7-10: Radio buttons for Daily, WTD, MTD, YTD
-	measure Visits_DateFiltered = ```
-			VAR SelectedFilter = SELECTEDVALUE('DateFilterParam'[FilterOption], "MTD")
-			RETURN
-			SWITCH(
-			    SelectedFilter,
-			    "Daily", CALCULATE(
-			        [Total_Visits],
-			        'Dim_Date'[Date] = TODAY()
-			    ),
-			    "WTD", [Visits_WTD],
-			    "MTD", [Visits_MTD],
-			    "YTD", [Visits_YTD],
-			    [Visits_MTD]
-			)
-			```
-		formatString: 0
-		displayFolder: FRD Dashboard
-		lineageTag: 5e6f7a8b-9c0d-1e2f-3a4b-5c6d7e8f9a0b
-
-	/// Territory Filtering via Dim_User bridge
-	/// Phase 5.5: Uses TREATAS for virtual relationship to Dim_Territory
-	/// This avoids adding redundant direct relationship from Fact_Visit to Dim_Territory
-	measure Visits_By_Territory = ```
-			CALCULATE(
-			    [Total_Visits],
-			    TREATAS(
-			        VALUES('Dim_Territory'[ZoneName]),
-			        'Dim_User'[ZoneName]
-			    )
-			)
-			```
-		formatString: 0
-		displayFolder: FRD Dashboard
-		lineageTag: 6f7a8b9c-0d1e-2f3a-4b5c-6d7e8f9a0b1c
-
 	measure Visits_Previous_Month = ```
 			
 			        CALCULATE(
@@ -524,6 +471,56 @@ table Fact_Visit
 		formatString: 0
 		lineageTag: a9b0c1d2-e3f4-a5b6-c7d8-e9f0a1b2c3d4
 
+	/// Week-To-Date Visits - FR-7-10 Date Filter
+	/// Uses WeekStartDate from Dim_Date (Saturday start per Bangladesh fiscal calendar)
+	measure Visits_WTD =
+			CALCULATE(
+			    [Total_Visits],
+			    DATESBETWEEN(
+			        'Dim_Date'[Date],
+			        MAX('Dim_Date'[WeekStartDate]),
+			        TODAY()
+			    )
+			)
+		formatString: 0
+		displayFolder: Time Intelligence
+		lineageTag: 4d5e6f7a-8b9c-0d1e-2f3a-4b5c6d7e8f9a
+
+	/// Dynamic Date Filter Measure - responds to DateFilterParam selection
+	/// FR-7-10: Radio buttons for Daily, WTD, MTD, YTD
+	measure Visits_DateFiltered =
+			VAR SelectedFilter = SELECTEDVALUE('DateFilterParam'[FilterOption], "MTD")
+			RETURN
+			SWITCH(
+			    SelectedFilter,
+			    "Daily", CALCULATE(
+			        [Total_Visits],
+			        'Dim_Date'[Date] = TODAY()
+			    ),
+			    "WTD", [Visits_WTD],
+			    "MTD", [Visits_MTD],
+			    "YTD", [Visits_YTD],
+			    [Visits_MTD]
+			)
+		formatString: 0
+		displayFolder: FRD Dashboard
+		lineageTag: 5e6f7a8b-9c0d-1e2f-3a4b-5c6d7e8f9a0b
+
+	/// Territory Filtering via Dim_User bridge
+	/// Phase 5.5: Uses TREATAS for virtual relationship to Dim_Territory
+	/// This avoids adding redundant direct relationship from Fact_Visit to Dim_Territory
+	measure Visits_By_Territory =
+			CALCULATE(
+			    [Total_Visits],
+			    TREATAS(
+			        VALUES('Dim_Territory'[ZoneName]),
+			        'Dim_User'[ZoneName]
+			    )
+			)
+		formatString: 0
+		displayFolder: FRD Dashboard
+		lineageTag: 6f7a8b9c-0d1e-2f3a-4b5c-6d7e8f9a0b1c
+
 	/// FR-24: Total Visit - KPI Tile with comma formatting
 	measure Total_Visit_FRD = COUNTROWS('Fact_Visit')
 		formatString: #,##0
@@ -719,45 +716,41 @@ table Fact_Visit
 
 	/// CLIENT TYPE VISIT MEASURES
 	/// Total Engineer Visits
-	measure Total_Engineer_Visits = ```
+	measure Total_Engineer_Visits =
 			CALCULATE(
 				[Total_Visits],
 				'Fact_Visit'[ClientType] = "Engineer"
 			)
-			```
 		formatString: 0
 		displayFolder: Visit Counts
 		lineageTag: a1b2c3d4-5e6f-7890-abcd-ef0123456789
 
 	/// Total Contractor Visits
-	measure Total_Contractor_Visits = ```
+	measure Total_Contractor_Visits =
 			CALCULATE(
 				[Total_Visits],
 				'Fact_Visit'[ClientType] = "Contractor"
 			)
-			```
 		formatString: 0
 		displayFolder: Visit Counts
 		lineageTag: b2c3d4e5-6f7a-8901-bcde-f01234567890
 
 	/// Total IHB Visits
-	measure Total_IHB_Visits = ```
+	measure Total_IHB_Visits =
 			CALCULATE(
 				[Total_Visits],
 				'Fact_Visit'[ClientType] = "IHB"
 			)
-			```
 		formatString: 0
 		displayFolder: Visit Counts
 		lineageTag: d4e5f6a7-8b9c-0123-def0-123456789012
 
 	/// Total Influencers Visits (Engineer + Contractor)
-	measure Total_Influencers_Visits = ```
+	measure Total_Influencers_Visits =
 			CALCULATE(
 				[Total_Visits],
 				'Fact_Visit'[ClientType] IN {"Engineer", "Contractor"}
 			)
-			```
 		formatString: 0
 		displayFolder: Visit Counts
 		lineageTag: e5f6a7b8-9c0d-1234-ef01-234567890123
@@ -895,15 +888,6 @@ table Fact_Visit
 		lineageTag: 53f429e7-23bb-40cc-a22f-d4c956fc11e1
 		summarizeBy: none
 		sourceColumn: organization_id
-
-		annotation SummarizationSetBy = Automatic
-
-	/// FR-16-18: Company Code for ACL/AIL filter
-	column CompanyCode
-		dataType: string
-		lineageTag: 7e8f9012-3456-7890-abcd-567890123456
-		summarizeBy: none
-		sourceColumn: CompanyCode
 
 		annotation SummarizationSetBy = Automatic
 
@@ -1083,6 +1067,15 @@ table Fact_Visit
 		annotation SummarizationSetBy = Automatic
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	/// FR-16-18: Company Code for ACL/AIL filter
+	column CompanyCode
+		dataType: string
+		lineageTag: 7e8f9012-3456-7890-abcd-567890123456
+		summarizeBy: none
+		sourceColumn: CompanyCode
+
+		annotation SummarizationSetBy = Automatic
 
 	partition Fact_Visit = m
 		mode: import

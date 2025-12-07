@@ -1,0 +1,54 @@
+table switch
+	lineageTag: 969ed0fd-5404-4d21-9874-debca9018c8e
+
+	column switch
+		lineageTag: cdaba5b0-e1e4-4623-b2c8-e83bfb24d728
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'switch Order'
+
+		relatedColumnDetails
+			groupByColumn: 'switch Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'switch Fields'
+		isHidden
+		lineageTag: fc813065-b81d-4606-b1fc-3f4c73025a2f
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'switch Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'switch Order'
+		isHidden
+		formatString: 0
+		lineageTag: 4a028442-60b0-4501-a7f0-36c3bf973480
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition switch = calculated
+		mode: import
+		source =
+				{
+				    ("TerritoryLayerName", NAMEOF('Dim_User'[TerritoryLayerName]), 0),
+				    ("OrganizationName", NAMEOF('Dim_User'[OrganizationName]), 1),
+				    ("EmployeeName", NAMEOF('Dim_User'[EmployeeName]), 2),
+				    ("Designation", NAMEOF('Dim_User'[Designation]), 3),
+				    ("BDTerritoryName", NAMEOF('Dim_User'[BDTerritoryName]), 4),
+				    ("AreaName", NAMEOF('Dim_User'[AreaName]), 5),
+				    ("RegionName", NAMEOF('Dim_User'[RegionName]), 6),
+				    ("RoleName", NAMEOF('Dim_User'[RoleName]), 7)
+				}
+
+	annotation PBI_Id = 4dacb3b4cbbd447b8f54f79e847287e5
+

@@ -8,6 +8,11 @@ table Dim_Date
 		summarizeBy: none
 		sourceColumn: DateKey
 
+		variation Variation
+			isDefault
+			relationship: 298c937b-b70a-437d-adf6-1599039b05c5
+			defaultHierarchy: LocalDateTable_18d3c4d4-711b-4d62-a639-a03c78a557be.'Date Hierarchy'
+
 		annotation SummarizationSetBy = Automatic
 
 		annotation UnderlyingDateTimeDataType = Date
