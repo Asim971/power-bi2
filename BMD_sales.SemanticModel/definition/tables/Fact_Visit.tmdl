@@ -740,17 +740,6 @@ table Fact_Visit
 		displayFolder: Visit Counts
 		lineageTag: b2c3d4e5-6f7a-8901-bcde-f01234567890
 
-	/// Total Site Visits (in Fact_Visit)
-	measure Total_Site_Visits = ```
-			CALCULATE(
-				[Total_Visits],
-				'Fact_Visit'[ClientType] = "Site"
-			)
-			```
-		formatString: 0
-		displayFolder: Visit Counts
-		lineageTag: c3d4e5f6-7a8b-9012-cdef-012345678901
-
 	/// Total IHB Visits
 	measure Total_IHB_Visits = ```
 			CALCULATE(
