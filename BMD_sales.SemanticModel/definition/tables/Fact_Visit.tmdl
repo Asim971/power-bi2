@@ -67,22 +67,28 @@ table Fact_Visit
 	measure Zone_Mismatch_Visits
 		lineageTag: 3ccd55f5-00a4-452c-9ad2-1dedafee8150
 
+	/// Base measure for all visit counts
 	measure Total_Visits = COUNTROWS('Fact_Visit')
-		formatString: 0
+		formatString: #,##0
+		displayFolder: Visit Counts\Base
 		lineageTag: 34aafb72-4095-4c1a-bdcc-31f7eb99b15f
 
 	measure Unique_Clients_Visited = DISTINCTCOUNT('Fact_Visit'[ClientKey])
-		formatString: 0
+		formatString: #,##0
+		displayFolder: Visit Counts\Base
 		lineageTag: 31ee6a27-68ba-41ec-ac33-8867a08436aa
 
 	measure Active_Employees = DISTINCTCOUNT('Fact_Visit'[EmployeeID])
-		formatString: 0
+		formatString: #,##0
+		displayFolder: Visit Counts\Base
 		lineageTag: 3b1eb32b-316d-4216-952d-9df7f823d42d
 
 	measure Visits_Per_Employee = ```
 			
 			        DIVIDE([Total_Visits], [Active_Employees], 0)
 			```
+		formatString: #,##0.0
+		displayFolder: Ratios\Productivity
 		lineageTag: 264f432d-eae9-4fbe-881a-0c85dc995b1e
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -91,6 +97,8 @@ table Fact_Visit
 			
 			        DIVIDE([Total_Visits], [Unique_Clients_Visited], 0)
 			```
+		formatString: #,##0.0
+		displayFolder: Ratios\Productivity
 		lineageTag: edb0cf22-8b21-4aa2-af54-03fb078e5d8f
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -99,6 +107,8 @@ table Fact_Visit
 			
 			        DIVIDE([Unique_Clients_Visited], [Active_Employees], 0)
 			```
+		formatString: #,##0.0
+		displayFolder: Ratios\Productivity
 		lineageTag: 0de2c990-7e66-4599-a12c-6ac62120c0b7
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -110,13 +120,16 @@ table Fact_Visit
 			            'Fact_Visit'[HasPhoto] = 1
 			        )
 			```
-		formatString: 0
+		formatString: #,##0
+		displayFolder: Quality Compliance
 		lineageTag: e7589b82-1e9d-42c1-b28e-b9ad29001f0b
 
 	measure Photo_Compliance_Rate = ```
 			
 			        DIVIDE([Visits_With_Photos], [Total_Visits], 0)
 			```
+		formatString: 0.0%
+		displayFolder: Quality Compliance\Rates
 		lineageTag: 34000498-b990-45b9-ab14-7daa8855b199
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -128,13 +141,16 @@ table Fact_Visit
 			            'Fact_Visit'[HasProductPhoto] = 1
 			        )
 			```
-		formatString: 0
+		formatString: #,##0
+		displayFolder: Quality Compliance
 		lineageTag: 6396bece-4da8-439d-9215-30ffa8fb5344
 
 	measure Product_Photo_Rate = ```
 			
 			        DIVIDE([Visits_With_Product_Photos], [Total_Visits], 0)
 			```
+		formatString: 0.0%
+		displayFolder: Quality Compliance\Rates
 		lineageTag: 0d5dce4a-d3dd-48c6-bfa6-329f082be560
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -146,13 +162,16 @@ table Fact_Visit
 			            'Fact_Visit'[HasFeedback] = 1
 			        )
 			```
-		formatString: 0
+		formatString: #,##0
+		displayFolder: Quality Compliance
 		lineageTag: 1b03d3bd-a171-4b27-8874-52d7b0c0cff5
 
 	measure Feedback_Rate = ```
 			
 			        DIVIDE([Visits_With_Feedback], [Total_Visits], 0)
 			```
+		formatString: 0.0%
+		displayFolder: Quality Compliance\Rates
 		lineageTag: 1e7d782f-d710-4b94-b7d3-5b8cc454ed66
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -165,6 +184,8 @@ table Fact_Visit
 			            [Feedback_Rate] * 0.3
 			        )
 			```
+		formatString: 0.0%
+		displayFolder: Quality Compliance\Score
 		lineageTag: cdf6008b-b3cc-41a7-bdfa-1411dfb0d134
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -178,7 +199,8 @@ table Fact_Visit
 			            )
 			        )
 			```
-		formatString: 0
+		formatString: #,##0
+		displayFolder: Client Analysis
 		lineageTag: 214779a5-b311-4579-aaf1-e8473c7c095e
 
 	measure Clients_Visited_Multiple = ```
@@ -190,13 +212,16 @@ table Fact_Visit
 			            )
 			        )
 			```
-		formatString: 0
+		formatString: #,##0
+		displayFolder: Client Analysis
 		lineageTag: 29103485-6052-4d0d-85ce-702bec344bd2
 
 	measure Repeat_Visit_Rate = ```
 			
 			        DIVIDE([Clients_Visited_Multiple], [Unique_Clients_Visited], 0)
 			```
+		formatString: 0.0%
+		displayFolder: Client Analysis\Rates
 		lineageTag: 90a3a66c-8a85-47cb-b600-6aef0c143616
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -208,7 +233,8 @@ table Fact_Visit
 			            DATESMTD('Dim_Date'[Date])
 			        )
 			```
-		formatString: 0
+		formatString: #,##0
+		displayFolder: Time Intelligence\Period to Date
 		lineageTag: 50bac071-3622-42a0-aac9-53f59b3180cc
 
 	measure Visits_QTD = ```
@@ -218,7 +244,8 @@ table Fact_Visit
 			            DATESQTD('Dim_Date'[Date])
 			        )
 			```
-		formatString: 0
+		formatString: #,##0
+		displayFolder: Time Intelligence\Period to Date
 		lineageTag: 8535cd94-c562-41e5-9311-39b5b1d7c62a
 
 	measure Visits_YTD = ```
@@ -228,7 +255,8 @@ table Fact_Visit
 			            DATESYTD('Dim_Date'[Date])
 			        )
 			```
-		formatString: 0
+		formatString: #,##0
+		displayFolder: Time Intelligence\Period to Date
 		lineageTag: 0e81e912-4474-4b27-93a2-7c09d6f4ba0c
 
 	measure Visits_Previous_Month = ```
@@ -238,7 +266,8 @@ table Fact_Visit
 			            PREVIOUSMONTH('Dim_Date'[Date])
 			        )
 			```
-		formatString: 0
+		formatString: #,##0
+		displayFolder: Time Intelligence\Previous Period
 		lineageTag: 9c882202-896d-4c78-a93d-a9ccb27aecc5
 
 	measure Visits_Previous_Quarter = ```
@@ -248,7 +277,8 @@ table Fact_Visit
 			            PREVIOUSQUARTER('Dim_Date'[Date])
 			        )
 			```
-		formatString: 0
+		formatString: #,##0
+		displayFolder: Time Intelligence\Previous Period
 		lineageTag: f1b149b6-d087-414b-9d8d-dcb5677a907f
 
 	measure Visits_Previous_Year = ```
@@ -258,7 +288,8 @@ table Fact_Visit
 			            PREVIOUSYEAR('Dim_Date'[Date])
 			        )
 			```
-		formatString: 0
+		formatString: #,##0
+		displayFolder: Time Intelligence\Previous Period
 		lineageTag: b2879c35-7bf0-4531-9452-1648c0f3c82d
 
 	measure Visits_MoM_Growth = ```
@@ -269,6 +300,8 @@ table Fact_Visit
 			            0
 			        )
 			```
+		formatString: +0.0%;-0.0%;0.0%
+		displayFolder: Time Intelligence\Growth
 		lineageTag: 670cb828-a5fb-44f7-aae7-fe07a77be1e7
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -281,6 +314,8 @@ table Fact_Visit
 			            0
 			        )
 			```
+		formatString: +0.0%;-0.0%;0.0%
+		displayFolder: Time Intelligence\Growth
 		lineageTag: d0100c9e-e3c7-4afc-813e-b1c5706a3c15
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -292,7 +327,8 @@ table Fact_Visit
 			            DATESINPERIOD('Dim_Date'[Date], MAX('Dim_Date'[Date]), -7, DAY)
 			        )
 			```
-		formatString: 0
+		formatString: #,##0
+		displayFolder: Time Intelligence\Rolling
 		lineageTag: 6983840a-3280-419a-ac14-e39226e6aaed
 
 	measure Visits_Rolling_30_Days = ```
@@ -302,11 +338,13 @@ table Fact_Visit
 			            DATESINPERIOD('Dim_Date'[Date], MAX('Dim_Date'[Date]), -30, DAY)
 			        )
 			```
-		formatString: 0
+		formatString: #,##0
+		displayFolder: Time Intelligence\Rolling
 		lineageTag: c367a91b-f506-458c-93bf-081dea8dc71a
 
 	measure Unique_Territories = DISTINCTCOUNT('Fact_Visit'[territory_id])
-		formatString: 0
+		formatString: #,##0
+		displayFolder: GPS & Territory
 		lineageTag: 4566f4a9-877b-46a3-9235-59dec5a91fa7
 
 	measure Avg_Visits_Per_Day = ```
@@ -316,6 +354,8 @@ table Fact_Visit
 			            DISTINCTCOUNT('Fact_Visit'[DateKey])
 			        )
 			```
+		formatString: #,##0.0
+		displayFolder: Ratios\Daily
 		lineageTag: 66563689-57d2-40c5-ac30-a7c55ff2a025
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -327,7 +367,8 @@ table Fact_Visit
 			            CALCULATE([Total_Visits])
 			        )
 			```
-		formatString: 0
+		formatString: #,##0
+		displayFolder: Performance\Benchmarks
 		lineageTag: a3669f58-61a5-49ef-9d63-9450f26dea6c
 
 	measure Bottom_Performer_Visits = ```
@@ -337,7 +378,8 @@ table Fact_Visit
 			            CALCULATE([Total_Visits])
 			        )
 			```
-		formatString: 0
+		formatString: #,##0
+		displayFolder: Performance\Benchmarks
 		lineageTag: 431cb596-4d15-41eb-a9e7-a71d3389072d
 
 	measure Employees_Above_Target = ```
@@ -351,7 +393,8 @@ table Fact_Visit
 			            )
 			        )
 			```
-		formatString: 0
+		formatString: #,##0
+		displayFolder: Performance\Targets
 		lineageTag: 53b4d37a-fadf-4f2d-8c96-83172b1a6de5
 
 	measure Employee_Performance_Index =
@@ -403,6 +446,7 @@ table Fact_Visit
 			VAR ZScore = DIVIDE(CurrentVisits - AvgVisits, StdDeviation, 0)
 			RETURN
 			IF(ZScore > 2, "High", IF(ZScore < -2, "Low", "Normal"))
+		displayFolder: Analytics\Anomaly Detection
 		lineageTag: 575a37eb-189e-4037-8c7e-192f4d7e9d2d
 
 	measure Days_Since_Last_Visit =
@@ -422,6 +466,7 @@ table Fact_Visit
 			RETURN
 			IF(DateCount > 1, DIVIDE(DateRange, DateCount - 1, 0), BLANK())
 		formatString: 0.0
+		displayFolder: Analytics\Recency
 		lineageTag: d6e7f8a9-b0c1-d2e3-f4a5-b6c7d8e9f0a1
 
 	measure Employee_Rank_by_Visits =
@@ -435,6 +480,7 @@ table Fact_Visit
 			    )
 			) + 1
 		formatString: 0
+		displayFolder: Performance\Rankings
 		lineageTag: e7f8a9b0-c1d2-e3f4-a5b6-c7d8e9f0a1b2
 
 	measure Top_5_Employees_Contribution = ```
@@ -451,6 +497,7 @@ table Fact_Visit
 			DIVIDE(Top5Total, GrandTotal, 0)
 			```
 		formatString: 0.0%
+		displayFolder: Performance\Rankings
 		lineageTag: f8a9b0c1-d2e3-f4a5-b6c7-d8e9f0a1b2c3
 
 	measure Visit_Streak_Days = ```
@@ -469,6 +516,7 @@ table Fact_Visit
 			RETURN ConsecutiveDays
 			```
 		formatString: 0
+		displayFolder: Analytics\Engagement
 		lineageTag: a9b0c1d2-e3f4-a5b6-c7d8-e9f0a1b2c3d4
 
 	/// Week-To-Date Visits - FR-7-10 Date Filter
@@ -520,12 +568,6 @@ table Fact_Visit
 		formatString: 0
 		displayFolder: FRD Dashboard
 		lineageTag: 6f7a8b9c-0d1e-2f3a-4b5c-6d7e8f9a0b1c
-
-	/// FR-24: Total Visit - KPI Tile with comma formatting
-	measure Total_Visit_FRD = COUNTROWS('Fact_Visit')
-		formatString: #,##0
-		displayFolder: FRD Dashboard\KPI Tiles
-		lineageTag: 1a2b3c4d-5e6f-7890-abcd-ef1234567890
 
 	/// FR-27-28: Average Visit per Employee
 	measure Average_Visit_FRD = ```
@@ -586,23 +628,17 @@ table Fact_Visit
 		displayFolder: FRD Dashboard\MoM Comparison
 		lineageTag: 6f7a8b9c-0d1e-2345-f012-456789012345
 
-	/// FR-50-52: Employee Visit Count for ranking
-	measure Employee_Visit_Count = COUNTROWS('Fact_Visit')
-		formatString: #,##0
-		displayFolder: FRD Dashboard\Rankings
-		lineageTag: 7a8b9c0d-1e2f-3456-0123-567890123456
-
 	/// FR-53-56: Employee Rank (ascending) - For Bottom Performers
 	measure Employee_Rank_Asc = ```
 			
-					VAR CurrentVisits = [Employee_Visit_Count]
+					VAR CurrentVisits = [Total_Visits]
 					VAR AllEmployeeVisits = 
 						ADDCOLUMNS(
 							SUMMARIZE(
 								ALL('Fact_Visit'),
 								'Fact_Visit'[EmployeeID]
 							),
-							"@Visits", [Employee_Visit_Count]
+							"@Visits", [Total_Visits]
 						)
 					RETURN
 					COUNTROWS(
@@ -619,14 +655,14 @@ table Fact_Visit
 	/// FR-57-60: Employee Rank (descending) - For Top Performers
 	measure Employee_Rank_Desc = ```
 			
-					VAR CurrentVisits = [Employee_Visit_Count]
+					VAR CurrentVisits = [Total_Visits]
 					VAR AllEmployeeVisits = 
 						ADDCOLUMNS(
 							SUMMARIZE(
 								ALL('Fact_Visit'),
 								'Fact_Visit'[EmployeeID]
 							),
-							"@Visits", [Employee_Visit_Count]
+							"@Visits", [Total_Visits]
 						)
 					RETURN
 					COUNTROWS(
@@ -754,19 +790,6 @@ table Fact_Visit
 		formatString: 0
 		displayFolder: Visit Counts
 		lineageTag: e5f6a7b8-9c0d-1234-ef01-234567890123
-
-	/// MOM COMPARISON - Alternative Names (for report compatibility)
-	/// Current Month Visits (alternative name for report compatibility)
-	measure CurrentMonth_Visits = [Visits_Current_Month]
-		formatString: #,##0
-		displayFolder: FRD Dashboard\MoM Comparison
-		lineageTag: f6a7b8c9-0d1e-2345-f012-345678901234
-
-	/// Previous Month Visits (alternative name for report compatibility)
-	measure PreviousMonth_Visits = [Visits_Previous_Calendar_Month]
-		formatString: #,##0
-		displayFolder: FRD Dashboard\MoM Comparison
-		lineageTag: a7b8c9d0-1e2f-3456-0123-456789012345
 
 	column VisitID
 		dataType: int64

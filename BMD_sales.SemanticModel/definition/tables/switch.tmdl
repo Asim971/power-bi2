@@ -44,7 +44,7 @@ table switch
 				    ("OrganizationName", NAMEOF('Dim_User'[OrganizationName]), 1),
 				    ("EmployeeName", NAMEOF('Dim_User'[EmployeeName]), 2),
 				    ("Designation", NAMEOF('Dim_User'[Designation]), 3),
-				    ("BDTerritoryName", NAMEOF('Dim_User'[BDTerritoryName]), 4),
+				    ("BDTerritoryName", NAMEOF('Dim_BDTerritory'[BDTerritoryName]), 4),
 				    ("AreaName", NAMEOF('Dim_User'[AreaName]), 5),
 				    ("RegionName", NAMEOF('Dim_User'[RegionName]), 6),
 				    ("RoleName", NAMEOF('Dim_User'[RoleName]), 7)

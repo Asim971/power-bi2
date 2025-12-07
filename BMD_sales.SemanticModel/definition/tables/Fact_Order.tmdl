@@ -47,6 +47,7 @@ table Fact_Order
 			            'Fact_Order'[OrderStatus] = "Processing"
 			        )
 		formatString: 0
+		displayFolder: Order Counts\By Status
 		lineageTag: b0109f7b-0763-402f-a9b4-52fbd8aa7fcc
 
 	measure Completion_Rate = ```
@@ -93,6 +94,7 @@ table Fact_Order
 			        )
 			```
 		formatString: ₹#,##0
+		displayFolder: Order Amounts\By Status
 		lineageTag: cdbbbee6-5442-41f1-99ad-e96d790efa9f
 
 	measure Pending_Order_Amount = ```
@@ -103,6 +105,7 @@ table Fact_Order
 			        )
 			```
 		formatString: ₹#,##0
+		displayFolder: Order Amounts\By Status
 		lineageTag: 4caa44c5-780c-4342-9c8f-ed155fae138f
 
 	measure Cancelled_Order_Amount = ```
@@ -113,6 +116,7 @@ table Fact_Order
 			        )
 			```
 		formatString: ₹#,##0
+		displayFolder: Order Amounts\By Status
 		lineageTag: 8eb29ea4-b623-4036-ad7e-c198cb1226f1
 
 	measure Amount_Per_Order = ```
@@ -120,6 +124,7 @@ table Fact_Order
 			        DIVIDE([Total_Order_Amount], [Total_Orders], 0)
 			```
 		formatString: ₹#,##0
+		displayFolder: Ratios
 		lineageTag: ad6eaad7-b342-42ad-a88d-083c3533f418
 
 	measure Factory_DN_Orders =
@@ -128,6 +133,7 @@ table Fact_Order
 			            'Fact_Order'[DeliveryMethod] = "Factory DN"
 			        )
 		formatString: 0
+		displayFolder: Order Counts\By Delivery
 		lineageTag: b9fa7702-5399-4f0a-a489-1119e67c8040
 
 	measure Site_DN_Orders =
@@ -136,6 +142,7 @@ table Fact_Order
 			            'Fact_Order'[DeliveryMethod] = "Site DN"
 			        )
 		formatString: 0
+		displayFolder: Order Counts\By Delivery
 		lineageTag: a2faeeac-985f-4500-96cd-48d9a1ca8647
 
 	measure Counter_Orders =
@@ -144,78 +151,81 @@ table Fact_Order
 			            'Fact_Order'[DeliveryMethod] = "Counter"
 			        )
 		formatString: 0
+		displayFolder: Order Counts\By Delivery
 		lineageTag: 66edd5ed-04ba-48d0-8721-3feb7fba6b5c
 
 	measure Factory_DN_Rate = DIVIDE([Factory_DN_Orders], [Total_Orders], 0)
 		formatString: 0.0%
+		displayFolder: Rates\By Delivery
 		lineageTag: 1828bf08-cee6-46a1-a6c5-038c2ff8daa1
 
 	measure Site_DN_Rate = DIVIDE([Site_DN_Orders], [Total_Orders], 0)
+		formatString: 0.0%
+		displayFolder: Rates\By Delivery
 		lineageTag: befca123-f34b-4a5d-a2fc-4cf5d897ee8f
 
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
 	measure Counter_Order_Rate = DIVIDE([Counter_Orders], [Total_Orders], 0)
+		formatString: 0.0%
+		displayFolder: Rates\By Delivery
 		lineageTag: ec3100fa-e770-4a1c-95ef-0515e3d4a2ce
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Factory_DN_Amount =
 			CALCULATE(
 			            SUM('Fact_Order'[TotalAmount]),
 			            'Fact_Order'[DeliveryMethod] = "Factory DN"
 			        )
+		formatString: ₹#,##0
+		displayFolder: Order Amounts\By Delivery
 		lineageTag: eb29123e-eb5e-47a7-a518-52695a2460e6
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Site_DN_Amount =
 			CALCULATE(
 			            SUM('Fact_Order'[TotalAmount]),
 			            'Fact_Order'[DeliveryMethod] = "Site DN"
 			        )
+		formatString: ₹#,##0
+		displayFolder: Order Amounts\By Delivery
 		lineageTag: d635a39c-9e3e-40bb-a5f0-65f171c3879f
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Counter_Order_Amount =
 			CALCULATE(
 			            SUM('Fact_Order'[TotalAmount]),
 			            'Fact_Order'[DeliveryMethod] = "Counter"
 			        )
+		formatString: ₹#,##0
+		displayFolder: Order Amounts\By Delivery
 		lineageTag: c44bc341-fd32-4565-9ac6-e0d47078fa79
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Avg_Factory_DN_Amount =
 			CALCULATE(
 			            AVERAGE('Fact_Order'[TotalAmount]),
 			            'Fact_Order'[DeliveryMethod] = "Factory DN"
 			        )
+		formatString: ₹#,##0
+		displayFolder: Order Amounts\By Delivery
 		lineageTag: 0b85fa91-001c-41b9-8c60-7b95852216ea
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Avg_Site_DN_Amount =
 			CALCULATE(
 			            AVERAGE('Fact_Order'[TotalAmount]),
 			            'Fact_Order'[DeliveryMethod] = "Site DN"
 			        )
+		formatString: ₹#,##0
+		displayFolder: Order Amounts\By Delivery
 		lineageTag: 0116f6b0-96da-4275-8281-b2dc0ff38644
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Avg_Counter_Amount =
 			CALCULATE(
 			            AVERAGE('Fact_Order'[TotalAmount]),
 			            'Fact_Order'[DeliveryMethod] = "Counter"
 			        )
+		formatString: ₹#,##0
+		displayFolder: Order Amounts\By Delivery
 		lineageTag: 3c137cdd-906f-4c30-b3e4-a3c141bc734a
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Unique_Delivery_Methods = DISTINCTCOUNT('Fact_Order'[DeliveryMethod])
 		formatString: 0
+		displayFolder: Order Counts
 		lineageTag: 8be01f80-a99f-407a-83ed-60094304506a
 
 	measure Engineer_Eligible_Orders = ```
@@ -226,6 +236,7 @@ table Fact_Order
 			        )
 			```
 		formatString: 0
+		displayFolder: Order Counts\Eligibility
 		lineageTag: bb848ca5-b598-4dbc-af51-a5e625afc9c7
 
 	measure Partner_Eligible_Orders = ```
@@ -236,23 +247,24 @@ table Fact_Order
 			        )
 			```
 		formatString: 0
+		displayFolder: Order Counts\Eligibility
 		lineageTag: f55b66d5-ae30-4792-8d3f-b3e3f3037636
 
 	measure Engineer_Eligibility_Rate = ```
 			
 			        DIVIDE([Engineer_Eligible_Orders], [Total_Orders], 0)
 			```
+		formatString: 0.0%
+		displayFolder: Rates\Eligibility
 		lineageTag: da98ff3e-984f-491c-8d04-f385a4ea2764
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Partner_Eligibility_Rate = ```
 			
 			        DIVIDE([Partner_Eligible_Orders], [Total_Orders], 0)
 			```
+		formatString: 0.0%
+		displayFolder: Rates\Eligibility
 		lineageTag: 17a51380-b9a2-46e0-8be7-5e79ad1b2696
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Engineer_Eligible_Amount = ```
 			
@@ -261,9 +273,9 @@ table Fact_Order
 			            'Fact_Order'[IsEngineerEligible] = TRUE()
 			        )
 			```
+		formatString: ₹#,##0
+		displayFolder: Order Amounts\Eligibility
 		lineageTag: a6b95601-f756-4d58-813f-2ab1c245f4da
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Partner_Eligible_Amount = ```
 			
@@ -272,9 +284,9 @@ table Fact_Order
 			            'Fact_Order'[IsPartnerEligible] = TRUE()
 			        )
 			```
+		formatString: ₹#,##0
+		displayFolder: Order Amounts\Eligibility
 		lineageTag: 87a2250e-5bde-479c-9e82-c39d4ab106f9
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Orders_MTD = ```
 			
@@ -284,6 +296,7 @@ table Fact_Order
 			        )
 			```
 		formatString: 0
+		displayFolder: Time Intelligence\Period to Date
 		lineageTag: 44720f58-d462-48e4-bbd7-42572ad7d7da
 
 	measure Orders_QTD = ```
@@ -294,6 +307,7 @@ table Fact_Order
 			        )
 			```
 		formatString: 0
+		displayFolder: Time Intelligence\Period to Date
 		lineageTag: f7f6fdc9-80e4-4fae-a9ca-6f3fd5720ff4
 
 	measure Orders_YTD = ```
@@ -304,6 +318,7 @@ table Fact_Order
 			        )
 			```
 		formatString: 0
+		displayFolder: Time Intelligence\Period to Date
 		lineageTag: 5a805498-547c-4459-9e2b-5330bf337429
 
 	measure Amount_MTD = ```
@@ -313,9 +328,9 @@ table Fact_Order
 			            DATESMTD('Dim_Date'[Date])
 			        )
 			```
+		formatString: ₹#,##0
+		displayFolder: Time Intelligence\Period to Date
 		lineageTag: 250087b0-d47e-4a92-bbcb-a8844bcf2c9e
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Amount_QTD = ```
 			
@@ -324,9 +339,9 @@ table Fact_Order
 			            DATESQTD('Dim_Date'[Date])
 			        )
 			```
+		formatString: ₹#,##0
+		displayFolder: Time Intelligence\Period to Date
 		lineageTag: 61321918-01f4-429d-80bc-ab9fc56a875b
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Amount_YTD = ```
 			
@@ -335,9 +350,9 @@ table Fact_Order
 			            DATESYTD('Dim_Date'[Date])
 			        )
 			```
+		formatString: ₹#,##0
+		displayFolder: Time Intelligence\Period to Date
 		lineageTag: dad2527d-2617-4ee7-bed3-fb3340d657b0
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Orders_Previous_Month = ```
 			
@@ -347,6 +362,7 @@ table Fact_Order
 			        )
 			```
 		formatString: 0
+		displayFolder: Time Intelligence\Previous Period
 		lineageTag: 852ad32f-980e-46bf-8248-be8fe43d7d29
 
 	measure Orders_Previous_Year = ```
@@ -357,6 +373,7 @@ table Fact_Order
 			        )
 			```
 		formatString: 0
+		displayFolder: Time Intelligence\Previous Period
 		lineageTag: a655578e-dbbd-4555-a4e0-8ca4a046355d
 
 	measure Amount_Previous_Month = ```
@@ -366,9 +383,9 @@ table Fact_Order
 			            PREVIOUSMONTH('Dim_Date'[Date])
 			        )
 			```
+		formatString: ₹#,##0
+		displayFolder: Time Intelligence\Previous Period
 		lineageTag: e9993886-432f-43a1-82c5-c749d478df50
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Amount_Previous_Year = ```
 			
@@ -377,9 +394,9 @@ table Fact_Order
 			            PREVIOUSYEAR('Dim_Date'[Date])
 			        )
 			```
+		formatString: ₹#,##0
+		displayFolder: Time Intelligence\Previous Period
 		lineageTag: 2d702c2e-8961-4a5a-93c0-1d57d734c4ca
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Orders_MoM_Growth = ```
 			
@@ -389,9 +406,9 @@ table Fact_Order
 			            0
 			        )
 			```
+		formatString: +0.0%;-0.0%;0.0%
+		displayFolder: Time Intelligence\Growth
 		lineageTag: be53d548-c824-43a9-9607-57637ebb2119
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Orders_YoY_Growth = ```
 			
@@ -401,9 +418,9 @@ table Fact_Order
 			            0
 			        )
 			```
+		formatString: +0.0%;-0.0%;0.0%
+		displayFolder: Time Intelligence\Growth
 		lineageTag: c5609599-9cba-4cbc-8522-cd53e2239a96
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Amount_MoM_Growth = ```
 			
@@ -413,9 +430,9 @@ table Fact_Order
 			            0
 			        )
 			```
+		formatString: +0.0%;-0.0%;0.0%
+		displayFolder: Time Intelligence\Growth
 		lineageTag: 50054fc6-633b-4381-8ff3-2e820326ae50
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Amount_YoY_Growth = ```
 			
@@ -425,29 +442,30 @@ table Fact_Order
 			            0
 			        )
 			```
+		formatString: +0.0%;-0.0%;0.0%
+		displayFolder: Time Intelligence\Growth
 		lineageTag: 26f53c38-1664-423a-a543-4b0940750bfb
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Unique_Clients_With_Orders = DISTINCTCOUNT('Fact_Order'[ClientKey])
 		formatString: 0
+		displayFolder: Client Analysis
 		lineageTag: 4b8565bc-33a0-49b5-a81f-02f3eb2c752d
 
 	measure Orders_Per_Client = ```
 			
 			        DIVIDE([Total_Orders], [Unique_Clients_With_Orders], 0)
 			```
+		formatString: 0.0
+		displayFolder: Client Analysis\Ratios
 		lineageTag: 36c92675-bea4-4a5f-a6e6-1a666a2c7411
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Amount_Per_Client = ```
 			
 			        DIVIDE([Total_Order_Amount], [Unique_Clients_With_Orders], 0)
 			```
+		formatString: ₹#,##0
+		displayFolder: Client Analysis\Ratios
 		lineageTag: 9b9856ad-d425-4d7a-8cb7-8b836a7c2578
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Single_Order_Clients = ```
 			
@@ -459,6 +477,7 @@ table Fact_Order
 			        )
 			```
 		formatString: 0
+		displayFolder: Client Analysis\Retention
 		lineageTag: 6369afc9-268f-405c-a977-b85f5a087291
 
 	measure Repeat_Order_Clients = ```
@@ -471,15 +490,16 @@ table Fact_Order
 			        )
 			```
 		formatString: 0
+		displayFolder: Client Analysis\Retention
 		lineageTag: eb9af718-e531-4215-bf20-37f5a9e52449
 
 	measure Repeat_Order_Rate = ```
 			
 			        DIVIDE([Repeat_Order_Clients], [Unique_Clients_With_Orders], 0)
 			```
+		formatString: 0.0%
+		displayFolder: Client Analysis\Retention
 		lineageTag: ed16cab5-5266-4e49-b64a-ecea1f289d5a
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Converted_Orders = ```
 			
@@ -489,15 +509,16 @@ table Fact_Order
 			        )
 			```
 		formatString: 0
+		displayFolder: Conversion
 		lineageTag: a8360efb-9886-4d8f-9ca5-bcf01e8f76e4
 
 	measure Conversion_Rate = ```
 			
 			        DIVIDE([Converted_Orders], [Total_Orders], 0)
 			```
+		formatString: 0.0%
+		displayFolder: Conversion
 		lineageTag: 22b8b41e-f950-4d8a-865a-8d6fb14885e5
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Orders_With_Memo_Photo = ```
 			
@@ -507,15 +528,16 @@ table Fact_Order
 			        )
 			```
 		formatString: 0
+		displayFolder: Quality Compliance
 		lineageTag: 92ba1d9d-57a0-440b-b0da-356919c39de3
 
 	measure Memo_Photo_Rate = ```
 			
 			        DIVIDE([Orders_With_Memo_Photo], [Total_Orders], 0)
 			```
+		formatString: 0.0%
+		displayFolder: Quality Compliance
 		lineageTag: 92090555-00a2-445c-b602-ecc390de8aff
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Converted_Amount = ```
 			
@@ -524,29 +546,30 @@ table Fact_Order
 			            'Fact_Order'[IsConverted] = 1
 			        )
 			```
+		formatString: ₹#,##0
+		displayFolder: Conversion
 		lineageTag: 039d4b95-80d8-49f9-8d76-bc2e7595b44b
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Active_Users = DISTINCTCOUNT('Fact_Order'[UserID])
 		formatString: 0
+		displayFolder: User Analysis
 		lineageTag: 1f2e7d61-c9c1-4e4b-81dc-26e440550b3c
 
 	measure Orders_Per_User = ```
 			
 			        DIVIDE([Total_Orders], [Active_Users], 0)
 			```
+		formatString: 0.0
+		displayFolder: User Analysis\Ratios
 		lineageTag: c7201f0d-9bea-471b-a911-5d8ea851e16e
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Amount_Per_User = ```
 			
 			        DIVIDE([Total_Order_Amount], [Active_Users], 0)
 			```
+		formatString: ₹#,##0
+		displayFolder: User Analysis\Ratios
 		lineageTag: 5aa458a5-d66b-40dc-b6cc-d87a36382cad
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Visit_to_Order_Conversion =
 			
@@ -611,6 +634,7 @@ table Fact_Order
 			RETURN
 			IF(ABS(ZScore) > 2, 1, 0)
 		formatString: 0
+		displayFolder: Analytics\Anomaly Detection
 		lineageTag: 4d5e6f7a-8b9c-0d1e-2f3a-4b5c6d7e8f9a
 
 	measure Avg_Order_Value_Trend =
@@ -619,6 +643,7 @@ table Fact_Order
 			RETURN
 			DIVIDE(CurrentAOV - PreviousMonthAOV, PreviousMonthAOV, 0)
 		formatString: +0.0%;-0.0%;0.0%
+		displayFolder: Analytics\Trends
 		lineageTag: 5e6f7a8b-9c0d-1e2f-3a4b-5c6d7e8f9a0b
 
 	measure Client_Lifetime_Value =
@@ -628,6 +653,7 @@ table Fact_Order
 			RETURN
 			MonthlyValue * 12
 		formatString: ₹#,##0
+		displayFolder: Analytics\Lifetime Value
 		lineageTag: 6f7a8b9c-0d1e-2f3a-4b5c-6d7e8f9a0b1c
 
 	measure Top_10_Clients_Revenue_Share = ```
@@ -644,6 +670,7 @@ table Fact_Order
 			DIVIDE(Top10Total, GrandTotal, 0)
 			```
 		formatString: 0.0%
+		displayFolder: Analytics\Concentration
 		lineageTag: 7a8b9c0d-1e2f-3a4b-5c6d-7e8f9a0b1c2d
 
 	measure Order_Velocity =
@@ -653,6 +680,7 @@ table Fact_Order
 			RETURN
 			DIVIDE(OrderCount, DateRange, 0) * 7
 		formatString: 0.0
+		displayFolder: Analytics\Velocity
 		lineageTag: 8b9c0d1e-2f3a-4b5c-6d7e-8f9a0b1c2d3e
 
 	measure Revenue_at_Risk = ```
@@ -669,6 +697,7 @@ table Fact_Order
 			ClientsNoRecentOrder * AvgClientValue
 			```
 		formatString: ₹#,##0
+		displayFolder: Analytics\Risk
 		lineageTag: 9c0d1e2f-3a4b-5c6d-7e8f-9a0b1c2d3e4f
 
 	measure New_Clients_This_Month =
@@ -679,6 +708,7 @@ table Fact_Order
 			RETURN
 			CurrentClients - AllTimeClients
 		formatString: 0
+		displayFolder: Analytics\New Clients
 		lineageTag: 0d1e2f3a-4b5c-6d7e-8f9a-0b1c2d3e4f5a
 
 	column OrderID
