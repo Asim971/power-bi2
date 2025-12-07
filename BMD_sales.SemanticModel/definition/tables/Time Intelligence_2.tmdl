@@ -13,15 +13,8 @@ table 'Time Intelligence_2'
 		dataType: string
 		lineageTag: e5f6a7b8-c9d0-1234-ef01-56789abcdef0
 		summarizeBy: none
-		isNameInferred
-		sourceColumn: [Value1]
+		sourceColumn: Time Group
 		sortByColumn: 'Time Group Order'
-
-		extendedProperty ParameterMetadata =
-			{
-			  "version": 3,
-			  "kind": 2
-			}
 
 		annotation SummarizationSetBy = Automatic
 
@@ -30,35 +23,36 @@ table 'Time Intelligence_2'
 		formatString: 0
 		lineageTag: f6a7b8c9-d0e1-2345-f012-6789abcdef01
 		summarizeBy: none
-		sourceColumn: [Value2]
+		sourceColumn: Time Group Order
 		isHidden
 
 		annotation SummarizationSetBy = Automatic
 
-	column 'Time Group Fields'
-		dataType: string
-		lineageTag: a7b8c9d0-e1f2-3456-0123-789abcdef012
-		summarizeBy: none
-		sourceColumn: [Value3]
-		isHidden
-
-		annotation SummarizationSetBy = Automatic
-
-	partition 'Time Intelligence_2' = calculated
+	partition 'Time Intelligence_2' = m
 		mode: import
-		source =
-			{
-			    ("Current", NAMEOF('Time Intelligence'[Time Period]), 0),
-			    ("Previous Month", NAMEOF('Time Intelligence'[Time Period]), 1),
-			    ("Previous Year", NAMEOF('Time Intelligence'[Time Period]), 2),
-			    ("MTD", NAMEOF('Time Intelligence'[Time Period]), 3),
-			    ("QTD", NAMEOF('Time Intelligence'[Time Period]), 4),
-			    ("YTD", NAMEOF('Time Intelligence'[Time Period]), 5),
-			    ("Rolling 7 Days", NAMEOF('Time Intelligence'[Time Period]), 6),
-			    ("Rolling 30 Days", NAMEOF('Time Intelligence'[Time Period]), 7)
-			}
+		source = ```
+				let
+				    Source = #table(
+				        type table [
+				            #"Time Group" = text,
+				            #"Time Group Order" = Int64.Type
+				        ],
+				        {
+				            {"Current", 0},
+				            {"Previous Month", 1},
+				            {"Previous Year", 2},
+				            {"MTD", 3},
+				            {"QTD", 4},
+				            {"YTD", 5},
+				            {"Rolling 7 Days", 6},
+				            {"Rolling 30 Days", 7}
+				        }
+				    )
+				in
+				    Source
+				```
 
-	annotation PBI_Id = b2c3d4e5f6a78901bcdef23456789012
+	annotation PBI_NavigationStepName = Navigation
 
-	annotation ParameterValuesColumn = Time Group Fields
+	annotation PBI_ResultType = Table
 
