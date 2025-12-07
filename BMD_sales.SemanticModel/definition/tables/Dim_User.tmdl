@@ -363,15 +363,23 @@ table Dim_User
 				    
 				    // ---- Join with users_bd_territory bridge table ----
 				    // This links users to BD territories via the bridge table
+				    // Use Table.Group first to get only the FIRST bd_territory_id per user
+				    // to avoid duplicates when user has multiple BD territories
+				    BDTerritoryBridgeGrouped = Table.Group(
+				        UsersBDTerritoryBridge, 
+				        {"users_id"}, 
+				        {{"FirstBDTerritoryID", each List.First([bd_territory_id]), type nullable number}}
+				    ),
+				    
 				    WithBDTerritoryBridgeJoin = Table.NestedJoin(
 				        WithAreaExpanded, {"id"},
-				        UsersBDTerritoryBridge, {"users_id"},
+				        BDTerritoryBridgeGrouped, {"users_id"},
 				        "BDTerritoryBridgeData", JoinKind.LeftOuter
 				    ),
 				    
 				    WithBDTerritoryBridgeExpanded = Table.ExpandTableColumn(
 				        WithBDTerritoryBridgeJoin, "BDTerritoryBridgeData",
-				        {"bd_territory_id"},
+				        {"FirstBDTerritoryID"},
 				        {"BDTerritoryID"}
 				    ),
 				    
