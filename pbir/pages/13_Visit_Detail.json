@@ -1,0 +1,383 @@
+{
+    "objectType": "page",
+    "name": "Visit Detail",
+    "displayName": "Visit Detail",
+    "displayOption": "FitToPage",
+    "width": 1920,
+    "height": 1080,
+    "ordinal": 13,
+    "config": {
+        "background": {
+            "color": "#F8F9FA",
+            "transparency": 0
+        },
+        "visibility": "visible",
+        "pageType": "drillThrough",
+        "drillThroughFilter": {
+            "enabled": true,
+            "keepAllFilters": true,
+            "fields": [
+                "Dim_Territory[AreaName]",
+                "Dim_Territory[ZoneName]",
+                "Dim_User[EmployeeID]",
+                "Dim_User[EmployeeName]",
+                "Dim_Client_Simple[ClientType]"
+            ]
+        }
+    },
+    "visuals": [
+        {
+            "name": "Header_DrillThrough",
+            "type": "textbox",
+            "x": 0,
+            "y": 0,
+            "width": 1920,
+            "height": 60,
+            "config": {
+                "textbox": {
+                    "paragraphs": [
+                        {
+                            "textRuns": [
+                                {
+                                    "value": "📋 VISIT DETAIL    |    Drill-Through Analysis",
+                                    "textStyle": {
+                                        "fontFamily": "Segoe UI Semibold",
+                                        "fontSize": 18,
+                                        "fontColor": "#FFFFFF"
+                                    }
+                                }
+                            ]
+                        }
+                    ],
+                    "backgroundColor": "#2C3E50"
+                }
+            }
+        },
+        {
+            "name": "Back_Button",
+            "type": "button",
+            "x": 40,
+            "y": 80,
+            "width": 120,
+            "height": 40,
+            "config": {
+                "button": {
+                    "text": "← Back",
+                    "action": "back",
+                    "backgroundColor": "#3498DB",
+                    "fontColor": "#FFFFFF",
+                    "fontSize": 12,
+                    "border": {
+                        "radius": 4
+                    }
+                }
+            }
+        },
+        {
+            "name": "Selected_Filters_Display",
+            "type": "textbox",
+            "x": 180,
+            "y": 80,
+            "width": 1700,
+            "height": 40,
+            "config": {
+                "textbox": {
+                    "paragraphs": [
+                        {
+                            "textRuns": [
+                                {
+                                    "value": "Active Filters: ",
+                                    "textStyle": {
+                                        "fontFamily": "Segoe UI",
+                                        "fontSize": 12,
+                                        "fontColor": "#2C3E50",
+                                        "fontWeight": "bold"
+                                    }
+                                },
+                                {
+                                    "value": "[Dynamic filter values shown here]",
+                                    "textStyle": {
+                                        "fontFamily": "Segoe UI",
+                                        "fontSize": 12,
+                                        "fontColor": "#7F8C8D",
+                                        "fontStyle": "italic"
+                                    }
+                                }
+                            ]
+                        }
+                    ],
+                    "backgroundColor": "#ECF0F1",
+                    "borderRadius": 4
+                }
+            }
+        },
+        {
+            "name": "KPI_Row_Summary",
+            "type": "cardGroup",
+            "x": 40,
+            "y": 140,
+            "width": 1840,
+            "height": 100,
+            "config": {
+                "cards": [
+                    {
+                        "name": "KPI_Total_Visits_Detail",
+                        "title": "Total Visits",
+                        "dataField": "Fact_Visit[Total_Visit_FRD]",
+                        "format": "#,##0",
+                        "fontSize": 28,
+                        "fontColor": "#1F4E79"
+                    },
+                    {
+                        "name": "KPI_Unique_Clients_Detail",
+                        "title": "Unique Clients",
+                        "dataField": "Fact_Visit[Unique_Clients_Visited]",
+                        "format": "#,##0",
+                        "fontSize": 28,
+                        "fontColor": "#27AE60"
+                    },
+                    {
+                        "name": "KPI_Avg_Visits_Detail",
+                        "title": "Average Visit",
+                        "dataField": "Fact_Visit[Average_Visit_FRD]",
+                        "format": "#,##0",
+                        "fontSize": 28,
+                        "fontColor": "#8E44AD"
+                    },
+                    {
+                        "name": "KPI_Photo_Rate_Detail",
+                        "title": "Photo Rate",
+                        "dataField": "Fact_Visit[Photo_Compliance_Rate]",
+                        "format": "0.0%",
+                        "fontSize": 28,
+                        "fontColor": "#E74C3C"
+                    },
+                    {
+                        "name": "KPI_GPS_Rate_Detail",
+                        "title": "GPS Rate",
+                        "dataField": "Fact_Visit[GPS_Capture_Rate]",
+                        "format": "0.0%",
+                        "fontSize": 28,
+                        "fontColor": "#F39C12"
+                    },
+                    {
+                        "name": "KPI_Quality_Score_Detail",
+                        "title": "Quality Score",
+                        "dataField": "Fact_Visit[Visit_Quality_Score]",
+                        "format": "0.0%",
+                        "fontSize": 28,
+                        "fontColor": "#16A085"
+                    }
+                ],
+                "layout": "horizontal",
+                "spacing": 20,
+                "backgroundColor": "#FFFFFF",
+                "border": {
+                    "radius": 8
+                }
+            }
+        },
+        {
+            "name": "Visit_Detail_Table",
+            "type": "table",
+            "x": 40,
+            "y": 260,
+            "width": 1840,
+            "height": 600,
+            "config": {
+                "title": "📋 VISIT RECORDS",
+                "columns": [
+                    {
+                        "field": "Dim_Date[Date]",
+                        "title": "Visit Date",
+                        "width": 120,
+                        "format": "DD-MMM-YYYY"
+                    },
+                    {
+                        "field": "Dim_User[EmployeeName]",
+                        "title": "Employee Name",
+                        "width": 180
+                    },
+                    {
+                        "field": "Dim_User[EmployeeID]",
+                        "title": "Employee ID",
+                        "width": 100
+                    },
+                    {
+                        "field": "Dim_User[Designation]",
+                        "title": "Designation",
+                        "width": 100
+                    },
+                    {
+                        "field": "Dim_Client_Simple[ClientName]",
+                        "title": "Entity Name",
+                        "width": 200
+                    },
+                    {
+                        "field": "Dim_Client_Simple[ClientType]",
+                        "title": "Entity Type",
+                        "width": 100
+                    },
+                    {
+                        "field": "Dim_Client_Simple[EntityGroup]",
+                        "title": "Entity Group",
+                        "width": 100
+                    },
+                    {
+                        "field": "Fact_Visit[territory_name]",
+                        "title": "Territory",
+                        "width": 150
+                    },
+                    {
+                        "field": "Dim_Territory[ZoneName]",
+                        "title": "Zone",
+                        "width": 120
+                    },
+                    {
+                        "field": "Dim_Territory[AreaName]",
+                        "title": "Area",
+                        "width": 120
+                    },
+                    {
+                        "field": "Fact_Visit[CompanyCode]",
+                        "title": "Company",
+                        "width": 80
+                    },
+                    {
+                        "field": "Fact_Visit[VisitID]",
+                        "title": "Visit ID",
+                        "width": 100
+                    },
+                    {
+                        "field": "Fact_Visit[visit_type]",
+                        "title": "Visit Type",
+                        "width": 120
+                    },
+                    {
+                        "field": "Fact_Visit[has_photo]",
+                        "title": "Has Photo",
+                        "width": 80,
+                        "conditionalFormatting": {
+                            "rules": [
+                                {
+                                    "value": true,
+                                    "icon": "✅",
+                                    "color": "#27AE60"
+                                },
+                                {
+                                    "value": false,
+                                    "icon": "❌",
+                                    "color": "#E74C3C"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "field": "Fact_Visit[has_gps]",
+                        "title": "Has GPS",
+                        "width": 80,
+                        "conditionalFormatting": {
+                            "rules": [
+                                {
+                                    "value": true,
+                                    "icon": "✅",
+                                    "color": "#27AE60"
+                                },
+                                {
+                                    "value": false,
+                                    "icon": "❌",
+                                    "color": "#E74C3C"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "field": "Fact_Visit[remarks]",
+                        "title": "Remarks",
+                        "width": 200
+                    }
+                ],
+                "sort": {
+                    "field": "Dim_Date[Date]",
+                    "direction": "descending"
+                },
+                "pagination": {
+                    "enabled": true,
+                    "rowsPerPage": 25
+                },
+                "export": {
+                    "enabled": true,
+                    "formats": [
+                        "Excel",
+                        "CSV"
+                    ]
+                },
+                "backgroundColor": "#FFFFFF",
+                "border": {
+                    "radius": 8
+                },
+                "headerStyle": {
+                    "backgroundColor": "#1F4E79",
+                    "fontColor": "#FFFFFF",
+                    "fontSize": 11,
+                    "fontWeight": "bold"
+                },
+                "rowStyle": {
+                    "alternateBackgroundColor": "#F8F9FA",
+                    "fontSize": 11
+                },
+                "totalsRow": {
+                    "enabled": true,
+                    "label": "Total",
+                    "fields": [
+                        "Fact_Visit[VisitID]"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Export_Panel",
+            "type": "buttonGroup",
+            "x": 1600,
+            "y": 880,
+            "width": 280,
+            "height": 50,
+            "config": {
+                "buttons": [
+                    {
+                        "text": "📊 Export Excel",
+                        "action": "exportExcel",
+                        "backgroundColor": "#27AE60",
+                        "fontColor": "#FFFFFF"
+                    },
+                    {
+                        "text": "📄 Export CSV",
+                        "action": "exportCSV",
+                        "backgroundColor": "#3498DB",
+                        "fontColor": "#FFFFFF"
+                    }
+                ],
+                "layout": "horizontal",
+                "spacing": 10
+            }
+        }
+    ],
+    "interactions": [],
+    "export": {
+        "enabled": true,
+        "formats": [
+            "Excel",
+            "CSV",
+            "PDF"
+        ],
+        "fileName": "Visit_Detail_Export"
+    },
+    "bookmarks": [
+        {
+            "name": "VisitDetailDefault",
+            "displayName": "Detail View",
+            "description": "Drill-through detail page for visit records",
+            "isDefault": true
+        }
+    ]
+}

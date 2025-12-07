@@ -108,6 +108,28 @@ table Dim_Client_Simple
 
 		annotation SummarizationSetBy = Automatic
 
+	/// FR-22, FR-66-74: Entity Group for Dashboard Auto-Filtering
+	/// Groups client types into FRD dashboard categories:
+	/// - Clients: Dealer, Retailer
+	/// - Influencers: Engineer, Contractor
+	/// - Customers: Site, IHB
+	column EntityGroup = ```
+			SWITCH(
+			    [ClientType],
+			    "Dealer", "Clients",
+			    "Retailer", "Clients",
+			    "Engineer", "Influencers",
+			    "Contractor", "Influencers",
+			    "Site", "Customers",
+			    "IHB", "Customers",
+			    "Other"
+			)
+			```
+		lineageTag: 8f901234-5678-9abc-def0-123456789abc
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
 	partition Dim_Client_Simple = m
 		mode: import
 		source = ```

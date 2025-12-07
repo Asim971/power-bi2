@@ -23,3 +23,8 @@ node_modules/
 
 # Logs
 *.log
+
+# Markdown files (exclude all except FRD_IMPLEMENTATION_GUIDE.md)
+*.md
+!docs/FRD_IMPLEMENTATION_GUIDE.md
+!README.md

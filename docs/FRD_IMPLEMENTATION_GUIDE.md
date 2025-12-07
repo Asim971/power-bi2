@@ -894,33 +894,33 @@ CALCULATE(
 ## ✅ IMPLEMENTATION CHECKLIST
 
 ### Week 1: Data Model
-- [ ] Add `CompanyCode` column to Fact_Visit
-- [ ] Create `DateFilterParam` parameter table
-- [ ] Create `LocationLevelParam` parameter table  
-- [ ] Add `EntityGroup` calculated column to Dim_Client_Simple
-- [ ] Verify organization_id to ACL/AIL mapping
-- [ ] ✅ Verify relationships in `relationships.tmdl` (See Phase 5.5 - confirmed sufficient)
+- [x] Add `CompanyCode` column to Fact_Visit ✅ DONE
+- [x] Create `DateFilterParam` parameter table ✅ DONE
+- [x] Create `LocationLevelParam` parameter table ✅ DONE
+- [x] Add `EntityGroup` calculated column to Dim_Client_Simple ✅ DONE
+- [x] Verify organization_id to ACL/AIL mapping ✅ VERIFIED (org_id=1→ACL, org_id=2→AIL)
+- [x] ✅ Verify relationships in `relationships.tmdl` (See Phase 5.5 - confirmed sufficient)
 
 ### Week 2: DAX Measures
-- [ ] Add `Total_Visit_FRD` measure
-- [ ] Add `Average_Visit_FRD` measure
-- [ ] Add `Visits_WTD` measure
-- [ ] Add `Visits_DateFiltered` measure
-- [ ] Add MoM comparison measures
-- [ ] Add Top/Bottom performer ranking measures
-- [ ] Add entity type filter measures
-- [ ] Add `Last_Refresh_DateTime` measure
+- [x] Add `Total_Visit_FRD` measure ✅ DONE
+- [x] Add `Average_Visit_FRD` measure ✅ DONE
+- [x] Add `Visits_WTD` measure ✅ DONE (exists as Visits_DateFiltered)
+- [x] Add `Visits_DateFiltered` measure ✅ DONE
+- [x] Add MoM comparison measures ✅ DONE (Visits_Current_Month, Visits_Previous_Calendar_Month, MoM_Variance, MoM_Variance_Pct)
+- [x] Add Top/Bottom performer ranking measures ✅ DONE (Employee_Rank_Asc, Employee_Rank_Desc, Is_Top_10, Is_Bottom_10)
+- [x] Add entity type filter measures ✅ DONE (Visits_Clients, Visits_Influencers, Visits_Customers)
+- [x] Add `Last_Refresh_DateTime` measure ✅ DONE
 
 ### Week 3: Report Design
-- [ ] Create Clients Dashboard page
-- [ ] Create Influencers Dashboard page
-- [ ] Create Customers Dashboard page
-- [ ] Create Visit Detail drill-through page
-- [ ] Configure global filter bar
-- [ ] Add KPI tiles
-- [ ] Add all 6 chart types per dashboard
-- [ ] Configure drill-through actions
-- [ ] Enable data export
+/NO_GATEWAYS_FOUND- [x] Create Clients Dashboard page ✅ DONE (pbir/pages/10_Clients_Dashboard.json)
+- [x] Create Influencers Dashboard page ✅ DONE (pbir/pages/11_Influencers_Dashboard.json)
+- [x] Create Customers Dashboard page ✅ DONE (pbir/pages/12_Customers_Dashboard.json)
+- [x] Create Visit Detail drill-through page ✅ DONE (pbir/pages/13_Visit_Detail.json)
+- [x] Configure global filter bar ✅ DONE (Date, Location, Company, Employee filters on all pages)
+- [x] Add KPI tiles ✅ DONE (Total Visit FRD, Average Visit FRD cards per dashboard)
+- [x] Add all 6 chart types per dashboard ✅ DONE (Line, Bar, Donut, Ribbon, Table, KPI)
+- [x] Configure drill-through actions ✅ DONE (Drill-through to Visit Detail page)
+- [x] Enable data export ✅ DONE (Export enabled on table visuals)
 
 ### Week 4: Security & Testing
 - [ ] Update RLS roles (SR, ASM, ZSM, Executive, MIS)

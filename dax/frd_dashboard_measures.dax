@@ -1,0 +1,303 @@
+// ============================================
+// FRD DASHBOARD MEASURES
+// Visit Performance Dashboards - Clients, Influencers, Customers
+// FRD Reference: /docs/FRD_IMPLEMENTATION_GUIDE.md
+// ============================================
+// 
+// This file documents all DAX measures created for the FRD Visit Performance Dashboards.
+// These measures are implemented in the Fact_Visit table of the semantic model.
+// 
+// DASHBOARD STRUCTURE (3 Dashboards with identical layout):
+// 1. Clients Dashboard - Dealers & Retailers
+// 2. Influencers Dashboard - Engineers & Contractors  
+// 3. Customers Dashboard - Sites & IHB
+//
+// ============================================
+
+// ============================================
+// SECTION 1: CORE KPI TILES (FR-24-30)
+// ============================================
+
+// FR-24: Total Visit (formatted with thousand separator)
+// KPI Tile - displays total visits with comma formatting
+Total_Visit_FRD = COUNTROWS('Fact_Visit')
+// formatString: #,##0
+// displayFolder: FRD Dashboard\KPI Tiles
+
+// FR-27-28: Average Visit per Employee
+// KPI Tile - Total Visits ÷ Unique Employees with visits
+Average_Visit_FRD = 
+VAR TotalVisits = COUNTROWS('Fact_Visit')
+VAR UniqueEmployeesWithVisits = DISTINCTCOUNT('Fact_Visit'[EmployeeID])
+RETURN
+IF(
+    UniqueEmployeesWithVisits = 0, 
+    0, 
+    ROUND(DIVIDE(TotalVisits, UniqueEmployeesWithVisits), 0)
+)
+// formatString: #,##0
+// displayFolder: FRD Dashboard\KPI Tiles
+
+
+// ============================================
+// SECTION 2: DATE FILTER MEASURES (FR-7-10)
+// ============================================
+
+// Note: These measures already exist in Fact_Visit.tmdl:
+// - Visits_WTD (Week-To-Date)
+// - Visits_DateFiltered (Dynamic measure responding to DateFilterParam)
+// - Visits_MTD (Month-To-Date)
+// - Visits_YTD (Year-To-Date)
+
+// DateFilterParam Table (disconnected parameter):
+// | FilterOption | FilterOrder |
+// |--------------|-------------|
+// | Daily        | 1           |
+// | WTD          | 2           |
+// | MTD          | 3           | (Default)
+// | YTD          | 4           |
+
+
+// ============================================
+// SECTION 3: MoM COMPARISON (FR-38-44)
+// ============================================
+
+// FR-38-44: Current Month Visits for MoM Comparison
+Visits_Current_Month = 
+CALCULATE(
+    COUNTROWS('Fact_Visit'),
+    DATESMTD('Dim_Date'[Date])
+)
+// formatString: #,##0
+// displayFolder: FRD Dashboard\MoM Comparison
+
+// FR-41: Previous Calendar Month Visits
+Visits_Previous_Calendar_Month = 
+CALCULATE(
+    COUNTROWS('Fact_Visit'),
+    DATEADD(DATESMTD('Dim_Date'[Date]), -1, MONTH)
+)
+// formatString: #,##0
+// displayFolder: FRD Dashboard\MoM Comparison
+
+// FR-42: MoM Variance (absolute difference)
+MoM_Variance = [Visits_Current_Month] - [Visits_Previous_Calendar_Month]
+// formatString: +#,##0;-#,##0;0
+// displayFolder: FRD Dashboard\MoM Comparison
+
+// FR-43: MoM Variance Percentage
+MoM_Variance_Pct = 
+DIVIDE(
+    [MoM_Variance],
+    [Visits_Previous_Calendar_Month],
+    0
+)
+// formatString: +0.0%;-0.0%;0.0%
+// displayFolder: FRD Dashboard\MoM Comparison
+
+
+// ============================================
+// SECTION 4: TOP/BOTTOM PERFORMERS (FR-50-65)
+// ============================================
+
+// FR-50-52: Employee Visit Count for ranking
+Employee_Visit_Count = COUNTROWS('Fact_Visit')
+// formatString: #,##0
+// displayFolder: FRD Dashboard\Rankings
+
+// FR-53-56: Employee Rank (ascending) - For Bottom Performers
+Employee_Rank_Asc = 
+VAR CurrentVisits = [Employee_Visit_Count]
+VAR AllEmployeeVisits = 
+    ADDCOLUMNS(
+        SUMMARIZE(
+            ALL('Fact_Visit'),
+            'Fact_Visit'[EmployeeID]
+        ),
+        "@Visits", [Employee_Visit_Count]
+    )
+RETURN
+COUNTROWS(
+    FILTER(
+        AllEmployeeVisits,
+        [@Visits] < CurrentVisits
+    )
+) + 1
+// formatString: 0
+// displayFolder: FRD Dashboard\Rankings
+
+// FR-57-60: Employee Rank (descending) - For Top Performers
+Employee_Rank_Desc = 
+VAR CurrentVisits = [Employee_Visit_Count]
+VAR AllEmployeeVisits = 
+    ADDCOLUMNS(
+        SUMMARIZE(
+            ALL('Fact_Visit'),
+            'Fact_Visit'[EmployeeID]
+        ),
+        "@Visits", [Employee_Visit_Count]
+    )
+RETURN
+COUNTROWS(
+    FILTER(
+        AllEmployeeVisits,
+        [@Visits] > CurrentVisits
+    )
+) + 1
+// formatString: 0
+// displayFolder: FRD Dashboard\Rankings
+
+// FR-61: Is Top 10 Performer Flag
+Is_Top_10 = IF([Employee_Rank_Desc] <= 10, 1, 0)
+// formatString: 0
+// displayFolder: FRD Dashboard\Rankings
+
+// FR-62: Is Bottom 10 Performer Flag
+Is_Bottom_10 = IF([Employee_Rank_Asc] <= 10, 1, 0)
+// formatString: 0
+// displayFolder: FRD Dashboard\Rankings
+
+
+// ============================================
+// SECTION 5: LOCATION FILTER (FR-11-15)
+// ============================================
+
+// LocationLevelParam Table (disconnected parameter):
+// | LevelOption | LevelOrder |
+// |-------------|------------|
+// | Area        | 1          | (Default)
+// | Zone        | 2          |
+// | Territory   | 3          |
+
+// Dynamic Location Label - responds to LocationLevelParam selection
+Location_Label_Dynamic = 
+VAR SelectedLevel = SELECTEDVALUE('LocationLevelParam'[LevelOption], "Area")
+RETURN
+SWITCH(
+    SelectedLevel,
+    "Area", SELECTEDVALUE('Dim_Territory'[AreaName]),
+    "Zone", SELECTEDVALUE('Dim_Territory'[ZoneName]),
+    "Territory", SELECTEDVALUE('Dim_Territory'[RegionName]),
+    SELECTEDVALUE('Dim_Territory'[AreaName])
+)
+// displayFolder: FRD Dashboard\Location
+
+
+// ============================================
+// SECTION 6: ENTITY TYPE FILTERS (FR-22-23, FR-66-74)
+// ============================================
+
+// FR-22-23: Clients Dashboard Filter (Dealer + Retailer)
+Visits_Clients = 
+CALCULATE(
+    COUNTROWS('Fact_Visit'),
+    'Fact_Visit'[ClientType] IN {"Dealer", "Retailer"}
+)
+// formatString: #,##0
+// displayFolder: FRD Dashboard\Entity Filters
+
+// FR-66-68: Influencers Dashboard Filter (Engineer + Contractor)
+Visits_Influencers = 
+CALCULATE(
+    COUNTROWS('Fact_Visit'),
+    'Fact_Visit'[ClientType] IN {"Engineer", "Contractor"}
+)
+// formatString: #,##0
+// displayFolder: FRD Dashboard\Entity Filters
+
+// FR-69-74: Customers Dashboard Filter (Site + IHB)
+Visits_Customers = 
+CALCULATE(
+    COUNTROWS('Fact_Visit'),
+    'Fact_Visit'[ClientType] IN {"Site", "IHB"}
+)
+// formatString: #,##0
+// displayFolder: FRD Dashboard\Entity Filters
+
+// EntityGroup Calculated Column (in Dim_Client_Simple):
+// EntityGroup = 
+// SWITCH(
+//     [ClientType],
+//     "Dealer", "Clients",
+//     "Retailer", "Clients",
+//     "Engineer", "Influencers",
+//     "Contractor", "Influencers",
+//     "Site", "Customers",
+//     "IHB", "Customers",
+//     "Other"
+// )
+
+
+// ============================================
+// SECTION 7: COMPANY FILTER (FR-16-18)
+// ============================================
+
+// CompanyCode column added to Fact_Visit Power Query:
+// Maps organization_id to company codes:
+// - organization_id = 1 → "ACL"
+// - organization_id = 2 → "AIL"
+// - otherwise → "Unknown"
+
+// Slicer configuration:
+// - Both ACL and AIL selected by default
+// - At least one must always be selected
+// - Use multi-select checkbox slicer
+
+
+// ============================================
+// SECTION 8: METADATA MEASURES (FR-6)
+// ============================================
+
+// FR-6: Last Data Refresh Timestamp
+Last_Refresh_DateTime = 
+VAR LastUpdate = MAX('Fact_Visit'[updated_at])
+RETURN
+FORMAT(LastUpdate, "DD-MMM-YYYY HH:MM:SS")
+// displayFolder: FRD Dashboard\Metadata
+
+
+// ============================================
+// SECTION 9: TERRITORY FILTERING (Phase 5.5)
+// ============================================
+
+// Territory filtering uses TREATAS for virtual relationship
+// Path: Fact_Visit → Dim_User → Dim_Territory
+Visits_By_Territory = 
+CALCULATE(
+    [Total_Visits],
+    TREATAS(
+        VALUES('Dim_Territory'[ZoneName]),
+        'Dim_User'[ZoneName]
+    )
+)
+// formatString: 0
+// displayFolder: FRD Dashboard
+
+
+// ============================================
+// USAGE NOTES
+// ============================================
+//
+// DASHBOARD PAGE-LEVEL FILTERS:
+// Each dashboard should have a page-level filter applied:
+//
+// 1. Clients Dashboard:
+//    'Dim_Client_Simple'[EntityGroup] = "Clients"
+//    OR 'Fact_Visit'[ClientType] IN {"Dealer", "Retailer"}
+//
+// 2. Influencers Dashboard:
+//    'Dim_Client_Simple'[EntityGroup] = "Influencers"
+//    OR 'Fact_Visit'[ClientType] IN {"Engineer", "Contractor"}
+//
+// 3. Customers Dashboard:
+//    'Dim_Client_Simple'[EntityGroup] = "Customers"
+//    OR 'Fact_Visit'[ClientType] IN {"Site", "IHB"}
+//
+// VISUAL CONFIGURATIONS:
+// - Visit Trend (Line): X=Date, Y=Total_Visits, Legend=Designation
+// - MoM Comparison (Bar): X=Location, Y=Visits_Current_Month vs Visits_Previous_Calendar_Month
+// - Visit by Location (H-Bar): Y=Location, X=Total_Visits, Sort=Desc
+// - Top 10 Performers (Funnel): Filter by Is_Top_10 = 1
+// - Bottom 10 Performers (Funnel): Filter by Is_Bottom_10 = 1
+//
+// ============================================

@@ -1,0 +1,497 @@
+{
+    "objectType": "page",
+    "name": "Influencers Dashboard",
+    "displayName": "Influencers Dashboard",
+    "displayOption": "FitToPage",
+    "width": 1920,
+    "height": 1080,
+    "ordinal": 11,
+    "config": {
+        "background": {
+            "color": "#F8F9FA",
+            "transparency": 0
+        },
+        "visibility": "visible",
+        "pageFilter": {
+            "enabled": true,
+            "filter": {
+                "table": "Dim_Client_Simple",
+                "column": "EntityGroup",
+                "values": [
+                    "Influencers"
+                ]
+            }
+        }
+    },
+    "visuals": [
+        {
+            "name": "Header_Influencers",
+            "type": "textbox",
+            "x": 0,
+            "y": 0,
+            "width": 1920,
+            "height": 60,
+            "config": {
+                "textbox": {
+                    "paragraphs": [
+                        {
+                            "textRuns": [
+                                {
+                                    "value": "👷 INFLUENCERS DASHBOARD    |    Engineers & Contractors Performance",
+                                    "textStyle": {
+                                        "fontFamily": "Segoe UI Semibold",
+                                        "fontSize": 18,
+                                        "fontColor": "#FFFFFF"
+                                    }
+                                }
+                            ]
+                        }
+                    ],
+                    "backgroundColor": "#8E44AD"
+                }
+            }
+        },
+        {
+            "name": "Last_Refresh_Label_Inf",
+            "type": "card",
+            "x": 1600,
+            "y": 10,
+            "width": 300,
+            "height": 40,
+            "config": {
+                "title": "Last Refresh",
+                "dataField": "Fact_Visit[Last_Refresh_DateTime]",
+                "fontSize": 10,
+                "backgroundColor": "transparent"
+            }
+        },
+        {
+            "name": "KPI_Total_Visit_Influencers",
+            "type": "card",
+            "x": 40,
+            "y": 80,
+            "width": 280,
+            "height": 120,
+            "config": {
+                "title": "TOTAL VISITS",
+                "dataField": "Fact_Visit[Total_Visit_FRD]",
+                "format": "#,##0",
+                "fontSize": 36,
+                "fontColor": "#8E44AD",
+                "backgroundColor": "#FFFFFF",
+                "border": {
+                    "radius": 8,
+                    "color": "#E2E8F0"
+                },
+                "shadow": true,
+                "subtitle": "Influencers (Engineer + Contractor)"
+            }
+        },
+        {
+            "name": "KPI_Average_Visit_Influencers",
+            "type": "card",
+            "x": 340,
+            "y": 80,
+            "width": 280,
+            "height": 120,
+            "config": {
+                "title": "AVERAGE VISIT",
+                "dataField": "Fact_Visit[Average_Visit_FRD]",
+                "format": "#,##0",
+                "fontSize": 36,
+                "fontColor": "#27AE60",
+                "backgroundColor": "#FFFFFF",
+                "border": {
+                    "radius": 8,
+                    "color": "#E2E8F0"
+                },
+                "shadow": true,
+                "subtitle": "Per Employee"
+            }
+        },
+        {
+            "name": "KPI_MoM_Variance_Inf",
+            "type": "card",
+            "x": 640,
+            "y": 80,
+            "width": 200,
+            "height": 120,
+            "config": {
+                "title": "MoM VARIANCE",
+                "dataField": "Fact_Visit[MoM_Variance]",
+                "format": "+#,##0;-#,##0;0",
+                "fontSize": 28,
+                "conditionalFormatting": {
+                    "positive": "#27AE60",
+                    "negative": "#E74C3C",
+                    "zero": "#95A5A6"
+                },
+                "backgroundColor": "#FFFFFF",
+                "border": {
+                    "radius": 8
+                }
+            }
+        },
+        {
+            "name": "KPI_MoM_Variance_Pct_Inf",
+            "type": "card",
+            "x": 860,
+            "y": 80,
+            "width": 200,
+            "height": 120,
+            "config": {
+                "title": "MoM %",
+                "dataField": "Fact_Visit[MoM_Variance_Pct]",
+                "format": "0.0%",
+                "fontSize": 28,
+                "conditionalFormatting": {
+                    "positive": "#27AE60",
+                    "negative": "#E74C3C"
+                },
+                "backgroundColor": "#FFFFFF",
+                "border": {
+                    "radius": 8
+                }
+            }
+        },
+        {
+            "name": "Chart_Visit_Trend_Inf",
+            "type": "lineChart",
+            "x": 40,
+            "y": 220,
+            "width": 900,
+            "height": 300,
+            "config": {
+                "title": "📈 VISIT TREND BY DESIGNATION",
+                "xAxis": {
+                    "field": "Dim_Date[YearMonth]",
+                    "title": "Month"
+                },
+                "yAxis": {
+                    "title": "Visit Count"
+                },
+                "series": [
+                    {
+                        "name": "All Visits",
+                        "field": "Fact_Visit[Visits_Influencers]",
+                        "color": "#8E44AD"
+                    }
+                ],
+                "legend": {
+                    "show": true,
+                    "position": "top",
+                    "field": "Dim_User[Designation]"
+                },
+                "tooltip": {
+                    "fields": [
+                        "Dim_Date[YearMonth]",
+                        "Dim_User[Designation]",
+                        "Fact_Visit[Visits_Influencers]"
+                    ]
+                },
+                "dataLabels": {
+                    "show": false
+                },
+                "backgroundColor": "#FFFFFF",
+                "border": {
+                    "radius": 8
+                }
+            }
+        },
+        {
+            "name": "Chart_MoM_Comparison_Inf",
+            "type": "clusteredBarChart",
+            "x": 960,
+            "y": 220,
+            "width": 920,
+            "height": 300,
+            "config": {
+                "title": "📊 MoM COMPARISON BY LOCATION",
+                "yAxis": {
+                    "field": "Dim_Territory[AreaName]",
+                    "title": "Location"
+                },
+                "xAxis": {
+                    "title": "Visit Count"
+                },
+                "series": [
+                    {
+                        "name": "Current Month",
+                        "field": "Fact_Visit[Visits_Current_Month]",
+                        "color": "#8E44AD"
+                    },
+                    {
+                        "name": "Previous Month",
+                        "field": "Fact_Visit[Visits_Previous_Calendar_Month]",
+                        "color": "#D7BDE2"
+                    }
+                ],
+                "legend": {
+                    "show": true,
+                    "position": "top"
+                },
+                "sort": {
+                    "field": "Fact_Visit[Visits_Current_Month]",
+                    "direction": "descending"
+                },
+                "backgroundColor": "#FFFFFF",
+                "border": {
+                    "radius": 8
+                }
+            }
+        },
+        {
+            "name": "Chart_Visit_By_Location_Inf",
+            "type": "barChart",
+            "x": 40,
+            "y": 540,
+            "width": 600,
+            "height": 280,
+            "config": {
+                "title": "🗺️ VISITS BY LOCATION",
+                "yAxis": {
+                    "field": "Dim_Territory[ZoneName]",
+                    "title": "Location"
+                },
+                "xAxis": {
+                    "field": "Fact_Visit[Visits_Influencers]",
+                    "title": "Visits"
+                },
+                "sort": {
+                    "field": "Fact_Visit[Visits_Influencers]",
+                    "direction": "descending"
+                },
+                "topN": 10,
+                "color": "#9B59B6",
+                "dataLabels": {
+                    "show": true
+                },
+                "drillThrough": {
+                    "enabled": true,
+                    "targetPage": "Visit Detail"
+                },
+                "backgroundColor": "#FFFFFF",
+                "border": {
+                    "radius": 8
+                }
+            }
+        },
+        {
+            "name": "Chart_Top_10_Performers_Inf",
+            "type": "funnel",
+            "x": 660,
+            "y": 540,
+            "width": 430,
+            "height": 280,
+            "config": {
+                "title": "🏆 TOP 10 PERFORMERS",
+                "category": {
+                    "field": "Dim_User[EmployeeName]"
+                },
+                "values": {
+                    "field": "Fact_Visit[Employee_Visit_Count]"
+                },
+                "filter": {
+                    "field": "Fact_Visit[Is_Top_10]",
+                    "value": 1
+                },
+                "sort": {
+                    "field": "Fact_Visit[Employee_Visit_Count]",
+                    "direction": "descending"
+                },
+                "colors": [
+                    "#27AE60",
+                    "#2ECC71",
+                    "#58D68D",
+                    "#82E0AA",
+                    "#ABEBC6",
+                    "#D5F5E3",
+                    "#E8F8F5",
+                    "#F0FDF9",
+                    "#F5FFFA",
+                    "#FAFFFE"
+                ],
+                "showPercentages": true,
+                "drillThrough": {
+                    "enabled": true,
+                    "targetPage": "Visit Detail"
+                },
+                "backgroundColor": "#FFFFFF",
+                "border": {
+                    "radius": 8
+                }
+            }
+        },
+        {
+            "name": "Chart_Location_Breakdown_Inf",
+            "type": "columnChart",
+            "x": 1110,
+            "y": 540,
+            "width": 430,
+            "height": 280,
+            "config": {
+                "title": "📍 LOCATION BREAKDOWN",
+                "xAxis": {
+                    "field": "Dim_Territory[RegionName]",
+                    "title": "Territory"
+                },
+                "yAxis": {
+                    "field": "Fact_Visit[Visits_Influencers]",
+                    "title": "Visits"
+                },
+                "color": "#BB8FCE",
+                "sort": {
+                    "field": "Fact_Visit[Visits_Influencers]",
+                    "direction": "descending"
+                },
+                "dataLabels": {
+                    "show": true
+                },
+                "backgroundColor": "#FFFFFF",
+                "border": {
+                    "radius": 8
+                }
+            }
+        },
+        {
+            "name": "Chart_Bottom_10_Performers_Inf",
+            "type": "funnel",
+            "x": 1560,
+            "y": 540,
+            "width": 340,
+            "height": 280,
+            "config": {
+                "title": "⚠️ BOTTOM 10 PERFORMERS",
+                "category": {
+                    "field": "Dim_User[EmployeeName]"
+                },
+                "values": {
+                    "field": "Fact_Visit[Employee_Visit_Count]"
+                },
+                "filter": {
+                    "field": "Fact_Visit[Is_Bottom_10]",
+                    "value": 1
+                },
+                "sort": {
+                    "field": "Fact_Visit[Employee_Visit_Count]",
+                    "direction": "ascending"
+                },
+                "colors": [
+                    "#E74C3C",
+                    "#EC7063",
+                    "#F1948A",
+                    "#F5B7B1",
+                    "#FADBD8",
+                    "#FDEDEC",
+                    "#FEF5F5",
+                    "#FFF8F8",
+                    "#FFFAFA",
+                    "#FFFFFF"
+                ],
+                "showPercentages": true,
+                "drillThrough": {
+                    "enabled": true,
+                    "targetPage": "Visit Detail"
+                },
+                "backgroundColor": "#FFFFFF",
+                "border": {
+                    "radius": 8
+                }
+            }
+        },
+        {
+            "name": "Filter_Panel_Influencers",
+            "type": "slicerPanel",
+            "x": 1080,
+            "y": 80,
+            "width": 800,
+            "height": 120,
+            "config": {
+                "layout": "horizontal",
+                "slicers": [
+                    {
+                        "title": "📅 Date Filter",
+                        "field": "DateFilterParam[FilterOption]",
+                        "type": "radioButton",
+                        "default": "MTD",
+                        "options": [
+                            "Daily",
+                            "WTD",
+                            "MTD",
+                            "YTD"
+                        ]
+                    },
+                    {
+                        "title": "🗺️ Location Level",
+                        "field": "LocationLevelParam[LevelOption]",
+                        "type": "radioButton",
+                        "default": "Zone",
+                        "options": [
+                            "Area",
+                            "Zone",
+                            "Territory"
+                        ]
+                    },
+                    {
+                        "title": "🏢 Company",
+                        "field": "Fact_Visit[CompanyCode]",
+                        "type": "checkbox",
+                        "default": [
+                            "ACL",
+                            "AIL"
+                        ]
+                    },
+                    {
+                        "title": "👤 Employee",
+                        "field": "Dim_User[EmployeeName]",
+                        "type": "dropdown",
+                        "default": "All"
+                    }
+                ]
+            }
+        }
+    ],
+    "interactions": [
+        {
+            "source": "Chart_Visit_By_Location_Inf",
+            "target": [
+                "Chart_Visit_Trend_Inf",
+                "Chart_Top_10_Performers_Inf",
+                "Chart_Bottom_10_Performers_Inf"
+            ],
+            "type": "filter"
+        },
+        {
+            "source": "Chart_Top_10_Performers_Inf",
+            "target": [
+                "Chart_Visit_Trend_Inf",
+                "Chart_MoM_Comparison_Inf"
+            ],
+            "type": "highlight"
+        }
+    ],
+    "drillThrough": {
+        "enabled": true,
+        "fields": [
+            "Dim_Territory[AreaName]",
+            "Dim_User[EmployeeID]"
+        ],
+        "targetPage": "Visit Detail"
+    },
+    "export": {
+        "enabled": true,
+        "formats": [
+            "Excel",
+            "CSV",
+            "PDF"
+        ]
+    },
+    "bookmarks": [
+        {
+            "name": "InfluencersDefault",
+            "displayName": "Influencers Overview",
+            "description": "Default view for Influencers Dashboard (Engineers & Contractors)",
+            "isDefault": true
+        }
+    ]
+}
