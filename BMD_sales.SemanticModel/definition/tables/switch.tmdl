@@ -13,7 +13,6 @@ table switch
 		annotation SummarizationSetBy = Automatic
 
 	column 'switch Fields'
-		isHidden
 		lineageTag: fc813065-b81d-4606-b1fc-3f4c73025a2f
 		summarizeBy: none
 		sourceColumn: [Value2]
@@ -28,7 +27,6 @@ table switch
 		annotation SummarizationSetBy = Automatic
 
 	column 'switch Order'
-		isHidden
 		formatString: 0
 		lineageTag: 4a028442-60b0-4501-a7f0-36c3bf973480
 		summarizeBy: sum

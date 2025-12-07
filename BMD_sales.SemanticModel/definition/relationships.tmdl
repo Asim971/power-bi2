@@ -397,6 +397,7 @@ relationship 9f6d8aeb-4c79-c167-c7d9-7f8716100e93
 	toColumn: Dim_Date.DateKey
 
 relationship c3d4e5f6-7890-1234-cdef-012345678902
+	crossFilteringBehavior: bothDirections
 	fromColumn: Dim_User.BDTerritoryID
 	toColumn: Dim_BDTerritory.BDTerritoryID
 
