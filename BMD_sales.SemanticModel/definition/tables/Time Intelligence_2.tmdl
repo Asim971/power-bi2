@@ -1,0 +1,60 @@
+/// ============================================================
+/// Time Intelligence_2 - Time Group Slicer Table
+/// 
+/// PURPOSE:
+/// Provides time period grouping options for slicers
+/// Used to filter measures by time periods (MTD, QTD, YTD, etc.)
+/// Works alongside the Time Intelligence calculation group
+/// ============================================================
+table 'Time Intelligence_2'
+	lineageTag: d4e5f6a7-b8c9-0123-def0-456789abcdef
+
+	column 'Time Group'
+		dataType: string
+		lineageTag: e5f6a7b8-c9d0-1234-ef01-56789abcdef0
+		summarizeBy: none
+		sourceColumn: Time Group
+		sortByColumn: 'Time Group Order'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Time Group Order'
+		dataType: int64
+		formatString: 0
+		lineageTag: f6a7b8c9-d0e1-2345-f012-6789abcdef01
+		summarizeBy: none
+		sourceColumn: Time Group Order
+		isHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Time Intelligence_2' = m
+		mode: import
+		source = ```
+				let
+				    Source = #table(
+				        type table [
+				            #"Time Group" = text,
+				            #"Time Group Order" = Int64.Type
+				        ],
+				        {
+				            {"Current", 1},
+				            {"Previous Month", 2},
+				            {"Previous Year", 3},
+				            {"MTD", 4},
+				            {"QTD", 5},
+				            {"YTD", 6},
+				            {"Rolling 7 Days", 7},
+				            {"Rolling 30 Days", 8}
+				        }
+				    )
+				in
+				    Source
+				```
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+	annotation IsDisconnectedParameterTable = true
+
