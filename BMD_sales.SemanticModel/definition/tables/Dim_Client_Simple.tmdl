@@ -2,7 +2,6 @@ table Dim_Client_Simple
 	lineageTag: 2b116964-7d92-44bc-877a-08c63930e55d
 
 	measure Visits_by_Type =
-			
 			CALCULATE(
 			    [Total_Visits],
 			    ALLEXCEPT('Fact_Visit', 'Fact_Visit'[visit_type])
@@ -11,17 +10,13 @@ table Dim_Client_Simple
 		lineageTag: d8252c2a-daea-40a9-8d01-a8dbc6364f9d
 
 	measure Total_Site_Visits =
-			
 			CALCULATE(
 			    [Total_Visits],
 			    'Fact_Visit'[ClientType] = "Site")
 		formatString: 0
 		lineageTag: 1d887731-4d05-4abc-9a84-9ec92770e978
 
-	/// ============================================
 	/// UNIQUE CLIENT COUNT MEASURES (for KPI Cards)
-	/// ============================================
-
 	/// Total Unique Dealers
 	measure Total_Dealers = ```
 			CALCULATE(
@@ -107,11 +102,8 @@ table Dim_Client_Simple
 		displayFolder: Client Counts
 		lineageTag: 1b8c9d0e-1f2a-3456-7123-456789012345
 
-	/// ============================================
 	/// VISIT COUNT BY CLIENT TYPE (for Cards)
 	/// Counts visits filtered by ClientType from Dim_Client_Simple
-	/// ============================================
-
 	/// Dealer Visit Count (filtered by Dim_Client_Simple)
 	measure Dealer_Count = ```
 			CALCULATE(

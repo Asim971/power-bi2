@@ -717,10 +717,7 @@ table Fact_Visit
 		displayFolder: FRD Dashboard\Location
 		lineageTag: 6d7e8f90-1234-5678-9012-456789012345
 
-	/// ============================================
 	/// CLIENT TYPE VISIT MEASURES
-	/// ============================================
-
 	/// Total Engineer Visits
 	measure Total_Engineer_Visits = ```
 			CALCULATE(
@@ -776,10 +773,7 @@ table Fact_Visit
 		displayFolder: Visit Counts
 		lineageTag: e5f6a7b8-9c0d-1234-ef01-234567890123
 
-	/// ============================================
 	/// MOM COMPARISON - Alternative Names (for report compatibility)
-	/// ============================================
-
 	/// Current Month Visits (alternative name for report compatibility)
 	measure CurrentMonth_Visits = [Visits_Current_Month]
 		formatString: #,##0
