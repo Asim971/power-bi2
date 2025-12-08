@@ -17,8 +17,6 @@ table Dim_Client_Simple
 		formatString: 0
 		lineageTag: 1d887731-4d05-4abc-9a84-9ec92770e978
 
-	/// UNIQUE CLIENT COUNT MEASURES (for KPI Cards)
-	/// Total Unique Dealers
 	measure Total_Dealers =
 			CALCULATE(
 				DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
@@ -28,7 +26,6 @@ table Dim_Client_Simple
 		displayFolder: Client Counts
 		lineageTag: aa1b2c3d-4e5f-6789-0abc-def012345678
 
-	/// Total Unique Retailers
 	measure Total_Retailers =
 			CALCULATE(
 				DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
@@ -38,7 +35,6 @@ table Dim_Client_Simple
 		displayFolder: Client Counts
 		lineageTag: bb2c3d4e-5f6a-7890-1bcd-ef0123456789
 
-	/// Total Unique Sites
 	measure Total_Sites =
 			CALCULATE(
 				DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
@@ -48,7 +44,6 @@ table Dim_Client_Simple
 		displayFolder: Client Counts
 		lineageTag: cc3d4e5f-6a7b-8901-2cde-f01234567890
 
-	/// Total Unique Engineers
 	measure Total_Engineers =
 			CALCULATE(
 				DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
@@ -58,7 +53,6 @@ table Dim_Client_Simple
 		displayFolder: Client Counts
 		lineageTag: dd4e5f6a-7b8c-9012-3def-012345678901
 
-	/// Total Unique Contractors
 	measure Total_Contractors =
 			CALCULATE(
 				DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
@@ -68,7 +62,6 @@ table Dim_Client_Simple
 		displayFolder: Client Counts
 		lineageTag: ee5f6a7b-8c9d-0123-4ef0-123456789012
 
-	/// Total Unique IHBs
 	measure Total_IHBs =
 			CALCULATE(
 				DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
@@ -78,7 +71,6 @@ table Dim_Client_Simple
 		displayFolder: Client Counts
 		lineageTag: ff6a7b8c-9d0e-1234-5f01-234567890123
 
-	/// Total Unique Influencers (Engineers + Contractors)
 	measure Total_Influencers =
 			CALCULATE(
 				DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
@@ -88,15 +80,11 @@ table Dim_Client_Simple
 		displayFolder: Client Counts
 		lineageTag: 0a7b8c9d-0e1f-2345-6012-345678901234
 
-	/// Dynamic Unique Client Count (based on filter context)
 	measure UniqueRoleCount = DISTINCTCOUNT('Dim_Client_Simple'[ClientID])
 		formatString: #,##0
 		displayFolder: Client Counts
 		lineageTag: 1b8c9d0e-1f2a-3456-7123-456789012345
 
-	/// VISIT COUNT BY CLIENT TYPE (for Cards)
-	/// Counts visits filtered by ClientType from Dim_Client_Simple
-	/// Dealer Visit Count (filtered by Dim_Client_Simple)
 	measure Dealer_Count =
 			CALCULATE(
 				COUNTROWS('Fact_Visit'),
@@ -107,7 +95,6 @@ table Dim_Client_Simple
 		displayFolder: Visit Counts by Type
 		lineageTag: 2c9d0e1f-2a3b-4567-8234-567890123456
 
-	/// Retailer Visit Count (filtered by Dim_Client_Simple)
 	measure Retailer_Count =
 			CALCULATE(
 				COUNTROWS('Fact_Visit'),
@@ -118,7 +105,6 @@ table Dim_Client_Simple
 		displayFolder: Visit Counts by Type
 		lineageTag: 3d0e1f2a-3b4c-5678-9345-678901234567
 
-	/// Site Visit Count (filtered by Dim_Client_Simple)
 	measure Site_Count =
 			CALCULATE(
 				COUNTROWS('Fact_Visit'),
@@ -129,7 +115,6 @@ table Dim_Client_Simple
 		displayFolder: Visit Counts by Type
 		lineageTag: 4e1f2a3b-4c5d-6789-0456-789012345678
 
-	/// Engineer Visit Count (filtered by Dim_Client_Simple)
 	measure Engineer_Count =
 			CALCULATE(
 				COUNTROWS('Fact_Visit'),
@@ -140,7 +125,6 @@ table Dim_Client_Simple
 		displayFolder: Visit Counts by Type
 		lineageTag: 5f2a3b4c-5d6e-7890-1567-890123456789
 
-	/// Contractor Visit Count (filtered by Dim_Client_Simple)
 	measure Contractor_Count =
 			CALCULATE(
 				COUNTROWS('Fact_Visit'),
@@ -151,7 +135,6 @@ table Dim_Client_Simple
 		displayFolder: Visit Counts by Type
 		lineageTag: 6a3b4c5d-6e7f-8901-2678-901234567890
 
-	/// IHB Visit Count (filtered by Dim_Client_Simple)
 	measure IHB_Count =
 			CALCULATE(
 				COUNTROWS('Fact_Visit'),
@@ -358,11 +341,6 @@ table Dim_Client_Simple
 
 		annotation SummarizationSetBy = Automatic
 
-	/// FR-22, FR-66-74: Entity Group for Dashboard Auto-Filtering
-	/// Groups client types into FRD dashboard categories:
-	/// - Clients: Dealer, Retailer
-	/// - Influencers: Engineer, Contractor
-	/// - Customers: Site, IHB
 	column EntityGroup =
 			SWITCH(
 			    [ClientType],
