@@ -728,6 +728,67 @@ table Fact_Order
 		displayFolder: FRD Dashboard\Order Performance
 		lineageTag: frd-order-ach-016
 
+	measure FRD_Contractor_Count = ```
+			// Count of distinct Contractors visited by the employee
+			CALCULATE(
+				DISTINCTCOUNT('Fact_Visit'[ClientKey]),
+				'Fact_Visit'[ClientType] = "Contractor"
+			)
+			```
+		formatString: 0
+		displayFolder: FRD Dashboard\Tertiary Sales
+		lineageTag: frd-contractor-count-017
+
+	measure FRD_Contractor_Volume_MT = ```
+			// Volume (MT) from orders related to Contractor visits
+			// Note: Orders are for Sites/Dealers/Retailers, this tracks volume from employees who visited contractors
+			DIVIDE(
+				CALCULATE(
+					SUM('Fact_Order'[TotalAmount]),
+					'Fact_Order'[TotalAmount] > 0
+				), 
+				1000, 
+				0
+			)
+			```
+		formatString: #,##0.0
+		displayFolder: FRD Dashboard\Tertiary Sales
+		lineageTag: frd-contractor-volume-018
+
+	measure FRD_Engineer_Count = ```
+			// Count of distinct Engineers visited by the employee
+			CALCULATE(
+				DISTINCTCOUNT('Fact_Visit'[ClientKey]),
+				'Fact_Visit'[ClientType] = "Engineer"
+			)
+			```
+		formatString: 0
+		displayFolder: FRD Dashboard\Tertiary Sales
+		lineageTag: frd-engineer-count-019
+
+	measure FRD_Engineer_Volume_MT = ```
+			// Volume (MT) from orders - engineer-related tracking
+			DIVIDE(
+				CALCULATE(
+					SUM('Fact_Order'[TotalAmount]),
+					'Fact_Order'[TotalAmount] > 0
+				), 
+				1000, 
+				0
+			)
+			```
+		formatString: #,##0.0
+		displayFolder: FRD Dashboard\Tertiary Sales
+		lineageTag: frd-engineer-volume-020
+
+	measure FRD_Total_Volume_MT = ```
+			// Total order volume in MT
+			DIVIDE(SUM('Fact_Order'[TotalAmount]), 1000, 0)
+			```
+		formatString: #,##0.0
+		displayFolder: FRD Dashboard\Tertiary Sales
+		lineageTag: frd-total-volume-021
+
 	column OrderID
 		dataType: int64
 		formatString: 0

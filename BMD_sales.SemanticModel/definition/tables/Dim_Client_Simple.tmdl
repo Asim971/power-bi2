@@ -349,13 +349,13 @@ table Dim_Client_Simple
 	column EntityGroup =
 			SWITCH(
 			    [ClientType],
-			    "Dealer", "Clients",
-			    "Retailer", "Clients",
+			    "Dealer", "Customers",
+			    "Retailer", "Customers",
 			    "Engineer", "Influencers",
 			    "Contractor", "Influencers",
-			    "Site", "Customers",
-			    "IHB", "Customers",
-			    "Other"
+			    "Site", "Consumers",
+			    "IHB", "Consumers",
+			    "Influencers"
 			)
 		lineageTag: 8f901234-5678-9abc-def0-123456789abc
 		summarizeBy: none

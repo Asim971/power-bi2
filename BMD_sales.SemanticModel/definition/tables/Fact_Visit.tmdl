@@ -803,6 +803,7 @@ table Fact_Visit
 		lineageTag: frd-customer-target-004
 
 	measure Customer_Total_Visited = ```
+			// Customers = Dealers + Retailers (Channel Partners)
 			CALCULATE(
 				DISTINCTCOUNT('Fact_Visit'[ClientKey]),
 				'Fact_Visit'[ClientType] IN {"Dealer", "Retailer"}
@@ -828,6 +829,7 @@ table Fact_Visit
 		lineageTag: frd-influencer-target-007
 
 	measure Influencer_Total_Visited = ```
+			// Influencers = Engineers + Contractors (Technical Influencers)
 			CALCULATE(
 				DISTINCTCOUNT('Fact_Visit'[ClientKey]),
 				'Fact_Visit'[ClientType] IN {"Engineer", "Contractor"}
@@ -864,6 +866,7 @@ table Fact_Visit
 		lineageTag: frd-total-ach-011
 
 	measure Sites_Visited_Count = ```
+			// Consumers: Sites (Potential Construction Sites)
 			CALCULATE(
 				DISTINCTCOUNT('Fact_Visit'[ClientKey]),
 				'Fact_Visit'[ClientType] = "Site"
@@ -874,6 +877,7 @@ table Fact_Visit
 		lineageTag: frd-sites-visited-012
 
 	measure IHB_Visited_Count = ```
+			// Consumers: IHB (Individual House Builders)
 			CALCULATE(
 				DISTINCTCOUNT('Fact_Visit'[ClientKey]),
 				'Fact_Visit'[ClientType] = "IHB"
