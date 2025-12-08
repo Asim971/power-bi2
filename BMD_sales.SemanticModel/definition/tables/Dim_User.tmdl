@@ -274,7 +274,7 @@ table Dim_User
 								// Based on actual 'public users' table schema
 								// Includes Role, Organization, Territory lookups
 								// Two tracks: ORG (SR/ASM/ZSM) and BMD (BDO/CRO)
-								// 
+								//
 								// SCHEMA NOTES (Dec 2025):
 								// - users.id is the PRIMARY KEY (unique)
 								// - users.delete_status = "NO" (text)
@@ -284,7 +284,7 @@ table Dim_User
 								// - BMD Track: users_bd_territory bridge table links users to bd_territory
 								// - Bazaar is the bridge between territory and bd_territory
 								// ============================================================
-								
+
 								let
 								    // Reference the existing tables
 								    UsersSource = #"public users",
@@ -296,118 +296,118 @@ table Dim_User
 								    BDTerritorySource = #"public bd_territory",
 								    UsersBDTerritoryBridge = #"public users_bd_territory",
 								    BDTerritoryBazaarsBridge = #"public bd_territory_bazaars",
-								    
+
 								    // ---- Select Core Columns from users ----
 								    SelectedColumns = Table.SelectColumns(UsersSource, {
-								        "id", "name", "email", "phone_number", "role_id", 
+								        "id", "name", "email", "phone_number", "role_id",
 								        "zone_id", "region_id", "area_id",
 								        "user_designation", "line_manager", "organization_id",
 								        "delete_status", "created_at", "updated_at"
 								    }),
-								    
+
 								    // ---- Filter Active Users ----
 								    ActiveUsers = Table.SelectRows(SelectedColumns, each [delete_status] = "NO"),
-								    
+
 								    // ---- Join with Role table to get role details ----
 								    WithRoleJoin = Table.NestedJoin(
 								        ActiveUsers, {"role_id"},
 								        RolesSource, {"id"},
 								        "RoleData", JoinKind.LeftOuter
 								    ),
-								    
+
 								    WithRoleExpanded = Table.ExpandTableColumn(
 								        WithRoleJoin, "RoleData",
 								        {"name", "level", "department", "designation"},
 								        {"RoleName", "RoleLevel", "Department", "RoleDesignation"}
 								    ),
-								    
+
 								    // ---- Join with Organization table to get org name ----
 								    WithOrgJoin = Table.NestedJoin(
 								        WithRoleExpanded, {"organization_id"},
 								        OrgSource, {"id"},
 								        "OrgData", JoinKind.LeftOuter
 								    ),
-								    
+
 								    WithOrgExpanded = Table.ExpandTableColumn(
 								        WithOrgJoin, "OrgData",
 								        {"organization_name"},
 								        {"OrganizationName"}
 								    ),
-								    
+
 								    // ---- Join with Zone table to get zone name ----
 								    WithZoneJoin = Table.NestedJoin(
 								        WithOrgExpanded, {"zone_id"},
 								        ZoneSource, {"id"},
 								        "ZoneData", JoinKind.LeftOuter
 								    ),
-								    
+
 								    WithZoneExpanded = Table.ExpandTableColumn(
 								        WithZoneJoin, "ZoneData",
 								        {"zone_name"},
 								        {"ZoneName"}
 								    ),
-								    
+
 								    // ---- Join with Region table to get region name ----
 								    WithRegionJoin = Table.NestedJoin(
 								        WithZoneExpanded, {"region_id"},
 								        RegionSource, {"id"},
 								        "RegionData", JoinKind.LeftOuter
 								    ),
-								    
+
 								    WithRegionExpanded = Table.ExpandTableColumn(
 								        WithRegionJoin, "RegionData",
 								        {"region_name"},
 								        {"RegionName"}
 								    ),
-								    
+
 								    // ---- Join with Area table to get area name ----
 								    WithAreaJoin = Table.NestedJoin(
 								        WithRegionExpanded, {"area_id"},
 								        AreaSource, {"id"},
 								        "AreaData", JoinKind.LeftOuter
 								    ),
-								    
+
 								    WithAreaExpanded = Table.ExpandTableColumn(
 								        WithAreaJoin, "AreaData",
 								        {"name"},
 								        {"AreaName"}
 								    ),
-								    
+
 								    // ---- Join with users_bd_territory bridge table ----
 								    // This links users to BD territories via the bridge table
 								    // Use Table.Group first to get only the FIRST bd_territory_id per user
 								    // to avoid duplicates when user has multiple BD territories
 								    BDTerritoryBridgeGrouped = Table.Group(
-								        UsersBDTerritoryBridge, 
-								        {"users_id"}, 
+								        UsersBDTerritoryBridge,
+								        {"users_id"},
 								        {{"FirstBDTerritoryID", each List.First([bd_territory_id]), type nullable number}}
 								    ),
-								    
+
 								    WithBDTerritoryBridgeJoin = Table.NestedJoin(
 								        WithAreaExpanded, {"id"},
 								        BDTerritoryBridgeGrouped, {"users_id"},
 								        "BDTerritoryBridgeData", JoinKind.LeftOuter
 								    ),
-								    
+
 								    WithBDTerritoryBridgeExpanded = Table.ExpandTableColumn(
 								        WithBDTerritoryBridgeJoin, "BDTerritoryBridgeData",
 								        {"FirstBDTerritoryID"},
 								        {"BDTerritoryID"}
 								    ),
-								    
+
 								    // ---- Join with BD Territory table to get bd_territory_name ----
 								    WithBDTerritoryJoin = Table.NestedJoin(
 								        WithBDTerritoryBridgeExpanded, {"BDTerritoryID"},
 								        BDTerritorySource, {"id"},
 								        "BDTerritoryData", JoinKind.LeftOuter
 								    ),
-								    
+
 								    WithBDTerritoryExpanded = Table.ExpandTableColumn(
 								        WithBDTerritoryJoin, "BDTerritoryData",
 								        {"bd_territory_name"},
 								        {"BDTerritoryName"}
 								    ),
-								    
+
 								    // ---- Join with bd_territory_bazaars to get BazaarID ----
 								    // This enables User → Client filtering via Bazaar
 								    // Get first bazaar_id per bd_territory to avoid duplicates
@@ -416,19 +416,19 @@ table Dim_User
 								        {"bd_territory_id"},
 								        {{"FirstBazaarID", each List.First([bazaar_id]), type nullable number}}
 								    ),
-								    
+
 								    WithBazaarJoin = Table.NestedJoin(
 								        WithBDTerritoryExpanded, {"BDTerritoryID"},
 								        BazaarBridgeGrouped, {"bd_territory_id"},
 								        "BazaarData", JoinKind.LeftOuter
 								    ),
-								    
+
 								    WithBazaarExpanded = Table.ExpandTableColumn(
 								        WithBazaarJoin, "BazaarData",
 								        {"FirstBazaarID"},
 								        {"BazaarID"}
 								    ),
-								    
+
 								    // ---- Rename Core Columns ----
 								    RenamedColumns = Table.RenameColumns(WithBazaarExpanded, {
 								        {"id", "UserID"},
@@ -443,20 +443,20 @@ table Dim_User
 								        {"line_manager", "LineManager"},
 								        {"organization_id", "OrganizationID"}
 								    }),
-								    
+
 								    // ---- Add EmployeeID alias for Fact_Visit compatibility ----
 								    WithEmployeeID = Table.AddColumn(RenamedColumns, "EmployeeID", each [UserID], Int64.Type),
-								    
+
 								    // ---- Add Department Track ----
-								    WithTrack = Table.AddColumn(WithEmployeeID, "DepartmentTrack", each 
+								    WithTrack = Table.AddColumn(WithEmployeeID, "DepartmentTrack", each
 								        if [Department] = "BMD" then "Business Development"
 								        else if [Department] = "ORG" then "Sales Organization"
 								        else "Other",
 								        type text
 								    ),
-								    
+
 								    // ---- Add Role Category based on PRD ----
-								    WithRoleCategory = Table.AddColumn(WithTrack, "RoleCategory", each 
+								    WithRoleCategory = Table.AddColumn(WithTrack, "RoleCategory", each
 								        if [RoleName] = "SR" then "Field Sales"
 								        else if [RoleName] = "ASM" then "Area Management"
 								        else if [RoleName] = "ZSM" then "Zonal Management"
@@ -467,15 +467,15 @@ table Dim_User
 								        else "Other",
 								        type text
 								    ),
-								    
+
 								    // ---- Add Is Field Role Flag ----
-								    WithFieldFlag = Table.AddColumn(WithRoleCategory, "IsFieldRole", each 
+								    WithFieldFlag = Table.AddColumn(WithRoleCategory, "IsFieldRole", each
 								        if [RoleName] = "SR" or [RoleName] = "BDO" or [RoleName] = "CRO" then 1 else 0,
 								        Int64.Type
 								    ),
-								    
+
 								    // ---- Add Management Level ----
-								    WithMgmtLevel = Table.AddColumn(WithFieldFlag, "ManagementLevel", each 
+								    WithMgmtLevel = Table.AddColumn(WithFieldFlag, "ManagementLevel", each
 				                        if [RoleLevel] >= 2040 and [RoleLevel] <= 2060 then "Field"
 								        else if [RoleLevel] >= 2020 and [RoleLevel] < 2040 then "Middle Management"
 								        else if [RoleLevel] >= 1030 and [RoleLevel] <= 1040 then "Field (BD)"
@@ -483,25 +483,25 @@ table Dim_User
 								        else "Other",
 								        type text
 								    ),
-								    
+
 								    // ---- Add TerritoryLayerName - Dynamic based on role ----
 								    // For ORG (SR/ASM/ZSM): Shows Area hierarchy
 								    // For BMD (BDO/CRO): Shows BD Territory
-								    WithTerritoryLayer = Table.AddColumn(WithMgmtLevel, "TerritoryLayerName", each 
-								        if [Department] = "BMD" then 
+								    WithTerritoryLayer = Table.AddColumn(WithMgmtLevel, "TerritoryLayerName", each
+								        if [Department] = "BMD" then
 								            if [BDTerritoryName] <> null then [BDTerritoryName] else "Unassigned BD Territory"
-								        else if [Department] = "ORG" then 
-								            if [RoleName] = "SR" then 
+								        else if [Department] = "ORG" then
+								            if [RoleName] = "SR" then
 								                if [AreaName] <> null then [AreaName] else "Unassigned Area"
-								            else if [RoleName] = "ASM" then 
+								            else if [RoleName] = "ASM" then
 								                if [AreaName] <> null then [AreaName] else "Unassigned Area"
-								            else if [RoleName] = "ZSM" then 
+								            else if [RoleName] = "ZSM" then
 								                if [ZoneName] <> null then [ZoneName] else "Unassigned Zone"
 								            else if [AreaName] <> null then [AreaName] else "Unassigned"
 								        else "N/A",
 								        type text
 								    ),
-								    
+
 								    // ---- Set Data Types ----
 								    TypedTable = Table.TransformColumnTypes(WithTerritoryLayer, {
 								        {"UserID", Int64.Type},
@@ -535,7 +535,7 @@ table Dim_User
 								        {"created_at", type datetime},
 								        {"updated_at", type datetime}
 								    }),
-								    
+
 								    // ---- Remove delete_status ----
 								    CleanedTable = Table.RemoveColumns(TypedTable, {"delete_status"})
 								in
@@ -543,4 +543,3 @@ table Dim_User
 				```
 
 	annotation PBI_ResultType = Table
-
