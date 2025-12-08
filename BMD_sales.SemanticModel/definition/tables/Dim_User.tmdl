@@ -247,6 +247,17 @@ table Dim_User
 
 		annotation SummarizationSetBy = Automatic
 
+	/// BazaarID - Links User to Client via Bazaar for filtering
+	/// Derived from: User → users_bd_territory → bd_territory_bazaars → bazaar_id
+	column BazaarID
+		dataType: int64
+		formatString: 0
+		lineageTag: 7a8b9c0d-1e2f-3456-0123-567890123408
+		summarizeBy: none
+		sourceColumn: BazaarID
+
+		annotation SummarizationSetBy = Automatic
+
 	column TerritoryLayerName
 		dataType: string
 		lineageTag: 7a8b9c0d-1e2f-3456-0123-567890123407
@@ -284,6 +295,7 @@ table Dim_User
 								    AreaSource = #"public areas",
 								    BDTerritorySource = #"public bd_territory",
 								    UsersBDTerritoryBridge = #"public users_bd_territory",
+								    BDTerritoryBazaarsBridge = #"public bd_territory_bazaars",
 								    
 								    // ---- Select Core Columns from users ----
 								    SelectedColumns = Table.SelectColumns(UsersSource, {
@@ -396,8 +408,29 @@ table Dim_User
 								        {"BDTerritoryName"}
 								    ),
 								    
+								    // ---- Join with bd_territory_bazaars to get BazaarID ----
+								    // This enables User → Client filtering via Bazaar
+								    // Get first bazaar_id per bd_territory to avoid duplicates
+								    BazaarBridgeGrouped = Table.Group(
+								        BDTerritoryBazaarsBridge,
+								        {"bd_territory_id"},
+								        {{"FirstBazaarID", each List.First([bazaar_id]), type nullable number}}
+								    ),
+								    
+								    WithBazaarJoin = Table.NestedJoin(
+								        WithBDTerritoryExpanded, {"BDTerritoryID"},
+								        BazaarBridgeGrouped, {"bd_territory_id"},
+								        "BazaarData", JoinKind.LeftOuter
+								    ),
+								    
+								    WithBazaarExpanded = Table.ExpandTableColumn(
+								        WithBazaarJoin, "BazaarData",
+								        {"FirstBazaarID"},
+								        {"BazaarID"}
+								    ),
+								    
 								    // ---- Rename Core Columns ----
-								    RenamedColumns = Table.RenameColumns(WithBDTerritoryExpanded, {
+								    RenamedColumns = Table.RenameColumns(WithBazaarExpanded, {
 								        {"id", "UserID"},
 								        {"name", "EmployeeName"},
 								        {"email", "EmployeeEmail"},
@@ -485,6 +518,7 @@ table Dim_User
 								        {"AreaName", type text},
 								        {"BDTerritoryID", Int64.Type},
 								        {"BDTerritoryName", type text},
+								        {"BazaarID", Int64.Type},
 								        {"Designation", type text},
 								        {"LineManager", type text},
 								        {"OrganizationID", Int64.Type},
