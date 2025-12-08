@@ -169,11 +169,8 @@ table Dim_Client_Simple
 		displayFolder: Visit Counts by Type
 		lineageTag: 7b4c5d6e-7f8a-9012-3789-012345678901
 
-	/// ============================================
 	/// USER-BAZAAR-CLIENT RELATIONSHIP MEASURES
-	/// Uses inactive relationship: Dim_User.BazaarID → Dim_Client_Simple.BazaarID
-	/// ============================================
-
+	/// Uses inactive relationship: Dim_User.BazaarID to Dim_Client_Simple.BazaarID
 	/// Count of Clients in User's Bazaar Territory
 	/// When a User is selected, shows how many clients are in their assigned Bazaar
 	measure Clients_In_User_Bazaar =
