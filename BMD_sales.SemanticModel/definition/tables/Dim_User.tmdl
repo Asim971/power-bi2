@@ -239,6 +239,23 @@ table Dim_User
 
 		annotation SummarizationSetBy = Automatic
 
+	column TerritoryID
+		dataType: int64
+		formatString: 0
+		lineageTag: 5f6a7b8c-9d0e-1234-ab01-456789012345
+		summarizeBy: none
+		sourceColumn: TerritoryID
+
+		annotation SummarizationSetBy = Automatic
+
+	column TerritoryName
+		dataType: string
+		lineageTag: 6a7b8c9d-0e1f-2345-bc12-567890123456
+		summarizeBy: none
+		sourceColumn: TerritoryName
+
+		annotation SummarizationSetBy = Automatic
+
 	column BDTerritoryName
 		dataType: string
 		lineageTag: 6f7a8b9c-0d1e-2345-f012-456789012306
@@ -273,14 +290,19 @@ table Dim_User
 								// Includes Role, Organization, Territory lookups
 								// Two tracks: ORG (SR/ASM/ZSM) and BMD (BDO/CRO)
 								//
-								// SCHEMA NOTES (Dec 2025):
+								// SCHEMA NOTES (Dec 2025 - Updated):
 								// - users.id is the PRIMARY KEY (unique)
 								// - users.delete_status = "NO" (text)
 								// - users.organization_id links to organization table (ACL=1, AIL=2)
+								//   * NULL organization_id defaults to "AGI Group" (parent holding company)
+								//   * BDO/CRO roles typically have NULL organization_id
 								// - role table has: id, name, level, department, designation
-								// - ORG Track: zone_id → region_id → area_id (SR works at territory within area)
+								// - ORG Track: zone_id → region_id → area_id → territory_id
+								//   * SR assigned via users_territory bridge to public territory
 								// - BMD Track: users_bd_territory bridge table links users to bd_territory
 								// - Bazaar is the bridge between territory and bd_territory
+								//
+								// HIERARCHY: Organization → Zone → Region → Area → Territory
 								// ============================================================
 
 								let
@@ -291,6 +313,8 @@ table Dim_User
 								    ZoneSource = #"public zone",
 								    RegionSource = #"public region",
 								    AreaSource = #"public areas",
+								    TerritorySource = #"public territory",
+								    UsersTerritoryBridge = #"public users_territory",
 								    BDTerritorySource = #"public bd_territory",
 								    UsersBDTerritoryBridge = #"public users_bd_territory",
 								    BDTerritoryBazaarsBridge = #"public bd_territory_bazaars",
@@ -329,12 +353,22 @@ table Dim_User
 								    WithOrgExpanded = Table.ExpandTableColumn(
 								        WithOrgJoin, "OrgData",
 								        {"organization_name"},
-								        {"OrganizationName"}
+								        {"OrganizationNameRaw"}
 								    ),
+
+								    // ---- Default OrganizationName to "AGI Group" for NULL (BDO/CRO roles) ----
+								    // BDO/CRO roles don't have organization_id set but belong to AGI Group
+								    WithOrgNameDefault = Table.AddColumn(WithOrgExpanded, "OrganizationName", each
+								        if [OrganizationNameRaw] = null or [OrganizationNameRaw] = "" then "AGI Group"
+								        else [OrganizationNameRaw],
+								        type text
+								    ),
+
+								    WithOrgCleaned = Table.RemoveColumns(WithOrgNameDefault, {"OrganizationNameRaw"}),
 
 								    // ---- Join with Zone table to get zone name ----
 								    WithZoneJoin = Table.NestedJoin(
-								        WithOrgExpanded, {"zone_id"},
+								        WithOrgCleaned, {"zone_id"},
 								        ZoneSource, {"id"},
 								        "ZoneData", JoinKind.LeftOuter
 								    ),
@@ -371,6 +405,48 @@ table Dim_User
 								        {"AreaName"}
 								    ),
 
+								    // ---- Join with users_territory bridge table for ORG track ----
+								    // SR users are assigned to specific territories via users_territory
+								    // Use Table.Group first to get only the FIRST territory_id per user
+								    TerritoryBridgeGrouped = Table.Group(
+								        UsersTerritoryBridge,
+								        {"users_id"},
+								        {{"FirstTerritoryID", each List.First([territory_id]), type nullable number}}
+								    ),
+
+								    WithTerritoryBridgeJoin = Table.NestedJoin(
+								        WithAreaExpanded, {"id"},
+								        TerritoryBridgeGrouped, {"users_id"},
+								        "TerritoryBridgeData", JoinKind.LeftOuter
+								    ),
+
+								    WithTerritoryBridgeExpanded = Table.ExpandTableColumn(
+								        WithTerritoryBridgeJoin, "TerritoryBridgeData",
+								        {"FirstTerritoryID"},
+								        {"TerritoryID"}
+								    ),
+
+								    // ---- Join with Territory table to get territory name ----
+								    WithTerritoryJoin = Table.NestedJoin(
+								        WithTerritoryBridgeExpanded, {"TerritoryID"},
+								        TerritorySource, {"id"},
+								        "TerritoryData", JoinKind.LeftOuter
+								    ),
+
+								    WithTerritoryExpanded = Table.ExpandTableColumn(
+								        WithTerritoryJoin, "TerritoryData",
+								        {"name", "area_name"},
+								        {"TerritoryName", "TerritoryAreaName"}
+								    ),
+
+								    // ---- Fix AreaName: Use territory's area_name if AreaName is null/wrong ----
+								    // This ensures Area shows the correct parent level from territory table
+								    WithAreaFixed = Table.AddColumn(WithTerritoryExpanded, "AreaNameCorrected", each
+								        if [AreaName] = null and [TerritoryAreaName] <> null then [TerritoryAreaName]
+								        else [AreaName],
+								        type text
+								    ),
+
 								    // ---- Join with users_bd_territory bridge table ----
 								    // This links users to BD territories via the bridge table
 								    // Use Table.Group first to get only the FIRST bd_territory_id per user
@@ -382,7 +458,7 @@ table Dim_User
 								    ),
 
 								    WithBDTerritoryBridgeJoin = Table.NestedJoin(
-								        WithAreaExpanded, {"id"},
+								        WithAreaFixed, {"id"},
 								        BDTerritoryBridgeGrouped, {"users_id"},
 								        "BDTerritoryBridgeData", JoinKind.LeftOuter
 								    ),
@@ -427,8 +503,14 @@ table Dim_User
 								        {"BazaarID"}
 								    ),
 
+								    // ---- Clean up intermediate columns ----
+								    WithCleanup = Table.RemoveColumns(WithBazaarExpanded, {"AreaName", "TerritoryAreaName"}, MissingField.Ignore),
+
+								    // ---- Rename AreaNameCorrected to AreaName ----
+								    WithAreaRenamed = Table.RenameColumns(WithCleanup, {{"AreaNameCorrected", "AreaName"}}),
+
 								    // ---- Rename Core Columns ----
-								    RenamedColumns = Table.RenameColumns(WithBazaarExpanded, {
+								    RenamedColumns = Table.RenameColumns(WithAreaRenamed, {
 								        {"id", "UserID"},
 								        {"name", "EmployeeName"},
 								        {"email", "EmployeeEmail"},
@@ -483,14 +565,18 @@ table Dim_User
 								    ),
 
 								    // ---- Add TerritoryLayerName - Dynamic based on role ----
-								    // For ORG (SR/ASM/ZSM): Shows Area hierarchy
+								    // For ORG (SR): Shows Territory name (lowest level)
+								    // For ORG (ASM): Shows Area name
+								    // For ORG (ZSM): Shows Zone name
 								    // For BMD (BDO/CRO): Shows BD Territory
 								    WithTerritoryLayer = Table.AddColumn(WithMgmtLevel, "TerritoryLayerName", each
 								        if [Department] = "BMD" then
 								            if [BDTerritoryName] <> null then [BDTerritoryName] else "Unassigned BD Territory"
 								        else if [Department] = "ORG" then
 								            if [RoleName] = "SR" then
-								                if [AreaName] <> null then [AreaName] else "Unassigned Area"
+								                if [TerritoryName] <> null then [TerritoryName]
+								                else if [AreaName] <> null then [AreaName]
+								                else "Unassigned Territory"
 								            else if [RoleName] = "ASM" then
 								                if [AreaName] <> null then [AreaName] else "Unassigned Area"
 								            else if [RoleName] = "ZSM" then
@@ -514,6 +600,8 @@ table Dim_User
 								        {"RegionName", type text},
 								        {"AreaID", Int64.Type},
 								        {"AreaName", type text},
+								        {"TerritoryID", Int64.Type},
+								        {"TerritoryName", type text},
 								        {"BDTerritoryID", Int64.Type},
 								        {"BDTerritoryName", type text},
 								        {"BazaarID", Int64.Type},
