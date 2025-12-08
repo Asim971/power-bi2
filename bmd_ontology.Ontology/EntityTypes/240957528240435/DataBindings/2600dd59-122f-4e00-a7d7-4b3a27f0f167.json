@@ -1,0 +1,36 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "2600dd59-122f-4e00-a7d7-4b3a27f0f167",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "VisitCategoryID",
+        "targetPropertyId": "6314487161709099332"
+      },
+      {
+        "sourceColumnName": "CategoryName",
+        "targetPropertyId": "6314487142947737523"
+      },
+      {
+        "sourceColumnName": "CategoryGroup",
+        "targetPropertyId": "6314487121579055631"
+      },
+      {
+        "sourceColumnName": "IsInfluencer",
+        "targetPropertyId": "6314487099921607463"
+      },
+      {
+        "sourceColumnName": "CategorySortOrder",
+        "targetPropertyId": "6314487077950111134"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "276a43e7-e0e3-4366-9ac1-40d1bf52182f",
+      "itemId": "3afc1e46-ba7a-4f3f-9d6b-d888df4bd4f2",
+      "sourceTableName": "Dim_VisitCategory",
+      "sourceSchema": "shortcuts"
+    }
+  }
+}

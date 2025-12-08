@@ -1,0 +1,15 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "0589a95c-19a9-437e-bca5-c74ee2513d7a",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "276a43e7-e0e3-4366-9ac1-40d1bf52182f",
+      "itemId": "3afc1e46-ba7a-4f3f-9d6b-d888df4bd4f2",
+      "sourceTableName": "Parameter",
+      "sourceSchema": "shortcuts"
+    }
+  }
+}

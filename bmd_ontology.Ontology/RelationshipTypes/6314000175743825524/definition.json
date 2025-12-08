@@ -1,0 +1,13 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/relationshipType/1.0.0/schema.json",
+  "namespace": "usertypes",
+  "id": "6314000175743825524",
+  "name": "Dim_VisitStage_has_Dim_VisitPhase",
+  "namespaceType": "Imported",
+  "source": {
+    "entityTypeId": "213860107274148"
+  },
+  "target": {
+    "entityTypeId": "224999564250716"
+  }
+}

@@ -1,0 +1,148 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "b14dc78a-0fd9-4287-befe-923ee809150a",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "VisitID",
+        "targetPropertyId": "6314485852214592217"
+      },
+      {
+        "sourceColumnName": "DateKey",
+        "targetPropertyId": "6314485830706685231"
+      },
+      {
+        "sourceColumnName": "EmployeeID",
+        "targetPropertyId": "6314485810645492368"
+      },
+      {
+        "sourceColumnName": "EmployeeName",
+        "targetPropertyId": "6314485787960701389"
+      },
+      {
+        "sourceColumnName": "RoleLevel",
+        "targetPropertyId": "6314485766589232262"
+      },
+      {
+        "sourceColumnName": "ClientKey",
+        "targetPropertyId": "6314485744422807302"
+      },
+      {
+        "sourceColumnName": "ClientType",
+        "targetPropertyId": "6314485726219688891"
+      },
+      {
+        "sourceColumnName": "ClientID",
+        "targetPropertyId": "6314485701931591153"
+      },
+      {
+        "sourceColumnName": "ResponsibleRole",
+        "targetPropertyId": "6314485680489215642"
+      },
+      {
+        "sourceColumnName": "visit_type",
+        "targetPropertyId": "6314485658838280893"
+      },
+      {
+        "sourceColumnName": "VisitCategoryID",
+        "targetPropertyId": "6314485638945080508"
+      },
+      {
+        "sourceColumnName": "VisitPhaseID",
+        "targetPropertyId": "6314485611305526166"
+      },
+      {
+        "sourceColumnName": "VisitStageID",
+        "targetPropertyId": "6314485588990168131"
+      },
+      {
+        "sourceColumnName": "organization_id",
+        "targetPropertyId": "6314485570911940017"
+      },
+      {
+        "sourceColumnName": "status",
+        "targetPropertyId": "6314485546420460534"
+      },
+      {
+        "sourceColumnName": "feedback",
+        "targetPropertyId": "6314485525777444301"
+      },
+      {
+        "sourceColumnName": "visit_photo",
+        "targetPropertyId": "6314485503478879130"
+      },
+      {
+        "sourceColumnName": "product_photo",
+        "targetPropertyId": "6314485483131310727"
+      },
+      {
+        "sourceColumnName": "delete_status",
+        "targetPropertyId": "6314485462901897803"
+      },
+      {
+        "sourceColumnName": "HasPhoto",
+        "targetPropertyId": "6314485440175197141"
+      },
+      {
+        "sourceColumnName": "HasProductPhoto",
+        "targetPropertyId": "6314485414059484518"
+      },
+      {
+        "sourceColumnName": "HasFeedback",
+        "targetPropertyId": "6314485393297111720"
+      },
+      {
+        "sourceColumnName": "HasTerritory",
+        "targetPropertyId": "6314485372817113380"
+      },
+      {
+        "sourceColumnName": "territory_id",
+        "targetPropertyId": "6314485346109057245"
+      },
+      {
+        "sourceColumnName": "territory_name",
+        "targetPropertyId": "6314485319452723129"
+      },
+      {
+        "sourceColumnName": "followup_date",
+        "targetPropertyId": "6314485295422470608"
+      },
+      {
+        "sourceColumnName": "origin",
+        "targetPropertyId": "6314485265356780267"
+      },
+      {
+        "sourceColumnName": "visit_date_time",
+        "targetPropertyId": "6314485233386742315"
+      },
+      {
+        "sourceColumnName": "created_at",
+        "targetPropertyId": "6314485198361709872"
+      },
+      {
+        "sourceColumnName": "updated_at",
+        "targetPropertyId": "6314485174979308915"
+      },
+      {
+        "sourceColumnName": "latitude",
+        "targetPropertyId": "6314485149485578462"
+      },
+      {
+        "sourceColumnName": "longitude",
+        "targetPropertyId": "6314485124030995392"
+      },
+      {
+        "sourceColumnName": "CompanyCode",
+        "targetPropertyId": "6314485096543013489"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "276a43e7-e0e3-4366-9ac1-40d1bf52182f",
+      "itemId": "3afc1e46-ba7a-4f3f-9d6b-d888df4bd4f2",
+      "sourceTableName": "Fact_Visit",
+      "sourceSchema": "shortcuts"
+    }
+  }
+}

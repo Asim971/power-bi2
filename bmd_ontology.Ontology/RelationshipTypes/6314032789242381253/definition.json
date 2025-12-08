@@ -1,0 +1,13 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/relationshipType/1.0.0/schema.json",
+  "namespace": "usertypes",
+  "id": "6314032789242381253",
+  "name": "Fact_Order_has_Dim_Client_Simple",
+  "namespaceType": "Imported",
+  "source": {
+    "entityTypeId": "155964171691403"
+  },
+  "target": {
+    "entityTypeId": "264493790327395"
+  }
+}

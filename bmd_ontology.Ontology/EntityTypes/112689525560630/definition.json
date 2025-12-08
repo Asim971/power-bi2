@@ -1,0 +1,13 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/entityType/1.0.0/schema.json",
+  "id": "112689525560630",
+  "namespace": "usertypes",
+  "baseEntityTypeId": null,
+  "name": "switch",
+  "entityIdParts": [],
+  "displayNamePropertyId": null,
+  "namespaceType": "Imported",
+  "visibility": "Visible",
+  "properties": [],
+  "timeseriesProperties": []
+}

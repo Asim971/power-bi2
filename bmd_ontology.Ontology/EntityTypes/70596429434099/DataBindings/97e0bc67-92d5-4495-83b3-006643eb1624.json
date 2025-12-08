@@ -1,0 +1,20 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "97e0bc67-92d5-4495-83b3-006643eb1624",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "FilterOption",
+        "targetPropertyId": "6314478390826466141"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "276a43e7-e0e3-4366-9ac1-40d1bf52182f",
+      "itemId": "3afc1e46-ba7a-4f3f-9d6b-d888df4bd4f2",
+      "sourceTableName": "DateFilterParam",
+      "sourceSchema": "shortcuts"
+    }
+  }
+}

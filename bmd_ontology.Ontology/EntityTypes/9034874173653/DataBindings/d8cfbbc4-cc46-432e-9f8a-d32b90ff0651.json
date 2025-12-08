@@ -1,0 +1,84 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "d8cfbbc4-cc46-432e-9f8a-d32b90ff0651",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "TerritoryKey",
+        "targetPropertyId": "6314490150984804327"
+      },
+      {
+        "sourceColumnName": "ZoneID",
+        "targetPropertyId": "6314490126731984877"
+      },
+      {
+        "sourceColumnName": "ZoneName",
+        "targetPropertyId": "6314490103444685748"
+      },
+      {
+        "sourceColumnName": "ZoneSortOrder",
+        "targetPropertyId": "6314490078833387801"
+      },
+      {
+        "sourceColumnName": "RegionID",
+        "targetPropertyId": "6314490056355298730"
+      },
+      {
+        "sourceColumnName": "RegionName",
+        "targetPropertyId": "6314490034535430503"
+      },
+      {
+        "sourceColumnName": "AreaID",
+        "targetPropertyId": "6314490012665067640"
+      },
+      {
+        "sourceColumnName": "AreaName",
+        "targetPropertyId": "6314489988304794247"
+      },
+      {
+        "sourceColumnName": "NationID",
+        "targetPropertyId": "6314489967914536849"
+      },
+      {
+        "sourceColumnName": "NationName",
+        "targetPropertyId": "6314489944296055980"
+      },
+      {
+        "sourceColumnName": "OrganizationID",
+        "targetPropertyId": "6314489919946700013"
+      },
+      {
+        "sourceColumnName": "TerritoryPath",
+        "targetPropertyId": "6314489900327103048"
+      },
+      {
+        "sourceColumnName": "AssignedZSM",
+        "targetPropertyId": "6314489872827662649"
+      },
+      {
+        "sourceColumnName": "delete_status",
+        "targetPropertyId": "6314489849536942590"
+      },
+      {
+        "sourceColumnName": "AssignedGM",
+        "targetPropertyId": "6314489828707705813"
+      },
+      {
+        "sourceColumnName": "AssignedAGM",
+        "targetPropertyId": "6314489809274271374"
+      },
+      {
+        "sourceColumnName": "AssignedASM",
+        "targetPropertyId": "6314489781579650685"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "276a43e7-e0e3-4366-9ac1-40d1bf52182f",
+      "itemId": "3afc1e46-ba7a-4f3f-9d6b-d888df4bd4f2",
+      "sourceTableName": "Dim_Territory",
+      "sourceSchema": "shortcuts"
+    }
+  }
+}

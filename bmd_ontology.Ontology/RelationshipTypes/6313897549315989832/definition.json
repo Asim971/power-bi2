@@ -1,0 +1,13 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/relationshipType/1.0.0/schema.json",
+  "namespace": "usertypes",
+  "id": "6313897549315989832",
+  "name": "Dim_Client_Simple_has_Dim_Bazaar",
+  "namespaceType": "Imported",
+  "source": {
+    "entityTypeId": "264493790327395"
+  },
+  "target": {
+    "entityTypeId": "86384822786816"
+  }
+}

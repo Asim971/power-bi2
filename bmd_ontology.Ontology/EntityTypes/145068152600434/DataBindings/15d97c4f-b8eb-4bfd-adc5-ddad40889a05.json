@@ -1,0 +1,52 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "15d97c4f-b8eb-4bfd-adc5-ddad40889a05",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "BDTerritoryID",
+        "targetPropertyId": "6314478904296686983"
+      },
+      {
+        "sourceColumnName": "BDTerritoryName",
+        "targetPropertyId": "6314478882805647846"
+      },
+      {
+        "sourceColumnName": "DistrictID",
+        "targetPropertyId": "6314478858843939824"
+      },
+      {
+        "sourceColumnName": "DistrictName",
+        "targetPropertyId": "6314478838018269872"
+      },
+      {
+        "sourceColumnName": "UpazillaID",
+        "targetPropertyId": "6314478819029937276"
+      },
+      {
+        "sourceColumnName": "UpazillaName",
+        "targetPropertyId": "6314478794676379265"
+      },
+      {
+        "sourceColumnName": "delete_status",
+        "targetPropertyId": "6314478766226897602"
+      },
+      {
+        "sourceColumnName": "created_at",
+        "targetPropertyId": "6314478745638079495"
+      },
+      {
+        "sourceColumnName": "updated_at",
+        "targetPropertyId": "6314478721946559321"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "276a43e7-e0e3-4366-9ac1-40d1bf52182f",
+      "itemId": "3afc1e46-ba7a-4f3f-9d6b-d888df4bd4f2",
+      "sourceTableName": "Dim_BDTerritory",
+      "sourceSchema": "shortcuts"
+    }
+  }
+}

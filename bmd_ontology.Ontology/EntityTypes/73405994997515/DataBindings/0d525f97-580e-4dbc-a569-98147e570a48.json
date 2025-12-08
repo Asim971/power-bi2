@@ -1,0 +1,176 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "0d525f97-580e-4dbc-a569-98147e570a48",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "id",
+        "targetPropertyId": "6314491259410808006"
+      },
+      {
+        "sourceColumnName": "bd_incharge_feedback",
+        "targetPropertyId": "6314491187452336470"
+      },
+      {
+        "sourceColumnName": "conversion_no",
+        "targetPropertyId": "6314491156428927739"
+      },
+      {
+        "sourceColumnName": "create_by_name",
+        "targetPropertyId": "6314491133642771194"
+      },
+      {
+        "sourceColumnName": "created_at",
+        "targetPropertyId": "6314491107378974116"
+      },
+      {
+        "sourceColumnName": "delete_status",
+        "targetPropertyId": "6314491078460920999"
+      },
+      {
+        "sourceColumnName": "entity_id",
+        "targetPropertyId": "6314491052265345032"
+      },
+      {
+        "sourceColumnName": "entity_name",
+        "targetPropertyId": "6314491030975927464"
+      },
+      {
+        "sourceColumnName": "entity_record_id",
+        "targetPropertyId": "6314491006220867816"
+      },
+      {
+        "sourceColumnName": "feedback",
+        "targetPropertyId": "6314490983719615370"
+      },
+      {
+        "sourceColumnName": "followup_date",
+        "targetPropertyId": "6314490963362471525"
+      },
+      {
+        "sourceColumnName": "influencer_type",
+        "targetPropertyId": "6314490937021150044"
+      },
+      {
+        "sourceColumnName": "origin",
+        "targetPropertyId": "6314490918149286596"
+      },
+      {
+        "sourceColumnName": "product_photo",
+        "targetPropertyId": "6314490896618719436"
+      },
+      {
+        "sourceColumnName": "recordid",
+        "targetPropertyId": "6314490872224738967"
+      },
+      {
+        "sourceColumnName": "role_level",
+        "targetPropertyId": "6314490851316355096"
+      },
+      {
+        "sourceColumnName": "status",
+        "targetPropertyId": "6314490826595079689"
+      },
+      {
+        "sourceColumnName": "territory_id",
+        "targetPropertyId": "6314490805493330008"
+      },
+      {
+        "sourceColumnName": "territory_name",
+        "targetPropertyId": "6314490784198387359"
+      },
+      {
+        "sourceColumnName": "updated_at",
+        "targetPropertyId": "6314490761367734288"
+      },
+      {
+        "sourceColumnName": "visit_date_time",
+        "targetPropertyId": "6314490741751394836"
+      },
+      {
+        "sourceColumnName": "visit_photo",
+        "targetPropertyId": "6314490716043887767"
+      },
+      {
+        "sourceColumnName": "visit_type",
+        "targetPropertyId": "6314490694542296480"
+      },
+      {
+        "sourceColumnName": "contractor_id",
+        "targetPropertyId": "6314490672889608866"
+      },
+      {
+        "sourceColumnName": "created_by_id",
+        "targetPropertyId": "6314490650550380237"
+      },
+      {
+        "sourceColumnName": "dealer_id",
+        "targetPropertyId": "6314490630751186213"
+      },
+      {
+        "sourceColumnName": "engineer_id",
+        "targetPropertyId": "6314490606593164990"
+      },
+      {
+        "sourceColumnName": "head_mason_id",
+        "targetPropertyId": "6314490582932581229"
+      },
+      {
+        "sourceColumnName": "ihb_registration_id",
+        "targetPropertyId": "6314490561763105564"
+      },
+      {
+        "sourceColumnName": "organization_id",
+        "targetPropertyId": "6314490539127716423"
+      },
+      {
+        "sourceColumnName": "potential_site_id",
+        "targetPropertyId": "6314490512256121099"
+      },
+      {
+        "sourceColumnName": "project_conversion_id",
+        "targetPropertyId": "6314490493621452208"
+      },
+      {
+        "sourceColumnName": "retailer_id",
+        "targetPropertyId": "6314490468385248235"
+      },
+      {
+        "sourceColumnName": "site_manager_id",
+        "targetPropertyId": "6314490449494539081"
+      },
+      {
+        "sourceColumnName": "updated_by_id",
+        "targetPropertyId": "6314490424038506046"
+      },
+      {
+        "sourceColumnName": "visit_category_id",
+        "targetPropertyId": "6314490401994728555"
+      },
+      {
+        "sourceColumnName": "visit_phase_id",
+        "targetPropertyId": "6314490376529832622"
+      },
+      {
+        "sourceColumnName": "visit_stage_id",
+        "targetPropertyId": "6314490355857475055"
+      },
+      {
+        "sourceColumnName": "latitude",
+        "targetPropertyId": "6314490331606255134"
+      },
+      {
+        "sourceColumnName": "longitude",
+        "targetPropertyId": "6314490309651311347"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "276a43e7-e0e3-4366-9ac1-40d1bf52182f",
+      "itemId": "3afc1e46-ba7a-4f3f-9d6b-d888df4bd4f2",
+      "sourceTableName": "public_visits",
+      "sourceSchema": "shortcuts"
+    }
+  }
+}

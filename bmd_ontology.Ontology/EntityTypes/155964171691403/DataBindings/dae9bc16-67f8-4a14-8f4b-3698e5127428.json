@@ -1,0 +1,116 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "dae9bc16-67f8-4a14-8f4b-3698e5127428",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "OrderID",
+        "targetPropertyId": "6314482260780450394"
+      },
+      {
+        "sourceColumnName": "OrderDateKey",
+        "targetPropertyId": "6314482240694992703"
+      },
+      {
+        "sourceColumnName": "UserID",
+        "targetPropertyId": "6314482216520849134"
+      },
+      {
+        "sourceColumnName": "ClientKey",
+        "targetPropertyId": "6314482191350553819"
+      },
+      {
+        "sourceColumnName": "SiteID",
+        "targetPropertyId": "6314482165857476757"
+      },
+      {
+        "sourceColumnName": "DealerID",
+        "targetPropertyId": "6314482142277537338"
+      },
+      {
+        "sourceColumnName": "RetailerID",
+        "targetPropertyId": "6314482119974368679"
+      },
+      {
+        "sourceColumnName": "BazaarID",
+        "targetPropertyId": "6314482094541623303"
+      },
+      {
+        "sourceColumnName": "ProjectConversionID",
+        "targetPropertyId": "6314482074487222864"
+      },
+      {
+        "sourceColumnName": "OrderStatus",
+        "targetPropertyId": "6314482047179517580"
+      },
+      {
+        "sourceColumnName": "StatusGroup",
+        "targetPropertyId": "6314482017185693421"
+      },
+      {
+        "sourceColumnName": "OrderType",
+        "targetPropertyId": "6314481996983899773"
+      },
+      {
+        "sourceColumnName": "OrderCategory",
+        "targetPropertyId": "6314481970086514750"
+      },
+      {
+        "sourceColumnName": "DeliveryMethod",
+        "targetPropertyId": "6314481949788573201"
+      },
+      {
+        "sourceColumnName": "DeliveryAddress",
+        "targetPropertyId": "6314481925705968814"
+      },
+      {
+        "sourceColumnName": "Stage",
+        "targetPropertyId": "6314481902277086646"
+      },
+      {
+        "sourceColumnName": "TotalAmount",
+        "targetPropertyId": "6314481880478176268"
+      },
+      {
+        "sourceColumnName": "IsConverted",
+        "targetPropertyId": "6314481856707194662"
+      },
+      {
+        "sourceColumnName": "HasMemoPhoto",
+        "targetPropertyId": "6314481833445430446"
+      },
+      {
+        "sourceColumnName": "IsEngineerEligible",
+        "targetPropertyId": "6314481810939876103"
+      },
+      {
+        "sourceColumnName": "IsPartnerEligible",
+        "targetPropertyId": "6314481786280316511"
+      },
+      {
+        "sourceColumnName": "MemoPhoto",
+        "targetPropertyId": "6314481765904749328"
+      },
+      {
+        "sourceColumnName": "Feedback",
+        "targetPropertyId": "6314481742662961557"
+      },
+      {
+        "sourceColumnName": "created_at",
+        "targetPropertyId": "6314481717785312422"
+      },
+      {
+        "sourceColumnName": "updated_at",
+        "targetPropertyId": "6314481695782675224"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "276a43e7-e0e3-4366-9ac1-40d1bf52182f",
+      "itemId": "3afc1e46-ba7a-4f3f-9d6b-d888df4bd4f2",
+      "sourceTableName": "Fact_Order",
+      "sourceSchema": "shortcuts"
+    }
+  }
+}

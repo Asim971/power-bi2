@@ -1,0 +1,120 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "d125e1f8-8522-4239-88b9-42dea3b14140",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "ConversionID",
+        "targetPropertyId": "6314486717026033723"
+      },
+      {
+        "sourceColumnName": "OrderStatus",
+        "targetPropertyId": "6314486693211183784"
+      },
+      {
+        "sourceColumnName": "DeliveryMethod",
+        "targetPropertyId": "6314486673967495061"
+      },
+      {
+        "sourceColumnName": "delete_status",
+        "targetPropertyId": "6314486653712286899"
+      },
+      {
+        "sourceColumnName": "SiteID",
+        "targetPropertyId": "6314486624774111672"
+      },
+      {
+        "sourceColumnName": "EngineerID",
+        "targetPropertyId": "6314486606592464214"
+      },
+      {
+        "sourceColumnName": "DealerID",
+        "targetPropertyId": "6314486585166956703"
+      },
+      {
+        "sourceColumnName": "RetailerID",
+        "targetPropertyId": "6314486563148913725"
+      },
+      {
+        "sourceColumnName": "BazaarID",
+        "targetPropertyId": "6314486541793185979"
+      },
+      {
+        "sourceColumnName": "created_at",
+        "targetPropertyId": "6314486517619656921"
+      },
+      {
+        "sourceColumnName": "updated_at",
+        "targetPropertyId": "6314486498204013023"
+      },
+      {
+        "sourceColumnName": "EngineerLoyalty",
+        "targetPropertyId": "6314486477182700798"
+      },
+      {
+        "sourceColumnName": "ContractorLoyalty",
+        "targetPropertyId": "6314486454874907549"
+      },
+      {
+        "sourceColumnName": "assigned_sr",
+        "targetPropertyId": "6314486427117439145"
+      },
+      {
+        "sourceColumnName": "assigned_cro",
+        "targetPropertyId": "6314486405889141222"
+      },
+      {
+        "sourceColumnName": "assigned_bdo",
+        "targetPropertyId": "6314486385943614072"
+      },
+      {
+        "sourceColumnName": "assigned_asm",
+        "targetPropertyId": "6314486366165167316"
+      },
+      {
+        "sourceColumnName": "total_amount",
+        "targetPropertyId": "6314486344238802143"
+      },
+      {
+        "sourceColumnName": "stage",
+        "targetPropertyId": "6314486320734398390"
+      },
+      {
+        "sourceColumnName": "ConversionDateKey",
+        "targetPropertyId": "6314486299264098121"
+      },
+      {
+        "sourceColumnName": "ClientKey",
+        "targetPropertyId": "6314486279350181443"
+      },
+      {
+        "sourceColumnName": "DeliveryType",
+        "targetPropertyId": "6314486255778362451"
+      },
+      {
+        "sourceColumnName": "StatusGroup",
+        "targetPropertyId": "6314486234201167139"
+      },
+      {
+        "sourceColumnName": "IsConverted",
+        "targetPropertyId": "6314486213970626664"
+      },
+      {
+        "sourceColumnName": "IsEngineerRewardEligible",
+        "targetPropertyId": "6314486190245375028"
+      },
+      {
+        "sourceColumnName": "IsContractorRewardEligible",
+        "targetPropertyId": "6314486165796264757"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "276a43e7-e0e3-4366-9ac1-40d1bf52182f",
+      "itemId": "3afc1e46-ba7a-4f3f-9d6b-d888df4bd4f2",
+      "sourceTableName": "Fact_ProjectConversion",
+      "sourceSchema": "shortcuts"
+    }
+  }
+}

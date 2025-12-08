@@ -1,0 +1,164 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "edbad6e2-0de9-4e43-ba7c-daa729d26000",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "DateKey",
+        "targetPropertyId": "6314489628566916073"
+      },
+      {
+        "sourceColumnName": "Date",
+        "targetPropertyId": "6314489603915867151"
+      },
+      {
+        "sourceColumnName": "Year",
+        "targetPropertyId": "6314489580910955107"
+      },
+      {
+        "sourceColumnName": "Quarter",
+        "targetPropertyId": "6314489561483130428"
+      },
+      {
+        "sourceColumnName": "QuarterName",
+        "targetPropertyId": "6314489534547991597"
+      },
+      {
+        "sourceColumnName": "Month",
+        "targetPropertyId": "6314489511271478232"
+      },
+      {
+        "sourceColumnName": "MonthName",
+        "targetPropertyId": "6314489491753198285"
+      },
+      {
+        "sourceColumnName": "MonthShort",
+        "targetPropertyId": "6314489465942463176"
+      },
+      {
+        "sourceColumnName": "Day",
+        "targetPropertyId": "6314489444986419046"
+      },
+      {
+        "sourceColumnName": "DayOfWeek",
+        "targetPropertyId": "6314489422650429853"
+      },
+      {
+        "sourceColumnName": "DayName",
+        "targetPropertyId": "6314489399726003007"
+      },
+      {
+        "sourceColumnName": "DayShort",
+        "targetPropertyId": "6314489376554140960"
+      },
+      {
+        "sourceColumnName": "DayOfYear",
+        "targetPropertyId": "6314489352767376231"
+      },
+      {
+        "sourceColumnName": "WeekOfYear",
+        "targetPropertyId": "6314489333006630323"
+      },
+      {
+        "sourceColumnName": "FiscalYear",
+        "targetPropertyId": "6314489312192669189"
+      },
+      {
+        "sourceColumnName": "FiscalYearLabel",
+        "targetPropertyId": "6314489285388470728"
+      },
+      {
+        "sourceColumnName": "FiscalQuarter",
+        "targetPropertyId": "6314489263343422921"
+      },
+      {
+        "sourceColumnName": "FiscalQuarterLabel",
+        "targetPropertyId": "6314489239710600730"
+      },
+      {
+        "sourceColumnName": "FiscalMonth",
+        "targetPropertyId": "6314489218059355061"
+      },
+      {
+        "sourceColumnName": "WeekStartDate",
+        "targetPropertyId": "6314489194505146745"
+      },
+      {
+        "sourceColumnName": "WeekEndDate",
+        "targetPropertyId": "6314489171276941340"
+      },
+      {
+        "sourceColumnName": "WeekLabel",
+        "targetPropertyId": "6314489151743703258"
+      },
+      {
+        "sourceColumnName": "MonthStartDate",
+        "targetPropertyId": "6314489128455604500"
+      },
+      {
+        "sourceColumnName": "MonthEndDate",
+        "targetPropertyId": "6314489106467895331"
+      },
+      {
+        "sourceColumnName": "YearMonth",
+        "targetPropertyId": "6314489083581869007"
+      },
+      {
+        "sourceColumnName": "YearMonthNum",
+        "targetPropertyId": "6314489059757642171"
+      },
+      {
+        "sourceColumnName": "MonthSortOrder",
+        "targetPropertyId": "6314489033798758440"
+      },
+      {
+        "sourceColumnName": "IsToday",
+        "targetPropertyId": "6314489012003586036"
+      },
+      {
+        "sourceColumnName": "IsCurrentWeek",
+        "targetPropertyId": "6314488992737154076"
+      },
+      {
+        "sourceColumnName": "IsCurrentMonth",
+        "targetPropertyId": "6314488972068501618"
+      },
+      {
+        "sourceColumnName": "IsCurrentQuarter",
+        "targetPropertyId": "6314488951625952471"
+      },
+      {
+        "sourceColumnName": "IsCurrentYear",
+        "targetPropertyId": "6314488927147637711"
+      },
+      {
+        "sourceColumnName": "IsPreviousMonth",
+        "targetPropertyId": "6314488902275084747"
+      },
+      {
+        "sourceColumnName": "IsWeekend",
+        "targetPropertyId": "6314488882252202238"
+      },
+      {
+        "sourceColumnName": "IsWeekday",
+        "targetPropertyId": "6314488855842138939"
+      },
+      {
+        "sourceColumnName": "IsHoliday",
+        "targetPropertyId": "6314488834456447327"
+      },
+      {
+        "sourceColumnName": "HolidayName",
+        "targetPropertyId": "6314488809391159618"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "276a43e7-e0e3-4366-9ac1-40d1bf52182f",
+      "itemId": "3afc1e46-ba7a-4f3f-9d6b-d888df4bd4f2",
+      "sourceTableName": "Dim_Date",
+      "sourceSchema": "shortcuts"
+    }
+  }
+}

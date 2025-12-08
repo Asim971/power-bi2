@@ -1,0 +1,60 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "1dadc398-0290-47f1-87d0-b5bd95402528",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "ClientKey",
+        "targetPropertyId": "6314488756821803548"
+      },
+      {
+        "sourceColumnName": "ClientID",
+        "targetPropertyId": "6314488733440997245"
+      },
+      {
+        "sourceColumnName": "ClientName",
+        "targetPropertyId": "6314488711130426854"
+      },
+      {
+        "sourceColumnName": "ClientType",
+        "targetPropertyId": "6314488681704309064"
+      },
+      {
+        "sourceColumnName": "SubType",
+        "targetPropertyId": "6314488663853368821"
+      },
+      {
+        "sourceColumnName": "ClientCategory",
+        "targetPropertyId": "6314488641302965626"
+      },
+      {
+        "sourceColumnName": "ResponsibleRole",
+        "targetPropertyId": "6314488618149339760"
+      },
+      {
+        "sourceColumnName": "ResponsibleRoleRLS",
+        "targetPropertyId": "6314488592528200956"
+      },
+      {
+        "sourceColumnName": "BazaarID",
+        "targetPropertyId": "6314488573401873979"
+      },
+      {
+        "sourceColumnName": "TerritoryName",
+        "targetPropertyId": "6314488545534057607"
+      },
+      {
+        "sourceColumnName": "AreaName",
+        "targetPropertyId": "6314488522972837138"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "276a43e7-e0e3-4366-9ac1-40d1bf52182f",
+      "itemId": "3afc1e46-ba7a-4f3f-9d6b-d888df4bd4f2",
+      "sourceTableName": "Dim_Client_Simple",
+      "sourceSchema": "shortcuts"
+    }
+  }
+}

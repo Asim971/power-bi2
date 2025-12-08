@@ -1,0 +1,136 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "39bd937a-35ef-4c78-a4f9-6c28b7922ebf",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "UserID",
+        "targetPropertyId": "6314487844203396272"
+      },
+      {
+        "sourceColumnName": "EmployeeName",
+        "targetPropertyId": "6314487824232085997"
+      },
+      {
+        "sourceColumnName": "EmployeeEmail",
+        "targetPropertyId": "6314487804073325732"
+      },
+      {
+        "sourceColumnName": "EmployeePhone",
+        "targetPropertyId": "6314487781241611900"
+      },
+      {
+        "sourceColumnName": "RoleID",
+        "targetPropertyId": "6314487761402796390"
+      },
+      {
+        "sourceColumnName": "ZoneID",
+        "targetPropertyId": "6314487739017985778"
+      },
+      {
+        "sourceColumnName": "RegionID",
+        "targetPropertyId": "6314487715705564992"
+      },
+      {
+        "sourceColumnName": "AreaID",
+        "targetPropertyId": "6314487694842974423"
+      },
+      {
+        "sourceColumnName": "BDTerritoryID",
+        "targetPropertyId": "6314487670798658903"
+      },
+      {
+        "sourceColumnName": "Designation",
+        "targetPropertyId": "6314487647921958150"
+      },
+      {
+        "sourceColumnName": "LineManager",
+        "targetPropertyId": "6314487624826866164"
+      },
+      {
+        "sourceColumnName": "created_at",
+        "targetPropertyId": "6314487604862853297"
+      },
+      {
+        "sourceColumnName": "updated_at",
+        "targetPropertyId": "6314487584771820926"
+      },
+      {
+        "sourceColumnName": "RoleName",
+        "targetPropertyId": "6314487564508087291"
+      },
+      {
+        "sourceColumnName": "RoleLevel",
+        "targetPropertyId": "6314487540494391459"
+      },
+      {
+        "sourceColumnName": "Department",
+        "targetPropertyId": "6314487518962157166"
+      },
+      {
+        "sourceColumnName": "RoleDesignation",
+        "targetPropertyId": "6314487496115045520"
+      },
+      {
+        "sourceColumnName": "EmployeeID",
+        "targetPropertyId": "6314487473634540280"
+      },
+      {
+        "sourceColumnName": "DepartmentTrack",
+        "targetPropertyId": "6314487449943999291"
+      },
+      {
+        "sourceColumnName": "RoleCategory",
+        "targetPropertyId": "6314487430087636221"
+      },
+      {
+        "sourceColumnName": "IsFieldRole",
+        "targetPropertyId": "6314487409660287886"
+      },
+      {
+        "sourceColumnName": "ManagementLevel",
+        "targetPropertyId": "6314487384741653057"
+      },
+      {
+        "sourceColumnName": "OrganizationID",
+        "targetPropertyId": "6314487366294193885"
+      },
+      {
+        "sourceColumnName": "OrganizationName",
+        "targetPropertyId": "6314487342235422465"
+      },
+      {
+        "sourceColumnName": "ZoneName",
+        "targetPropertyId": "6314487323455996894"
+      },
+      {
+        "sourceColumnName": "RegionName",
+        "targetPropertyId": "6314487298585820002"
+      },
+      {
+        "sourceColumnName": "AreaName",
+        "targetPropertyId": "6314487276337777723"
+      },
+      {
+        "sourceColumnName": "BDTerritoryName",
+        "targetPropertyId": "6314487251044966766"
+      },
+      {
+        "sourceColumnName": "TerritoryLayerName",
+        "targetPropertyId": "6314487233074180193"
+      },
+      {
+        "sourceColumnName": "BazaarID",
+        "targetPropertyId": "6314487210311497809"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "276a43e7-e0e3-4366-9ac1-40d1bf52182f",
+      "itemId": "3afc1e46-ba7a-4f3f-9d6b-d888df4bd4f2",
+      "sourceTableName": "Dim_User",
+      "sourceSchema": "shortcuts"
+    }
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "9000165d-9d7e-4bc2-bd48-7b333d959d4f",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "VisitStageID",
+        "targetPropertyId": "6314486922547226353"
+      },
+      {
+        "sourceColumnName": "StageName",
+        "targetPropertyId": "6314486900586673924"
+      },
+      {
+        "sourceColumnName": "StageDescription",
+        "targetPropertyId": "6314486876991846878"
+      },
+      {
+        "sourceColumnName": "VisitPhaseID",
+        "targetPropertyId": "6314486852350334322"
+      },
+      {
+        "sourceColumnName": "ParentStageID",
+        "targetPropertyId": "6314486834259885920"
+      },
+      {
+        "sourceColumnName": "StageSortOrder",
+        "targetPropertyId": "6314486811565254085"
+      },
+      {
+        "sourceColumnName": "StageCategory",
+        "targetPropertyId": "6314486787891827477"
+      },
+      {
+        "sourceColumnName": "IsSubStage",
+        "targetPropertyId": "6314486768414972098"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "276a43e7-e0e3-4366-9ac1-40d1bf52182f",
+      "itemId": "3afc1e46-ba7a-4f3f-9d6b-d888df4bd4f2",
+      "sourceTableName": "Dim_VisitStage",
+      "sourceSchema": "shortcuts"
+    }
+  }
+}

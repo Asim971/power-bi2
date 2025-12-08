@@ -1,0 +1,36 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "a9a23ec3-b40b-4d30-a1ab-abeaf5c64ae0",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "EmployeeEmail",
+        "targetPropertyId": "6314483220814701297"
+      },
+      {
+        "sourceColumnName": "ZoneID",
+        "targetPropertyId": "6314483199954289960"
+      },
+      {
+        "sourceColumnName": "ZoneName",
+        "targetPropertyId": "6314483176285689610"
+      },
+      {
+        "sourceColumnName": "AccessLevel",
+        "targetPropertyId": "6314483157312729067"
+      },
+      {
+        "sourceColumnName": "RegionIDs",
+        "targetPropertyId": "6314483132762926417"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "276a43e7-e0e3-4366-9ac1-40d1bf52182f",
+      "itemId": "3afc1e46-ba7a-4f3f-9d6b-d888df4bd4f2",
+      "sourceTableName": "USER-ZONE",
+      "sourceSchema": "shortcuts"
+    }
+  }
+}

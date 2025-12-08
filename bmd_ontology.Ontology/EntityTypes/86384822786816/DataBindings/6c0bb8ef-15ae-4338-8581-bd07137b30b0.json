@@ -1,0 +1,28 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "6c0bb8ef-15ae-4338-8581-bd07137b30b0",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "BazaarID",
+        "targetPropertyId": "6314478484207832018"
+      },
+      {
+        "sourceColumnName": "BazaarName",
+        "targetPropertyId": "6314478461890458338"
+      },
+      {
+        "sourceColumnName": "BazaarType",
+        "targetPropertyId": "6314478439935857318"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "276a43e7-e0e3-4366-9ac1-40d1bf52182f",
+      "itemId": "3afc1e46-ba7a-4f3f-9d6b-d888df4bd4f2",
+      "sourceTableName": "Dim_Bazaar",
+      "sourceSchema": "shortcuts"
+    }
+  }
+}

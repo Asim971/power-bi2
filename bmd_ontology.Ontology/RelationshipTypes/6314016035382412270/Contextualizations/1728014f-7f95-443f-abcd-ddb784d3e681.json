@@ -1,0 +1,23 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/contextualization/1.0.0/schema.json",
+  "id": "1728014f-7f95-443f-abcd-ddb784d3e681",
+  "dataBindingTable": {
+    "workspaceId": "276a43e7-e0e3-4366-9ac1-40d1bf52182f",
+    "itemId": "3afc1e46-ba7a-4f3f-9d6b-d888df4bd4f2",
+    "sourceTableName": "Dim_User",
+    "sourceSchema": "shortcuts",
+    "sourceType": "LakehouseTable"
+  },
+  "sourceKeyRefBindings": [
+    {
+      "sourceColumnName": "UserID",
+      "targetPropertyId": "6314487844203396272"
+    }
+  ],
+  "targetKeyRefBindings": [
+    {
+      "sourceColumnName": "AreaID",
+      "targetPropertyId": "6314490012665067640"
+    }
+  ]
+}

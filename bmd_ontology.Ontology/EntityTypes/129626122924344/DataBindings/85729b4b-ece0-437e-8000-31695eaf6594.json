@@ -1,0 +1,24 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "85729b4b-ece0-437e-8000-31695eaf6594",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "Time Group",
+        "targetPropertyId": "6314478654072042139"
+      },
+      {
+        "sourceColumnName": "Time Group Order",
+        "targetPropertyId": "6314478606722057442"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "276a43e7-e0e3-4366-9ac1-40d1bf52182f",
+      "itemId": "3afc1e46-ba7a-4f3f-9d6b-d888df4bd4f2",
+      "sourceTableName": "Time_Intelligence_2",
+      "sourceSchema": "shortcuts"
+    }
+  }
+}

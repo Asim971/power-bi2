@@ -1,0 +1,13 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/relationshipType/1.0.0/schema.json",
+  "namespace": "usertypes",
+  "id": "6313956896097016821",
+  "name": "Fact_ProjectConversion_has_Dim_Client_Simple",
+  "namespaceType": "Imported",
+  "source": {
+    "entityTypeId": "198586094641500"
+  },
+  "target": {
+    "entityTypeId": "264493790327395"
+  }
+}

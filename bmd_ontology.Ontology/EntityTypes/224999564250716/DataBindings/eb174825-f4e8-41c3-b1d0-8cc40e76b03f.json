@@ -1,0 +1,32 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "eb174825-f4e8-41c3-b1d0-8cc40e76b03f",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "VisitPhaseID",
+        "targetPropertyId": "6314487032433387723"
+      },
+      {
+        "sourceColumnName": "PhaseName",
+        "targetPropertyId": "6314487013888359332"
+      },
+      {
+        "sourceColumnName": "PhaseDescription",
+        "targetPropertyId": "6314486991088262556"
+      },
+      {
+        "sourceColumnName": "PhaseSortOrder",
+        "targetPropertyId": "6314486970351550520"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "276a43e7-e0e3-4366-9ac1-40d1bf52182f",
+      "itemId": "3afc1e46-ba7a-4f3f-9d6b-d888df4bd4f2",
+      "sourceTableName": "Dim_VisitPhase",
+      "sourceSchema": "shortcuts"
+    }
+  }
+}
