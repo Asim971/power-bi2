@@ -762,11 +762,6 @@ table Fact_Visit
 		displayFolder: Visit Counts
 		lineageTag: e5f6a7b8-9c0d-1234-ef01-234567890123
 
-	// ============================================
-	// FRD Dashboard - Visited Client Counts (NEW)
-	// Added per PEA-FRD_Dashboard_Implementation_Plan_v1.0
-	// ============================================
-
 	measure Visited_Dealers = ```
 			CALCULATE(
 				DISTINCTCOUNT('Fact_Visit'[ClientKey]),
@@ -796,10 +791,6 @@ table Fact_Visit
 		formatString: #,##0
 		displayFolder: FRD Dashboard\Visited Counts
 		lineageTag: frd-visited-sites-ihb-003
-
-	// ============================================
-	// FRD Dashboard - Target & Achievement (NEW)
-	// ============================================
 
 	measure Customer_Target = 10
 		formatString: 0

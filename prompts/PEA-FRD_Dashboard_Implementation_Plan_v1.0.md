@@ -530,6 +530,51 @@ Update the pivotTable projections to include all FRD columns:
 | RLS breaks new measures | High | Medium | Test with `CALCULATE + ALL` pattern; use `USERPRINCIPALNAME()` |
 | JSON syntax errors | High | Medium | Validate JSON before saving; use VS Code JSON validation |
 | Performance degradation | Medium | Medium | Monitor query times; optimize DISTINCTCOUNT patterns |
+| **TMDL indentation errors** | **High** | **High** | **See TMDL Best Practices below** |
+
+### 6.1 TMDL Best Practices - Lessons Learned (Dec 9, 2025)
+
+**Error Encountered:**
+```
+TMDL Format Error: Parsing error type - Indentation
+Detailed error - Invalid indentation was detected!
+Document - './tables/Fact_Order' Line Number - 712
+```
+
+**Root Cause:** Standalone comment blocks (`// ===...`) were placed between measure declarations at the table level. TMDL does not support comments outside of object scope.
+
+**Key TMDL Rules:**
+
+| Rule | Description | Example |
+|------|-------------|---------|
+| **Tab-only indentation** | TMDL uses tabs (not spaces) for parent-child relationships | `\tmeasure X = ...` |
+| **No standalone comments** | Comments cannot exist between object declarations at table level | ❌ `// Header` between measures |
+| **Comments inside expressions** | Comments ARE allowed inside M or DAX multi-line blocks | ✅ Inside triple backticks |
+| **Consistent indentation** | Child properties must be exactly 1 tab more than parent | `measure` at 1 tab, `formatString` at 2 tabs |
+
+**Valid TMDL Structure:**
+```tmdl
+table MyTable
+	measure Measure1 = ```
+		// This comment IS valid - inside DAX expression
+		SUM(Table[Column])
+		```
+		formatString: #,##0
+	
+	measure Measure2 = 10
+		formatString: 0
+```
+
+**Invalid TMDL Structure:**
+```tmdl
+table MyTable
+	// This comment is INVALID - between measures
+	// ============================================
+	
+	measure Measure1 = SUM(Table[Column])
+```
+
+**Resolution Applied:** Removed all standalone comment blocks from `Fact_Order.tmdl` and `Fact_Visit.tmdl`.
 
 ---
 
