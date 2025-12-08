@@ -372,6 +372,7 @@ relationship 81378734-7063-5c9b-ca88-715e3d19ee6c
 	toColumn: Dim_Territory.TerritoryID
 
 relationship fv-territory-dt-001
+	isActive: false
 	fromColumn: Fact_Visit.territory_id
 	toColumn: Dim_Territory.TerritoryID
 
