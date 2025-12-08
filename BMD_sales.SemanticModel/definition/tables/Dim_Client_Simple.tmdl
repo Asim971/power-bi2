@@ -167,7 +167,6 @@ table Dim_Client_Simple
 	/// These measures use USERELATIONSHIP to filter clients by selected User's Bazaar
 	/// BazaarID = -1 represents "National" clients (Dealers, Engineers, Contractors)
 	/// ============================================================
-
 	/// Clients in User's Bazaar - Total count of clients in the selected user's bazaar
 	/// National clients (BazaarID=-1) are available to all users
 	measure Clients_in_User_Bazaar =
