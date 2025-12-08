@@ -709,6 +709,30 @@ table Fact_Order
 		displayFolder: Analytics\New Clients
 		lineageTag: 0d1e2f3a-4b5c-6d7e-8f9a-0b1c2d3e4f5a
 
+	// ============================================
+	// FRD Dashboard - User Order Metrics (NEW)
+	// Added per PEA-FRD_Dashboard_Implementation_Plan_v1.0
+	// ============================================
+
+	measure User_Order_Total_MT = ```
+			DIVIDE(SUM('Fact_Order'[TotalAmount]), 1000, 0)
+			```
+		formatString: #,##0.0
+		displayFolder: FRD Dashboard\Order Performance
+		lineageTag: frd-order-mt-014
+
+	measure User_Order_Target_MT = 20
+		formatString: #,##0.0
+		displayFolder: FRD Dashboard\Targets
+		lineageTag: frd-order-target-015
+
+	measure User_Order_Achievement_Pct = ```
+			DIVIDE([User_Order_Total_MT], [User_Order_Target_MT], 0)
+			```
+		formatString: 0%
+		displayFolder: FRD Dashboard\Order Performance
+		lineageTag: frd-order-ach-016
+
 	column OrderID
 		dataType: int64
 		formatString: 0

@@ -762,6 +762,132 @@ table Fact_Visit
 		displayFolder: Visit Counts
 		lineageTag: e5f6a7b8-9c0d-1234-ef01-234567890123
 
+	// ============================================
+	// FRD Dashboard - Visited Client Counts (NEW)
+	// Added per PEA-FRD_Dashboard_Implementation_Plan_v1.0
+	// ============================================
+
+	measure Visited_Dealers = ```
+			CALCULATE(
+				DISTINCTCOUNT('Fact_Visit'[ClientKey]),
+				'Fact_Visit'[ClientType] = "Dealer"
+			)
+			```
+		formatString: #,##0
+		displayFolder: FRD Dashboard\Visited Counts
+		lineageTag: frd-visited-dealers-001
+
+	measure Visited_Retailers = ```
+			CALCULATE(
+				DISTINCTCOUNT('Fact_Visit'[ClientKey]),
+				'Fact_Visit'[ClientType] = "Retailer"
+			)
+			```
+		formatString: #,##0
+		displayFolder: FRD Dashboard\Visited Counts
+		lineageTag: frd-visited-retailers-002
+
+	measure Visited_Sites_IHB = ```
+			CALCULATE(
+				DISTINCTCOUNT('Fact_Visit'[ClientKey]),
+				'Fact_Visit'[ClientType] IN {"Site", "IHB"}
+			)
+			```
+		formatString: #,##0
+		displayFolder: FRD Dashboard\Visited Counts
+		lineageTag: frd-visited-sites-ihb-003
+
+	// ============================================
+	// FRD Dashboard - Target & Achievement (NEW)
+	// ============================================
+
+	measure Customer_Target = 10
+		formatString: 0
+		displayFolder: FRD Dashboard\Targets
+		lineageTag: frd-customer-target-004
+
+	measure Customer_Total_Visited = ```
+			CALCULATE(
+				DISTINCTCOUNT('Fact_Visit'[ClientKey]),
+				'Fact_Visit'[ClientType] IN {"Dealer", "Retailer"}
+			)
+			```
+		formatString: 0
+		displayFolder: FRD Dashboard\Performance
+		lineageTag: frd-customer-total-005
+
+	measure Customer_Achievement_Pct = ```
+			VAR Target = [Customer_Target]
+			VAR Actual = [Customer_Total_Visited]
+			RETURN
+			IF(Target = 0, BLANK(), DIVIDE(Actual, Target, 0))
+			```
+		formatString: 0%
+		displayFolder: FRD Dashboard\Performance
+		lineageTag: frd-customer-ach-006
+
+	measure Influencer_Target = 10
+		formatString: 0
+		displayFolder: FRD Dashboard\Targets
+		lineageTag: frd-influencer-target-007
+
+	measure Influencer_Total_Visited = ```
+			CALCULATE(
+				DISTINCTCOUNT('Fact_Visit'[ClientKey]),
+				'Fact_Visit'[ClientType] IN {"Engineer", "Contractor"}
+			)
+			```
+		formatString: 0
+		displayFolder: FRD Dashboard\Performance
+		lineageTag: frd-influencer-total-008
+
+	measure Influencer_Achievement_Pct = ```
+			VAR Target = [Influencer_Target]
+			VAR Actual = [Influencer_Total_Visited]
+			RETURN
+			IF(Target = 0, BLANK(), DIVIDE(Actual, Target, 0))
+			```
+		formatString: 0%
+		displayFolder: FRD Dashboard\Performance
+		lineageTag: frd-influencer-ach-009
+
+	measure Total_Target = [Customer_Target] + [Influencer_Target]
+		formatString: 0
+		displayFolder: FRD Dashboard\Targets
+		lineageTag: frd-total-target-010
+
+	measure Total_Achievement_Pct = ```
+			DIVIDE(
+				[Customer_Total_Visited] + [Influencer_Total_Visited], 
+				[Total_Target], 
+				0
+			)
+			```
+		formatString: 0%
+		displayFolder: FRD Dashboard\Performance
+		lineageTag: frd-total-ach-011
+
+	// Consumer metrics (Sites/IHB separate)
+	measure Sites_Visited_Count = ```
+			CALCULATE(
+				DISTINCTCOUNT('Fact_Visit'[ClientKey]),
+				'Fact_Visit'[ClientType] = "Site"
+			)
+			```
+		formatString: 0
+		displayFolder: FRD Dashboard\Consumer
+		lineageTag: frd-sites-visited-012
+
+	measure IHB_Visited_Count = ```
+			CALCULATE(
+				DISTINCTCOUNT('Fact_Visit'[ClientKey]),
+				'Fact_Visit'[ClientType] = "IHB"
+			)
+			```
+		formatString: 0
+		displayFolder: FRD Dashboard\Consumer
+		lineageTag: frd-ihb-visited-013
+
 	column VisitID
 		dataType: int64
 		formatString: 0

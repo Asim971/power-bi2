@@ -1,0 +1,28 @@
+table DateFilterParam
+	lineageTag: a1b2c3d4-e5f6-7890-abcd-frd001000001
+
+	column FilterOption
+		dataType: string
+		lineageTag: a1b2c3d4-e5f6-7890-abcd-frd001000002
+		summarizeBy: none
+		sourceColumn: FilterOption
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DateFilterParam = m
+		mode: import
+		source =
+			let
+			    Source = #table(
+			        type table [FilterOption = text],
+			        {
+			            {"Daily"},
+			            {"WTD"},
+			            {"MTD"},
+			            {"YTD"}
+			        }
+			    )
+			in
+			    Source
+
+	annotation PBI_ResultType = Table
