@@ -162,6 +162,128 @@ table Dim_Client_Simple
 		displayFolder: Visit Counts by Type
 		lineageTag: 7b4c5d6e-7f8a-9012-3789-012345678901
 
+	/// ============================================================
+	/// USER-BAZAAR ANALYSIS MEASURES
+	/// These measures use USERELATIONSHIP to filter clients by selected User's Bazaar
+	/// BazaarID = -1 represents "National" clients (Dealers, Engineers, Contractors)
+	/// ============================================================
+
+	/// Clients in User's Bazaar - Total count of clients in the selected user's bazaar
+	/// National clients (BazaarID=-1) are available to all users
+	measure Clients_in_User_Bazaar =
+			VAR UserBazaar = SELECTEDVALUE(Dim_User[BazaarID])
+			VAR LocalClients = 
+				CALCULATE(
+					DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
+					USERELATIONSHIP(Dim_User[BazaarID], 'Dim_Client_Simple'[BazaarID]),
+					'Dim_Client_Simple'[BazaarID] <> -1
+				)
+			VAR NationalClients = 
+				CALCULATE(
+					DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
+					'Dim_Client_Simple'[BazaarID] = -1
+				)
+			RETURN
+				IF(ISBLANK(UserBazaar), BLANK(), LocalClients + NationalClients)
+		formatString: #,##0
+		displayFolder: User-Bazaar Analysis
+		lineageTag: 8c5d6e7f-8a9b-0123-4890-123456789012
+
+	/// Retailers in User's Bazaar - Retailers available to selected user
+	measure Retailers_in_User_Bazaar =
+			CALCULATE(
+				DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
+				USERELATIONSHIP(Dim_User[BazaarID], 'Dim_Client_Simple'[BazaarID]),
+				'Dim_Client_Simple'[ClientType] = "Retailer"
+			)
+		formatString: #,##0
+		displayFolder: User-Bazaar Analysis
+		lineageTag: 9d6e7f8a-9b0c-1234-5901-234567890123
+
+	/// Sites in User's Bazaar - Sites available to selected user
+	measure Sites_in_User_Bazaar =
+			CALCULATE(
+				DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
+				USERELATIONSHIP(Dim_User[BazaarID], 'Dim_Client_Simple'[BazaarID]),
+				'Dim_Client_Simple'[ClientType] = "Site"
+			)
+		formatString: #,##0
+		displayFolder: User-Bazaar Analysis
+		lineageTag: 0e7f8a9b-0c1d-2345-6012-345678901234
+
+	/// IHBs in User's Bazaar - IHBs available to selected user
+	measure IHBs_in_User_Bazaar =
+			CALCULATE(
+				DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
+				USERELATIONSHIP(Dim_User[BazaarID], 'Dim_Client_Simple'[BazaarID]),
+				'Dim_Client_Simple'[ClientType] = "IHB"
+			)
+		formatString: #,##0
+		displayFolder: User-Bazaar Analysis
+		lineageTag: 1f8a9b0c-1d2e-3456-7123-456789012345
+
+	/// Dealers (National) - Dealers are always available nationally (BazaarID=-1)
+	measure Dealers_National =
+			CALCULATE(
+				DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
+				'Dim_Client_Simple'[ClientType] = "Dealer",
+				'Dim_Client_Simple'[BazaarID] = -1
+			)
+		formatString: #,##0
+		displayFolder: User-Bazaar Analysis
+		lineageTag: 2a9b0c1d-2e3f-4567-8234-567890123456
+
+	/// Engineers (National) - Engineers are always available nationally (BazaarID=-1)
+	measure Engineers_National =
+			CALCULATE(
+				DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
+				'Dim_Client_Simple'[ClientType] = "Engineer",
+				'Dim_Client_Simple'[BazaarID] = -1
+			)
+		formatString: #,##0
+		displayFolder: User-Bazaar Analysis
+		lineageTag: 3b0c1d2e-3f4a-5678-9345-678901234567
+
+	/// Contractors (National) - Contractors are always available nationally (BazaarID=-1)
+	measure Contractors_National =
+			CALCULATE(
+				DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
+				'Dim_Client_Simple'[ClientType] = "Contractor",
+				'Dim_Client_Simple'[BazaarID] = -1
+			)
+		formatString: #,##0
+		displayFolder: User-Bazaar Analysis
+		lineageTag: 4c1d2e3f-4a5b-6789-0456-789012345678
+
+	/// User Has Bazaar Assignment - Returns 1 if user has a bazaar, 0 otherwise
+	measure User_Has_Bazaar =
+			IF(NOT ISBLANK(SELECTEDVALUE(Dim_User[BazaarID])), 1, 0)
+		formatString: 0
+		displayFolder: User-Bazaar Analysis
+		lineageTag: 5d2e3f4a-5b6c-7890-1567-890123456789
+
+	/// User Bazaar Coverage - Shows bazaar-specific vs national clients for user
+	measure User_Bazaar_Coverage =
+			VAR UserBazaar = SELECTEDVALUE(Dim_User[BazaarID])
+			VAR LocalCount = 
+				CALCULATE(
+					DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
+					USERELATIONSHIP(Dim_User[BazaarID], 'Dim_Client_Simple'[BazaarID]),
+					'Dim_Client_Simple'[BazaarID] <> -1
+				)
+			VAR NationalCount = 
+				CALCULATE(
+					DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
+					'Dim_Client_Simple'[BazaarID] = -1
+				)
+			RETURN
+				IF(ISBLANK(UserBazaar), 
+					"No Bazaar Assigned",
+					"Local: " & FORMAT(LocalCount, "#,##0") & " | National: " & FORMAT(NationalCount, "#,##0")
+				)
+		displayFolder: User-Bazaar Analysis
+		lineageTag: 6e3f4a5b-6c7d-8901-2678-901234567890
+
 	column ClientKey
 		dataType: string
 		lineageTag: 0a17d132-6804-48b8-8d27-c2cf96bc5a03
@@ -360,7 +482,8 @@ table Dim_Client_Simple
 				    DealersFinal = Table.AddColumn(DealersBase, "ClientType", each "Dealer", type text),
 				    DealersFinal2 = Table.AddColumn(DealersFinal, "SubType", each null, type text),
 				    DealersFinal3 = Table.AddColumn(DealersFinal2, "ResponsibleRole", each "CRO", type text),
-				    DealersFinal4 = Table.AddColumn(DealersFinal3, "BazaarID", each null, Int64.Type),
+				    // BazaarID = -1 represents "National" for clients available nationally
+				    DealersFinal4 = Table.AddColumn(DealersFinal3, "BazaarID", each -1, Int64.Type),
 				    DealersFinal5 = Table.AddColumn(DealersFinal4, "TerritoryName", each null, type text),
 				    DealersFinal6 = Table.AddColumn(DealersFinal5, "AreaName", each [district_name_text], type text),
 				    DealersRenamed = Table.RenameColumns(DealersFinal6, {{"id", "ClientID"}, {"name", "ClientName"}}),
@@ -379,7 +502,8 @@ table Dim_Client_Simple
 				        else "Engineer-" & Text.From([id]), type text),
 				    EngineersFinal3 = Table.AddColumn(EngineersFinal2, "SubType", each [engineer_type], type text),
 				    EngineersFinal4 = Table.AddColumn(EngineersFinal3, "ResponsibleRole", each "BDO", type text),
-				    EngineersFinal5 = Table.AddColumn(EngineersFinal4, "BazaarID", each null, Int64.Type),
+				    // BazaarID = -1 represents "National" for clients available nationally
+				    EngineersFinal5 = Table.AddColumn(EngineersFinal4, "BazaarID", each -1, Int64.Type),
 				    EngineersFinal6 = Table.AddColumn(EngineersFinal5, "TerritoryName", each null, type text),
 				    EngineersFinal7 = Table.AddColumn(EngineersFinal6, "AreaName", each null, type text),
 				    EngineersRenamed = Table.RenameColumns(EngineersFinal7, {{"id", "ClientID"}}),
@@ -396,7 +520,8 @@ table Dim_Client_Simple
 				    ContractorFinal2 = Table.AddColumn(ContractorFinal, "ClientName", each "Partner-" & Text.From([id]), type text),
 				    ContractorFinal3 = Table.AddColumn(ContractorFinal2, "SubType", each "Partner", type text),
 				    ContractorFinal4 = Table.AddColumn(ContractorFinal3, "ResponsibleRole", each "CRO", type text),
-				    ContractorFinal5 = Table.AddColumn(ContractorFinal4, "BazaarID", each null, Int64.Type),
+				    // BazaarID = -1 represents "National" for clients available nationally
+				    ContractorFinal5 = Table.AddColumn(ContractorFinal4, "BazaarID", each -1, Int64.Type),
 				    ContractorFinal6 = Table.AddColumn(ContractorFinal5, "TerritoryName", each null, type text),
 				    ContractorFinal7 = Table.AddColumn(ContractorFinal6, "AreaName", each null, type text),
 				    ContractorRenamed = Table.RenameColumns(ContractorFinal7, {{"id", "ClientID"}}),

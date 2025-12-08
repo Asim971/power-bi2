@@ -401,6 +401,14 @@ relationship c3d4e5f6-7890-1234-cdef-012345678902
 	fromColumn: Dim_User.BDTerritoryID
 	toColumn: Dim_BDTerritory.BDTerritoryID
 
+/// User to Client via Bazaar - Inactive relationship
+/// Used with USERELATIONSHIP() for User-based client filtering
+/// BazaarID = -1 represents "National" clients (Dealers, Engineers, Contractors)
+relationship d4e5f6a7-8901-2345-def0-123456789abc
+	isActive: false
+	fromColumn: Dim_User.BazaarID
+	toColumn: Dim_Client_Simple.BazaarID
+
 relationship 298c937b-b70a-437d-adf6-1599039b05c5
 	joinOnDateBehavior: datePartOnly
 	fromColumn: Dim_Date.DateKey
