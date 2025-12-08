@@ -1,5 +1,3 @@
-/// FACT TABLES
-/// 
 table Fact_Order
 	lineageTag: f50d5961-4684-483b-a2ba-d9a5e7c0ca08
 

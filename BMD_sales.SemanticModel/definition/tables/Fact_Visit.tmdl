@@ -1,5 +1,3 @@
-/// FACT TABLES
-/// 
 table Fact_Visit
 	lineageTag: c56054fa-e8f3-46d0-95fa-016dcd2cc3bf
 
@@ -67,7 +65,6 @@ table Fact_Visit
 	measure Zone_Mismatch_Visits
 		lineageTag: 3ccd55f5-00a4-452c-9ad2-1dedafee8150
 
-	/// Base measure for all visit counts
 	measure Total_Visits = COUNTROWS('Fact_Visit')
 		formatString: #,##0
 		displayFolder: Visit Counts\Base
@@ -519,8 +516,6 @@ table Fact_Visit
 		displayFolder: Analytics\Engagement
 		lineageTag: a9b0c1d2-e3f4-a5b6-c7d8-e9f0a1b2c3d4
 
-	/// Week-To-Date Visits - FR-7-10 Date Filter
-	/// Uses WeekStartDate from Dim_Date (Saturday start per Bangladesh fiscal calendar)
 	measure Visits_WTD =
 			CALCULATE(
 			    [Total_Visits],
@@ -534,8 +529,6 @@ table Fact_Visit
 		displayFolder: Time Intelligence
 		lineageTag: 4d5e6f7a-8b9c-0d1e-2f3a-4b5c6d7e8f9a
 
-	/// Dynamic Date Filter Measure - responds to DateFilterParam selection
-	/// FR-7-10: Radio buttons for Daily, WTD, MTD, YTD
 	measure Visits_DateFiltered =
 			VAR SelectedFilter = SELECTEDVALUE('DateFilterParam'[FilterOption], "MTD")
 			RETURN
@@ -554,9 +547,6 @@ table Fact_Visit
 		displayFolder: FRD Dashboard
 		lineageTag: 5e6f7a8b-9c0d-1e2f-3a4b-5c6d7e8f9a0b
 
-	/// Territory Filtering via Dim_User bridge
-	/// Phase 5.5: Uses TREATAS for virtual relationship to Dim_Territory
-	/// This avoids adding redundant direct relationship from Fact_Visit to Dim_Territory
 	measure Visits_By_Territory =
 			CALCULATE(
 			    [Total_Visits],
@@ -569,7 +559,6 @@ table Fact_Visit
 		displayFolder: FRD Dashboard
 		lineageTag: 6f7a8b9c-0d1e-2f3a-4b5c-6d7e8f9a0b1c
 
-	/// FR-27-28: Average Visit per Employee
 	measure Average_Visit_FRD = ```
 			
 					VAR TotalVisits = COUNTROWS('Fact_Visit')
@@ -585,7 +574,6 @@ table Fact_Visit
 		displayFolder: FRD Dashboard\KPI Tiles
 		lineageTag: 2b3c4d5e-6f7a-8901-bcde-f12345678901
 
-	/// FR-38-44: Current Month Visits for MoM Comparison
 	measure Visits_Current_Month = ```
 			
 					CALCULATE(
@@ -597,7 +585,6 @@ table Fact_Visit
 		displayFolder: FRD Dashboard\MoM Comparison
 		lineageTag: 3c4d5e6f-7a8b-9012-cdef-123456789012
 
-	/// FR-41: Previous Calendar Month Visits
 	measure Visits_Previous_Calendar_Month = ```
 			
 					CALCULATE(
@@ -609,13 +596,11 @@ table Fact_Visit
 		displayFolder: FRD Dashboard\MoM Comparison
 		lineageTag: 4d5e6f7a-8b9c-0123-def0-234567890123
 
-	/// FR-42: MoM Variance (absolute difference)
 	measure MoM_Variance = [Visits_Current_Month] - [Visits_Previous_Calendar_Month]
 		formatString: +#,##0;-#,##0;0
 		displayFolder: FRD Dashboard\MoM Comparison
 		lineageTag: 5e6f7a8b-9c0d-1234-ef01-345678901234
 
-	/// FR-43: MoM Variance Percentage
 	measure MoM_Variance_Pct = ```
 			
 					DIVIDE(
@@ -628,7 +613,6 @@ table Fact_Visit
 		displayFolder: FRD Dashboard\MoM Comparison
 		lineageTag: 6f7a8b9c-0d1e-2345-f012-456789012345
 
-	/// FR-53-56: Employee Rank (ascending) - For Bottom Performers
 	measure Employee_Rank_Asc = ```
 			
 					VAR CurrentVisits = [Total_Visits]
@@ -652,7 +636,6 @@ table Fact_Visit
 		displayFolder: FRD Dashboard\Rankings
 		lineageTag: 8b9c0d1e-2f3a-4567-1234-678901234567
 
-	/// FR-57-60: Employee Rank (descending) - For Top Performers
 	measure Employee_Rank_Desc = ```
 			
 					VAR CurrentVisits = [Total_Visits]
@@ -676,19 +659,16 @@ table Fact_Visit
 		displayFolder: FRD Dashboard\Rankings
 		lineageTag: 9c0d1e2f-3a4b-5678-2345-789012345678
 
-	/// FR-61: Is Top 10 Performer Flag
 	measure Is_Top_10 = IF([Employee_Rank_Desc] <= 10, 1, 0)
 		formatString: 0
 		displayFolder: FRD Dashboard\Rankings
 		lineageTag: 0d1e2f3a-4b5c-6789-3456-890123456789
 
-	/// FR-62: Is Bottom 10 Performer Flag
 	measure Is_Bottom_10 = IF([Employee_Rank_Asc] <= 10, 1, 0)
 		formatString: 0
 		displayFolder: FRD Dashboard\Rankings
 		lineageTag: 1e2f3a4b-5c6d-7890-4567-901234567890
 
-	/// FR-22-23: Clients Dashboard Filter (Dealer + Retailer)
 	measure Visits_Clients = ```
 			
 					CALCULATE(
@@ -700,7 +680,6 @@ table Fact_Visit
 		displayFolder: FRD Dashboard\Entity Filters
 		lineageTag: 2f3a4b5c-6d7e-8901-5678-012345678901
 
-	/// FR-66-68: Influencers Dashboard Filter (Engineer + Contractor)
 	measure Visits_Influencers = ```
 			
 					CALCULATE(
@@ -712,7 +691,6 @@ table Fact_Visit
 		displayFolder: FRD Dashboard\Entity Filters
 		lineageTag: 3a4b5c6d-7e8f-9012-6789-123456789012
 
-	/// FR-69-74: Customers Dashboard Filter (Site + IHB)
 	measure Visits_Customers = ```
 			
 					CALCULATE(
@@ -724,7 +702,6 @@ table Fact_Visit
 		displayFolder: FRD Dashboard\Entity Filters
 		lineageTag: 4b5c6d7e-8f90-1234-7890-234567890123
 
-	/// FR-6: Last Data Refresh Timestamp
 	measure Last_Refresh_DateTime = ```
 			
 					VAR LastUpdate = MAX('Fact_Visit'[updated_at])
@@ -734,7 +711,6 @@ table Fact_Visit
 		displayFolder: FRD Dashboard\Metadata
 		lineageTag: 5c6d7e8f-9012-3456-8901-345678901234
 
-	/// FR-11-15: Dynamic Location Label - responds to LocationLevelParam selection
 	measure Location_Label_Dynamic = ```
 			
 					VAR SelectedLevel = SELECTEDVALUE('LocationLevelParam'[LevelOption], "Area")
@@ -750,8 +726,6 @@ table Fact_Visit
 		displayFolder: FRD Dashboard\Location
 		lineageTag: 6d7e8f90-1234-5678-9012-456789012345
 
-	/// CLIENT TYPE VISIT MEASURES
-	/// Total Engineer Visits
 	measure Total_Engineer_Visits =
 			CALCULATE(
 				[Total_Visits],
@@ -761,7 +735,6 @@ table Fact_Visit
 		displayFolder: Visit Counts
 		lineageTag: a1b2c3d4-5e6f-7890-abcd-ef0123456789
 
-	/// Total Contractor Visits
 	measure Total_Contractor_Visits =
 			CALCULATE(
 				[Total_Visits],
@@ -771,7 +744,6 @@ table Fact_Visit
 		displayFolder: Visit Counts
 		lineageTag: b2c3d4e5-6f7a-8901-bcde-f01234567890
 
-	/// Total IHB Visits
 	measure Total_IHB_Visits =
 			CALCULATE(
 				[Total_Visits],
@@ -781,7 +753,6 @@ table Fact_Visit
 		displayFolder: Visit Counts
 		lineageTag: d4e5f6a7-8b9c-0123-def0-123456789012
 
-	/// Total Influencers Visits (Engineer + Contractor)
 	measure Total_Influencers_Visits =
 			CALCULATE(
 				[Total_Visits],
@@ -1091,7 +1062,6 @@ table Fact_Visit
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	/// FR-16-18: Company Code for ACL/AIL filter
 	column CompanyCode
 		dataType: string
 		lineageTag: 7e8f9012-3456-7890-abcd-567890123456

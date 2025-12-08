@@ -1,11 +1,3 @@
-/// ============================================================
-/// Time Intelligence_2 - Time Group Slicer Table
-/// 
-/// PURPOSE:
-/// Provides time period grouping options for slicers
-/// Used to filter measures by time periods (MTD, QTD, YTD, etc.)
-/// Works alongside the Time Intelligence calculation group
-/// ============================================================
 table 'Time Intelligence_2'
 	lineageTag: d4e5f6a7-b8c9-0123-def0-456789abcdef
 

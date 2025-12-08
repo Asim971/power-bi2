@@ -247,8 +247,6 @@ table Dim_User
 
 		annotation SummarizationSetBy = Automatic
 
-	/// BazaarID - Links User to Client via Bazaar for filtering
-	/// Derived from: User → users_bd_territory → bd_territory_bazaars → bazaar_id
 	column BazaarID
 		dataType: int64
 		formatString: 0
