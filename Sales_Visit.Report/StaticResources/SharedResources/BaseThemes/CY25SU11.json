@@ -1,84 +1,84 @@
 {
   "name": "CY25SU11",
   "dataColors": [
-    "#2F6FED",
-    "#67B547",
-    "#4A8FFF",
-    "#8BC774",
-    "#6BA3FF",
-    "#A1D598",
-    "#1A5CD0",
-    "#4A9E2E",
-    "#3D7BE5",
-    "#5DB34A",
-    "#8FC0FF",
-    "#B8E0B0",
-    "#174FB8",
-    "#3D8424",
-    "#5283E8",
-    "#72C466",
-    "#7AB4FF",
-    "#9DD392",
-    "#0F429F",
-    "#2F6B1A",
-    "#4577E2",
-    "#64B85A",
-    "#6CA8FF",
-    "#8FCC86",
-    "#2361D4",
-    "#52A638",
-    "#5D97F0",
-    "#7DC170",
-    "#1553C2",
-    "#439929",
-    "#3A6FE0",
-    "#59AF4C",
-    "#84BCFF",
-    "#A8D99E",
-    "#1147A8",
-    "#357B1E",
-    "#4E89EC",
-    "#6BBF5E",
-    "#96C8FF",
-    "#B5E2AC",
-    "#0D3B90"
+    "#118DFF",
+    "#12239E",
+    "#E66C37",
+    "#6B007B",
+    "#E044A7",
+    "#744EC2",
+    "#D9B300",
+    "#D64550",
+    "#197278",
+    "#1AAB40",
+    "#15C6F4",
+    "#4092FF",
+    "#FFA058",
+    "#BE5DC9",
+    "#F472D0",
+    "#B5A1FF",
+    "#C4A200",
+    "#FF8080",
+    "#00DBBC",
+    "#5BD667",
+    "#0091D5",
+    "#4668C5",
+    "#FF6300",
+    "#99008A",
+    "#EC008C",
+    "#533285",
+    "#99700A",
+    "#FF4141",
+    "#1F9A85",
+    "#25891C",
+    "#0057A2",
+    "#002050",
+    "#C94F0F",
+    "#450F54",
+    "#B60064",
+    "#34124F",
+    "#6A5A29",
+    "#1AAB40",
+    "#BA141A",
+    "#0C3D37",
+    "#0B511F"
   ],
-  "foreground": "#1A1A2E",
-  "foregroundNeutralSecondary": "#4A4A5A",
-  "foregroundNeutralTertiary": "#8A8A9A",
-  "background": "#F6F7F9",
-  "backgroundLight": "#FFFFFF",
-  "backgroundNeutral": "#E8E9EB",
-  "tableAccent": "#2F6FED",
-  "good": "#67B547",
-  "neutral": "#F5A623",
+  "foreground": "#252423",
+  "foregroundNeutralSecondary": "#605E5C",
+  "foregroundNeutralTertiary": "#B3B0AD",
+  "background": "#FFFFFF",
+  "backgroundLight": "#F3F2F1",
+  "backgroundNeutral": "#C8C6C4",
+  "tableAccent": "#118DFF",
+  "good": "#1AAB40",
+  "neutral": "#D9B300",
   "bad": "#D64554",
-  "maximum": "#2F6FED",
-  "center": "#F5A623",
-  "minimum": "#E8F4FF",
-  "null": "#8A8A9A",
-  "hyperlink": "#2F6FED",
-  "visitedHyperlink": "#1A5CD0",
+  "maximum": "#118DFF",
+  "center": "#D9B300",
+  "minimum": "#DEEFFF",
+  "null": "#FF7F48",
+  "hyperlink": "#0078d4",
+  "visitedHyperlink": "#0078d4",
   "textClasses": {
     "callout": {
       "fontSize": 24,
       "fontFace": "DIN",
-      "color": "#1A1A2E"
+      "color": "#252423"
     },
     "title": {
       "fontSize": 12,
       "fontFace": "DIN",
-      "color": "#1A1A2E"
+      "color": "#252423"
     },
     "header": {
       "fontSize": 12,
       "fontFace": "Segoe UI Semibold",
-      "color": "#1A1A2E"
+      "color": "#252423"
     },
     "label": {
       "fontSize": 10,
       "fontFace": "Segoe UI",
-      "color": "#1A1A2E"
+      "color": "#252423"
     }
   },
   "visualStyles": {
@@ -152,14 +152,14 @@
           {
             "backgroundColor": {
               "solid": {
-                "color": "#FFFFFF"
+                "color": "#ffffff"
               }
             },
             "transparency": 0,
             "border": true,
             "borderColor": {
               "solid": {
-                "color": "#E8E9EB"
+                "color": "#B3B0AD"
               }
             }
           }
@@ -170,7 +170,7 @@
             "transparency": 0,
             "foregroundColor": {
               "solid": {
-                "color": "#1A1A2E"
+                "color": "#252423"
               }
             },
             "border": true
@@ -180,7 +180,7 @@
             "transparency": 0,
             "foregroundColor": {
               "solid": {
-                "color": "#1A1A2E"
+                "color": "#252423"
               }
             },
             "border": true
@@ -354,7 +354,7 @@
             "position": "Left",
             "imageAreaSize": 20,
             "padding": 12,
-            "rectangleRoundedCurve": 6,
+            "rectangleRoundedCurve": 4,
             "fit": "Normal",
             "fixedSize": false
           }
@@ -369,8 +369,8 @@
             },
             "paddingUniform": 12,
             "rectangleRoundedCurveCustomStyle": true,
-            "rectangleRoundedCurveLeftBottom": 6,
-            "rectangleRoundedCurveRightBottom": 6
+            "rectangleRoundedCurveLeftBottom": 4,
+            "rectangleRoundedCurveRightBottom": 4
           }
         ],
         "referenceLabelDetail": [
@@ -456,14 +456,14 @@
           {
             "$id": "default",
             "tileShape": "rectangleRoundedByPixel",
-            "rectangleRoundedCurve": 6
+            "rectangleRoundedCurve": 4
           }
         ],
         "smallMultiplesOuterShape": [
           {
             "$id": "default",
             "rectangleRoundedCurveCustomStyle": false,
-            "rectangleRoundedCurve": 6
+            "rectangleRoundedCurve": 4
           }
         ],
         "smallMultiplesHeader": [
@@ -527,7 +527,7 @@
           {
             "$id": "default",
             "tileShape": "rectangleRoundedByPixel",
-            "rectangleRoundedCurve": 6
+            "rectangleRoundedCurve": 4
           }
         ],
         "selectionIcon": [
