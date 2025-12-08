@@ -887,6 +887,28 @@ table Fact_Visit
 		displayFolder: FRD Dashboard\Consumer
 		lineageTag: frd-ihb-visited-013
 
+	measure FRD_Contractor_Count = ```
+			// Tertiary Sales: Count of distinct Contractors visited
+			CALCULATE(
+				DISTINCTCOUNT('Fact_Visit'[ClientKey]),
+				'Fact_Visit'[ClientType] = "Contractor"
+			)
+			```
+		formatString: 0
+		displayFolder: FRD Dashboard\Tertiary Sales
+		lineageTag: frd-contractor-count-017
+
+	measure FRD_Engineer_Count = ```
+			// Tertiary Sales: Count of distinct Engineers visited
+			CALCULATE(
+				DISTINCTCOUNT('Fact_Visit'[ClientKey]),
+				'Fact_Visit'[ClientType] = "Engineer"
+			)
+			```
+		formatString: 0
+		displayFolder: FRD Dashboard\Tertiary Sales
+		lineageTag: frd-engineer-count-019
+
 	measure Visits_By_Zone = ```
 			CALCULATE(
 				[Total_Visits],
