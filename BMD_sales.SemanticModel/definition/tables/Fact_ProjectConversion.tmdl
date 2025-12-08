@@ -275,12 +275,14 @@ table Fact_ProjectConversion
 		annotation SummarizationSetBy = Automatic
 
 	column total_amount
-		dataType: string
+		dataType: double
 		lineageTag: f1bdc296-ef57-4ea5-bbe3-7152f19cc968
-		summarizeBy: none
+		summarizeBy: sum
 		sourceColumn: total_amount
 
 		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	column stage
 		dataType: string
@@ -504,6 +506,7 @@ table Fact_ProjectConversion
 				        {"IsConverted", Int64.Type},
 				        {"IsEngineerRewardEligible", Int64.Type},
 				        {"IsContractorRewardEligible", Int64.Type},
+				        {"total_amount", type number},
 				        {"created_at", type datetime},
 				        {"updated_at", type datetime}
 				    })

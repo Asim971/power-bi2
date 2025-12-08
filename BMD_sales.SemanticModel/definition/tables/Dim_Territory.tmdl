@@ -9,6 +9,23 @@ table Dim_Territory
 
 		annotation SummarizationSetBy = Automatic
 
+	column TerritoryID
+		dataType: int64
+		formatString: 0
+		lineageTag: territory-id-001
+		summarizeBy: none
+		sourceColumn: TerritoryID
+
+		annotation SummarizationSetBy = Automatic
+
+	column TerritoryName
+		dataType: string
+		lineageTag: territory-name-001
+		summarizeBy: none
+		sourceColumn: TerritoryName
+
+		annotation SummarizationSetBy = Automatic
+
 	column ZoneID
 		dataType: int64
 		formatString: 0
@@ -103,19 +120,27 @@ table Dim_Territory
 
 		annotation SummarizationSetBy = Automatic
 
+	column AssignedSR
+		dataType: string
+		lineageTag: assigned-sr-001
+		summarizeBy: none
+		sourceColumn: AssignedSR
+
+		annotation SummarizationSetBy = Automatic
+
+	column AssignedASM
+		dataType: string
+		lineageTag: 0bbb4e7a-d829-4984-8b70-6d533602c226
+		summarizeBy: none
+		sourceColumn: AssignedASM
+
+		annotation SummarizationSetBy = Automatic
+
 	column AssignedZSM
 		dataType: string
 		lineageTag: 64b0d8c7-90d8-4d73-be35-cfd439f2aff2
 		summarizeBy: none
 		sourceColumn: AssignedZSM
-
-		annotation SummarizationSetBy = Automatic
-
-	column delete_status
-		dataType: string
-		lineageTag: c8ebcc9e-a340-4924-a773-57d93b2fa3c7
-		summarizeBy: none
-		sourceColumn: delete_status
 
 		annotation SummarizationSetBy = Automatic
 
@@ -135,11 +160,36 @@ table Dim_Territory
 
 		annotation SummarizationSetBy = Automatic
 
-	column AssignedASM
+	column AssignedBDO
 		dataType: string
-		lineageTag: 0bbb4e7a-d829-4984-8b70-6d533602c226
+		lineageTag: assigned-bdo-001
 		summarizeBy: none
-		sourceColumn: AssignedASM
+		sourceColumn: AssignedBDO
+
+		annotation SummarizationSetBy = Automatic
+
+	column AssignedCRO
+		dataType: string
+		lineageTag: assigned-cro-001
+		summarizeBy: none
+		sourceColumn: AssignedCRO
+
+		annotation SummarizationSetBy = Automatic
+
+	column DistrictID
+		dataType: int64
+		formatString: 0
+		lineageTag: district-id-001
+		summarizeBy: none
+		sourceColumn: DistrictID
+
+		annotation SummarizationSetBy = Automatic
+
+	column DistrictName
+		dataType: string
+		lineageTag: district-name-001
+		summarizeBy: none
+		sourceColumn: DistrictName
 
 		annotation SummarizationSetBy = Automatic
 
@@ -148,53 +198,67 @@ table Dim_Territory
 		source = ```
 				// ============================================================
 				// Dim_Territory - Geographic Hierarchy Dimension
-				// Based on actual 'public areas' table schema from Power BI
-				// Zone → Region → Area hierarchy for Bangladesh
+				// Source: public territory table
+				// Full Hierarchy: Zone → Region → Area → Territory
 				// ============================================================
 				
 				let
-				    // Reference the existing 'public areas' table in Power BI
-				    Source = #"public areas",
+				    // Reference the existing 'public territory' table in Power BI
+				    Source = #"public territory",
 				    
-				    // ---- Select Core Columns from actual schema ----
+				    // ---- Select Core Columns from territory table ----
 				    SelectedColumns = Table.SelectColumns(Source, {
-				        "id", "name", "zone_id", "zone_name", "region_id", "region_name",
-				        "nation_id", "nation_name", "organization_id",
-				        "assigned_zsm", "assigned_gm", "assigned_agm", "assigned_asm",
+				        "id", "name", 
+				        "zone_id", "zone_name", 
+				        "region_id", "region_name",
+				        "area_id", "area_name",
+				        "nation_id", "nation_name", 
+				        "organization_id",
+				        "district_id", "district_name",
+				        "assigned_sr", "assigned_asm", "assigned_zsm", 
+				        "assigned_gm", "assigned_agm", "assigned_bdo", "assigned_cro",
 				        "delete_status"
 				    }),
 				    
-				    // ---- Filter Active Areas ----
-				    ActiveAreas = Table.SelectRows(SelectedColumns, each [delete_status] = "NO"),
+				    // ---- Filter Active Territories ----
+				    ActiveTerritories = Table.SelectRows(SelectedColumns, each [delete_status] = "NO"),
 				    
 				    // ---- Rename Columns ----
-				    RenamedColumns = Table.RenameColumns(ActiveAreas, {
-				        {"id", "AreaID"},
-				        {"name", "AreaName"},
+				    RenamedColumns = Table.RenameColumns(ActiveTerritories, {
+				        {"id", "TerritoryID"},
+				        {"name", "TerritoryName"},
 				        {"zone_id", "ZoneID"},
 				        {"zone_name", "ZoneName"},
 				        {"region_id", "RegionID"},
 				        {"region_name", "RegionName"},
+				        {"area_id", "AreaID"},
+				        {"area_name", "AreaName"},
 				        {"nation_id", "NationID"},
 				        {"nation_name", "NationName"},
 				        {"organization_id", "OrganizationID"},
+				        {"district_id", "DistrictID"},
+				        {"district_name", "DistrictName"},
+				        {"assigned_sr", "AssignedSR"},
+				        {"assigned_asm", "AssignedASM"},
 				        {"assigned_zsm", "AssignedZSM"},
 				        {"assigned_gm", "AssignedGM"},
 				        {"assigned_agm", "AssignedAGM"},
-				        {"assigned_asm", "AssignedASM"}
+				        {"assigned_bdo", "AssignedBDO"},
+				        {"assigned_cro", "AssignedCRO"}
 				    }),
 				    
-				    // ---- Create Territory Key ----
+				    // ---- Create Territory Key (unique identifier) ----
 				    WithTerritoryKey = Table.AddColumn(RenamedColumns, "TerritoryKey", each 
-				        Text.From([ZoneID]) & "-" & Text.From([RegionID]) & "-" & Text.From([AreaID]),
+				        Text.From([ZoneID]) & "-" & Text.From([RegionID]) & "-" & Text.From([AreaID]) & "-" & Text.From([TerritoryID]),
 				        type text
 				    ),
 				    
-				    // ---- Create Full Path for Hierarchy ----
+				    // ---- Create Full Path for Hierarchy (Zone > Region > Area > Territory) ----
 				    WithFullPath = Table.AddColumn(WithTerritoryKey, "TerritoryPath", each 
 				        (if [ZoneName] <> null then [ZoneName] else "Unknown") & " > " & 
 				        (if [RegionName] <> null then [RegionName] else "Unknown") & " > " & 
-				        (if [AreaName] <> null then [AreaName] else "Unknown"),
+				        (if [AreaName] <> null then [AreaName] else "Unknown") & " > " &
+				        (if [TerritoryName] <> null then [TerritoryName] else "Unknown"),
 				        type text
 				    ),
 				    
@@ -204,35 +268,48 @@ table Dim_Territory
 				        Int64.Type
 				    ),
 				    
+				    // ---- Remove delete_status column ----
+				    CleanedTable = Table.RemoveColumns(WithZoneSort, {"delete_status"}),
+				    
 				    // ---- Set Data Types ----
-				    TypedTable = Table.TransformColumnTypes(WithZoneSort, {
+				    TypedTable = Table.TransformColumnTypes(CleanedTable, {
 				        {"TerritoryKey", type text},
-				        {"AreaID", Int64.Type},
-				        {"AreaName", type text},
+				        {"TerritoryID", Int64.Type},
+				        {"TerritoryName", type text},
 				        {"ZoneID", Int64.Type},
 				        {"ZoneName", type text},
+				        {"ZoneSortOrder", Int64.Type},
 				        {"RegionID", Int64.Type},
 				        {"RegionName", type text},
+				        {"AreaID", Int64.Type},
+				        {"AreaName", type text},
 				        {"NationID", Int64.Type},
 				        {"NationName", type text},
 				        {"OrganizationID", Int64.Type},
+				        {"DistrictID", Int64.Type},
+				        {"DistrictName", type text},
+				        {"AssignedSR", type text},
+				        {"AssignedASM", type text},
 				        {"AssignedZSM", type text},
 				        {"AssignedGM", type text},
 				        {"AssignedAGM", type text},
-				        {"AssignedASM", type text},
-				        {"TerritoryPath", type text},
-				        {"ZoneSortOrder", Int64.Type}
+				        {"AssignedBDO", type text},
+				        {"AssignedCRO", type text},
+				        {"TerritoryPath", type text}
 				    }),
 				    
 				    // ---- Reorder Columns ----
 				    ReorderedColumns = Table.ReorderColumns(TypedTable, {
 				        "TerritoryKey", 
+				        "TerritoryID", "TerritoryName",
 				        "ZoneID", "ZoneName", "ZoneSortOrder",
 				        "RegionID", "RegionName",
 				        "AreaID", "AreaName",
+				        "DistrictID", "DistrictName",
 				        "NationID", "NationName", "OrganizationID",
 				        "TerritoryPath",
-				        "AssignedZSM", "AssignedGM", "AssignedAGM", "AssignedASM"
+				        "AssignedSR", "AssignedASM", "AssignedZSM", 
+				        "AssignedGM", "AssignedAGM", "AssignedBDO", "AssignedCRO"
 				    })
 				in
 				    ReorderedColumns
