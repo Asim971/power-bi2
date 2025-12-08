@@ -1,0 +1,68 @@
+table Dim_Bazaar
+	lineageTag: 1a2b3c4d-5e6f-7890-abcd-ef1234567890
+
+	column BazaarID
+		dataType: int64
+		isKey
+		formatString: 0
+		lineageTag: 2b3c4d5e-6f7a-8901-bcde-f12345678901
+		summarizeBy: none
+		sourceColumn: BazaarID
+
+		annotation SummarizationSetBy = Automatic
+
+	column BazaarName
+		dataType: string
+		lineageTag: 3c4d5e6f-7a8b-9012-cdef-012345678902
+		summarizeBy: none
+		sourceColumn: BazaarName
+
+		annotation SummarizationSetBy = Automatic
+
+	column BazaarType
+		dataType: string
+		lineageTag: 4d5e6f7a-8b9c-0123-def0-123456789012
+		summarizeBy: none
+		sourceColumn: BazaarType
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_Bazaar = m
+		mode: import
+		source = ```
+				let
+				    // Get unique bazaars from public bazaars table
+				    BazaarsSource = #"public bazaars",
+				    
+				    // Select key columns
+				    SelectedColumns = Table.SelectColumns(BazaarsSource, {"id", "bazaar_name"}),
+				    
+				    // Rename columns
+				    RenamedColumns = Table.RenameColumns(SelectedColumns, {
+				        {"id", "BazaarID"},
+				        {"bazaar_name", "BazaarName"}
+				    }),
+				    
+				    // Add BazaarType column
+				    WithBazaarType = Table.AddColumn(RenamedColumns, "BazaarType", each "Local", type text),
+				    
+				    // Create National row for Dealers/Engineers/Contractors (BazaarID = -1)
+				    NationalRow = #table(
+				        type table [BazaarID = Int64.Type, BazaarName = text, BazaarType = text],
+				        {{-1, "National", "National"}}
+				    ),
+				    
+				    // Combine with National row
+				    CombinedTable = Table.Combine({WithBazaarType, NationalRow}),
+				    
+				    // Set data types
+				    TypedTable = Table.TransformColumnTypes(CombinedTable, {
+				        {"BazaarID", Int64.Type},
+				        {"BazaarName", type text},
+				        {"BazaarType", type text}
+				    })
+				in
+				    TypedTable
+				```
+
+	annotation PBI_ResultType = Table

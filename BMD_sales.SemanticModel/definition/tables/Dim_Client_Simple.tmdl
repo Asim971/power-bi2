@@ -150,7 +150,8 @@ table Dim_Client_Simple
 			VAR LocalClients = 
 				CALCULATE(
 					DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
-					USERELATIONSHIP(Dim_User[BazaarID], 'Dim_Client_Simple'[BazaarID]),
+					USERELATIONSHIP(Dim_User[BazaarID], Dim_Bazaar[BazaarID]),
+					USERELATIONSHIP('Dim_Client_Simple'[BazaarID], Dim_Bazaar[BazaarID]),
 					'Dim_Client_Simple'[BazaarID] <> -1
 				)
 			VAR NationalClients = 
@@ -167,7 +168,8 @@ table Dim_Client_Simple
 	measure Retailers_in_User_Bazaar =
 			CALCULATE(
 				DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
-				USERELATIONSHIP(Dim_User[BazaarID], 'Dim_Client_Simple'[BazaarID]),
+				USERELATIONSHIP(Dim_User[BazaarID], Dim_Bazaar[BazaarID]),
+				USERELATIONSHIP('Dim_Client_Simple'[BazaarID], Dim_Bazaar[BazaarID]),
 				'Dim_Client_Simple'[ClientType] = "Retailer"
 			)
 		formatString: #,##0
@@ -177,7 +179,8 @@ table Dim_Client_Simple
 	measure Sites_in_User_Bazaar =
 			CALCULATE(
 				DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
-				USERELATIONSHIP(Dim_User[BazaarID], 'Dim_Client_Simple'[BazaarID]),
+				USERELATIONSHIP(Dim_User[BazaarID], Dim_Bazaar[BazaarID]),
+				USERELATIONSHIP('Dim_Client_Simple'[BazaarID], Dim_Bazaar[BazaarID]),
 				'Dim_Client_Simple'[ClientType] = "Site"
 			)
 		formatString: #,##0
@@ -187,7 +190,8 @@ table Dim_Client_Simple
 	measure IHBs_in_User_Bazaar =
 			CALCULATE(
 				DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
-				USERELATIONSHIP(Dim_User[BazaarID], 'Dim_Client_Simple'[BazaarID]),
+				USERELATIONSHIP(Dim_User[BazaarID], Dim_Bazaar[BazaarID]),
+				USERELATIONSHIP('Dim_Client_Simple'[BazaarID], Dim_Bazaar[BazaarID]),
 				'Dim_Client_Simple'[ClientType] = "IHB"
 			)
 		formatString: #,##0
@@ -235,7 +239,8 @@ table Dim_Client_Simple
 			VAR LocalCount = 
 				CALCULATE(
 					DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
-					USERELATIONSHIP(Dim_User[BazaarID], 'Dim_Client_Simple'[BazaarID]),
+					USERELATIONSHIP(Dim_User[BazaarID], Dim_Bazaar[BazaarID]),
+					USERELATIONSHIP('Dim_Client_Simple'[BazaarID], Dim_Bazaar[BazaarID]),
 					'Dim_Client_Simple'[BazaarID] <> -1
 				)
 			VAR NationalCount = 
