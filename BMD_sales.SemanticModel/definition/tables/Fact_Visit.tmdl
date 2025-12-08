@@ -339,7 +339,12 @@ table Fact_Visit
 		displayFolder: Time Intelligence\Rolling
 		lineageTag: c367a91b-f506-458c-93bf-081dea8dc71a
 
-	measure Unique_Territories = DISTINCTCOUNT('Fact_Visit'[territory_id])
+	measure Unique_Territories = ```
+			CALCULATE(
+				DISTINCTCOUNT('Dim_Territory'[TerritoryID]),
+				USERELATIONSHIP('Fact_Visit'[territory_id], 'Dim_Territory'[TerritoryID])
+			)
+			```
 		formatString: #,##0
 		displayFolder: GPS & Territory
 		lineageTag: 4566f4a9-877b-46a3-9235-59dec5a91fa7
@@ -547,14 +552,12 @@ table Fact_Visit
 		displayFolder: FRD Dashboard
 		lineageTag: 5e6f7a8b-9c0d-1e2f-3a4b-5c6d7e8f9a0b
 
-	measure Visits_By_Territory =
+	measure Visits_By_Territory = ```
 			CALCULATE(
 			    [Total_Visits],
-			    TREATAS(
-			        VALUES('Dim_Territory'[ZoneName]),
-			        'Dim_User'[ZoneName]
-			    )
+			    USERELATIONSHIP('Fact_Visit'[territory_id], 'Dim_Territory'[TerritoryID])
 			)
+			```
 		formatString: 0
 		displayFolder: FRD Dashboard
 		lineageTag: 6f7a8b9c-0d1e-2f3a-4b5c-6d7e8f9a0b1c
@@ -712,15 +715,17 @@ table Fact_Visit
 		lineageTag: 5c6d7e8f-9012-3456-8901-345678901234
 
 	measure Location_Label_Dynamic = ```
-			
 					VAR SelectedLevel = SELECTEDVALUE('LocationLevelParam'[LevelOption], "Area")
 					RETURN
-					SWITCH(
-						SelectedLevel,
-						"Area", SELECTEDVALUE('Dim_Territory'[AreaName]),
-						"Zone", SELECTEDVALUE('Dim_Territory'[ZoneName]),
-						"Territory", SELECTEDVALUE('Dim_Territory'[RegionName]),
-						SELECTEDVALUE('Dim_Territory'[AreaName])
+					CALCULATE(
+						SWITCH(
+							SelectedLevel,
+							"Area", SELECTEDVALUE('Dim_Territory'[AreaName]),
+							"Zone", SELECTEDVALUE('Dim_Territory'[ZoneName]),
+							"Territory", SELECTEDVALUE('Dim_Territory'[TerritoryName]),
+							SELECTEDVALUE('Dim_Territory'[AreaName])
+						),
+						USERELATIONSHIP('Fact_Visit'[territory_id], 'Dim_Territory'[TerritoryID])
 					)
 			```
 		displayFolder: FRD Dashboard\Location
@@ -877,6 +882,66 @@ table Fact_Visit
 		formatString: 0
 		displayFolder: FRD Dashboard\Consumer
 		lineageTag: frd-ihb-visited-013
+
+	measure Visits_By_Zone = ```
+			CALCULATE(
+				[Total_Visits],
+				USERELATIONSHIP('Fact_Visit'[territory_id], 'Dim_Territory'[TerritoryID])
+			)
+			```
+		formatString: #,##0
+		displayFolder: Territory Analysis
+		lineageTag: territory-visits-zone-001
+
+	measure Visits_By_Area = ```
+			CALCULATE(
+				[Total_Visits],
+				USERELATIONSHIP('Fact_Visit'[territory_id], 'Dim_Territory'[TerritoryID])
+			)
+			```
+		formatString: #,##0
+		displayFolder: Territory Analysis
+		lineageTag: territory-visits-area-002
+
+	measure Territory_Visit_Coverage = ```
+			VAR TotalTerritories = CALCULATE(DISTINCTCOUNT('Dim_Territory'[TerritoryID]), ALL('Dim_Territory'))
+			VAR VisitedTerritories = CALCULATE(
+				DISTINCTCOUNT('Dim_Territory'[TerritoryID]),
+				USERELATIONSHIP('Fact_Visit'[territory_id], 'Dim_Territory'[TerritoryID])
+			)
+			RETURN
+			DIVIDE(VisitedTerritories, TotalTerritories, 0)
+			```
+		formatString: 0.0%
+		displayFolder: Territory Analysis
+		lineageTag: territory-coverage-003
+
+	measure Zone_Name_Selected = ```
+			CALCULATE(
+				SELECTEDVALUE('Dim_Territory'[ZoneName], "All Zones"),
+				USERELATIONSHIP('Fact_Visit'[territory_id], 'Dim_Territory'[TerritoryID])
+			)
+			```
+		displayFolder: Territory Analysis\Labels
+		lineageTag: territory-zone-label-004
+
+	measure Area_Name_Selected = ```
+			CALCULATE(
+				SELECTEDVALUE('Dim_Territory'[AreaName], "All Areas"),
+				USERELATIONSHIP('Fact_Visit'[territory_id], 'Dim_Territory'[TerritoryID])
+			)
+			```
+		displayFolder: Territory Analysis\Labels
+		lineageTag: territory-area-label-005
+
+	measure Territory_Name_Selected = ```
+			CALCULATE(
+				SELECTEDVALUE('Dim_Territory'[TerritoryName], "All Territories"),
+				USERELATIONSHIP('Fact_Visit'[territory_id], 'Dim_Territory'[TerritoryID])
+			)
+			```
+		displayFolder: Territory Analysis\Labels
+		lineageTag: territory-name-label-006
 
 	column VisitID
 		dataType: int64
