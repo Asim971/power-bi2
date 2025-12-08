@@ -162,13 +162,6 @@ table Dim_Client_Simple
 		displayFolder: Visit Counts by Type
 		lineageTag: 7b4c5d6e-7f8a-9012-3789-012345678901
 
-	/// ============================================================
-	/// USER-BAZAAR ANALYSIS MEASURES
-	/// These measures use USERELATIONSHIP to filter clients by selected User's Bazaar
-	/// BazaarID = -1 represents "National" clients (Dealers, Engineers, Contractors)
-	/// ============================================================
-	/// Clients in User's Bazaar - Total count of clients in the selected user's bazaar
-	/// National clients (BazaarID=-1) are available to all users
 	measure Clients_in_User_Bazaar =
 			VAR UserBazaar = SELECTEDVALUE(Dim_User[BazaarID])
 			VAR LocalClients = 
@@ -188,7 +181,6 @@ table Dim_Client_Simple
 		displayFolder: User-Bazaar Analysis
 		lineageTag: 8c5d6e7f-8a9b-0123-4890-123456789012
 
-	/// Retailers in User's Bazaar - Retailers available to selected user
 	measure Retailers_in_User_Bazaar =
 			CALCULATE(
 				DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
@@ -199,7 +191,6 @@ table Dim_Client_Simple
 		displayFolder: User-Bazaar Analysis
 		lineageTag: 9d6e7f8a-9b0c-1234-5901-234567890123
 
-	/// Sites in User's Bazaar - Sites available to selected user
 	measure Sites_in_User_Bazaar =
 			CALCULATE(
 				DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
@@ -210,7 +201,6 @@ table Dim_Client_Simple
 		displayFolder: User-Bazaar Analysis
 		lineageTag: 0e7f8a9b-0c1d-2345-6012-345678901234
 
-	/// IHBs in User's Bazaar - IHBs available to selected user
 	measure IHBs_in_User_Bazaar =
 			CALCULATE(
 				DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
@@ -221,7 +211,6 @@ table Dim_Client_Simple
 		displayFolder: User-Bazaar Analysis
 		lineageTag: 1f8a9b0c-1d2e-3456-7123-456789012345
 
-	/// Dealers (National) - Dealers are always available nationally (BazaarID=-1)
 	measure Dealers_National =
 			CALCULATE(
 				DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
@@ -232,7 +221,6 @@ table Dim_Client_Simple
 		displayFolder: User-Bazaar Analysis
 		lineageTag: 2a9b0c1d-2e3f-4567-8234-567890123456
 
-	/// Engineers (National) - Engineers are always available nationally (BazaarID=-1)
 	measure Engineers_National =
 			CALCULATE(
 				DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
@@ -243,7 +231,6 @@ table Dim_Client_Simple
 		displayFolder: User-Bazaar Analysis
 		lineageTag: 3b0c1d2e-3f4a-5678-9345-678901234567
 
-	/// Contractors (National) - Contractors are always available nationally (BazaarID=-1)
 	measure Contractors_National =
 			CALCULATE(
 				DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
@@ -254,14 +241,12 @@ table Dim_Client_Simple
 		displayFolder: User-Bazaar Analysis
 		lineageTag: 4c1d2e3f-4a5b-6789-0456-789012345678
 
-	/// User Has Bazaar Assignment - Returns 1 if user has a bazaar, 0 otherwise
 	measure User_Has_Bazaar =
 			IF(NOT ISBLANK(SELECTEDVALUE(Dim_User[BazaarID])), 1, 0)
 		formatString: 0
 		displayFolder: User-Bazaar Analysis
 		lineageTag: 5d2e3f4a-5b6c-7890-1567-890123456789
 
-	/// User Bazaar Coverage - Shows bazaar-specific vs national clients for user
 	measure User_Bazaar_Coverage =
 			VAR UserBazaar = SELECTEDVALUE(Dim_User[BazaarID])
 			VAR LocalCount = 
