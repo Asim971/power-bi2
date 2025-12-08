@@ -162,6 +162,114 @@ table Dim_Client_Simple
 		displayFolder: Visit Counts by Type
 		lineageTag: 7b4c5d6e-7f8a-9012-3789-012345678901
 
+	/// ============================================
+	/// USER-BAZAAR-CLIENT RELATIONSHIP MEASURES
+	/// Uses inactive relationship: Dim_User.BazaarID → Dim_Client_Simple.BazaarID
+	/// ============================================
+
+	/// Count of Clients in User's Bazaar Territory
+	/// When a User is selected, shows how many clients are in their assigned Bazaar
+	measure Clients_In_User_Bazaar =
+			CALCULATE(
+				COUNTROWS('Dim_Client_Simple'),
+				USERELATIONSHIP('Dim_User'[BazaarID], 'Dim_Client_Simple'[BazaarID])
+			)
+		formatString: #,##0
+		displayFolder: User-Bazaar Analysis
+		lineageTag: 8c5d6e7f-8a9b-0123-4890-123456789abc
+
+	/// Unique Client Count in User's Bazaar (by ClientID)
+	/// Distinct count of clients assigned to the selected User's Bazaar
+	measure Unique_Clients_In_User_Bazaar =
+			CALCULATE(
+				DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
+				USERELATIONSHIP('Dim_User'[BazaarID], 'Dim_Client_Simple'[BazaarID])
+			)
+		formatString: #,##0
+		displayFolder: User-Bazaar Analysis
+		lineageTag: 9d6e7f8a-9b0c-1234-5901-234567890bcd
+
+	/// Dealers in User's Bazaar
+	/// Count of Dealer-type clients in the selected User's Bazaar territory
+	measure Dealers_In_User_Bazaar =
+			CALCULATE(
+				DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
+				USERELATIONSHIP('Dim_User'[BazaarID], 'Dim_Client_Simple'[BazaarID]),
+				'Dim_Client_Simple'[ClientType] = "Dealer"
+			)
+		formatString: #,##0
+		displayFolder: User-Bazaar Analysis
+		lineageTag: ae7f8a9b-0c1d-2345-6012-345678901cde
+
+	/// Retailers in User's Bazaar
+	/// Count of Retailer-type clients in the selected User's Bazaar territory
+	measure Retailers_In_User_Bazaar =
+			CALCULATE(
+				DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
+				USERELATIONSHIP('Dim_User'[BazaarID], 'Dim_Client_Simple'[BazaarID]),
+				'Dim_Client_Simple'[ClientType] = "Retailer"
+			)
+		formatString: #,##0
+		displayFolder: User-Bazaar Analysis
+		lineageTag: bf8a9b0c-1d2e-3456-7123-456789012def
+
+	/// Sites in User's Bazaar
+	/// Count of Site-type clients in the selected User's Bazaar territory
+	measure Sites_In_User_Bazaar =
+			CALCULATE(
+				DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
+				USERELATIONSHIP('Dim_User'[BazaarID], 'Dim_Client_Simple'[BazaarID]),
+				'Dim_Client_Simple'[ClientType] = "Site"
+			)
+		formatString: #,##0
+		displayFolder: User-Bazaar Analysis
+		lineageTag: c09b0c1d-2e3f-4567-8234-567890123ef0
+
+	/// IHBs in User's Bazaar
+	/// Count of IHB-type clients in the selected User's Bazaar territory
+	measure IHBs_In_User_Bazaar =
+			CALCULATE(
+				DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
+				USERELATIONSHIP('Dim_User'[BazaarID], 'Dim_Client_Simple'[BazaarID]),
+				'Dim_Client_Simple'[ClientType] = "IHB"
+			)
+		formatString: #,##0
+		displayFolder: User-Bazaar Analysis
+		lineageTag: d10c1d2e-3f4a-5678-9345-678901234f01
+
+	/// Visits to Clients in User's Bazaar
+	/// Total visits made to clients within the selected User's Bazaar territory
+	measure Visits_In_User_Bazaar =
+			CALCULATE(
+				COUNTROWS('Fact_Visit'),
+				USERELATIONSHIP('Dim_User'[BazaarID], 'Dim_Client_Simple'[BazaarID])
+			)
+		formatString: #,##0
+		displayFolder: User-Bazaar Analysis
+		lineageTag: e21d2e3f-4a5b-6789-0456-789012345012
+
+	/// Orders from Clients in User's Bazaar
+	/// Total orders from clients within the selected User's Bazaar territory
+	measure Orders_In_User_Bazaar =
+			CALCULATE(
+				COUNTROWS('Fact_Order'),
+				USERELATIONSHIP('Dim_User'[BazaarID], 'Dim_Client_Simple'[BazaarID])
+			)
+		formatString: #,##0
+		displayFolder: User-Bazaar Analysis
+		lineageTag: f32e3f4a-5b6c-7890-1567-890123456123
+
+	/// Order Amount from Clients in User's Bazaar
+	/// Total order amount from clients within the selected User's Bazaar territory
+	measure Order_Amount_In_User_Bazaar =
+			CALCULATE(
+				SUM('Fact_Order'[Order_Amount]),
+				USERELATIONSHIP('Dim_User'[BazaarID], 'Dim_Client_Simple'[BazaarID])
+			)
+		formatString: "PKR" #,##0
+		displayFolder: User-Bazaar Analysis
+		lineageTag: 043f4a5b-6c7d-8901-2678-901234567234
+
 	column ClientKey
 		dataType: string
 		lineageTag: 0a17d132-6804-48b8-8d27-c2cf96bc5a03
