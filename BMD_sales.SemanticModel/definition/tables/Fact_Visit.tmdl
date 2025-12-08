@@ -858,7 +858,6 @@ table Fact_Visit
 		displayFolder: FRD Dashboard\Performance
 		lineageTag: frd-total-ach-011
 
-	// Consumer metrics (Sites/IHB separate)
 	measure Sites_Visited_Count = ```
 			CALCULATE(
 				DISTINCTCOUNT('Fact_Visit'[ClientKey]),
