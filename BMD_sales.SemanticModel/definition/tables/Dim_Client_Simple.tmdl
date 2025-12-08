@@ -18,78 +18,71 @@ table Dim_Client_Simple
 		lineageTag: 1d887731-4d05-4abc-9a84-9ec92770e978
 
 	/// UNIQUE CLIENT COUNT MEASURES (for KPI Cards)
-	/// Total Unique Dealers (responds to User filter via Bazaar relationship)
+	/// Total Unique Dealers
 	measure Total_Dealers =
 			CALCULATE(
 				DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
-				'Dim_Client_Simple'[ClientType] = "Dealer",
-				USERELATIONSHIP('Dim_User'[BazaarID], 'Dim_Client_Simple'[BazaarID])
+				'Dim_Client_Simple'[ClientType] = "Dealer"
 			)
 		formatString: #,##0
 		displayFolder: Client Counts
 		lineageTag: aa1b2c3d-4e5f-6789-0abc-def012345678
 
-	/// Total Unique Retailers (responds to User filter via Bazaar relationship)
+	/// Total Unique Retailers
 	measure Total_Retailers =
 			CALCULATE(
 				DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
-				'Dim_Client_Simple'[ClientType] = "Retailer",
-				USERELATIONSHIP('Dim_User'[BazaarID], 'Dim_Client_Simple'[BazaarID])
+				'Dim_Client_Simple'[ClientType] = "Retailer"
 			)
 		formatString: #,##0
 		displayFolder: Client Counts
 		lineageTag: bb2c3d4e-5f6a-7890-1bcd-ef0123456789
 
-	/// Total Unique Sites (responds to User filter via Bazaar relationship)
+	/// Total Unique Sites
 	measure Total_Sites =
 			CALCULATE(
 				DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
-				'Dim_Client_Simple'[ClientType] = "Site",
-				USERELATIONSHIP('Dim_User'[BazaarID], 'Dim_Client_Simple'[BazaarID])
+				'Dim_Client_Simple'[ClientType] = "Site"
 			)
 		formatString: #,##0
 		displayFolder: Client Counts
 		lineageTag: cc3d4e5f-6a7b-8901-2cde-f01234567890
 
-	/// Total Unique Engineers (responds to User filter via Bazaar relationship)
+	/// Total Unique Engineers
 	measure Total_Engineers =
 			CALCULATE(
 				DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
-				'Dim_Client_Simple'[ClientType] = "Engineer",
-				USERELATIONSHIP('Dim_User'[BazaarID], 'Dim_Client_Simple'[BazaarID])
+				'Dim_Client_Simple'[ClientType] = "Engineer"
 			)
 		formatString: #,##0
 		displayFolder: Client Counts
 		lineageTag: dd4e5f6a-7b8c-9012-3def-012345678901
 
-	/// Total Unique Contractors (responds to User filter via Bazaar relationship)
+	/// Total Unique Contractors
 	measure Total_Contractors =
 			CALCULATE(
 				DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
-				'Dim_Client_Simple'[ClientType] = "Contractor",
-				USERELATIONSHIP('Dim_User'[BazaarID], 'Dim_Client_Simple'[BazaarID])
+				'Dim_Client_Simple'[ClientType] = "Contractor"
 			)
 		formatString: #,##0
 		displayFolder: Client Counts
 		lineageTag: ee5f6a7b-8c9d-0123-4ef0-123456789012
 
-	/// Total Unique IHBs (responds to User filter via Bazaar relationship)
+	/// Total Unique IHBs
 	measure Total_IHBs =
 			CALCULATE(
 				DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
-				'Dim_Client_Simple'[ClientType] = "IHB",
-				USERELATIONSHIP('Dim_User'[BazaarID], 'Dim_Client_Simple'[BazaarID])
+				'Dim_Client_Simple'[ClientType] = "IHB"
 			)
 		formatString: #,##0
 		displayFolder: Client Counts
 		lineageTag: ff6a7b8c-9d0e-1234-5f01-234567890123
 
-	/// Total Unique Influencers - Engineers + Contractors (responds to User filter via Bazaar relationship)
+	/// Total Unique Influencers (Engineers + Contractors)
 	measure Total_Influencers =
 			CALCULATE(
 				DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
-				'Dim_Client_Simple'[ClientType] IN {"Engineer", "Contractor"},
-				USERELATIONSHIP('Dim_User'[BazaarID], 'Dim_Client_Simple'[BazaarID])
+				'Dim_Client_Simple'[ClientType] IN {"Engineer", "Contractor"}
 			)
 		formatString: #,##0
 		displayFolder: Client Counts
@@ -168,110 +161,6 @@ table Dim_Client_Simple
 		formatString: #,##0
 		displayFolder: Visit Counts by Type
 		lineageTag: 7b4c5d6e-7f8a-9012-3789-012345678901
-	/// USER-BAZAAR-CLIENT RELATIONSHIP MEASURES
-	/// Uses inactive relationship: Dim_User.BazaarID to Dim_Client_Simple.BazaarID
-	/// Count of Clients in User's Bazaar Territory
-	/// When a User is selected, shows how many clients are in their assigned Bazaar
-	measure Clients_In_User_Bazaar =
-			CALCULATE(
-				COUNTROWS('Dim_Client_Simple'),
-				USERELATIONSHIP('Dim_User'[BazaarID], 'Dim_Client_Simple'[BazaarID])
-			)
-		formatString: #,##0
-		displayFolder: User-Bazaar Analysis
-		lineageTag: 8c5d6e7f-8a9b-0123-4890-123456789abc
-
-	/// Unique Client Count in User's Bazaar (by ClientID)
-	/// Distinct count of clients assigned to the selected User's Bazaar
-	measure Unique_Clients_In_User_Bazaar =
-			CALCULATE(
-				DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
-				USERELATIONSHIP('Dim_User'[BazaarID], 'Dim_Client_Simple'[BazaarID])
-			)
-		formatString: #,##0
-		displayFolder: User-Bazaar Analysis
-		lineageTag: 9d6e7f8a-9b0c-1234-5901-234567890bcd
-
-	/// Dealers in User's Bazaar
-	/// Count of Dealer-type clients in the selected User's Bazaar territory
-	measure Dealers_In_User_Bazaar =
-			CALCULATE(
-				DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
-				USERELATIONSHIP('Dim_User'[BazaarID], 'Dim_Client_Simple'[BazaarID]),
-				'Dim_Client_Simple'[ClientType] = "Dealer"
-			)
-		formatString: #,##0
-		displayFolder: User-Bazaar Analysis
-		lineageTag: ae7f8a9b-0c1d-2345-6012-345678901cde
-
-	/// Retailers in User's Bazaar
-	/// Count of Retailer-type clients in the selected User's Bazaar territory
-	measure Retailers_In_User_Bazaar =
-			CALCULATE(
-				DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
-				USERELATIONSHIP('Dim_User'[BazaarID], 'Dim_Client_Simple'[BazaarID]),
-				'Dim_Client_Simple'[ClientType] = "Retailer"
-			)
-		formatString: #,##0
-		displayFolder: User-Bazaar Analysis
-		lineageTag: bf8a9b0c-1d2e-3456-7123-456789012def
-
-	/// Sites in User's Bazaar
-	/// Count of Site-type clients in the selected User's Bazaar territory
-	measure Sites_In_User_Bazaar =
-			CALCULATE(
-				DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
-				USERELATIONSHIP('Dim_User'[BazaarID], 'Dim_Client_Simple'[BazaarID]),
-				'Dim_Client_Simple'[ClientType] = "Site"
-			)
-		formatString: #,##0
-		displayFolder: User-Bazaar Analysis
-		lineageTag: c09b0c1d-2e3f-4567-8234-567890123ef0
-
-	/// IHBs in User's Bazaar
-	/// Count of IHB-type clients in the selected User's Bazaar territory
-	measure IHBs_In_User_Bazaar =
-			CALCULATE(
-				DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
-				USERELATIONSHIP('Dim_User'[BazaarID], 'Dim_Client_Simple'[BazaarID]),
-				'Dim_Client_Simple'[ClientType] = "IHB"
-			)
-		formatString: #,##0
-		displayFolder: User-Bazaar Analysis
-		lineageTag: d10c1d2e-3f4a-5678-9345-678901234f01
-
-	/// Visits to Clients in User's Bazaar
-	/// Total visits made to clients within the selected User's Bazaar territory
-	measure Visits_In_User_Bazaar =
-			CALCULATE(
-				COUNTROWS('Fact_Visit'),
-				USERELATIONSHIP('Dim_User'[BazaarID], 'Dim_Client_Simple'[BazaarID])
-			)
-		formatString: #,##0
-		displayFolder: User-Bazaar Analysis
-		lineageTag: e21d2e3f-4a5b-6789-0456-789012345012
-
-	/// Orders from Clients in User's Bazaar
-	/// Total orders from clients within the selected User's Bazaar territory
-	measure Orders_In_User_Bazaar =
-			CALCULATE(
-				COUNTROWS('Fact_Order'),
-				USERELATIONSHIP('Dim_User'[BazaarID], 'Dim_Client_Simple'[BazaarID])
-			)
-		formatString: #,##0
-		displayFolder: User-Bazaar Analysis
-		lineageTag: f32e3f4a-5b6c-7890-1567-890123456123
-
-	/// Order Amount from Clients in User's Bazaar
-	/// Total order amount from clients within the selected User's Bazaar territory
-	measure Order_Amount_In_User_Bazaar =
-			CALCULATE(
-				SUM('Fact_Order'[Order_Amount]),
-				USERELATIONSHIP('Dim_User'[BazaarID], 'Dim_Client_Simple'[BazaarID])
-			)
-		formatString: "PKR" #,##0
-		displayFolder: User-Bazaar Analysis
-		lineageTag: 043f4a5b-6c7d-8901-2678-901234567234
 
 	column ClientKey
 		dataType: string
