@@ -417,5 +417,6 @@ relationship 8ff1e17a-f6f8-4b1b-b8ae-6053232adb6f
 	toColumn: LocalDateTable_3659c85e-9252-4f34-8368-9a9fb5cb76c8.Date
 
 relationship d4e5f6a7-b8c9-0d1e-2f3a-4b5c6d7e8f90
+	isActive: false
 	fromColumn: Dim_User.BazaarID
 	toColumn: Dim_Client_Simple.BazaarID
