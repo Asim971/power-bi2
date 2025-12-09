@@ -797,13 +797,8 @@ table Fact_Visit
 		displayFolder: FRD Dashboard\Visited Counts
 		lineageTag: frd-visited-sites-ihb-003
 
-	measure Customer_Target = ```
-			CALCULATE(
-				SUM(Fact_Target[DailyTarget]),
-				Fact_Target[EntityGroup] = "Customers"
-			)
-			```
-		formatString: #,##0
+	measure Customer_Target = 10
+		formatString: 0
 		displayFolder: FRD Dashboard\Targets
 		lineageTag: frd-customer-target-004
 
@@ -828,13 +823,8 @@ table Fact_Visit
 		displayFolder: FRD Dashboard\Performance
 		lineageTag: frd-customer-ach-006
 
-	measure Influencer_Target = ```
-			CALCULATE(
-				SUM(Fact_Target[DailyTarget]),
-				Fact_Target[EntityGroup] = "Influencers"
-			)
-			```
-		formatString: #,##0
+	measure Influencer_Target = 10
+		formatString: 0
 		displayFolder: FRD Dashboard\Targets
 		lineageTag: frd-influencer-target-007
 
@@ -859,13 +849,8 @@ table Fact_Visit
 		displayFolder: FRD Dashboard\Performance
 		lineageTag: frd-influencer-ach-009
 
-	measure Total_Target = ```
-			CALCULATE(
-				SUM(Fact_Target[DailyTarget]),
-				Fact_Target[EntityGroup] IN {"Customers", "Influencers"}
-			)
-			```
-		formatString: #,##0
+	measure Total_Target = [Customer_Target] + [Influencer_Target]
+		formatString: 0
 		displayFolder: FRD Dashboard\Targets
 		lineageTag: frd-total-target-010
 
