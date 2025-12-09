@@ -34,14 +34,12 @@ table Fact_Target
 			)
 			```
 
-	column TargetDateKey
+	column DateKey
 		dataType: dateTime
 		formatString: Short Date
 		lineageTag: fact-target-datekey-001
 		summarizeBy: none
 		sourceColumn: DateKey
-		isNameInferred
-		isDataTypeInferred
 
 		annotation SummarizationSetBy = Automatic
 

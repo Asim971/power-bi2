@@ -423,7 +423,7 @@ relationship 298c937b-b70a-437d-adf6-1599039b05c5
 	toColumn: LocalDateTable_18d3c4d4-711b-4d62-a639-a03c78a557be.Date
 
 relationship fact-target-date-001
-	fromColumn: Fact_Target.TargetDateKey
+	fromColumn: Fact_Target.DateKey
 	toColumn: Dim_Date.DateKey
 
 relationship fact-target-user-001
