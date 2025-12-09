@@ -6,11 +6,16 @@ table Fact_Target
 		source = ```
 			VAR MinDate = MIN(Fact_Visit[DateKey])
 			VAR MaxDate = MAX(Fact_Visit[DateKey])
-			VAR DateRange = FILTER(
-			    ALL(Dim_Date[DateKey]),
-			    Dim_Date[DateKey] >= MinDate && Dim_Date[DateKey] <= MaxDate
-			)
-			VAR Users = DISTINCT(Dim_User[UserID])
+			VAR DateRange = 
+			    SELECTCOLUMNS(
+			        FILTER(ALL(Dim_Date[DateKey]), Dim_Date[DateKey] >= MinDate && Dim_Date[DateKey] <= MaxDate),
+			        "DateKey", Dim_Date[DateKey]
+			    )
+			VAR Users = 
+			    SELECTCOLUMNS(
+			        DISTINCT(Dim_User[UserID]),
+			        "UserID", Dim_User[UserID]
+			    )
 			VAR EntityGroups = DATATABLE(
 			    "EntityGroup", STRING,
 			    {
