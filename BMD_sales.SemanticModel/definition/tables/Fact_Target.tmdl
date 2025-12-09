@@ -37,7 +37,7 @@ table Fact_Target
 	column DateKey
 		dataType: dateTime
 		formatString: Short Date
-		lineageTag: fact-target-datekey-001
+		lineageTag: c1d2e3f4-5678-9abc-def0-123456789abc
 		summarizeBy: none
 		sourceColumn: DateKey
 
