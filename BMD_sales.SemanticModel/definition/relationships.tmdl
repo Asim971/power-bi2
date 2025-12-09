@@ -422,6 +422,14 @@ relationship 298c937b-b70a-437d-adf6-1599039b05c5
 	fromColumn: Dim_Date.DateKey
 	toColumn: LocalDateTable_18d3c4d4-711b-4d62-a639-a03c78a557be.Date
 
+relationship 23bd9555-49f7-4763-ac54-44c541fdf5a3
+	fromColumn: Fact_Target.DateKey
+	toColumn: Dim_Date.DateKey
+
+relationship f5c5ebce-c690-48a2-aab9-96f6101616fd
+	fromColumn: Fact_Target.UserID
+	toColumn: Dim_User.UserID
+
 relationship f23e599f-aaf9-4af1-a7d3-0fa21d772a6a
 	joinOnDateBehavior: datePartOnly
 	fromColumn: Dim_BDTerritory.created_at
