@@ -1,0 +1,100 @@
+/// Fact_Target: Daily visit targets by User and EntityGroup
+/// This table enables proper filtering of targets by Date and User via relationships
+/// Granularity: One row per UserID per Date per EntityGroup
+table Fact_Target
+	lineageTag: fact-target-001
+
+	/// DAX calculated table generating daily targets for each user and entity group
+	/// Generates rows for all combinations of dates (from Fact_Visit range), users, and entity groups
+	partition Fact_Target = calculated
+		mode: import
+		source = ```
+			VAR MinDate = MIN(Fact_Visit[VisitDateKey])
+			VAR MaxDate = MAX(Fact_Visit[VisitDateKey])
+			VAR DateRange = FILTER(
+			    ALL(Dim_Date[DateKey]),
+			    Dim_Date[DateKey] >= MinDate && Dim_Date[DateKey] <= MaxDate
+			)
+			VAR Users = DISTINCT(Dim_User[UserID])
+			VAR EntityGroups = DATATABLE(
+			    "EntityGroup", STRING,
+			    {
+			        {"Customers"},
+			        {"Consumers"},
+			        {"Influencers"}
+			    }
+			)
+			VAR BaseTable = CROSSJOIN(DateRange, Users, EntityGroups)
+			RETURN
+			ADDCOLUMNS(
+			    BaseTable,
+			    "DailyTarget", 
+			    SWITCH(
+			        [EntityGroup],
+			        "Customers", 10,
+			        "Influencers", 10,
+			        "Consumers", 5,
+			        10
+			    )
+			)
+			```
+
+	column TargetDateKey
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: fact-target-datekey-001
+		summarizeBy: none
+		sourceColumn: DateKey
+		isNameInferred
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column UserID
+		dataType: int64
+		formatString: 0
+		lineageTag: fact-target-userid-001
+		summarizeBy: none
+		sourceColumn: UserID
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column EntityGroup
+		dataType: string
+		lineageTag: fact-target-entitygroup-001
+		summarizeBy: none
+		sourceColumn: EntityGroup
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	column DailyTarget
+		dataType: int64
+		formatString: 0
+		lineageTag: fact-target-dailytarget-001
+		summarizeBy: sum
+		sourceColumn: DailyTarget
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Sum of daily targets - respects Date and User filters via relationships
+	measure Target_Sum = SUM(Fact_Target[DailyTarget])
+		formatString: #,##0
+		displayFolder: FRD Dashboard\Targets
+		lineageTag: fact-target-sum-001
+
+	/// Achievement percentage - actual vs target
+	measure Target_Achievement_Pct = ```
+		VAR TargetValue = [Target_Sum]
+		VAR ActualValue = [FRD_Target]
+		RETURN
+		IF(TargetValue = 0, BLANK(), DIVIDE(ActualValue, TargetValue, 0))
+		```
+		formatString: 0%
+		displayFolder: FRD Dashboard\Performance
+		lineageTag: fact-target-achievement-001
+
+	annotation PBI_ResultType = Table
+
