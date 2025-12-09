@@ -1,11 +1,6 @@
-/// Fact_Target: Daily visit targets by User and EntityGroup
-/// This table enables proper filtering of targets by Date and User via relationships
-/// Granularity: One row per UserID per Date per EntityGroup
 table Fact_Target
 	lineageTag: fact-target-001
 
-	/// DAX calculated table generating daily targets for each user and entity group
-	/// Generates rows for all combinations of dates (from Fact_Visit range), users, and entity groups
 	partition Fact_Target = calculated
 		mode: import
 		source = ```
@@ -79,13 +74,11 @@ table Fact_Target
 
 		annotation SummarizationSetBy = Automatic
 
-	/// Sum of daily targets - respects Date and User filters via relationships
 	measure Target_Sum = SUM(Fact_Target[DailyTarget])
 		formatString: #,##0
 		displayFolder: FRD Dashboard\Targets
 		lineageTag: fact-target-sum-001
 
-	/// Achievement percentage - actual vs target
 	measure Target_Achievement_Pct = ```
 		VAR TargetValue = [Target_Sum]
 		VAR ActualValue = [FRD_Target]

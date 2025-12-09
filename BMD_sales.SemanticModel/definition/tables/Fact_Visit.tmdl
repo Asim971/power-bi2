@@ -797,8 +797,6 @@ table Fact_Visit
 		displayFolder: FRD Dashboard\Visited Counts
 		lineageTag: frd-visited-sites-ihb-003
 
-	/// Customer Target: Pulls from Fact_Target filtered by EntityGroup = "Customers"
-	/// Respects Date and User filters via relationships
 	measure Customer_Target = ```
 			CALCULATE(
 				SUM(Fact_Target[DailyTarget]),
@@ -830,8 +828,6 @@ table Fact_Visit
 		displayFolder: FRD Dashboard\Performance
 		lineageTag: frd-customer-ach-006
 
-	/// Influencer Target: Pulls from Fact_Target filtered by EntityGroup = "Influencers"
-	/// Respects Date and User filters via relationships
 	measure Influencer_Target = ```
 			CALCULATE(
 				SUM(Fact_Target[DailyTarget]),
@@ -863,8 +859,6 @@ table Fact_Visit
 		displayFolder: FRD Dashboard\Performance
 		lineageTag: frd-influencer-ach-009
 
-	/// Total Target: Sum of Customer + Influencer targets from Fact_Target
-	/// Respects Date and User filters via relationships
 	measure Total_Target = ```
 			CALCULATE(
 				SUM(Fact_Target[DailyTarget]),
