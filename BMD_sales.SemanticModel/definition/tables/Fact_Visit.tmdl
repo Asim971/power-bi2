@@ -902,7 +902,6 @@ table Fact_Visit
 		displayFolder: FRD Dashboard\Consumer
 		lineageTag: frd-ihb-visited-013
 
-	/// FRD Target: Distinct clients visited (filtered by EntityGroup via relationship)
 	measure FRD_Target = DISTINCTCOUNT('Fact_Visit'[ClientKey])
 		formatString: #,##0
 		displayFolder: FRD Dashboard\Tertiary Sales

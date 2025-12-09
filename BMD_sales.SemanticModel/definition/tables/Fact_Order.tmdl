@@ -728,7 +728,6 @@ table Fact_Order
 		displayFolder: FRD Dashboard\Order Performance
 		lineageTag: frd-order-ach-016
 
-	/// FRD Volume (MT): Order volume filtered by EntityGroup via relationship
 	measure FRD_Volume_MT = DIVIDE(SUM('Fact_Order'[TotalAmount]), 1000, 0)
 		formatString: #,##0.0
 		displayFolder: FRD Dashboard\Tertiary Sales
