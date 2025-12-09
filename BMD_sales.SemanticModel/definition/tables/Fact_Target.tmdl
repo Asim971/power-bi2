@@ -4,8 +4,8 @@ table Fact_Target
 	partition Fact_Target = calculated
 		mode: import
 		source = ```
-			VAR MinDate = MIN(Fact_Visit[VisitDateKey])
-			VAR MaxDate = MAX(Fact_Visit[VisitDateKey])
+			VAR MinDate = MIN(Fact_Visit[DateKey])
+			VAR MaxDate = MAX(Fact_Visit[DateKey])
 			VAR DateRange = FILTER(
 			    ALL(Dim_Date[DateKey]),
 			    Dim_Date[DateKey] >= MinDate && Dim_Date[DateKey] <= MaxDate
