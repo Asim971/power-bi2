@@ -430,6 +430,14 @@ relationship f5c5ebce-c690-48a2-aab9-96f6101616fd
 	fromColumn: Fact_Target.UserID
 	toColumn: Dim_User.UserID
 
+relationship 01386ea0-e858-480b-b039-3db527cac58c
+	fromColumn: Fact_Target.EntityGroup
+	toColumn: Dim_EntityGroup.EntityGroup
+
+relationship b3981d0e-b756-47f4-b35b-5d97b6f10942
+	fromColumn: Dim_Client_Simple.EntityGroup
+	toColumn: Dim_EntityGroup.EntityGroup
+
 relationship f23e599f-aaf9-4af1-a7d3-0fa21d772a6a
 	joinOnDateBehavior: datePartOnly
 	fromColumn: Dim_BDTerritory.created_at

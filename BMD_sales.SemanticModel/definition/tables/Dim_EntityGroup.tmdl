@@ -1,0 +1,27 @@
+table Dim_EntityGroup
+	lineageTag: c0ce972f-ab28-448c-a46a-ce7a6ad5d700
+
+	column EntityGroup
+		dataType: string
+		isKey
+		lineageTag: cbec903e-fc87-4b98-8561-c2db669372ac
+		summarizeBy: none
+		sourceColumn: EntityGroup
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_EntityGroup = m
+		mode: import
+		source = ```
+				let
+				    Source = Table.FromRecords({
+				        [EntityGroup = "Customers"],
+				        [EntityGroup = "Consumers"],
+				        [EntityGroup = "Influencers"]
+				    }),
+				    TypedTable = Table.TransformColumnTypes(Source, {{"EntityGroup", type text}})
+				in
+				    TypedTable
+				```
+
+	annotation PBI_ResultType = Table
