@@ -1,10 +1,8 @@
 table 'public visit_access_acl'
-	isHidden
 	lineageTag: 5b2c64f2-da80-4d66-8f59-6af760fd8a9d
 
 	column visit_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 9cc7bf0f-2907-4a3f-91b9-ef521ef8c133
 		summarizeBy: sum
@@ -16,7 +14,6 @@ table 'public visit_access_acl'
 
 	column territory_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 3d390cec-636a-45a1-a91b-07bda587c254
 		summarizeBy: sum

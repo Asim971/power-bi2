@@ -1,10 +1,8 @@
 table 'public engineers'
-	isHidden
 	lineageTag: 3dabf304-b336-49f6-bd97-1bbf55b60b45
 
 	column consultancy_firm
 		dataType: string
-		isHidden
 		lineageTag: d6f70018-3f7c-4583-a454-255038e22dc9
 		summarizeBy: none
 		sourceColumn: consultancy_firm
@@ -15,7 +13,6 @@ table 'public engineers'
 
 	column engineer_type
 		dataType: string
-		isHidden
 		lineageTag: 39ea755a-4644-496e-9063-911827121a67
 		summarizeBy: none
 		sourceColumn: engineer_type
@@ -26,7 +23,6 @@ table 'public engineers'
 
 	column moduleid
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: f8d1c5f8-7dfa-4588-b032-6678c4d6f577
 		summarizeBy: sum
@@ -38,7 +34,6 @@ table 'public engineers'
 
 	column namespaceid
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 31ed12a7-b79b-46be-b3b7-06d9a17f60ab
 		summarizeBy: sum
@@ -50,7 +45,6 @@ table 'public engineers'
 
 	column owned_by
 		dataType: string
-		isHidden
 		lineageTag: 3f24f40d-475d-4715-9e05-0abcc96f8b6d
 		summarizeBy: none
 		sourceColumn: owned_by
@@ -61,7 +55,6 @@ table 'public engineers'
 
 	column recordid
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 255786d4-5adb-4dd3-871a-5879fccf1e16
 		summarizeBy: sum
@@ -73,7 +66,6 @@ table 'public engineers'
 
 	column revision
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: a120a4c3-3767-407d-bdcc-571b343e73c3
 		summarizeBy: sum
@@ -85,7 +77,6 @@ table 'public engineers'
 
 	column updated_by
 		dataType: string
-		isHidden
 		lineageTag: 8a46c431-40c4-4631-9342-94864df8541c
 		summarizeBy: none
 		sourceColumn: updated_by
@@ -96,7 +87,6 @@ table 'public engineers'
 
 	column id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 8e355319-c628-49ed-802d-1d251b5e43a1
 		summarizeBy: sum

@@ -1,10 +1,8 @@
 table 'public areas'
-	isHidden
 	lineageTag: 4ca6c9a6-b9f7-463b-bc4f-ec5eb4b6825f
 
 	column id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: ac4f27d5-b012-437f-9689-869a6f9500d6
 		summarizeBy: sum
@@ -16,7 +14,6 @@ table 'public areas'
 
 	column assigned_agm
 		dataType: string
-		isHidden
 		lineageTag: 7c41b815-88d7-4620-bbd6-c5bdbd52a3b8
 		summarizeBy: none
 		sourceColumn: assigned_agm
@@ -27,7 +24,6 @@ table 'public areas'
 
 	column assigned_asm
 		dataType: string
-		isHidden
 		lineageTag: 0e836e59-5679-4705-ae7c-c0709d97a811
 		summarizeBy: none
 		sourceColumn: assigned_asm
@@ -38,7 +34,6 @@ table 'public areas'
 
 	column assigned_gm
 		dataType: string
-		isHidden
 		lineageTag: 91a7f4ee-8ce8-4df7-8732-446b0d981325
 		summarizeBy: none
 		sourceColumn: assigned_gm
@@ -49,7 +44,6 @@ table 'public areas'
 
 	column assigned_zsm
 		dataType: string
-		isHidden
 		lineageTag: 2d7eea58-53ae-4dd4-ac84-a9986ba864a5
 		summarizeBy: none
 		sourceColumn: assigned_zsm
@@ -60,7 +54,6 @@ table 'public areas'
 
 	column created_at
 		dataType: string
-		isHidden
 		lineageTag: 3789844b-dc9a-41f3-8472-dca04885a667
 		summarizeBy: none
 		sourceColumn: created_at
@@ -71,7 +64,6 @@ table 'public areas'
 
 	column created_by
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: cb38a07a-13f4-4580-af0d-bc9405990c3a
 		summarizeBy: sum
@@ -83,7 +75,6 @@ table 'public areas'
 
 	column delete_status
 		dataType: string
-		isHidden
 		lineageTag: b41452b1-fc7e-452b-9cd7-01ea4090d5cc
 		summarizeBy: none
 		sourceColumn: delete_status
@@ -94,7 +85,6 @@ table 'public areas'
 
 	column moduleid
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 2ea0e23e-4326-4f34-83ec-9afc4a0446f9
 		summarizeBy: sum
@@ -106,7 +96,6 @@ table 'public areas'
 
 	column name
 		dataType: string
-		isHidden
 		lineageTag: 3eee9da9-0ea1-42f3-8d34-1c92d83d0fad
 		summarizeBy: none
 		sourceColumn: name
@@ -117,7 +106,6 @@ table 'public areas'
 
 	column namespaceid
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 62d5952b-3805-4957-8b1c-57b4c69a1fc7
 		summarizeBy: sum
@@ -129,7 +117,6 @@ table 'public areas'
 
 	column nation_name
 		dataType: string
-		isHidden
 		lineageTag: 93d5c776-26d5-4bd3-9cc0-09cd3d8d153a
 		summarizeBy: none
 		sourceColumn: nation_name
@@ -140,7 +127,6 @@ table 'public areas'
 
 	column owned_by
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: ab022279-104e-4f8d-a429-c09c1d1d26d4
 		summarizeBy: sum
@@ -152,7 +138,6 @@ table 'public areas'
 
 	column recordid
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 2ff4fbd2-e918-44f4-8976-d78d8da1b605
 		summarizeBy: sum
@@ -164,7 +149,6 @@ table 'public areas'
 
 	column region_name
 		dataType: string
-		isHidden
 		lineageTag: 752fdc02-318a-46e7-8f4e-2ff185bc1bb2
 		summarizeBy: none
 		sourceColumn: region_name
@@ -175,7 +159,6 @@ table 'public areas'
 
 	column revision
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 146f8e12-1d4c-4105-9e95-907b221271fc
 		summarizeBy: sum
@@ -187,7 +170,6 @@ table 'public areas'
 
 	column updated_at
 		dataType: string
-		isHidden
 		lineageTag: 04fa2752-e2b7-43f6-80cd-79a95d863d04
 		summarizeBy: none
 		sourceColumn: updated_at
@@ -198,7 +180,6 @@ table 'public areas'
 
 	column updated_by
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: f4b67905-dbc2-4f8c-9fed-03eb8c3f757f
 		summarizeBy: sum
@@ -210,7 +191,6 @@ table 'public areas'
 
 	column zone_name
 		dataType: string
-		isHidden
 		lineageTag: 00d96aed-1939-4da0-afc0-823bed060a44
 		summarizeBy: none
 		sourceColumn: zone_name
@@ -221,7 +201,6 @@ table 'public areas'
 
 	column nation_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 441f6659-3821-46db-be7a-f36317fe1cb3
 		summarizeBy: sum
@@ -233,7 +212,6 @@ table 'public areas'
 
 	column organization_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: becf05a6-76ae-4c9a-9885-82dab5b2ee2e
 		summarizeBy: sum
@@ -245,7 +223,6 @@ table 'public areas'
 
 	column region_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 1a052acd-58cb-495b-bed9-97a55197be5e
 		summarizeBy: sum
@@ -257,7 +234,6 @@ table 'public areas'
 
 	column zone_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: a03fdc35-ec19-4d08-9f25-7e53e075689d
 		summarizeBy: sum
@@ -269,7 +245,6 @@ table 'public areas'
 
 	column deleted_by
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 371d84b1-f969-4f7f-bdd2-462cdfedd4e8
 		summarizeBy: sum

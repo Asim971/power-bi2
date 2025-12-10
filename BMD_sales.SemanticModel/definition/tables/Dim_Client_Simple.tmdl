@@ -9,6 +9,8 @@ table Dim_Client_Simple
 		formatString: 0
 		lineageTag: d8252c2a-daea-40a9-8d01-a8dbc6364f9d
 
+		changedProperty = IsHidden
+
 	measure Total_Site_Visits =
 			CALCULATE(
 			    [Total_Visits],
@@ -16,6 +18,8 @@ table Dim_Client_Simple
 			)
 		formatString: 0
 		lineageTag: 1d887731-4d05-4abc-9a84-9ec92770e978
+
+		changedProperty = IsHidden
 
 	measure Total_Dealers =
 			CALCULATE(
@@ -26,6 +30,8 @@ table Dim_Client_Simple
 		displayFolder: Client Counts
 		lineageTag: aa1b2c3d-4e5f-6789-0abc-def012345678
 
+		changedProperty = IsHidden
+
 	measure Total_Retailers =
 			CALCULATE(
 				DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
@@ -34,6 +40,8 @@ table Dim_Client_Simple
 		formatString: #,##0
 		displayFolder: Client Counts
 		lineageTag: bb2c3d4e-5f6a-7890-1bcd-ef0123456789
+
+		changedProperty = IsHidden
 
 	measure Total_Sites =
 			CALCULATE(
@@ -44,6 +52,8 @@ table Dim_Client_Simple
 		displayFolder: Client Counts
 		lineageTag: cc3d4e5f-6a7b-8901-2cde-f01234567890
 
+		changedProperty = IsHidden
+
 	measure Total_Engineers =
 			CALCULATE(
 				DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
@@ -52,6 +62,8 @@ table Dim_Client_Simple
 		formatString: #,##0
 		displayFolder: Client Counts
 		lineageTag: dd4e5f6a-7b8c-9012-3def-012345678901
+
+		changedProperty = IsHidden
 
 	measure Total_Contractors =
 			CALCULATE(
@@ -62,6 +74,8 @@ table Dim_Client_Simple
 		displayFolder: Client Counts
 		lineageTag: ee5f6a7b-8c9d-0123-4ef0-123456789012
 
+		changedProperty = IsHidden
+
 	measure Total_IHBs =
 			CALCULATE(
 				DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
@@ -70,6 +84,8 @@ table Dim_Client_Simple
 		formatString: #,##0
 		displayFolder: Client Counts
 		lineageTag: ff6a7b8c-9d0e-1234-5f01-234567890123
+
+		changedProperty = IsHidden
 
 	measure Total_Influencers =
 			CALCULATE(
@@ -80,10 +96,14 @@ table Dim_Client_Simple
 		displayFolder: Client Counts
 		lineageTag: 0a7b8c9d-0e1f-2345-6012-345678901234
 
+		changedProperty = IsHidden
+
 	measure UniqueRoleCount = DISTINCTCOUNT('Dim_Client_Simple'[ClientID])
 		formatString: #,##0
 		displayFolder: Client Counts
 		lineageTag: 1b8c9d0e-1f2a-3456-7123-456789012345
+
+		changedProperty = IsHidden
 
 	measure Dealer_Count =
 			CALCULATE(
@@ -95,6 +115,8 @@ table Dim_Client_Simple
 		displayFolder: Visit Counts by Type
 		lineageTag: 2c9d0e1f-2a3b-4567-8234-567890123456
 
+		changedProperty = IsHidden
+
 	measure Retailer_Count =
 			CALCULATE(
 				COUNTROWS('Fact_Visit'),
@@ -104,6 +126,8 @@ table Dim_Client_Simple
 		formatString: #,##0
 		displayFolder: Visit Counts by Type
 		lineageTag: 3d0e1f2a-3b4c-5678-9345-678901234567
+
+		changedProperty = IsHidden
 
 	measure Site_Count =
 			CALCULATE(
@@ -115,6 +139,8 @@ table Dim_Client_Simple
 		displayFolder: Visit Counts by Type
 		lineageTag: 4e1f2a3b-4c5d-6789-0456-789012345678
 
+		changedProperty = IsHidden
+
 	measure Engineer_Count =
 			CALCULATE(
 				COUNTROWS('Fact_Visit'),
@@ -124,6 +150,8 @@ table Dim_Client_Simple
 		formatString: #,##0
 		displayFolder: Visit Counts by Type
 		lineageTag: 5f2a3b4c-5d6e-7890-1567-890123456789
+
+		changedProperty = IsHidden
 
 	measure Contractor_Count =
 			CALCULATE(
@@ -135,6 +163,8 @@ table Dim_Client_Simple
 		displayFolder: Visit Counts by Type
 		lineageTag: 6a3b4c5d-6e7f-8901-2678-901234567890
 
+		changedProperty = IsHidden
+
 	measure IHB_Count =
 			CALCULATE(
 				COUNTROWS('Fact_Visit'),
@@ -145,16 +175,18 @@ table Dim_Client_Simple
 		displayFolder: Visit Counts by Type
 		lineageTag: 7b4c5d6e-7f8a-9012-3789-012345678901
 
+		changedProperty = IsHidden
+
 	measure Clients_in_User_Bazaar =
 			VAR UserBazaar = SELECTEDVALUE(Dim_User[BazaarID])
-			VAR LocalClients = 
+			VAR LocalClients =
 				CALCULATE(
 					DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
 					USERELATIONSHIP(Dim_User[BazaarID], Dim_Bazaar[BazaarID]),
 					USERELATIONSHIP('Dim_Client_Simple'[BazaarID], Dim_Bazaar[BazaarID]),
 					'Dim_Client_Simple'[BazaarID] <> -1
 				)
-			VAR NationalClients = 
+			VAR NationalClients =
 				CALCULATE(
 					DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
 					'Dim_Client_Simple'[BazaarID] = -1
@@ -164,6 +196,8 @@ table Dim_Client_Simple
 		formatString: #,##0
 		displayFolder: User-Bazaar Analysis
 		lineageTag: 8c5d6e7f-8a9b-0123-4890-123456789012
+
+		changedProperty = IsHidden
 
 	measure Retailers_in_User_Bazaar =
 			CALCULATE(
@@ -176,6 +210,8 @@ table Dim_Client_Simple
 		displayFolder: User-Bazaar Analysis
 		lineageTag: 9d6e7f8a-9b0c-1234-5901-234567890123
 
+		changedProperty = IsHidden
+
 	measure Sites_in_User_Bazaar =
 			CALCULATE(
 				DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
@@ -186,6 +222,8 @@ table Dim_Client_Simple
 		formatString: #,##0
 		displayFolder: User-Bazaar Analysis
 		lineageTag: 0e7f8a9b-0c1d-2345-6012-345678901234
+
+		changedProperty = IsHidden
 
 	measure IHBs_in_User_Bazaar =
 			CALCULATE(
@@ -198,6 +236,8 @@ table Dim_Client_Simple
 		displayFolder: User-Bazaar Analysis
 		lineageTag: 1f8a9b0c-1d2e-3456-7123-456789012345
 
+		changedProperty = IsHidden
+
 	measure Dealers_National =
 			CALCULATE(
 				DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
@@ -207,6 +247,8 @@ table Dim_Client_Simple
 		formatString: #,##0
 		displayFolder: User-Bazaar Analysis
 		lineageTag: 2a9b0c1d-2e3f-4567-8234-567890123456
+
+		changedProperty = IsHidden
 
 	measure Engineers_National =
 			CALCULATE(
@@ -218,6 +260,8 @@ table Dim_Client_Simple
 		displayFolder: User-Bazaar Analysis
 		lineageTag: 3b0c1d2e-3f4a-5678-9345-678901234567
 
+		changedProperty = IsHidden
+
 	measure Contractors_National =
 			CALCULATE(
 				DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
@@ -228,39 +272,57 @@ table Dim_Client_Simple
 		displayFolder: User-Bazaar Analysis
 		lineageTag: 4c1d2e3f-4a5b-6789-0456-789012345678
 
-	measure User_Has_Bazaar =
-			IF(NOT ISBLANK(SELECTEDVALUE(Dim_User[BazaarID])), 1, 0)
+		changedProperty = IsHidden
+
+	measure User_Has_Bazaar = IF(NOT ISBLANK(SELECTEDVALUE(Dim_User[BazaarID])), 1, 0)
 		formatString: 0
 		displayFolder: User-Bazaar Analysis
 		lineageTag: 5d2e3f4a-5b6c-7890-1567-890123456789
 
+		changedProperty = IsHidden
+
 	measure User_Bazaar_Coverage =
 			VAR UserBazaar = SELECTEDVALUE(Dim_User[BazaarID])
-			VAR LocalCount = 
+			VAR LocalCount =
 				CALCULATE(
 					DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
 					USERELATIONSHIP(Dim_User[BazaarID], Dim_Bazaar[BazaarID]),
 					USERELATIONSHIP('Dim_Client_Simple'[BazaarID], Dim_Bazaar[BazaarID]),
 					'Dim_Client_Simple'[BazaarID] <> -1
 				)
-			VAR NationalCount = 
+			VAR NationalCount =
 				CALCULATE(
 					DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
 					'Dim_Client_Simple'[BazaarID] = -1
 				)
 			RETURN
-				IF(ISBLANK(UserBazaar), 
+				IF(ISBLANK(UserBazaar),
 					"No Bazaar Assigned",
 					"Local: " & FORMAT(LocalCount, "#,##0") & " | National: " & FORMAT(NationalCount, "#,##0")
 				)
 		displayFolder: User-Bazaar Analysis
 		lineageTag: 6e3f4a5b-6c7d-8901-2678-901234567890
 
+		changedProperty = IsHidden
+
+	measure 'Total Site + IHB' =
+			CALCULATE(
+				DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
+				'Dim_Client_Simple'[ClientType] IN {"Site", "IHB"}
+			)
+		formatString: 0
+		displayFolder: Client Counts
+		lineageTag: 3278bbb7-5350-46ee-b37b-8d99ebedb46f
+
+		changedProperty = IsHidden
+
 	column ClientKey
 		dataType: string
 		lineageTag: 0a17d132-6804-48b8-8d27-c2cf96bc5a03
 		summarizeBy: none
 		sourceColumn: ClientKey
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -271,6 +333,8 @@ table Dim_Client_Simple
 		summarizeBy: none
 		sourceColumn: ClientID
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column ClientName
@@ -278,6 +342,8 @@ table Dim_Client_Simple
 		lineageTag: d591ffac-1fc0-4240-960a-d02e462b3285
 		summarizeBy: none
 		sourceColumn: ClientName
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -287,6 +353,8 @@ table Dim_Client_Simple
 		summarizeBy: none
 		sourceColumn: ClientType
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column SubType
@@ -294,6 +362,8 @@ table Dim_Client_Simple
 		lineageTag: 4344f130-38b3-4120-9f5b-2b6175b7660b
 		summarizeBy: none
 		sourceColumn: SubType
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -303,6 +373,8 @@ table Dim_Client_Simple
 		summarizeBy: none
 		sourceColumn: ClientCategory
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column ResponsibleRole
@@ -311,6 +383,8 @@ table Dim_Client_Simple
 		summarizeBy: none
 		sourceColumn: ResponsibleRole
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column ResponsibleRoleRLS
@@ -318,6 +392,8 @@ table Dim_Client_Simple
 		lineageTag: 0c2e4094-24ce-4b72-87d8-c0569f56acd3
 		summarizeBy: none
 		sourceColumn: ResponsibleRoleRLS
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -328,6 +404,8 @@ table Dim_Client_Simple
 		summarizeBy: none
 		sourceColumn: BazaarID
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column TerritoryName
@@ -336,6 +414,8 @@ table Dim_Client_Simple
 		summarizeBy: none
 		sourceColumn: TerritoryName
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column AreaName
@@ -343,6 +423,8 @@ table Dim_Client_Simple
 		lineageTag: 75978420-9016-4252-9369-f7c6d18bdb5f
 		summarizeBy: none
 		sourceColumn: AreaName
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -359,6 +441,8 @@ table Dim_Client_Simple
 			)
 		lineageTag: 8f901234-5678-9abc-def0-123456789abc
 		summarizeBy: none
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -562,6 +646,8 @@ table Dim_Client_Simple
 				in
 				    TypedTable
 				```
+
+	changedProperty = IsHidden
 
 	annotation PBI_ResultType = Table
 

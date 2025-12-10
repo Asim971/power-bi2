@@ -8,6 +8,8 @@ table 'Time Intelligence_2'
 		sourceColumn: Time Group
 		sortByColumn: 'Time Group Order'
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column 'Time Group Order'
@@ -43,6 +45,8 @@ table 'Time Intelligence_2'
 				    )
 				in
 				    Source
+
+	changedProperty = IsHidden
 
 	annotation PBI_NavigationStepName = Navigation
 

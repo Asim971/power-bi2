@@ -1,10 +1,8 @@
 table 'public region'
-	isHidden
 	lineageTag: 1ade6267-74e7-4001-bb5b-64125804fa24
 
 	column id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: b5ed60c2-20fd-4c3e-8ab9-ed270c271d61
 		summarizeBy: sum
@@ -16,7 +14,6 @@ table 'public region'
 
 	column assigned_agm
 		dataType: string
-		isHidden
 		lineageTag: bdcd833b-a528-4d45-b972-e35b5dcc1c43
 		summarizeBy: none
 		sourceColumn: assigned_agm
@@ -27,7 +24,6 @@ table 'public region'
 
 	column assigned_gm
 		dataType: string
-		isHidden
 		lineageTag: 4604382e-91f7-413d-b76c-b0515868d832
 		summarizeBy: none
 		sourceColumn: assigned_gm
@@ -38,7 +34,6 @@ table 'public region'
 
 	column assigned_zsm
 		dataType: string
-		isHidden
 		lineageTag: 3f7fb832-4570-4642-837d-d9887ef3b1dc
 		summarizeBy: none
 		sourceColumn: assigned_zsm
@@ -49,7 +44,6 @@ table 'public region'
 
 	column created_at
 		dataType: string
-		isHidden
 		lineageTag: 452cf5f6-e7f6-412c-98e6-1789e934a0c5
 		summarizeBy: none
 		sourceColumn: created_at
@@ -60,7 +54,6 @@ table 'public region'
 
 	column created_by
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 39195b14-b736-412c-88c8-21f5405e48e6
 		summarizeBy: sum
@@ -72,7 +65,6 @@ table 'public region'
 
 	column delete_status
 		dataType: string
-		isHidden
 		lineageTag: 10f58de5-068a-4162-add5-fb6cd2a72a12
 		summarizeBy: none
 		sourceColumn: delete_status
@@ -83,7 +75,6 @@ table 'public region'
 
 	column moduleid
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: b604c7f3-8afa-4df0-b77d-74bfe1ca84bc
 		summarizeBy: sum
@@ -95,7 +86,6 @@ table 'public region'
 
 	column namespaceid
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: a3b8e8b0-8f85-4dad-bfd9-de8f982c987b
 		summarizeBy: sum
@@ -107,7 +97,6 @@ table 'public region'
 
 	column nation_name
 		dataType: string
-		isHidden
 		lineageTag: 2f84a752-1866-4adb-b618-5c466836f0de
 		summarizeBy: none
 		sourceColumn: nation_name
@@ -118,7 +107,6 @@ table 'public region'
 
 	column owned_by
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: f9cf1bb3-4a3c-40ef-a8f5-d1541ec31d2d
 		summarizeBy: sum
@@ -130,7 +118,6 @@ table 'public region'
 
 	column recordid
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 5cb86f0f-9276-4df3-8c6e-cd4cdb374c78
 		summarizeBy: sum
@@ -142,7 +129,6 @@ table 'public region'
 
 	column region_name
 		dataType: string
-		isHidden
 		lineageTag: 4c5c7d33-b301-45ff-98e4-643aeb51ae9b
 		summarizeBy: none
 		sourceColumn: region_name
@@ -153,7 +139,6 @@ table 'public region'
 
 	column revision
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 4ec532eb-8c82-4756-b66d-9e2a92d70e34
 		summarizeBy: sum
@@ -165,7 +150,6 @@ table 'public region'
 
 	column status
 		dataType: string
-		isHidden
 		lineageTag: 11d59c0e-8df9-4126-9945-cd344082b18e
 		summarizeBy: none
 		sourceColumn: status
@@ -176,7 +160,6 @@ table 'public region'
 
 	column updated_at
 		dataType: string
-		isHidden
 		lineageTag: 4cceb87e-c85a-4fce-80be-a2f1a7c31a1e
 		summarizeBy: none
 		sourceColumn: updated_at
@@ -187,7 +170,6 @@ table 'public region'
 
 	column updated_by
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 71b8b1c6-b4ad-4199-86c2-2f96ca8e6a90
 		summarizeBy: sum
@@ -199,7 +181,6 @@ table 'public region'
 
 	column zone_name
 		dataType: string
-		isHidden
 		lineageTag: 4c3770b6-b08a-409e-92b3-33fe58a3f82e
 		summarizeBy: none
 		sourceColumn: zone_name
@@ -210,7 +191,6 @@ table 'public region'
 
 	column nation_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 34f010f4-d116-437f-8350-cf3c0b2d87ab
 		summarizeBy: sum
@@ -222,7 +202,6 @@ table 'public region'
 
 	column organization_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 47a55c91-e6a1-4546-a389-033da8a3f296
 		summarizeBy: sum
@@ -234,7 +213,6 @@ table 'public region'
 
 	column zone_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: d7c073fa-6d60-4d6b-9f0d-32afa9c7bf82
 		summarizeBy: sum
@@ -246,7 +224,6 @@ table 'public region'
 
 	column deleted_by
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 93b47ecf-6049-488e-8711-4cfc89e24b9d
 		summarizeBy: sum

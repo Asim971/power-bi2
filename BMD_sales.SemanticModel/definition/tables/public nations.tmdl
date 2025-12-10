@@ -1,10 +1,8 @@
 table 'public nations'
-	isHidden
 	lineageTag: 61c4d66c-4ccd-4623-b1a1-df962796e0aa
 
 	column id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 564d968c-fa42-4028-bc08-5c71fb19bae5
 		summarizeBy: sum
@@ -16,7 +14,6 @@ table 'public nations'
 
 	column assigned_gm
 		dataType: string
-		isHidden
 		lineageTag: b2ff35ca-07ff-4eae-bb3f-4c0f071e375f
 		summarizeBy: none
 		sourceColumn: assigned_gm
@@ -27,7 +24,6 @@ table 'public nations'
 
 	column created_at
 		dataType: dateTime
-		isHidden
 		formatString: General Date
 		lineageTag: f8f4a152-7685-4c95-8fc1-39775ec9d95f
 		summarizeBy: none
@@ -44,7 +40,6 @@ table 'public nations'
 
 	column created_by
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 71edea29-6d87-48ba-8f8d-e140e0e992ee
 		summarizeBy: sum
@@ -56,7 +51,6 @@ table 'public nations'
 
 	column delete_status
 		dataType: string
-		isHidden
 		lineageTag: 97c703b0-2ef0-49a0-93dc-ee439b47d173
 		summarizeBy: none
 		sourceColumn: delete_status
@@ -67,7 +61,6 @@ table 'public nations'
 
 	column module_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: c7aef993-2b0d-4a6c-b9bd-bff13fc3788f
 		summarizeBy: sum
@@ -79,7 +72,6 @@ table 'public nations'
 
 	column namespace_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 8af30e9f-bd6f-4a8e-95e2-97d29ae6e37e
 		summarizeBy: sum
@@ -91,7 +83,6 @@ table 'public nations'
 
 	column nation_name
 		dataType: string
-		isHidden
 		lineageTag: f18f813b-7016-4e4f-8cdb-04957e3f4cc9
 		summarizeBy: none
 		sourceColumn: nation_name
@@ -102,7 +93,6 @@ table 'public nations'
 
 	column owned_by
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 3f636565-45ee-4853-8b0e-29d7ee8b2e17
 		summarizeBy: sum
@@ -114,7 +104,6 @@ table 'public nations'
 
 	column record_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 3225aee7-80f4-4850-b240-33f5db09d2cb
 		summarizeBy: sum
@@ -126,7 +115,6 @@ table 'public nations'
 
 	column deleted_by
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 515e2f53-80e8-4b12-af28-5830cf580f08
 		summarizeBy: sum
@@ -138,7 +126,6 @@ table 'public nations'
 
 	column updated_by
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 62804e07-07b8-4b39-a45d-616e8083183e
 		summarizeBy: sum

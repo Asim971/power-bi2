@@ -1,10 +1,8 @@
 table 'public handed_over_site'
-	isHidden
 	lineageTag: ab5a1a15-9d3b-4275-87b4-238d89f794fe
 
 	column id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: cefdd7fb-fca9-4e60-96f4-ff174f101f43
 		summarizeBy: sum
@@ -16,7 +14,6 @@ table 'public handed_over_site'
 
 	column handed_over_date
 		dataType: dateTime
-		isHidden
 		formatString: General Date
 		lineageTag: 8e5b6bd1-d9fd-467d-a022-048b7c3197ef
 		summarizeBy: none
@@ -33,7 +30,6 @@ table 'public handed_over_site'
 
 	column site_name
 		dataType: string
-		isHidden
 		lineageTag: 835a9029-2767-47d3-8207-5bbf806cbdf7
 		summarizeBy: none
 		sourceColumn: site_name
@@ -44,7 +40,6 @@ table 'public handed_over_site'
 
 	column stage
 		dataType: string
-		isHidden
 		lineageTag: 7b3463e4-c3ed-4932-848e-b4a3d4a65df3
 		summarizeBy: none
 		sourceColumn: stage

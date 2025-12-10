@@ -1,10 +1,8 @@
 table 'public visit_access_bmd'
-	isHidden
 	lineageTag: 9ca375d1-08cb-4e8b-8a3c-2fb3b351e7dc
 
 	column visit_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 2e794302-9582-4ab2-90a4-0e95a1ac9ea7
 		summarizeBy: sum
@@ -16,7 +14,6 @@ table 'public visit_access_bmd'
 
 	column territory_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 03b9c1fc-d36e-43af-9e09-920ab6bedc0f
 		summarizeBy: sum

@@ -3,11 +3,12 @@ table Dim_BDTerritory
 
 	column BDTerritoryID
 		dataType: int64
-		isKey
 		formatString: 0
 		lineageTag: 9b0c1d2e-3f4a-5678-9abc-def012345678
-		summarizeBy: none
+		summarizeBy: count
 		sourceColumn: BDTerritoryID
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -16,6 +17,8 @@ table Dim_BDTerritory
 		lineageTag: 0c1d2e3f-4a5b-6789-abcd-ef0123456789
 		summarizeBy: none
 		sourceColumn: BDTerritoryName
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -26,13 +29,7 @@ table Dim_BDTerritory
 		summarizeBy: count
 		sourceColumn: DistrictID
 
-		annotation SummarizationSetBy = Automatic
-
-	column DistrictName
-		dataType: string
-		lineageTag: 2e3f4a5b-6c7d-89ab-cdef-012345678901
-		summarizeBy: none
-		sourceColumn: DistrictName
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -43,13 +40,7 @@ table Dim_BDTerritory
 		summarizeBy: count
 		sourceColumn: UpazillaID
 
-		annotation SummarizationSetBy = Automatic
-
-	column UpazillaName
-		dataType: string
-		lineageTag: 4a5b6c7d-8e9f-abcd-ef01-234567890123
-		summarizeBy: none
-		sourceColumn: UpazillaName
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -58,6 +49,8 @@ table Dim_BDTerritory
 		lineageTag: 5b6c7d8e-9f0a-bcde-f012-345678901234
 		summarizeBy: none
 		sourceColumn: delete_status
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -73,6 +66,8 @@ table Dim_BDTerritory
 			relationship: f23e599f-aaf9-4af1-a7d3-0fa21d772a6a
 			defaultHierarchy: LocalDateTable_6b557a37-7f28-4406-a625-9e11636f1b65.'Date Hierarchy'
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column updated_at
@@ -87,12 +82,25 @@ table Dim_BDTerritory
 			relationship: 8ff1e17a-f6f8-4b1b-b8ae-6053232adb6f
 			defaultHierarchy: LocalDateTable_3659c85e-9252-4f34-8368-9a9fb5cb76c8.'Date Hierarchy'
 
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column users_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 798ffaa5-4cf3-4c73-b3b6-9c3b4f02523b
+		summarizeBy: none
+		sourceColumn: users_id
+
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	partition Dim_BDTerritory = m
 		mode: import
 		source = ```
-								// ============================================================
+				// ============================================================
 								// Dim_BDTerritory - Business Development Territory Dimension
 								// Source: public bd_territory
 								// 
@@ -107,65 +115,29 @@ table Dim_BDTerritory
 								let
 								    // Reference the existing tables
 								    BDTerritorySource = #"public bd_territory",
-								    DistrictSource = #"public districts",
-								    UpazillaSource = #"public upazilla",
 								    
 								    // ---- Select Core Columns from bd_territory ----
 								    SelectedColumns = Table.SelectColumns(BDTerritorySource, {
 								        "id", "bd_territory_name", "district_id", "upazilla_id",
 								        "delete_status", "created_at", "updated_at"
 								    }),
+				  #"Merged queries" = Table.NestedJoin(SelectedColumns, {"id"}, #"public users_bd_territory", {"bd_territory_id"}, "public users_bd_territory", JoinKind.LeftOuter),
+				  #"Expanded public users_bd_territory" = Table.ExpandTableColumn(#"Merged queries", "public users_bd_territory", {"users_id"}, {"users_id"}),
 								    
 								    // ---- Filter Active BD Territories ----
-								    ActiveTerritories = Table.SelectRows(SelectedColumns, each [delete_status] = "NO"),
-								    
-								    // ---- Join with District table ----
-								    WithDistrictJoin = Table.NestedJoin(
-								        ActiveTerritories, {"district_id"},
-								        DistrictSource, {"id"},
-								        "DistrictData", JoinKind.LeftOuter
-								    ),
-								    
-				    WithDistrictExpanded = Table.ExpandTableColumn(
-				        WithDistrictJoin, "DistrictData",
-				        {"district_name"},
-				        {"DistrictName"}
-				    ),
-				    
-				    // ---- Join with Upazilla table ----
-				    WithUpazillaJoin = Table.NestedJoin(
-				        WithDistrictExpanded, {"upazilla_id"},
-				        UpazillaSource, {"id"},
-				        "UpazillaData", JoinKind.LeftOuter
-				    ),
-				    
-				    WithUpazillaExpanded = Table.ExpandTableColumn(
-				        WithUpazillaJoin, "UpazillaData",
-				        {"upazilla_name"},
-				        {"UpazillaName"}
-				    ),				    // ---- Rename Columns ----
-								    RenamedColumns = Table.RenameColumns(WithUpazillaExpanded, {
+								    ActiveTerritories = Table.SelectRows(#"Expanded public users_bd_territory", each [delete_status] = "NO"),				    // ---- Rename Columns ----
+								    RenamedColumns = Table.RenameColumns(ActiveTerritories, {
 								        {"id", "BDTerritoryID"},
 								        {"bd_territory_name", "BDTerritoryName"},
 								        {"district_id", "DistrictID"},
 								        {"upazilla_id", "UpazillaID"}
 								    }),
-								    
-								    // ---- Set Data Types ----
-								    TypedTable = Table.TransformColumnTypes(RenamedColumns, {
-								        {"BDTerritoryID", Int64.Type},
-								        {"BDTerritoryName", type text},
-								        {"DistrictID", Int64.Type},
-								        {"DistrictName", type text},
-								        {"UpazillaID", Int64.Type},
-								        {"UpazillaName", type text},
-								        {"delete_status", type text},
-								        {"created_at", type datetime},
-								        {"updated_at", type datetime}
-								    })
+				  #"Removed duplicates" = Table.Distinct(RenamedColumns, {"BDTerritoryID"})
 								in
-								    TypedTable
+								    #"Removed duplicates"
 				```
+
+	changedProperty = IsHidden
 
 	annotation PBI_ResultType = Table
 

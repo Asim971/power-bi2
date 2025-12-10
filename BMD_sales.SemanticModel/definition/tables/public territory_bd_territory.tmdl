@@ -1,10 +1,8 @@
 table 'public territory_bd_territory'
-	isHidden
 	lineageTag: 2e216ee5-0c25-4e45-a7e0-01e1840d874b
 
 	column id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 3ea1ecd4-8c09-480f-a83b-2950baf9ccbb
 		summarizeBy: sum
@@ -16,7 +14,6 @@ table 'public territory_bd_territory'
 
 	column bd_territory_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 63b0a38e-84da-42b0-8179-eec40dac200f
 		summarizeBy: sum
@@ -28,7 +25,6 @@ table 'public territory_bd_territory'
 
 	column territoty_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 21f42bc0-edc1-4f0a-b973-0ef723dd1de3
 		summarizeBy: sum

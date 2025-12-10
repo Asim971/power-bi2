@@ -1,10 +1,8 @@
 table 'public retailer_order'
-	isHidden
 	lineageTag: e6755385-087a-403d-940d-f81f77899e19
 
 	column id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 7469d6c3-92a7-45fb-844a-1cbd7d642b70
 		summarizeBy: sum
@@ -16,7 +14,6 @@ table 'public retailer_order'
 
 	column approval_date
 		dataType: dateTime
-		isHidden
 		formatString: General Date
 		lineageTag: f5907c25-6497-437b-837b-7d6a1c9610ea
 		summarizeBy: none
@@ -33,7 +30,6 @@ table 'public retailer_order'
 
 	column approved_image_url
 		dataType: string
-		isHidden
 		lineageTag: 90f7ee48-fbeb-4b7c-a36a-7393f88f8351
 		summarizeBy: none
 		sourceColumn: approved_image_url
@@ -44,7 +40,6 @@ table 'public retailer_order'
 
 	column delete_status
 		dataType: string
-		isHidden
 		lineageTag: 90a38a66-7340-4ada-a452-c1f64cd163ae
 		summarizeBy: none
 		sourceColumn: delete_status
@@ -55,7 +50,6 @@ table 'public retailer_order'
 
 	column feed_back
 		dataType: string
-		isHidden
 		lineageTag: 8d8e0f7f-0319-4e12-9010-4b74ff027cc6
 		summarizeBy: none
 		sourceColumn: feed_back
@@ -66,7 +60,6 @@ table 'public retailer_order'
 
 	column latitude
 		dataType: string
-		isHidden
 		lineageTag: fd095f33-1468-4130-a2b8-e3b7339d9bd1
 		summarizeBy: none
 		sourceColumn: latitude
@@ -77,7 +70,6 @@ table 'public retailer_order'
 
 	column longitude
 		dataType: string
-		isHidden
 		lineageTag: c0bf0d51-4d32-485a-b9a6-a45421bd6be0
 		summarizeBy: none
 		sourceColumn: longitude
@@ -88,7 +80,6 @@ table 'public retailer_order'
 
 	column order_date
 		dataType: dateTime
-		isHidden
 		formatString: General Date
 		lineageTag: 3374a418-bc55-4eb6-be64-5bc41ae7c7ac
 		summarizeBy: none
@@ -105,7 +96,6 @@ table 'public retailer_order'
 
 	column rejection_feed_back
 		dataType: string
-		isHidden
 		lineageTag: 7efd90f1-bea3-4e49-96de-1c2b1bbe7359
 		summarizeBy: none
 		sourceColumn: rejection_feed_back
@@ -116,7 +106,6 @@ table 'public retailer_order'
 
 	column retailer_order_payment_type
 		dataType: string
-		isHidden
 		lineageTag: bf89083c-0e16-4ccf-8289-03f0857e17fd
 		summarizeBy: none
 		sourceColumn: retailer_order_payment_type
@@ -127,7 +116,6 @@ table 'public retailer_order'
 
 	column retailer_order_status
 		dataType: string
-		isHidden
 		lineageTag: 6940b205-2467-46ab-a713-9b292f3d3944
 		summarizeBy: none
 		sourceColumn: retailer_order_status
@@ -138,7 +126,6 @@ table 'public retailer_order'
 
 	column total_amount
 		dataType: double
-		isHidden
 		lineageTag: 858f70df-665f-421e-bd20-5fd5a71e1fca
 		summarizeBy: sum
 		sourceColumn: total_amount
@@ -151,7 +138,6 @@ table 'public retailer_order'
 
 	column total_quantity
 		dataType: double
-		isHidden
 		lineageTag: 6f98f37e-9a3d-48ac-b0ed-efcac93b7916
 		summarizeBy: sum
 		sourceColumn: total_quantity
@@ -164,7 +150,6 @@ table 'public retailer_order'
 
 	column unit_type
 		dataType: string
-		isHidden
 		lineageTag: f1e4d63d-d699-44ba-a698-9c6b55ae6c5d
 		summarizeBy: none
 		sourceColumn: unit_type
@@ -175,7 +160,6 @@ table 'public retailer_order'
 
 	column retailer_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: f2a76e3c-f0cb-4b6d-8dd1-f0998d940aa6
 		summarizeBy: sum
@@ -187,7 +171,6 @@ table 'public retailer_order'
 
 	column user_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 288da32e-4c77-49c9-b272-de60fc2013b6
 		summarizeBy: sum

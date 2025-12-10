@@ -1,0 +1,84 @@
+table 'Time Intelligence V3'
+	lineageTag: 029a87d5-03f8-4ea0-93f6-c5639c6d56b4
+
+	calculationGroup
+		precedence: 11
+
+		calculationItem Today =
+				CALCULATE(
+				    SELECTEDMEASURE(),
+				    KEEPFILTERS( Dim_Date[DateKey] = TODAY() )
+				)
+
+		calculationItem Yesterday =
+				CALCULATE(
+				    SELECTEDMEASURE(),
+				    Dim_Date[Date] = TODAY() - 1
+				)
+
+		calculationItem WTD =
+				VAR _Today = TODAY()
+				VAR _WeekStart = _Today - ( WEEKDAY(_Today, 2) - 1 )
+				RETURN
+				CALCULATE(
+				    SELECTEDMEASURE(),
+				    KEEPFILTERS( Dim_Date[DateKey] >= _WeekStart ),
+				    KEEPFILTERS( Dim_Date[DateKey] <= _Today )
+				)
+
+		calculationItem MTD =
+				VAR _Today = TODAY()
+				VAR _MonthStart = DATE( YEAR(_Today), MONTH(_Today), 1 )
+				RETURN
+				CALCULATE(
+				    SELECTEDMEASURE(),
+				    KEEPFILTERS( Dim_Date[DateKey] >= _MonthStart ),
+				    KEEPFILTERS( Dim_Date[DateKey] <= _Today )
+				)
+
+		calculationItem YTD =
+				VAR _Today = TODAY()
+				VAR _YearStart = DATE( YEAR(_Today), 1, 1 )
+				RETURN
+				CALCULATE(
+				    SELECTEDMEASURE(),
+				    KEEPFILTERS( Dim_Date[DateKey] >= _YearStart ),
+				    KEEPFILTERS( Dim_Date[DateKey] <= _Today )
+				)
+
+		calculationItem 'Last 7' =
+				VAR _Today = TODAY()
+				RETURN
+				CALCULATE(
+				    SELECTEDMEASURE(),
+				    KEEPFILTERS( Dim_Date[DateKey] >= _Today - 6 ),
+				    KEEPFILTERS( Dim_Date[DateKey] <= _Today )
+				)
+
+		calculationItem 'Last 30' =
+				VAR _Today = TODAY()
+				RETURN
+				CALCULATE(
+				    SELECTEDMEASURE(),
+				    KEEPFILTERS( Dim_Date[DateKey] >= _Today - 29 ),
+				    KEEPFILTERS( Dim_Date[DateKey] <= _Today )
+				)
+
+	column 'Calculation group column'
+		dataType: string
+		lineageTag: 4bdfb91a-296e-4ea3-b943-b41871a22eb9
+		summarizeBy: none
+		sourceColumn: Name
+		sortByColumn: Ordinal
+
+		annotation SummarizationSetBy = Automatic
+
+	column Ordinal
+		dataType: int64
+		formatString: 0
+		lineageTag: 380859b6-cca9-4623-a0fe-3f3234e8922a
+		summarizeBy: sum
+		sourceColumn: Ordinal
+
+		annotation SummarizationSetBy = Automatic
+

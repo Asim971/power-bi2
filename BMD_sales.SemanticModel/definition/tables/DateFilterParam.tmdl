@@ -7,22 +7,27 @@ table DateFilterParam
 		summarizeBy: none
 		sourceColumn: FilterOption
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	partition DateFilterParam = m
 		mode: import
 		source =
-			let
-			    Source = #table(
-			        type table [FilterOption = text],
-			        {
-			            {"Daily"},
-			            {"WTD"},
-			            {"MTD"},
-			            {"YTD"}
-			        }
-			    )
-			in
-			    Source
+				let
+				    Source = #table(
+				        type table [FilterOption = text],
+				        {
+				            {"Daily"},
+				            {"WTD"},
+				            {"MTD"},
+				            {"YTD"}
+				        }
+				    )
+				in
+				    Source
+
+	changedProperty = IsHidden
 
 	annotation PBI_ResultType = Table
+

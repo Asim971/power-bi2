@@ -1,10 +1,8 @@
 table 'public potential_site'
-	isHidden
 	lineageTag: 26688915-ca7a-43d7-8ef3-28b50dc4efe6
 
 	column id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 52845f69-79e2-4c1c-bfb5-51a696d5a365
 		summarizeBy: sum
@@ -16,7 +14,6 @@ table 'public potential_site'
 
 	column address
 		dataType: string
-		isHidden
 		lineageTag: adf31484-0dce-410b-a2c5-da89f2159f05
 		summarizeBy: none
 		sourceColumn: address
@@ -27,7 +24,6 @@ table 'public potential_site'
 
 	column area_name
 		dataType: string
-		isHidden
 		lineageTag: e9f3adb3-e613-47e4-b91a-2be0791402cc
 		summarizeBy: none
 		sourceColumn: area_name
@@ -38,7 +34,6 @@ table 'public potential_site'
 
 	column assigned_agm
 		dataType: string
-		isHidden
 		lineageTag: 85d23694-7694-4828-babb-96d270669650
 		summarizeBy: none
 		sourceColumn: assigned_agm
@@ -49,7 +44,6 @@ table 'public potential_site'
 
 	column assigned_asm
 		dataType: string
-		isHidden
 		lineageTag: b9ecc7f5-239a-45f4-8306-10384f484d26
 		summarizeBy: none
 		sourceColumn: assigned_asm
@@ -60,7 +54,6 @@ table 'public potential_site'
 
 	column assigned_gm
 		dataType: string
-		isHidden
 		lineageTag: 1e763cf7-4f73-4196-864c-056f803f2269
 		summarizeBy: none
 		sourceColumn: assigned_gm
@@ -71,7 +64,6 @@ table 'public potential_site'
 
 	column assigned_sr
 		dataType: string
-		isHidden
 		lineageTag: 2f284be2-0e28-47c3-bc71-86ef2336ec8c
 		summarizeBy: none
 		sourceColumn: assigned_sr
@@ -82,7 +74,6 @@ table 'public potential_site'
 
 	column assigned_zsm
 		dataType: string
-		isHidden
 		lineageTag: 37c96328-3bc0-4690-b09a-232cd8498adf
 		summarizeBy: none
 		sourceColumn: assigned_zsm
@@ -93,7 +84,6 @@ table 'public potential_site'
 
 	column bd_team
 		dataType: string
-		isHidden
 		lineageTag: 6e35cd83-2c06-4eed-b17e-cfc97706107e
 		summarizeBy: none
 		sourceColumn: bd_team
@@ -104,7 +94,6 @@ table 'public potential_site'
 
 	column bd_territory_name
 		dataType: string
-		isHidden
 		lineageTag: 2cb79c23-f153-4a9f-afce-855c9b501c94
 		summarizeBy: none
 		sourceColumn: bd_territory_name
@@ -115,7 +104,6 @@ table 'public potential_site'
 
 	column bd_territory_ref
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: e82b398a-2aef-4def-833a-a4ecdac0794f
 		summarizeBy: sum
@@ -127,7 +115,6 @@ table 'public potential_site'
 
 	column cement_dealer_name
 		dataType: string
-		isHidden
 		lineageTag: 6f69eaa6-38a7-4ca5-b28f-10fc3efe14d9
 		summarizeBy: none
 		sourceColumn: cement_dealer_name
@@ -138,7 +125,6 @@ table 'public potential_site'
 
 	column cement_dealer_type
 		dataType: string
-		isHidden
 		lineageTag: 1e65e649-3829-414e-9c50-214e53733aab
 		summarizeBy: none
 		sourceColumn: cement_dealer_type
@@ -149,7 +135,6 @@ table 'public potential_site'
 
 	column cement_territory
 		dataType: string
-		isHidden
 		lineageTag: 2279fc05-dc55-4a70-a326-410fb5bba205
 		summarizeBy: none
 		sourceColumn: cement_territory
@@ -160,7 +145,6 @@ table 'public potential_site'
 
 	column competitor_name
 		dataType: string
-		isHidden
 		lineageTag: 825ae1a6-0bcf-42e0-b69e-d4d0771be814
 		summarizeBy: none
 		sourceColumn: competitor_name
@@ -171,7 +155,6 @@ table 'public potential_site'
 
 	column converted_site_status
 		dataType: string
-		isHidden
 		lineageTag: a3dd42ec-f586-4b5a-86b3-0c2ec3b44ce1
 		summarizeBy: none
 		sourceColumn: converted_site_status
@@ -182,7 +165,6 @@ table 'public potential_site'
 
 	column created_at
 		dataType: dateTime
-		isHidden
 		formatString: General Date
 		lineageTag: d4d92260-6c19-48ca-95f3-04b90e826249
 		summarizeBy: none
@@ -199,7 +181,6 @@ table 'public potential_site'
 
 	column created_by
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 9b3b2438-c8d0-47bb-9b01-42be65abb062
 		summarizeBy: sum
@@ -211,7 +192,6 @@ table 'public potential_site'
 
 	column delete_status
 		dataType: string
-		isHidden
 		lineageTag: eac3f9d6-d4e6-4a5b-87e0-9370557372da
 		summarizeBy: none
 		sourceColumn: delete_status
@@ -222,7 +202,6 @@ table 'public potential_site'
 
 	column end_stage
 		dataType: string
-		isHidden
 		lineageTag: 221a1a98-761f-4c04-9ecc-5d5e04d175d1
 		summarizeBy: none
 		sourceColumn: end_stage
@@ -233,7 +212,6 @@ table 'public potential_site'
 
 	column end_user
 		dataType: string
-		isHidden
 		lineageTag: 27635f97-10d6-4143-8784-b2f19e0e1bc8
 		summarizeBy: none
 		sourceColumn: end_user
@@ -244,7 +222,6 @@ table 'public potential_site'
 
 	column engineer_type
 		dataType: string
-		isHidden
 		lineageTag: e0220459-5270-4beb-83a3-f7d5a0827b08
 		summarizeBy: none
 		sourceColumn: engineer_type
@@ -255,7 +232,6 @@ table 'public potential_site'
 
 	column est_vol_cmt
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 62df3ca9-bb00-4965-9a25-9c301840fc2c
 		summarizeBy: sum
@@ -267,7 +243,6 @@ table 'public potential_site'
 
 	column est_vol_ispat
 		dataType: double
-		isHidden
 		lineageTag: 4e98c057-7fd1-4e09-bf3b-383bd432a201
 		summarizeBy: sum
 		sourceColumn: est_vol_ispat
@@ -280,7 +255,6 @@ table 'public potential_site'
 
 	column has_order_approved
 		dataType: string
-		isHidden
 		lineageTag: 4a3a5f19-f0ae-456e-b0d9-6284ba094028
 		summarizeBy: none
 		sourceColumn: has_order_approved
@@ -291,7 +265,6 @@ table 'public potential_site'
 
 	column ispat_dealer_name
 		dataType: string
-		isHidden
 		lineageTag: c901edd2-673c-4db3-ace9-c3259921f87d
 		summarizeBy: none
 		sourceColumn: ispat_dealer_name
@@ -302,7 +275,6 @@ table 'public potential_site'
 
 	column ispat_dealer_type
 		dataType: string
-		isHidden
 		lineageTag: e1a106bb-6c66-4df7-b063-5e672f7e098f
 		summarizeBy: none
 		sourceColumn: ispat_dealer_type
@@ -313,7 +285,6 @@ table 'public potential_site'
 
 	column ispat_territory
 		dataType: string
-		isHidden
 		lineageTag: 40259335-ae4e-4c04-a34b-6c12bee431e6
 		summarizeBy: none
 		sourceColumn: ispat_territory
@@ -324,7 +295,6 @@ table 'public potential_site'
 
 	column ispat_territory_name
 		dataType: string
-		isHidden
 		lineageTag: 529322f6-0ce2-4e33-bff2-b34f49251a9f
 		summarizeBy: none
 		sourceColumn: ispat_territory_name
@@ -335,7 +305,6 @@ table 'public potential_site'
 
 	column ispat_territory_record_ref
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 38634394-511e-4531-9ae6-15c3968b5af2
 		summarizeBy: sum
@@ -347,7 +316,6 @@ table 'public potential_site'
 
 	column ispat_territory_table_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: e7a87d26-6b6c-46b4-becc-a075d0876787
 		summarizeBy: sum
@@ -359,7 +327,6 @@ table 'public potential_site'
 
 	column meta
 		dataType: string
-		isHidden
 		lineageTag: 4e7b76e6-b5b2-4ce5-83b2-2b36a189a651
 		summarizeBy: none
 		sourceColumn: meta
@@ -370,7 +337,6 @@ table 'public potential_site'
 
 	column moduleid
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 9f64aa45-73b2-4c43-b860-8a96ec63dee0
 		summarizeBy: sum
@@ -382,7 +348,6 @@ table 'public potential_site'
 
 	column namespaceid
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 1cdd4597-fda0-4082-8d58-68f76632b700
 		summarizeBy: sum
@@ -394,7 +359,6 @@ table 'public potential_site'
 
 	column notes
 		dataType: string
-		isHidden
 		lineageTag: 037bad36-f56e-4512-86a5-e4eab15b4778
 		summarizeBy: none
 		sourceColumn: notes
@@ -405,7 +369,6 @@ table 'public potential_site'
 
 	column owned_by
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: e2cf446e-3990-4835-9e81-30f6dd5424ec
 		summarizeBy: sum
@@ -417,7 +380,6 @@ table 'public potential_site'
 
 	column partner_type
 		dataType: string
-		isHidden
 		lineageTag: c0c244df-20c6-4abb-859b-c4e63600daea
 		summarizeBy: none
 		sourceColumn: partner_type
@@ -428,7 +390,6 @@ table 'public potential_site'
 
 	column potential_site
 		dataType: string
-		isHidden
 		lineageTag: ae164e83-5585-498b-a831-fdca29fee635
 		summarizeBy: none
 		sourceColumn: potential_site
@@ -439,7 +400,6 @@ table 'public potential_site'
 
 	column project_contact_name
 		dataType: string
-		isHidden
 		lineageTag: 4d77fcfb-6365-4489-8b6d-43bae2c02a3b
 		summarizeBy: none
 		sourceColumn: project_contact_name
@@ -450,7 +410,6 @@ table 'public potential_site'
 
 	column project_contact_number
 		dataType: string
-		isHidden
 		lineageTag: 705c3ccf-47c5-4fec-a827-14f9b49edc56
 		summarizeBy: none
 		sourceColumn: project_contact_number
@@ -461,7 +420,6 @@ table 'public potential_site'
 
 	column project_name
 		dataType: string
-		isHidden
 		lineageTag: df8026a0-8ca7-468c-a709-05151eecaec2
 		summarizeBy: none
 		sourceColumn: project_name
@@ -472,7 +430,6 @@ table 'public potential_site'
 
 	column project_size
 		dataType: string
-		isHidden
 		lineageTag: 4cc8980f-3b29-469f-9448-cc59c7675053
 		summarizeBy: none
 		sourceColumn: project_size
@@ -483,7 +440,6 @@ table 'public potential_site'
 
 	column recordid
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 88009ca9-f2bc-4392-afd6-e3b89fd06cba
 		summarizeBy: sum
@@ -495,7 +451,6 @@ table 'public potential_site'
 
 	column ref_engineer
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: cde1afcd-3da5-43c7-be9a-17130ee9c7e8
 		summarizeBy: sum
@@ -507,7 +462,6 @@ table 'public potential_site'
 
 	column revision
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: ad92acbc-54db-49a9-9d68-ae46cc5b7c38
 		summarizeBy: sum
@@ -519,7 +473,6 @@ table 'public potential_site'
 
 	column site_management_status
 		dataType: string
-		isHidden
 		lineageTag: 246ffe7d-91d1-4f2b-9648-d7e38519700e
 		summarizeBy: none
 		sourceColumn: site_management_status
@@ -530,7 +483,6 @@ table 'public potential_site'
 
 	column site_owner_name
 		dataType: string
-		isHidden
 		lineageTag: 179c9474-15cf-49a8-9ef5-4c3bef20a6ee
 		summarizeBy: none
 		sourceColumn: site_owner_name
@@ -541,7 +493,6 @@ table 'public potential_site'
 
 	column site_type
 		dataType: string
-		isHidden
 		lineageTag: 69970387-f4c6-443f-ad56-e8531bdb09cd
 		summarizeBy: none
 		sourceColumn: site_type
@@ -552,7 +503,6 @@ table 'public potential_site'
 
 	column site_update_status
 		dataType: string
-		isHidden
 		lineageTag: 1e08fc8d-dfcb-4061-98cf-419392546ed0
 		summarizeBy: none
 		sourceColumn: site_update_status
@@ -563,7 +513,6 @@ table 'public potential_site'
 
 	column start_stage
 		dataType: string
-		isHidden
 		lineageTag: 1d7f13d5-ce25-4d74-a516-3a90b15f7b28
 		summarizeBy: none
 		sourceColumn: start_stage
@@ -574,7 +523,6 @@ table 'public potential_site'
 
 	column status
 		dataType: string
-		isHidden
 		lineageTag: 8ad78912-3ae8-40a9-a8ec-35e7e8cdd87f
 		summarizeBy: none
 		sourceColumn: status
@@ -585,7 +533,6 @@ table 'public potential_site'
 
 	column storied_building
 		dataType: string
-		isHidden
 		lineageTag: faf160f2-ad0a-4d23-b092-d5979b5d9e90
 		summarizeBy: none
 		sourceColumn: storied_building
@@ -596,7 +543,6 @@ table 'public potential_site'
 
 	column submitted_by
 		dataType: string
-		isHidden
 		lineageTag: b3cd7d33-4860-46ad-afbc-82e9a598282d
 		summarizeBy: none
 		sourceColumn: submitted_by
@@ -607,7 +553,6 @@ table 'public potential_site'
 
 	column territory_name
 		dataType: string
-		isHidden
 		lineageTag: 98b7a525-edb3-46a6-a534-e80aec4750e6
 		summarizeBy: none
 		sourceColumn: territory_name
@@ -618,7 +563,6 @@ table 'public potential_site'
 
 	column updated_at
 		dataType: dateTime
-		isHidden
 		formatString: General Date
 		lineageTag: ce2c327e-deec-4d4f-967d-f4a4d293fa78
 		summarizeBy: none
@@ -635,7 +579,6 @@ table 'public potential_site'
 
 	column updated_by
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: f36cb819-241a-4a65-940b-459284cc0e8f
 		summarizeBy: sum
@@ -647,7 +590,6 @@ table 'public potential_site'
 
 	column visit_images
 		dataType: string
-		isHidden
 		lineageTag: 6e1953bb-8f03-41eb-b9b9-ec108ae5dba3
 		summarizeBy: none
 		sourceColumn: visit_images
@@ -658,7 +600,6 @@ table 'public potential_site'
 
 	column visit_photo
 		dataType: string
-		isHidden
 		lineageTag: 93371b3d-d8d9-495c-8e04-45c04ada85d1
 		summarizeBy: none
 		sourceColumn: visit_photo
@@ -669,7 +610,6 @@ table 'public potential_site'
 
 	column visit_reference
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 57d3378d-e553-4338-a2e7-51086e49f129
 		summarizeBy: sum
@@ -681,7 +621,6 @@ table 'public potential_site'
 
 	column visit_status
 		dataType: string
-		isHidden
 		lineageTag: b0fce097-bc22-4b83-adfb-3de309f7fbd2
 		summarizeBy: none
 		sourceColumn: visit_status
@@ -692,7 +631,6 @@ table 'public potential_site'
 
 	column visited_sr
 		dataType: string
-		isHidden
 		lineageTag: 872e6c93-9197-4701-8167-f2811c0254e6
 		summarizeBy: none
 		sourceColumn: visited_sr
@@ -703,7 +641,6 @@ table 'public potential_site'
 
 	column area_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 2b348642-c821-4046-b5b9-76c6071c398c
 		summarizeBy: sum
@@ -715,7 +652,6 @@ table 'public potential_site'
 
 	column bazaar_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: b968805a-93f7-4b4f-ab37-a0d11f61f09f
 		summarizeBy: sum
@@ -727,7 +663,6 @@ table 'public potential_site'
 
 	column bd_territory_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 6d232932-ecbb-4124-b9f4-49da85e335c2
 		summarizeBy: sum
@@ -739,7 +674,6 @@ table 'public potential_site'
 
 	column cement_brand
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: dcc82603-b50b-49e8-802b-db6d39782ad5
 		summarizeBy: sum
@@ -751,7 +685,6 @@ table 'public potential_site'
 
 	column competitor_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: ed20f0ec-f9ef-4ad5-abbf-9fdc1c2ddc3f
 		summarizeBy: sum
@@ -763,7 +696,6 @@ table 'public potential_site'
 
 	column contractor_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: d4c8c2f1-288c-444f-a973-b805aeaf54e6
 		summarizeBy: sum
@@ -775,7 +707,6 @@ table 'public potential_site'
 
 	column employee_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: a7fc3cd3-45d3-49fa-b74d-8045a5fc2880
 		summarizeBy: sum
@@ -787,7 +718,6 @@ table 'public potential_site'
 
 	column engineer_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: ae25a925-e935-4366-9e8f-7c6faf86192c
 		summarizeBy: sum
@@ -799,7 +729,6 @@ table 'public potential_site'
 
 	column handed_over_site_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 7d90ac5f-5670-41c3-ab6a-04bb29e87887
 		summarizeBy: sum
@@ -811,7 +740,6 @@ table 'public potential_site'
 
 	column head_mason_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: bd413819-d4a7-45fd-893b-35eea8d1c444
 		summarizeBy: sum
@@ -823,7 +751,6 @@ table 'public potential_site'
 
 	column ihb_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: c0fcff35-ebd4-4ae0-9d26-9021a6bb0bf2
 		summarizeBy: sum
@@ -835,7 +762,6 @@ table 'public potential_site'
 
 	column ispat_brand
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 63b9fdf7-a905-4002-9577-f135e946610e
 		summarizeBy: sum
@@ -847,7 +773,6 @@ table 'public potential_site'
 
 	column site_manager_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: f8657cdc-bc95-4ec0-9b4b-eaf2607bf5d2
 		summarizeBy: sum
@@ -859,7 +784,6 @@ table 'public potential_site'
 
 	column territory_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 018d813a-7f70-4860-b5d3-fa20f07af95a
 		summarizeBy: sum

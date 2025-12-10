@@ -13,7 +13,6 @@ table Parameter
 		annotation SummarizationSetBy = Automatic
 
 	column 'Parameter Fields'
-		isHidden
 		lineageTag: 9b3ffe87-3393-47de-b9ad-5b110efed810
 		summarizeBy: none
 		sourceColumn: [Value2]
@@ -28,7 +27,6 @@ table Parameter
 		annotation SummarizationSetBy = Automatic
 
 	column 'Parameter Order'
-		isHidden
 		formatString: 0
 		lineageTag: 422b03bf-d0d3-4309-ab5e-0a6306b9f076
 		summarizeBy: sum

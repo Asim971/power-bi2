@@ -1,10 +1,8 @@
 table 'public dealer_so_image'
-	isHidden
 	lineageTag: cc433fbe-2900-4462-8de7-b67edd766d93
 
 	column id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: dbefae12-94dc-47fd-b62d-34ae0ecfd583
 		summarizeBy: sum
@@ -16,7 +14,6 @@ table 'public dealer_so_image'
 
 	column image_url
 		dataType: string
-		isHidden
 		lineageTag: 4ebaeade-4a62-4cd9-9d3a-a2fdb8130ffa
 		summarizeBy: none
 		sourceColumn: image_url
@@ -27,7 +24,6 @@ table 'public dealer_so_image'
 
 	column dealer_so_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: eb5175b4-a029-464f-a528-96a753bf02db
 		summarizeBy: sum

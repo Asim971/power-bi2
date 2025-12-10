@@ -1,12 +1,20 @@
 table Dim_User
 	lineageTag: 9688bf50-eb6a-4a3d-9c9a-b8ea809bac6b
 
+	measure Total_Employees =
+			
+			COUNTROWS( Dim_User )
+		formatString: 0
+		lineageTag: f522ff70-593c-4462-b632-92b44bacbb74
+
 	column UserID
 		dataType: int64
 		formatString: 0
 		lineageTag: c6cf996d-9bb4-47e8-b97e-5e84d6d7d26c
 		summarizeBy: none
 		sourceColumn: UserID
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -16,6 +24,8 @@ table Dim_User
 		summarizeBy: none
 		sourceColumn: EmployeeName
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column EmployeeEmail
@@ -24,6 +34,8 @@ table Dim_User
 		summarizeBy: none
 		sourceColumn: EmployeeEmail
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column EmployeePhone
@@ -31,6 +43,8 @@ table Dim_User
 		lineageTag: f3ba80ba-c948-471f-b170-d12edef8a557
 		summarizeBy: none
 		sourceColumn: EmployeePhone
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -41,6 +55,8 @@ table Dim_User
 		summarizeBy: count
 		sourceColumn: RoleID
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column ZoneID
@@ -49,6 +65,8 @@ table Dim_User
 		lineageTag: d72e3b02-01c5-4fe7-a8d3-1edafc5aeb32
 		summarizeBy: count
 		sourceColumn: ZoneID
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -59,14 +77,18 @@ table Dim_User
 		summarizeBy: count
 		sourceColumn: RegionID
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column AreaID
 		dataType: int64
 		formatString: 0
 		lineageTag: 763db0bb-b325-43ef-8169-d567535b77f9
-		summarizeBy: none
+		summarizeBy: count
 		sourceColumn: AreaID
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -74,8 +96,10 @@ table Dim_User
 		dataType: int64
 		formatString: 0
 		lineageTag: 9b783287-bfa1-43c2-8880-0655e90dabdf
-		summarizeBy: none
+		summarizeBy: count
 		sourceColumn: BDTerritoryID
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -85,6 +109,8 @@ table Dim_User
 		summarizeBy: none
 		sourceColumn: Designation
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column LineManager
@@ -92,6 +118,8 @@ table Dim_User
 		lineageTag: 42e23307-986e-4eee-b5cf-14aa862d1307
 		summarizeBy: none
 		sourceColumn: LineManager
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -107,6 +135,8 @@ table Dim_User
 			relationship: d8f418c8-914a-48f0-8aca-5d32bb211a03
 			defaultHierarchy: LocalDateTable_9b5f3741-9efa-4402-933e-a3106abe5657.'Date Hierarchy'
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column updated_at
@@ -121,6 +151,8 @@ table Dim_User
 			relationship: 3e7d49a3-80cc-404e-97d9-6dc1c9eb4e65
 			defaultHierarchy: LocalDateTable_3d8119aa-b5e9-4412-9570-414eb61d773d.'Date Hierarchy'
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column RoleName
@@ -128,6 +160,8 @@ table Dim_User
 		lineageTag: 31b057ac-d104-41df-9d98-932fad55679b
 		summarizeBy: none
 		sourceColumn: RoleName
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -138,6 +172,8 @@ table Dim_User
 		summarizeBy: sum
 		sourceColumn: RoleLevel
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column Department
@@ -145,6 +181,8 @@ table Dim_User
 		lineageTag: 18cd9375-09d5-471e-8b4c-015150c32c48
 		summarizeBy: none
 		sourceColumn: Department
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -154,14 +192,18 @@ table Dim_User
 		summarizeBy: none
 		sourceColumn: RoleDesignation
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column EmployeeID
 		dataType: int64
 		formatString: 0
 		lineageTag: 30efb800-f538-489b-9472-0a1eb39a708e
-		summarizeBy: count
+		summarizeBy: none
 		sourceColumn: EmployeeID
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -171,6 +213,8 @@ table Dim_User
 		summarizeBy: none
 		sourceColumn: DepartmentTrack
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column RoleCategory
@@ -178,6 +222,8 @@ table Dim_User
 		lineageTag: 179ed46c-3e0a-40cf-bc11-1ad80290e8a7
 		summarizeBy: none
 		sourceColumn: RoleCategory
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -188,6 +234,8 @@ table Dim_User
 		summarizeBy: sum
 		sourceColumn: IsFieldRole
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column ManagementLevel
@@ -195,6 +243,8 @@ table Dim_User
 		lineageTag: f5a20a8f-2f63-46be-92df-6b3cb5c82240
 		summarizeBy: none
 		sourceColumn: ManagementLevel
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -205,6 +255,8 @@ table Dim_User
 		summarizeBy: count
 		sourceColumn: OrganizationID
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column OrganizationName
@@ -212,6 +264,8 @@ table Dim_User
 		lineageTag: 2b3c4d5e-6f7a-8901-bcde-f12345678902
 		summarizeBy: none
 		sourceColumn: OrganizationName
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -221,6 +275,8 @@ table Dim_User
 		summarizeBy: none
 		sourceColumn: ZoneName
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column RegionName
@@ -228,6 +284,8 @@ table Dim_User
 		lineageTag: 4d5e6f7a-8b9c-0123-def0-234567890104
 		summarizeBy: none
 		sourceColumn: RegionName
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -237,22 +295,7 @@ table Dim_User
 		summarizeBy: none
 		sourceColumn: AreaName
 
-		annotation SummarizationSetBy = Automatic
-
-	column TerritoryID
-		dataType: int64
-		formatString: 0
-		lineageTag: 5f6a7b8c-9d0e-1234-ab01-456789012345
-		summarizeBy: none
-		sourceColumn: TerritoryID
-
-		annotation SummarizationSetBy = Automatic
-
-	column TerritoryName
-		dataType: string
-		lineageTag: 6a7b8c9d-0e1f-2345-bc12-567890123456
-		summarizeBy: none
-		sourceColumn: TerritoryName
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -262,14 +305,7 @@ table Dim_User
 		summarizeBy: none
 		sourceColumn: BDTerritoryName
 
-		annotation SummarizationSetBy = Automatic
-
-	column BazaarID
-		dataType: int64
-		formatString: 0
-		lineageTag: 7a8b9c0d-1e2f-3456-0123-567890123408
-		summarizeBy: none
-		sourceColumn: BazaarID
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -279,12 +315,46 @@ table Dim_User
 		summarizeBy: none
 		sourceColumn: TerritoryLayerName
 
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column BazaarID
+		dataType: int64
+		formatString: 0
+		lineageTag: 7a8b9c0d-1e2f-3456-0123-567890123408
+		summarizeBy: count
+		sourceColumn: BazaarID
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column TerritoryID
+		dataType: int64
+		formatString: 0
+		lineageTag: 5f6a7b8c-9d0e-1234-ab01-456789012345
+		summarizeBy: count
+		sourceColumn: TerritoryID
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column TerritoryName
+		dataType: string
+		lineageTag: 6a7b8c9d-0e1f-2345-bc12-567890123456
+		summarizeBy: none
+		sourceColumn: TerritoryName
+
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	partition Dim_User = m
 		mode: import
-		source = ```
-								// ============================================================
+		source =
+				// ============================================================
 								// Dim_User - Employee Dimension
 								// Based on actual 'public users' table schema
 								// Includes Role, Organization, Territory lookups
@@ -304,7 +374,7 @@ table Dim_User
 								//
 								// HIERARCHY: Organization → Zone → Region → Area → Territory
 								// ============================================================
-
+				
 								let
 								    // Reference the existing tables
 								    UsersSource = #"public users",
@@ -318,7 +388,7 @@ table Dim_User
 								    BDTerritorySource = #"public bd_territory",
 								    UsersBDTerritoryBridge = #"public users_bd_territory",
 								    BDTerritoryBazaarsBridge = #"public bd_territory_bazaars",
-
+				
 								    // ---- Select Core Columns from users ----
 								    SelectedColumns = Table.SelectColumns(UsersSource, {
 								        "id", "name", "email", "phone_number", "role_id",
@@ -326,36 +396,36 @@ table Dim_User
 								        "user_designation", "line_manager", "organization_id",
 								        "delete_status", "created_at", "updated_at"
 								    }),
-
+				
 								    // ---- Filter Active Users ----
 								    ActiveUsers = Table.SelectRows(SelectedColumns, each [delete_status] = "NO"),
-
+				
 								    // ---- Join with Role table to get role details ----
 								    WithRoleJoin = Table.NestedJoin(
 								        ActiveUsers, {"role_id"},
 								        RolesSource, {"id"},
 								        "RoleData", JoinKind.LeftOuter
 								    ),
-
+				
 								    WithRoleExpanded = Table.ExpandTableColumn(
 								        WithRoleJoin, "RoleData",
 								        {"name", "level", "department", "designation"},
 								        {"RoleName", "RoleLevel", "Department", "RoleDesignation"}
 								    ),
-
+				
 								    // ---- Join with Organization table to get org name ----
 								    WithOrgJoin = Table.NestedJoin(
 								        WithRoleExpanded, {"organization_id"},
 								        OrgSource, {"id"},
 								        "OrgData", JoinKind.LeftOuter
 								    ),
-
+				
 								    WithOrgExpanded = Table.ExpandTableColumn(
 								        WithOrgJoin, "OrgData",
 								        {"organization_name"},
 								        {"OrganizationNameRaw"}
 								    ),
-
+				
 								    // ---- Default OrganizationName to "AGI Group" for NULL (BDO/CRO roles) ----
 								    // BDO/CRO roles don't have organization_id set but belong to AGI Group
 								    WithOrgNameDefault = Table.AddColumn(WithOrgExpanded, "OrganizationName", each
@@ -363,48 +433,48 @@ table Dim_User
 								        else [OrganizationNameRaw],
 								        type text
 								    ),
-
+				
 								    WithOrgCleaned = Table.RemoveColumns(WithOrgNameDefault, {"OrganizationNameRaw"}),
-
+				
 								    // ---- Join with Zone table to get zone name ----
 								    WithZoneJoin = Table.NestedJoin(
 								        WithOrgCleaned, {"zone_id"},
 								        ZoneSource, {"id"},
 								        "ZoneData", JoinKind.LeftOuter
 								    ),
-
+				
 								    WithZoneExpanded = Table.ExpandTableColumn(
 								        WithZoneJoin, "ZoneData",
 								        {"zone_name"},
 								        {"ZoneName"}
 								    ),
-
+				
 								    // ---- Join with Region table to get region name ----
 								    WithRegionJoin = Table.NestedJoin(
 								        WithZoneExpanded, {"region_id"},
 								        RegionSource, {"id"},
 								        "RegionData", JoinKind.LeftOuter
 								    ),
-
+				
 								    WithRegionExpanded = Table.ExpandTableColumn(
 								        WithRegionJoin, "RegionData",
 								        {"region_name"},
 								        {"RegionName"}
 								    ),
-
+				
 								    // ---- Join with Area table to get area name ----
 								    WithAreaJoin = Table.NestedJoin(
 								        WithRegionExpanded, {"area_id"},
 								        AreaSource, {"id"},
 								        "AreaData", JoinKind.LeftOuter
 								    ),
-
+				
 								    WithAreaExpanded = Table.ExpandTableColumn(
 								        WithAreaJoin, "AreaData",
 								        {"name"},
 								        {"AreaName"}
 								    ),
-
+				
 								    // ---- Join with users_territory bridge table for ORG track ----
 								    // SR users are assigned to specific territories via users_territory
 								    // Use Table.Group first to get only the FIRST territory_id per user
@@ -413,32 +483,32 @@ table Dim_User
 								        {"users_id"},
 								        {{"FirstTerritoryID", each List.First([territory_id]), type nullable number}}
 								    ),
-
+				
 								    WithTerritoryBridgeJoin = Table.NestedJoin(
 								        WithAreaExpanded, {"id"},
 								        TerritoryBridgeGrouped, {"users_id"},
 								        "TerritoryBridgeData", JoinKind.LeftOuter
 								    ),
-
+				
 								    WithTerritoryBridgeExpanded = Table.ExpandTableColumn(
 								        WithTerritoryBridgeJoin, "TerritoryBridgeData",
 								        {"FirstTerritoryID"},
 								        {"TerritoryID"}
 								    ),
-
+				
 								    // ---- Join with Territory table to get territory name ----
 								    WithTerritoryJoin = Table.NestedJoin(
 								        WithTerritoryBridgeExpanded, {"TerritoryID"},
 								        TerritorySource, {"id"},
 								        "TerritoryData", JoinKind.LeftOuter
 								    ),
-
+				
 								    WithTerritoryExpanded = Table.ExpandTableColumn(
 								        WithTerritoryJoin, "TerritoryData",
 								        {"name", "area_name"},
 								        {"TerritoryName", "TerritoryAreaName"}
 								    ),
-
+				
 								    // ---- Fix AreaName: Use territory's area_name if AreaName is null/wrong ----
 								    // This ensures Area shows the correct parent level from territory table
 								    WithAreaFixed = Table.AddColumn(WithTerritoryExpanded, "AreaNameCorrected", each
@@ -446,7 +516,7 @@ table Dim_User
 								        else [AreaName],
 								        type text
 								    ),
-
+				
 								    // ---- Join with users_bd_territory bridge table ----
 								    // This links users to BD territories via the bridge table
 								    // Use Table.Group first to get only the FIRST bd_territory_id per user
@@ -456,32 +526,32 @@ table Dim_User
 								        {"users_id"},
 								        {{"FirstBDTerritoryID", each List.First([bd_territory_id]), type nullable number}}
 								    ),
-
+				
 								    WithBDTerritoryBridgeJoin = Table.NestedJoin(
 								        WithAreaFixed, {"id"},
 								        BDTerritoryBridgeGrouped, {"users_id"},
 								        "BDTerritoryBridgeData", JoinKind.LeftOuter
 								    ),
-
+				
 								    WithBDTerritoryBridgeExpanded = Table.ExpandTableColumn(
 								        WithBDTerritoryBridgeJoin, "BDTerritoryBridgeData",
 								        {"FirstBDTerritoryID"},
 								        {"BDTerritoryID"}
 								    ),
-
+				
 								    // ---- Join with BD Territory table to get bd_territory_name ----
 								    WithBDTerritoryJoin = Table.NestedJoin(
 								        WithBDTerritoryBridgeExpanded, {"BDTerritoryID"},
 								        BDTerritorySource, {"id"},
 								        "BDTerritoryData", JoinKind.LeftOuter
 								    ),
-
+				
 								    WithBDTerritoryExpanded = Table.ExpandTableColumn(
 								        WithBDTerritoryJoin, "BDTerritoryData",
 								        {"bd_territory_name"},
 								        {"BDTerritoryName"}
 								    ),
-
+				
 								    // ---- Join with bd_territory_bazaars to get BazaarID ----
 								    // This enables User → Client filtering via Bazaar
 								    // Get first bazaar_id per bd_territory to avoid duplicates
@@ -490,25 +560,25 @@ table Dim_User
 								        {"bd_territory_id"},
 								        {{"FirstBazaarID", each List.First([bazaar_id]), type nullable number}}
 								    ),
-
+				
 								    WithBazaarJoin = Table.NestedJoin(
 								        WithBDTerritoryExpanded, {"BDTerritoryID"},
 								        BazaarBridgeGrouped, {"bd_territory_id"},
 								        "BazaarData", JoinKind.LeftOuter
 								    ),
-
+				
 								    WithBazaarExpanded = Table.ExpandTableColumn(
 								        WithBazaarJoin, "BazaarData",
 								        {"FirstBazaarID"},
 								        {"BazaarID"}
 								    ),
-
+				
 								    // ---- Clean up intermediate columns ----
 								    WithCleanup = Table.RemoveColumns(WithBazaarExpanded, {"AreaName", "TerritoryAreaName"}, MissingField.Ignore),
-
+				
 								    // ---- Rename AreaNameCorrected to AreaName ----
 								    WithAreaRenamed = Table.RenameColumns(WithCleanup, {{"AreaNameCorrected", "AreaName"}}),
-
+				
 								    // ---- Rename Core Columns ----
 								    RenamedColumns = Table.RenameColumns(WithAreaRenamed, {
 								        {"id", "UserID"},
@@ -523,10 +593,10 @@ table Dim_User
 								        {"line_manager", "LineManager"},
 								        {"organization_id", "OrganizationID"}
 								    }),
-
+				
 								    // ---- Add EmployeeID alias for Fact_Visit compatibility ----
 								    WithEmployeeID = Table.AddColumn(RenamedColumns, "EmployeeID", each [UserID], Int64.Type),
-
+				
 								    // ---- Add Department Track ----
 								    WithTrack = Table.AddColumn(WithEmployeeID, "DepartmentTrack", each
 								        if [Department] = "BMD" then "Business Development"
@@ -534,7 +604,7 @@ table Dim_User
 								        else "Other",
 								        type text
 								    ),
-
+				
 								    // ---- Add Role Category based on PRD ----
 								    WithRoleCategory = Table.AddColumn(WithTrack, "RoleCategory", each
 								        if [RoleName] = "SR" then "Field Sales"
@@ -547,13 +617,13 @@ table Dim_User
 								        else "Other",
 								        type text
 								    ),
-
+				
 								    // ---- Add Is Field Role Flag ----
 								    WithFieldFlag = Table.AddColumn(WithRoleCategory, "IsFieldRole", each
 								        if [RoleName] = "SR" or [RoleName] = "BDO" or [RoleName] = "CRO" then 1 else 0,
 								        Int64.Type
 								    ),
-
+				
 								    // ---- Add Management Level ----
 								    WithMgmtLevel = Table.AddColumn(WithFieldFlag, "ManagementLevel", each
 				                        if [RoleLevel] >= 2040 and [RoleLevel] <= 2060 then "Field"
@@ -563,7 +633,7 @@ table Dim_User
 								        else "Other",
 								        type text
 								    ),
-
+				
 								    // ---- Add TerritoryLayerName - Dynamic based on role ----
 								    // For ORG (SR): Shows Territory name (lowest level)
 								    // For ORG (ASM): Shows Area name
@@ -585,7 +655,7 @@ table Dim_User
 								        else "N/A",
 								        type text
 								    ),
-
+				
 								    // ---- Set Data Types ----
 								    TypedTable = Table.TransformColumnTypes(WithTerritoryLayer, {
 								        {"UserID", Int64.Type},
@@ -621,11 +691,13 @@ table Dim_User
 								        {"created_at", type datetime},
 								        {"updated_at", type datetime}
 								    }),
-
+				
 								    // ---- Remove delete_status ----
 								    CleanedTable = Table.RemoveColumns(TypedTable, {"delete_status"})
 								in
 								    CleanedTable
-				```
+
+	changedProperty = IsHidden
 
 	annotation PBI_ResultType = Table
+

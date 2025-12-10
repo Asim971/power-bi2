@@ -8,6 +8,8 @@ table Dim_VisitStage
 		summarizeBy: count
 		sourceColumn: VisitStageID
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column StageName
@@ -16,6 +18,8 @@ table Dim_VisitStage
 		summarizeBy: none
 		sourceColumn: StageName
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column StageDescription
@@ -23,6 +27,8 @@ table Dim_VisitStage
 		lineageTag: 1d3d1370-0c84-48fb-a3a4-1ddfda38148d
 		summarizeBy: none
 		sourceColumn: StageDescription
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -33,6 +39,8 @@ table Dim_VisitStage
 		summarizeBy: none
 		sourceColumn: VisitPhaseID
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column ParentStageID
@@ -41,6 +49,8 @@ table Dim_VisitStage
 		lineageTag: 277d3d83-1ae0-4ab0-aee1-1dbd06f3370b
 		summarizeBy: count
 		sourceColumn: ParentStageID
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -51,6 +61,8 @@ table Dim_VisitStage
 		summarizeBy: sum
 		sourceColumn: StageSortOrder
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column StageCategory
@@ -58,6 +70,8 @@ table Dim_VisitStage
 		lineageTag: ce348c7b-d974-4787-9b70-db772b971585
 		summarizeBy: none
 		sourceColumn: StageCategory
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -67,6 +81,8 @@ table Dim_VisitStage
 		lineageTag: 98cd1407-24f6-4c40-8e31-1c0440f48996
 		summarizeBy: sum
 		sourceColumn: IsSubStage
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -143,6 +159,8 @@ table Dim_VisitStage
 				in
 				    TypedTable
 				```
+
+	changedProperty = IsHidden
 
 	annotation PBI_ResultType = Table
 

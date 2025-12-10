@@ -1,10 +1,8 @@
 table 'public bazaars'
-	isHidden
 	lineageTag: 4ca72eb3-ffd3-4002-8fd9-b18b742322ef
 
 	column id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 9d442de9-73b7-4f6f-b100-fb1568453e0c
 		summarizeBy: sum
@@ -16,7 +14,6 @@ table 'public bazaars'
 
 	column assigned_agm
 		dataType: string
-		isHidden
 		lineageTag: 8b03b3e5-2646-4c65-aa8a-8143b738fff1
 		summarizeBy: none
 		sourceColumn: assigned_agm
@@ -27,7 +24,6 @@ table 'public bazaars'
 
 	column assigned_asm
 		dataType: string
-		isHidden
 		lineageTag: d5468ad8-caf3-4b53-bd4c-02a9ed0f36a2
 		summarizeBy: none
 		sourceColumn: assigned_asm
@@ -38,7 +34,6 @@ table 'public bazaars'
 
 	column assigned_gm
 		dataType: string
-		isHidden
 		lineageTag: 8dcb5645-5637-4f7f-997f-59985156f4c6
 		summarizeBy: none
 		sourceColumn: assigned_gm
@@ -49,7 +44,6 @@ table 'public bazaars'
 
 	column assigned_sr
 		dataType: string
-		isHidden
 		lineageTag: 4c4a7aa9-d336-4437-9a08-95293914a04b
 		summarizeBy: none
 		sourceColumn: assigned_sr
@@ -60,7 +54,6 @@ table 'public bazaars'
 
 	column assigned_zsm
 		dataType: string
-		isHidden
 		lineageTag: 019f46c6-ea2c-4fdf-a50e-8b8b0aa4bcc7
 		summarizeBy: none
 		sourceColumn: assigned_zsm
@@ -71,7 +64,6 @@ table 'public bazaars'
 
 	column bazaar_name
 		dataType: string
-		isHidden
 		lineageTag: 7e082b71-1f4f-4076-bcc0-03e4b1b5b1e7
 		summarizeBy: none
 		sourceColumn: bazaar_name
@@ -82,7 +74,6 @@ table 'public bazaars'
 
 	column created_at
 		dataType: string
-		isHidden
 		lineageTag: c861ae0f-eaf2-4e6a-a4cf-ecb89c5be3a7
 		summarizeBy: none
 		sourceColumn: created_at
@@ -93,7 +84,6 @@ table 'public bazaars'
 
 	column created_by
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 13a5f53c-3057-4b8b-ad38-c26faa175ee2
 		summarizeBy: sum
@@ -105,7 +95,6 @@ table 'public bazaars'
 
 	column delete_status
 		dataType: string
-		isHidden
 		lineageTag: abdf899a-1fa6-4313-9d9a-37643103ceea
 		summarizeBy: none
 		sourceColumn: delete_status
@@ -116,7 +105,6 @@ table 'public bazaars'
 
 	column district_name
 		dataType: string
-		isHidden
 		lineageTag: 2d6aaa6f-85d9-469f-8200-8d20e6dede59
 		summarizeBy: none
 		sourceColumn: district_name
@@ -127,7 +115,6 @@ table 'public bazaars'
 
 	column meta
 		dataType: string
-		isHidden
 		lineageTag: 41a25e3e-208b-40e7-be4b-4e6fa114f96b
 		summarizeBy: none
 		sourceColumn: meta
@@ -138,7 +125,6 @@ table 'public bazaars'
 
 	column module_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 65d8d302-4893-4e48-a744-fd9c926fe2c2
 		summarizeBy: sum
@@ -150,7 +136,6 @@ table 'public bazaars'
 
 	column namespace_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 6f5dcf66-01fd-4525-8a9a-110a5901071d
 		summarizeBy: sum
@@ -162,7 +147,6 @@ table 'public bazaars'
 
 	column nation_name
 		dataType: string
-		isHidden
 		lineageTag: eee0a8ae-81f9-42ff-a16c-fe87859b5cbc
 		summarizeBy: none
 		sourceColumn: nation_name
@@ -173,7 +157,6 @@ table 'public bazaars'
 
 	column owned_by
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 479ec71d-e00d-4453-be92-f4d60f025abb
 		summarizeBy: sum
@@ -185,7 +168,6 @@ table 'public bazaars'
 
 	column record_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 6b23c4e7-34c0-43a2-9046-5282a4a1ac59
 		summarizeBy: sum
@@ -197,7 +179,6 @@ table 'public bazaars'
 
 	column revision
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: ff04b42a-3ddf-4a14-a08f-2c97c9a25fb2
 		summarizeBy: sum
@@ -209,7 +190,6 @@ table 'public bazaars'
 
 	column upazilla_name
 		dataType: string
-		isHidden
 		lineageTag: 73575c4b-5709-484e-8626-b896a4553bd8
 		summarizeBy: none
 		sourceColumn: upazilla_name
@@ -220,7 +200,6 @@ table 'public bazaars'
 
 	column updated_at
 		dataType: string
-		isHidden
 		lineageTag: 8bb20fea-71c3-440b-b73e-55c7c43d7d00
 		summarizeBy: none
 		sourceColumn: updated_at
@@ -231,7 +210,6 @@ table 'public bazaars'
 
 	column updated_by
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 91aed27d-31cc-4fb0-82e0-20d253a31ff7
 		summarizeBy: sum
@@ -243,7 +221,6 @@ table 'public bazaars'
 
 	column zone_name
 		dataType: string
-		isHidden
 		lineageTag: 07eb830c-47a8-4ed7-8e08-a00d73acb797
 		summarizeBy: none
 		sourceColumn: zone_name
@@ -254,7 +231,6 @@ table 'public bazaars'
 
 	column district_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: b0870016-e518-47f5-a7c7-c802e286ed83
 		summarizeBy: sum
@@ -266,7 +242,6 @@ table 'public bazaars'
 
 	column division_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 5b6befe0-32ad-48d1-be82-f0ccc36a930e
 		summarizeBy: sum
@@ -278,7 +253,6 @@ table 'public bazaars'
 
 	column nation_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 59dc0a9e-2174-497d-bacd-b112962e3385
 		summarizeBy: sum
@@ -290,7 +264,6 @@ table 'public bazaars'
 
 	column upazilla_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 2f587953-038a-4e36-8f05-c3a93537c4ed
 		summarizeBy: sum
@@ -302,7 +275,6 @@ table 'public bazaars'
 
 	column zone_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 85752e9a-bbfc-4d85-bd97-ba63a11ccd96
 		summarizeBy: sum
@@ -314,7 +286,6 @@ table 'public bazaars'
 
 	column deleted_by
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 35c7d516-bc06-4827-8ad1-aae6568a96ff
 		summarizeBy: sum

@@ -1,10 +1,8 @@
 table 'public uncovered_retailer_competitors'
-	isHidden
 	lineageTag: e3a72706-28e5-49a3-8f83-3c72cd5b2ef2
 
 	column uncovered_retailer_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 5024339d-578f-46b2-8f3e-87ef96fe9258
 		summarizeBy: sum
@@ -16,7 +14,6 @@ table 'public uncovered_retailer_competitors'
 
 	column competitor_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 9f40ecac-aa84-4a55-8521-1b4ea9e9a740
 		summarizeBy: sum

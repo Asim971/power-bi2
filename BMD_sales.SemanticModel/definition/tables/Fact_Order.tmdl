@@ -6,6 +6,8 @@ table Fact_Order
 		displayFolder: Order Counts
 		lineageTag: 79f6eb37-c583-4081-a75f-4ecb93fe216d
 
+		changedProperty = IsHidden
+
 	measure Pending_Orders = ```
 			
 			        CALCULATE(
@@ -16,6 +18,8 @@ table Fact_Order
 		formatString: 0
 		displayFolder: Order Counts
 		lineageTag: f59ce988-b166-46fc-b267-883a14197e91
+
+		changedProperty = IsHidden
 
 	measure Completed_Orders = ```
 			
@@ -28,6 +32,8 @@ table Fact_Order
 		displayFolder: Order Counts
 		lineageTag: 56716dd2-de32-4c37-87c7-2ee743911816
 
+		changedProperty = IsHidden
+
 	measure Cancelled_Orders = ```
 			
 			        CALCULATE(
@@ -39,6 +45,8 @@ table Fact_Order
 		displayFolder: Order Counts
 		lineageTag: 218b1541-5069-433b-ad32-0d235c7920f6
 
+		changedProperty = IsHidden
+
 	measure Processing_Orders =
 			CALCULATE(
 			            COUNTROWS('Fact_Order'),
@@ -48,6 +56,8 @@ table Fact_Order
 		displayFolder: Order Counts\By Status
 		lineageTag: b0109f7b-0763-402f-a9b4-52fbd8aa7fcc
 
+		changedProperty = IsHidden
+
 	measure Completion_Rate = ```
 			
 			        DIVIDE([Completed_Orders], [Total_Orders], 0)
@@ -55,6 +65,8 @@ table Fact_Order
 		formatString: 0.0%
 		displayFolder: Rates
 		lineageTag: 57e3750e-a5d9-4d35-97a9-d1f8f488277a
+
+		changedProperty = IsHidden
 
 	measure Cancellation_Rate = ```
 			
@@ -64,25 +76,35 @@ table Fact_Order
 		displayFolder: Rates
 		lineageTag: c6fc47b5-c2e4-4c88-87df-a5c7fd8d38ac
 
+		changedProperty = IsHidden
+
 	measure Total_Order_Amount = SUM('Fact_Order'[TotalAmount])
 		formatString: ₹#,##0
 		displayFolder: Order Amounts
 		lineageTag: c7da7101-da82-4eee-b7af-43298f8751fe
+
+		changedProperty = IsHidden
 
 	measure Avg_Order_Amount = AVERAGE('Fact_Order'[TotalAmount])
 		formatString: ₹#,##0
 		displayFolder: Order Amounts
 		lineageTag: d0c7ee2f-cee0-4619-b9cc-c86a94628b0c
 
+		changedProperty = IsHidden
+
 	measure Max_Order_Amount = MAX('Fact_Order'[TotalAmount])
 		formatString: ₹#,##0
 		displayFolder: Order Amounts
 		lineageTag: ebe9ff6a-2b10-4b1a-b94b-ea21c4f63fd6
 
+		changedProperty = IsHidden
+
 	measure Min_Order_Amount = MIN('Fact_Order'[TotalAmount])
 		formatString: ₹#,##0
 		displayFolder: Order Amounts
 		lineageTag: da41962e-d4f6-46b5-9e76-3c5a361ee673
+
+		changedProperty = IsHidden
 
 	measure Completed_Order_Amount = ```
 			
@@ -95,6 +117,8 @@ table Fact_Order
 		displayFolder: Order Amounts\By Status
 		lineageTag: cdbbbee6-5442-41f1-99ad-e96d790efa9f
 
+		changedProperty = IsHidden
+
 	measure Pending_Order_Amount = ```
 			
 			        CALCULATE(
@@ -105,6 +129,8 @@ table Fact_Order
 		formatString: ₹#,##0
 		displayFolder: Order Amounts\By Status
 		lineageTag: 4caa44c5-780c-4342-9c8f-ed155fae138f
+
+		changedProperty = IsHidden
 
 	measure Cancelled_Order_Amount = ```
 			
@@ -117,6 +143,8 @@ table Fact_Order
 		displayFolder: Order Amounts\By Status
 		lineageTag: 8eb29ea4-b623-4036-ad7e-c198cb1226f1
 
+		changedProperty = IsHidden
+
 	measure Amount_Per_Order = ```
 			
 			        DIVIDE([Total_Order_Amount], [Total_Orders], 0)
@@ -124,6 +152,8 @@ table Fact_Order
 		formatString: ₹#,##0
 		displayFolder: Ratios
 		lineageTag: ad6eaad7-b342-42ad-a88d-083c3533f418
+
+		changedProperty = IsHidden
 
 	measure Factory_DN_Orders =
 			CALCULATE(
@@ -134,6 +164,8 @@ table Fact_Order
 		displayFolder: Order Counts\By Delivery
 		lineageTag: b9fa7702-5399-4f0a-a489-1119e67c8040
 
+		changedProperty = IsHidden
+
 	measure Site_DN_Orders =
 			CALCULATE(
 			            COUNTROWS('Fact_Order'),
@@ -142,6 +174,8 @@ table Fact_Order
 		formatString: 0
 		displayFolder: Order Counts\By Delivery
 		lineageTag: a2faeeac-985f-4500-96cd-48d9a1ca8647
+
+		changedProperty = IsHidden
 
 	measure Counter_Orders =
 			CALCULATE(
@@ -152,20 +186,28 @@ table Fact_Order
 		displayFolder: Order Counts\By Delivery
 		lineageTag: 66edd5ed-04ba-48d0-8721-3feb7fba6b5c
 
+		changedProperty = IsHidden
+
 	measure Factory_DN_Rate = DIVIDE([Factory_DN_Orders], [Total_Orders], 0)
 		formatString: 0.0%
 		displayFolder: Rates\By Delivery
 		lineageTag: 1828bf08-cee6-46a1-a6c5-038c2ff8daa1
+
+		changedProperty = IsHidden
 
 	measure Site_DN_Rate = DIVIDE([Site_DN_Orders], [Total_Orders], 0)
 		formatString: 0.0%
 		displayFolder: Rates\By Delivery
 		lineageTag: befca123-f34b-4a5d-a2fc-4cf5d897ee8f
 
+		changedProperty = IsHidden
+
 	measure Counter_Order_Rate = DIVIDE([Counter_Orders], [Total_Orders], 0)
 		formatString: 0.0%
 		displayFolder: Rates\By Delivery
 		lineageTag: ec3100fa-e770-4a1c-95ef-0515e3d4a2ce
+
+		changedProperty = IsHidden
 
 	measure Factory_DN_Amount =
 			CALCULATE(
@@ -176,6 +218,8 @@ table Fact_Order
 		displayFolder: Order Amounts\By Delivery
 		lineageTag: eb29123e-eb5e-47a7-a518-52695a2460e6
 
+		changedProperty = IsHidden
+
 	measure Site_DN_Amount =
 			CALCULATE(
 			            SUM('Fact_Order'[TotalAmount]),
@@ -184,6 +228,8 @@ table Fact_Order
 		formatString: ₹#,##0
 		displayFolder: Order Amounts\By Delivery
 		lineageTag: d635a39c-9e3e-40bb-a5f0-65f171c3879f
+
+		changedProperty = IsHidden
 
 	measure Counter_Order_Amount =
 			CALCULATE(
@@ -194,6 +240,8 @@ table Fact_Order
 		displayFolder: Order Amounts\By Delivery
 		lineageTag: c44bc341-fd32-4565-9ac6-e0d47078fa79
 
+		changedProperty = IsHidden
+
 	measure Avg_Factory_DN_Amount =
 			CALCULATE(
 			            AVERAGE('Fact_Order'[TotalAmount]),
@@ -202,6 +250,8 @@ table Fact_Order
 		formatString: ₹#,##0
 		displayFolder: Order Amounts\By Delivery
 		lineageTag: 0b85fa91-001c-41b9-8c60-7b95852216ea
+
+		changedProperty = IsHidden
 
 	measure Avg_Site_DN_Amount =
 			CALCULATE(
@@ -212,6 +262,8 @@ table Fact_Order
 		displayFolder: Order Amounts\By Delivery
 		lineageTag: 0116f6b0-96da-4275-8281-b2dc0ff38644
 
+		changedProperty = IsHidden
+
 	measure Avg_Counter_Amount =
 			CALCULATE(
 			            AVERAGE('Fact_Order'[TotalAmount]),
@@ -221,10 +273,14 @@ table Fact_Order
 		displayFolder: Order Amounts\By Delivery
 		lineageTag: 3c137cdd-906f-4c30-b3e4-a3c141bc734a
 
+		changedProperty = IsHidden
+
 	measure Unique_Delivery_Methods = DISTINCTCOUNT('Fact_Order'[DeliveryMethod])
 		formatString: 0
 		displayFolder: Order Counts
 		lineageTag: 8be01f80-a99f-407a-83ed-60094304506a
+
+		changedProperty = IsHidden
 
 	measure Engineer_Eligible_Orders = ```
 			
@@ -237,6 +293,8 @@ table Fact_Order
 		displayFolder: Order Counts\Eligibility
 		lineageTag: bb848ca5-b598-4dbc-af51-a5e625afc9c7
 
+		changedProperty = IsHidden
+
 	measure Partner_Eligible_Orders = ```
 			
 			        CALCULATE(
@@ -248,6 +306,8 @@ table Fact_Order
 		displayFolder: Order Counts\Eligibility
 		lineageTag: f55b66d5-ae30-4792-8d3f-b3e3f3037636
 
+		changedProperty = IsHidden
+
 	measure Engineer_Eligibility_Rate = ```
 			
 			        DIVIDE([Engineer_Eligible_Orders], [Total_Orders], 0)
@@ -256,6 +316,8 @@ table Fact_Order
 		displayFolder: Rates\Eligibility
 		lineageTag: da98ff3e-984f-491c-8d04-f385a4ea2764
 
+		changedProperty = IsHidden
+
 	measure Partner_Eligibility_Rate = ```
 			
 			        DIVIDE([Partner_Eligible_Orders], [Total_Orders], 0)
@@ -263,6 +325,8 @@ table Fact_Order
 		formatString: 0.0%
 		displayFolder: Rates\Eligibility
 		lineageTag: 17a51380-b9a2-46e0-8be7-5e79ad1b2696
+
+		changedProperty = IsHidden
 
 	measure Engineer_Eligible_Amount = ```
 			
@@ -275,6 +339,8 @@ table Fact_Order
 		displayFolder: Order Amounts\Eligibility
 		lineageTag: a6b95601-f756-4d58-813f-2ab1c245f4da
 
+		changedProperty = IsHidden
+
 	measure Partner_Eligible_Amount = ```
 			
 			        CALCULATE(
@@ -285,6 +351,8 @@ table Fact_Order
 		formatString: ₹#,##0
 		displayFolder: Order Amounts\Eligibility
 		lineageTag: 87a2250e-5bde-479c-9e82-c39d4ab106f9
+
+		changedProperty = IsHidden
 
 	measure Orders_MTD = ```
 			
@@ -297,6 +365,8 @@ table Fact_Order
 		displayFolder: Time Intelligence\Period to Date
 		lineageTag: 44720f58-d462-48e4-bbd7-42572ad7d7da
 
+		changedProperty = IsHidden
+
 	measure Orders_QTD = ```
 			
 			        CALCULATE(
@@ -307,6 +377,8 @@ table Fact_Order
 		formatString: 0
 		displayFolder: Time Intelligence\Period to Date
 		lineageTag: f7f6fdc9-80e4-4fae-a9ca-6f3fd5720ff4
+
+		changedProperty = IsHidden
 
 	measure Orders_YTD = ```
 			
@@ -319,6 +391,8 @@ table Fact_Order
 		displayFolder: Time Intelligence\Period to Date
 		lineageTag: 5a805498-547c-4459-9e2b-5330bf337429
 
+		changedProperty = IsHidden
+
 	measure Amount_MTD = ```
 			
 			        CALCULATE(
@@ -329,6 +403,8 @@ table Fact_Order
 		formatString: ₹#,##0
 		displayFolder: Time Intelligence\Period to Date
 		lineageTag: 250087b0-d47e-4a92-bbcb-a8844bcf2c9e
+
+		changedProperty = IsHidden
 
 	measure Amount_QTD = ```
 			
@@ -341,6 +417,8 @@ table Fact_Order
 		displayFolder: Time Intelligence\Period to Date
 		lineageTag: 61321918-01f4-429d-80bc-ab9fc56a875b
 
+		changedProperty = IsHidden
+
 	measure Amount_YTD = ```
 			
 			        CALCULATE(
@@ -351,6 +429,8 @@ table Fact_Order
 		formatString: ₹#,##0
 		displayFolder: Time Intelligence\Period to Date
 		lineageTag: dad2527d-2617-4ee7-bed3-fb3340d657b0
+
+		changedProperty = IsHidden
 
 	measure Orders_Previous_Month = ```
 			
@@ -363,6 +443,8 @@ table Fact_Order
 		displayFolder: Time Intelligence\Previous Period
 		lineageTag: 852ad32f-980e-46bf-8248-be8fe43d7d29
 
+		changedProperty = IsHidden
+
 	measure Orders_Previous_Year = ```
 			
 			        CALCULATE(
@@ -373,6 +455,8 @@ table Fact_Order
 		formatString: 0
 		displayFolder: Time Intelligence\Previous Period
 		lineageTag: a655578e-dbbd-4555-a4e0-8ca4a046355d
+
+		changedProperty = IsHidden
 
 	measure Amount_Previous_Month = ```
 			
@@ -385,6 +469,8 @@ table Fact_Order
 		displayFolder: Time Intelligence\Previous Period
 		lineageTag: e9993886-432f-43a1-82c5-c749d478df50
 
+		changedProperty = IsHidden
+
 	measure Amount_Previous_Year = ```
 			
 			        CALCULATE(
@@ -395,6 +481,8 @@ table Fact_Order
 		formatString: ₹#,##0
 		displayFolder: Time Intelligence\Previous Period
 		lineageTag: 2d702c2e-8961-4a5a-93c0-1d57d734c4ca
+
+		changedProperty = IsHidden
 
 	measure Orders_MoM_Growth = ```
 			
@@ -408,6 +496,8 @@ table Fact_Order
 		displayFolder: Time Intelligence\Growth
 		lineageTag: be53d548-c824-43a9-9607-57637ebb2119
 
+		changedProperty = IsHidden
+
 	measure Orders_YoY_Growth = ```
 			
 			        DIVIDE(
@@ -419,6 +509,8 @@ table Fact_Order
 		formatString: +0.0%;-0.0%;0.0%
 		displayFolder: Time Intelligence\Growth
 		lineageTag: c5609599-9cba-4cbc-8522-cd53e2239a96
+
+		changedProperty = IsHidden
 
 	measure Amount_MoM_Growth = ```
 			
@@ -432,6 +524,8 @@ table Fact_Order
 		displayFolder: Time Intelligence\Growth
 		lineageTag: 50054fc6-633b-4381-8ff3-2e820326ae50
 
+		changedProperty = IsHidden
+
 	measure Amount_YoY_Growth = ```
 			
 			        DIVIDE(
@@ -444,10 +538,14 @@ table Fact_Order
 		displayFolder: Time Intelligence\Growth
 		lineageTag: 26f53c38-1664-423a-a543-4b0940750bfb
 
+		changedProperty = IsHidden
+
 	measure Unique_Clients_With_Orders = DISTINCTCOUNT('Fact_Order'[ClientKey])
 		formatString: 0
 		displayFolder: Client Analysis
 		lineageTag: 4b8565bc-33a0-49b5-a81f-02f3eb2c752d
+
+		changedProperty = IsHidden
 
 	measure Orders_Per_Client = ```
 			
@@ -457,6 +555,8 @@ table Fact_Order
 		displayFolder: Client Analysis\Ratios
 		lineageTag: 36c92675-bea4-4a5f-a6e6-1a666a2c7411
 
+		changedProperty = IsHidden
+
 	measure Amount_Per_Client = ```
 			
 			        DIVIDE([Total_Order_Amount], [Unique_Clients_With_Orders], 0)
@@ -464,6 +564,8 @@ table Fact_Order
 		formatString: ₹#,##0
 		displayFolder: Client Analysis\Ratios
 		lineageTag: 9b9856ad-d425-4d7a-8cb7-8b836a7c2578
+
+		changedProperty = IsHidden
 
 	measure Single_Order_Clients = ```
 			
@@ -478,6 +580,8 @@ table Fact_Order
 		displayFolder: Client Analysis\Retention
 		lineageTag: 6369afc9-268f-405c-a977-b85f5a087291
 
+		changedProperty = IsHidden
+
 	measure Repeat_Order_Clients = ```
 			
 			        COUNTROWS(
@@ -491,6 +595,8 @@ table Fact_Order
 		displayFolder: Client Analysis\Retention
 		lineageTag: eb9af718-e531-4215-bf20-37f5a9e52449
 
+		changedProperty = IsHidden
+
 	measure Repeat_Order_Rate = ```
 			
 			        DIVIDE([Repeat_Order_Clients], [Unique_Clients_With_Orders], 0)
@@ -498,6 +604,8 @@ table Fact_Order
 		formatString: 0.0%
 		displayFolder: Client Analysis\Retention
 		lineageTag: ed16cab5-5266-4e49-b64a-ecea1f289d5a
+
+		changedProperty = IsHidden
 
 	measure Converted_Orders = ```
 			
@@ -510,6 +618,8 @@ table Fact_Order
 		displayFolder: Conversion
 		lineageTag: a8360efb-9886-4d8f-9ca5-bcf01e8f76e4
 
+		changedProperty = IsHidden
+
 	measure Conversion_Rate = ```
 			
 			        DIVIDE([Converted_Orders], [Total_Orders], 0)
@@ -517,6 +627,8 @@ table Fact_Order
 		formatString: 0.0%
 		displayFolder: Conversion
 		lineageTag: 22b8b41e-f950-4d8a-865a-8d6fb14885e5
+
+		changedProperty = IsHidden
 
 	measure Orders_With_Memo_Photo = ```
 			
@@ -529,6 +641,8 @@ table Fact_Order
 		displayFolder: Quality Compliance
 		lineageTag: 92ba1d9d-57a0-440b-b0da-356919c39de3
 
+		changedProperty = IsHidden
+
 	measure Memo_Photo_Rate = ```
 			
 			        DIVIDE([Orders_With_Memo_Photo], [Total_Orders], 0)
@@ -536,6 +650,8 @@ table Fact_Order
 		formatString: 0.0%
 		displayFolder: Quality Compliance
 		lineageTag: 92090555-00a2-445c-b602-ecc390de8aff
+
+		changedProperty = IsHidden
 
 	measure Converted_Amount = ```
 			
@@ -548,10 +664,14 @@ table Fact_Order
 		displayFolder: Conversion
 		lineageTag: 039d4b95-80d8-49f9-8d76-bc2e7595b44b
 
+		changedProperty = IsHidden
+
 	measure Active_Users = DISTINCTCOUNT('Fact_Order'[UserID])
 		formatString: 0
 		displayFolder: User Analysis
 		lineageTag: 1f2e7d61-c9c1-4e4b-81dc-26e440550b3c
+
+		changedProperty = IsHidden
 
 	measure Orders_Per_User = ```
 			
@@ -561,6 +681,8 @@ table Fact_Order
 		displayFolder: User Analysis\Ratios
 		lineageTag: c7201f0d-9bea-471b-a911-5d8ea851e16e
 
+		changedProperty = IsHidden
+
 	measure Amount_Per_User = ```
 			
 			        DIVIDE([Total_Order_Amount], [Active_Users], 0)
@@ -568,6 +690,8 @@ table Fact_Order
 		formatString: ₹#,##0
 		displayFolder: User Analysis\Ratios
 		lineageTag: 5aa458a5-d66b-40dc-b6cc-d87a36382cad
+
+		changedProperty = IsHidden
 
 	measure Visit_to_Order_Conversion =
 			
@@ -578,6 +702,8 @@ table Fact_Order
 		formatString: 0.0%
 		displayFolder: Analytics
 		lineageTag: 1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d
+
+		changedProperty = IsHidden
 
 	measure Visits_Before_First_Order = ```
 			
@@ -605,6 +731,8 @@ table Fact_Order
 		displayFolder: Analytics
 		lineageTag: 2b3c4d5e-6f7a-8b9c-0d1e-2f3a4b5c6d7e
 
+		changedProperty = IsHidden
+
 	measure Order_Amount_Pareto = ```
 			
 			VAR CurrentAmount = [Total_Order_Amount]
@@ -624,6 +752,8 @@ table Fact_Order
 		displayFolder: Analytics
 		lineageTag: 3c4d5e6f-7a8b-9c0d-1e2f-3a4b5c6d7e8f
 
+		changedProperty = IsHidden
+
 	measure Order_Amount_Anomaly =
 			VAR AvgAmount = AVERAGEX(ALL('Dim_Date'[Date]), [Total_Order_Amount])
 			VAR StdDeviation = STDEVX.P(ALL('Dim_Date'[Date]), [Total_Order_Amount])
@@ -635,6 +765,8 @@ table Fact_Order
 		displayFolder: Analytics\Anomaly Detection
 		lineageTag: 4d5e6f7a-8b9c-0d1e-2f3a-4b5c6d7e8f9a
 
+		changedProperty = IsHidden
+
 	measure Avg_Order_Value_Trend =
 			VAR CurrentAOV = [Avg_Order_Amount]
 			VAR PreviousMonthAOV = CALCULATE([Avg_Order_Amount], PREVIOUSMONTH('Dim_Date'[Date]))
@@ -643,6 +775,8 @@ table Fact_Order
 		formatString: +0.0%;-0.0%;0.0%
 		displayFolder: Analytics\Trends
 		lineageTag: 5e6f7a8b-9c0d-1e2f-3a4b-5c6d7e8f9a0b
+
+		changedProperty = IsHidden
 
 	measure Client_Lifetime_Value =
 			VAR TotalClientOrders = [Total_Order_Amount]
@@ -653,6 +787,8 @@ table Fact_Order
 		formatString: ₹#,##0
 		displayFolder: Analytics\Lifetime Value
 		lineageTag: 6f7a8b9c-0d1e-2f3a-4b5c-6d7e8f9a0b1c
+
+		changedProperty = IsHidden
 
 	measure Top_10_Clients_Revenue_Share = ```
 			
@@ -671,6 +807,8 @@ table Fact_Order
 		displayFolder: Analytics\Concentration
 		lineageTag: 7a8b9c0d-1e2f-3a4b-5c6d-7e8f9a0b1c2d
 
+		changedProperty = IsHidden
+
 	measure Order_Velocity =
 			
 			VAR DateRange = DATEDIFF(MIN('Fact_Order'[OrderDateKey]), MAX('Fact_Order'[OrderDateKey]), DAY) + 1
@@ -680,6 +818,8 @@ table Fact_Order
 		formatString: 0.0
 		displayFolder: Analytics\Velocity
 		lineageTag: 8b9c0d1e-2f3a-4b5c-6d7e-8f9a0b1c2d3e
+
+		changedProperty = IsHidden
 
 	measure Revenue_at_Risk = ```
 			
@@ -698,6 +838,8 @@ table Fact_Order
 		displayFolder: Analytics\Risk
 		lineageTag: 9c0d1e2f-3a4b-5c6d-7e8f-9a0b1c2d3e4f
 
+		changedProperty = IsHidden
+
 	measure New_Clients_This_Month =
 			
 			VAR CurrentMonthStart = DATE(YEAR(TODAY()), MONTH(TODAY()), 1)
@@ -709,29 +851,35 @@ table Fact_Order
 		displayFolder: Analytics\New Clients
 		lineageTag: 0d1e2f3a-4b5c-6d7e-8f9a-0b1c2d3e4f5a
 
-	measure User_Order_Total_MT = ```
-			DIVIDE(SUM('Fact_Order'[TotalAmount]), 1000, 0)
-			```
+		changedProperty = IsHidden
+
+	measure User_Order_Total_MT = DIVIDE(SUM('Fact_Order'[TotalAmount]), 1000, 0)
 		formatString: #,##0.0
 		displayFolder: FRD Dashboard\Order Performance
 		lineageTag: frd-order-mt-014
+
+		changedProperty = IsHidden
 
 	measure User_Order_Target_MT = 20
 		formatString: #,##0.0
 		displayFolder: FRD Dashboard\Targets
 		lineageTag: frd-order-target-015
 
-	measure User_Order_Achievement_Pct = ```
-			DIVIDE([User_Order_Total_MT], [User_Order_Target_MT], 0)
-			```
+		changedProperty = IsHidden
+
+	measure User_Order_Achievement_Pct = DIVIDE([User_Order_Total_MT], [User_Order_Target_MT], 0)
 		formatString: 0%
 		displayFolder: FRD Dashboard\Order Performance
 		lineageTag: frd-order-ach-016
+
+		changedProperty = IsHidden
 
 	measure FRD_Volume_MT = DIVIDE(SUM('Fact_Order'[TotalAmount]), 1000, 0)
 		formatString: #,##0.0
 		displayFolder: FRD Dashboard\Tertiary Sales
 		lineageTag: frd-volume-mt-018
+
+		changedProperty = IsHidden
 
 	column OrderID
 		dataType: int64
@@ -739,6 +887,8 @@ table Fact_Order
 		lineageTag: 5144856f-7534-44be-9d6a-addbe63cc0ac
 		summarizeBy: count
 		sourceColumn: OrderID
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -748,6 +898,8 @@ table Fact_Order
 		lineageTag: 78f59b31-8aff-49ad-abaa-4820fe09b564
 		summarizeBy: none
 		sourceColumn: OrderDateKey
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -760,6 +912,8 @@ table Fact_Order
 		summarizeBy: none
 		sourceColumn: UserID
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column ClientKey
@@ -767,6 +921,8 @@ table Fact_Order
 		lineageTag: 9b1fc4fe-0ad0-4fe9-a185-557503b77342
 		summarizeBy: none
 		sourceColumn: ClientKey
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -777,6 +933,8 @@ table Fact_Order
 		summarizeBy: count
 		sourceColumn: SiteID
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column DealerID
@@ -785,6 +943,8 @@ table Fact_Order
 		lineageTag: 3fc8b73e-74f9-4b46-9760-2dcb67c7a33a
 		summarizeBy: count
 		sourceColumn: DealerID
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -795,6 +955,8 @@ table Fact_Order
 		summarizeBy: count
 		sourceColumn: RetailerID
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column BazaarID
@@ -803,6 +965,8 @@ table Fact_Order
 		lineageTag: cac7250b-a51c-4c48-ab2d-44d3c4752c8b
 		summarizeBy: count
 		sourceColumn: BazaarID
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -813,6 +977,8 @@ table Fact_Order
 		summarizeBy: count
 		sourceColumn: ProjectConversionID
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column OrderStatus
@@ -820,6 +986,8 @@ table Fact_Order
 		lineageTag: f8cd4348-cc21-40f7-b5ad-6581944c18c6
 		summarizeBy: none
 		sourceColumn: OrderStatus
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -829,6 +997,8 @@ table Fact_Order
 		summarizeBy: none
 		sourceColumn: StatusGroup
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column OrderType
@@ -836,6 +1006,8 @@ table Fact_Order
 		lineageTag: 30a5e90e-3b15-4fe7-a340-cfd0b3d9c821
 		summarizeBy: none
 		sourceColumn: OrderType
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -845,6 +1017,8 @@ table Fact_Order
 		summarizeBy: none
 		sourceColumn: OrderCategory
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column DeliveryMethod
@@ -852,6 +1026,8 @@ table Fact_Order
 		lineageTag: c2624418-5c45-4bec-b605-eeec9599552d
 		summarizeBy: none
 		sourceColumn: DeliveryMethod
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -861,6 +1037,8 @@ table Fact_Order
 		summarizeBy: none
 		sourceColumn: DeliveryAddress
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column Stage
@@ -869,6 +1047,8 @@ table Fact_Order
 		summarizeBy: none
 		sourceColumn: Stage
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column TotalAmount
@@ -876,6 +1056,8 @@ table Fact_Order
 		lineageTag: 352ae7c6-83b3-4af7-a2f1-6e2d18f877d0
 		summarizeBy: sum
 		sourceColumn: TotalAmount
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -888,6 +1070,8 @@ table Fact_Order
 		summarizeBy: sum
 		sourceColumn: IsConverted
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column HasMemoPhoto
@@ -896,6 +1080,8 @@ table Fact_Order
 		lineageTag: 659d3b33-a5ab-432e-ba34-c03f217be420
 		summarizeBy: sum
 		sourceColumn: HasMemoPhoto
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -906,6 +1092,8 @@ table Fact_Order
 		summarizeBy: none
 		sourceColumn: IsEngineerEligible
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column IsPartnerEligible
@@ -915,6 +1103,8 @@ table Fact_Order
 		summarizeBy: none
 		sourceColumn: IsPartnerEligible
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column MemoPhoto
@@ -923,6 +1113,8 @@ table Fact_Order
 		summarizeBy: none
 		sourceColumn: MemoPhoto
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column Feedback
@@ -930,6 +1122,8 @@ table Fact_Order
 		lineageTag: 95f1cd7e-d12a-4783-808f-1ca8898fa444
 		summarizeBy: none
 		sourceColumn: Feedback
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -945,6 +1139,8 @@ table Fact_Order
 			relationship: 6665b3ea-7985-42de-81a5-fd6ac593f086
 			defaultHierarchy: LocalDateTable_9f773199-6de7-48ee-ac31-6425d910fbe6.'Date Hierarchy'
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column updated_at
@@ -958,6 +1154,8 @@ table Fact_Order
 			isDefault
 			relationship: 85c56fe2-f803-4da5-a155-bb2c76b99c55
 			defaultHierarchy: LocalDateTable_4749dcd2-f816-46b4-abfb-37e7c17c89ae.'Date Hierarchy'
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -1113,6 +1311,8 @@ table Fact_Order
 				in
 				    ReorderedColumns
 				```
+
+	changedProperty = IsHidden
 
 	annotation PBI_ResultType = Table
 

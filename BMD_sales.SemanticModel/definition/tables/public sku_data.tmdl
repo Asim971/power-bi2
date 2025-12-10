@@ -1,10 +1,8 @@
 table 'public sku_data'
-	isHidden
 	lineageTag: 7747604b-ff83-4376-b9f0-5289d369c3c6
 
 	column id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 0da0f0ac-444c-44e6-9884-bbbe32bd4638
 		summarizeBy: sum
@@ -16,7 +14,6 @@ table 'public sku_data'
 
 	column name
 		dataType: string
-		isHidden
 		lineageTag: 7213e068-19b2-47f7-aa5e-65428dd518aa
 		summarizeBy: none
 		sourceColumn: name
@@ -27,7 +24,6 @@ table 'public sku_data'
 
 	column product_type
 		dataType: string
-		isHidden
 		lineageTag: eb5f2f2f-2398-4aff-a324-f12e49829096
 		summarizeBy: none
 		sourceColumn: product_type
@@ -38,7 +34,6 @@ table 'public sku_data'
 
 	column remote_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 2f05c04a-c622-405c-941c-1c046dd98d75
 		summarizeBy: sum
@@ -50,7 +45,6 @@ table 'public sku_data'
 
 	column type
 		dataType: string
-		isHidden
 		lineageTag: e4a8f6da-6fad-44f7-af45-544c3af0ad31
 		summarizeBy: none
 		sourceColumn: type
@@ -61,7 +55,6 @@ table 'public sku_data'
 
 	column unit
 		dataType: string
-		isHidden
 		lineageTag: 7aac2360-8146-4ea4-84e6-04d46eb4499b
 		summarizeBy: none
 		sourceColumn: unit
@@ -72,7 +65,6 @@ table 'public sku_data'
 
 	column unit_price
 		dataType: double
-		isHidden
 		lineageTag: d998de76-18e2-483e-8995-87672196338b
 		summarizeBy: sum
 		sourceColumn: unit_price
@@ -85,7 +77,6 @@ table 'public sku_data'
 
 	column org_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: ea50c79f-c23b-4e33-8e9e-452dc27b2fbc
 		summarizeBy: sum

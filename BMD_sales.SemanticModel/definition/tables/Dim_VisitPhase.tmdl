@@ -8,6 +8,8 @@ table Dim_VisitPhase
 		summarizeBy: none
 		sourceColumn: VisitPhaseID
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column PhaseName
@@ -15,6 +17,8 @@ table Dim_VisitPhase
 		lineageTag: e85916f2-0fdd-4366-ac6d-ee869697970a
 		summarizeBy: none
 		sourceColumn: PhaseName
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -24,6 +28,8 @@ table Dim_VisitPhase
 		summarizeBy: none
 		sourceColumn: PhaseDescription
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column PhaseSortOrder
@@ -32,6 +38,8 @@ table Dim_VisitPhase
 		lineageTag: adba5d3e-605a-4cf5-a6e1-451d43b71299
 		summarizeBy: sum
 		sourceColumn: PhaseSortOrder
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -79,6 +87,8 @@ table Dim_VisitPhase
 				in
 				    TypedTable
 				```
+
+	changedProperty = IsHidden
 
 	annotation PBI_ResultType = Table
 

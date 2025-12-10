@@ -1,10 +1,8 @@
 table 'public bank'
-	isHidden
 	lineageTag: 14e8b3dd-3b47-4b02-8e81-b8dd4a7aa5ba
 
 	column id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 1ee87102-ccaf-470a-9c78-697aac08dbc1
 		summarizeBy: sum
@@ -16,7 +14,6 @@ table 'public bank'
 
 	column bank_name
 		dataType: string
-		isHidden
 		lineageTag: 6eb576e4-85b9-4575-9e2d-c4bddd890f72
 		summarizeBy: none
 		sourceColumn: bank_name

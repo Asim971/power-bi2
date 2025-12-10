@@ -1,10 +1,8 @@
 table 'public users_bd_territory'
-	isHidden
 	lineageTag: 624106c1-401c-4116-8492-d4966d694f91
 
 	column users_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 8de33e2e-0b0a-4060-97e0-4dd503113d39
 		summarizeBy: sum
@@ -16,7 +14,6 @@ table 'public users_bd_territory'
 
 	column bd_territory_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: d26bfcac-7381-40d1-8540-00035537d571
 		summarizeBy: sum

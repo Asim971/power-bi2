@@ -1,10 +1,8 @@
 table 'public gift_slabs'
-	isHidden
 	lineageTag: 90d6a501-0bb9-4b02-a24c-e250e03df5d8
 
 	column gift_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 9b499669-15c4-49ca-9be4-98cc187f4192
 		summarizeBy: sum
@@ -16,7 +14,6 @@ table 'public gift_slabs'
 
 	column slabs
 		dataType: string
-		isHidden
 		lineageTag: 5487689c-5d79-49c4-94b7-6624042b9968
 		summarizeBy: none
 		sourceColumn: slabs

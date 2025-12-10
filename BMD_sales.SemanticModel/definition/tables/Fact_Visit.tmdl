@@ -12,6 +12,8 @@ table Fact_Visit
 		displayFolder: Visit Counts
 		lineageTag: 54fe40e6-9db7-466a-99e5-ab9705614664
 
+		changedProperty = IsHidden
+
 	measure Total_Dealer_Visits = ```
 			
 					CALCULATE(
@@ -22,6 +24,8 @@ table Fact_Visit
 		formatString: 0
 		displayFolder: Visit Counts
 		lineageTag: a5e4d983-80ab-4b70-b9fb-7f624ba43ae4
+
+		changedProperty = IsHidden
 
 	measure Territory_Captured_Visits = ```
 			
@@ -34,6 +38,8 @@ table Fact_Visit
 		displayFolder: GPS & Territory
 		lineageTag: 398beba9-89ad-4586-ae55-85f3dfd8e803
 
+		changedProperty = IsHidden
+
 	measure No_Territory_Visits = ```
 			
 			        CALCULATE(
@@ -45,12 +51,16 @@ table Fact_Visit
 		displayFolder: GPS & Territory
 		lineageTag: 6f8dc6b2-dce7-4366-b1f2-eb3a53e3a142
 
+		changedProperty = IsHidden
+
 	measure GPS_Capture_Rate = ```
 			
 			        DIVIDE([Territory_Captured_Visits], [Total_Visits], 0)
 			```
 		displayFolder: Rates
 		lineageTag: 06f8ac33-1b5f-46bf-b782-ee4f31e8c4d5
+
+		changedProperty = IsHidden
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
@@ -60,25 +70,44 @@ table Fact_Visit
 			```
 		lineageTag: e5c69545-b184-4afd-a921-8342eb54e76b
 
+		changedProperty = IsHidden
+
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Zone_Mismatch_Visits
 		lineageTag: 3ccd55f5-00a4-452c-9ad2-1dedafee8150
+
+		changedProperty = IsHidden
 
 	measure Total_Visits = COUNTROWS('Fact_Visit')
 		formatString: #,##0
 		displayFolder: Visit Counts\Base
 		lineageTag: 34aafb72-4095-4c1a-bdcc-31f7eb99b15f
 
-	measure Unique_Clients_Visited = DISTINCTCOUNT('Fact_Visit'[ClientKey])
+		changedProperty = IsHidden
+
+	measure Unique_Clients_Visited = ```
+			
+			SUMX(
+			    VALUES('Fact_Visit'[DateKey]),
+			    CALCULATE(
+			        DISTINCTCOUNT('Fact_Visit'[ClientKey])
+			    )
+			)
+			
+			```
 		formatString: #,##0
 		displayFolder: Visit Counts\Base
 		lineageTag: 31ee6a27-68ba-41ec-ac33-8867a08436aa
+
+		changedProperty = IsHidden
 
 	measure Active_Employees = DISTINCTCOUNT('Fact_Visit'[EmployeeID])
 		formatString: #,##0
 		displayFolder: Visit Counts\Base
 		lineageTag: 3b1eb32b-316d-4216-952d-9df7f823d42d
+
+		changedProperty = IsHidden
 
 	measure Visits_Per_Employee = ```
 			
@@ -87,6 +116,8 @@ table Fact_Visit
 		formatString: #,##0.0
 		displayFolder: Ratios\Productivity
 		lineageTag: 264f432d-eae9-4fbe-881a-0c85dc995b1e
+
+		changedProperty = IsHidden
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
@@ -98,6 +129,8 @@ table Fact_Visit
 		displayFolder: Ratios\Productivity
 		lineageTag: edb0cf22-8b21-4aa2-af54-03fb078e5d8f
 
+		changedProperty = IsHidden
+
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Clients_Per_Employee = ```
@@ -107,6 +140,8 @@ table Fact_Visit
 		formatString: #,##0.0
 		displayFolder: Ratios\Productivity
 		lineageTag: 0de2c990-7e66-4599-a12c-6ac62120c0b7
+
+		changedProperty = IsHidden
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
@@ -121,6 +156,8 @@ table Fact_Visit
 		displayFolder: Quality Compliance
 		lineageTag: e7589b82-1e9d-42c1-b28e-b9ad29001f0b
 
+		changedProperty = IsHidden
+
 	measure Photo_Compliance_Rate = ```
 			
 			        DIVIDE([Visits_With_Photos], [Total_Visits], 0)
@@ -128,6 +165,8 @@ table Fact_Visit
 		formatString: 0.0%
 		displayFolder: Quality Compliance\Rates
 		lineageTag: 34000498-b990-45b9-ab14-7daa8855b199
+
+		changedProperty = IsHidden
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
@@ -142,6 +181,8 @@ table Fact_Visit
 		displayFolder: Quality Compliance
 		lineageTag: 6396bece-4da8-439d-9215-30ffa8fb5344
 
+		changedProperty = IsHidden
+
 	measure Product_Photo_Rate = ```
 			
 			        DIVIDE([Visits_With_Product_Photos], [Total_Visits], 0)
@@ -149,6 +190,8 @@ table Fact_Visit
 		formatString: 0.0%
 		displayFolder: Quality Compliance\Rates
 		lineageTag: 0d5dce4a-d3dd-48c6-bfa6-329f082be560
+
+		changedProperty = IsHidden
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
@@ -163,6 +206,8 @@ table Fact_Visit
 		displayFolder: Quality Compliance
 		lineageTag: 1b03d3bd-a171-4b27-8874-52d7b0c0cff5
 
+		changedProperty = IsHidden
+
 	measure Feedback_Rate = ```
 			
 			        DIVIDE([Visits_With_Feedback], [Total_Visits], 0)
@@ -170,6 +215,8 @@ table Fact_Visit
 		formatString: 0.0%
 		displayFolder: Quality Compliance\Rates
 		lineageTag: 1e7d782f-d710-4b94-b7d3-5b8cc454ed66
+
+		changedProperty = IsHidden
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
@@ -184,6 +231,8 @@ table Fact_Visit
 		formatString: 0.0%
 		displayFolder: Quality Compliance\Score
 		lineageTag: cdf6008b-b3cc-41a7-bdfa-1411dfb0d134
+
+		changedProperty = IsHidden
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
@@ -200,6 +249,8 @@ table Fact_Visit
 		displayFolder: Client Analysis
 		lineageTag: 214779a5-b311-4579-aaf1-e8473c7c095e
 
+		changedProperty = IsHidden
+
 	measure Clients_Visited_Multiple = ```
 			
 			        COUNTROWS(
@@ -213,6 +264,8 @@ table Fact_Visit
 		displayFolder: Client Analysis
 		lineageTag: 29103485-6052-4d0d-85ce-702bec344bd2
 
+		changedProperty = IsHidden
+
 	measure Repeat_Visit_Rate = ```
 			
 			        DIVIDE([Clients_Visited_Multiple], [Unique_Clients_Visited], 0)
@@ -220,6 +273,8 @@ table Fact_Visit
 		formatString: 0.0%
 		displayFolder: Client Analysis\Rates
 		lineageTag: 90a3a66c-8a85-47cb-b600-6aef0c143616
+
+		changedProperty = IsHidden
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
@@ -234,6 +289,8 @@ table Fact_Visit
 		displayFolder: Time Intelligence\Period to Date
 		lineageTag: 50bac071-3622-42a0-aac9-53f59b3180cc
 
+		changedProperty = IsHidden
+
 	measure Visits_QTD = ```
 			
 			        CALCULATE(
@@ -244,6 +301,8 @@ table Fact_Visit
 		formatString: #,##0
 		displayFolder: Time Intelligence\Period to Date
 		lineageTag: 8535cd94-c562-41e5-9311-39b5b1d7c62a
+
+		changedProperty = IsHidden
 
 	measure Visits_YTD = ```
 			
@@ -256,6 +315,8 @@ table Fact_Visit
 		displayFolder: Time Intelligence\Period to Date
 		lineageTag: 0e81e912-4474-4b27-93a2-7c09d6f4ba0c
 
+		changedProperty = IsHidden
+
 	measure Visits_Previous_Month = ```
 			
 			        CALCULATE(
@@ -266,6 +327,8 @@ table Fact_Visit
 		formatString: #,##0
 		displayFolder: Time Intelligence\Previous Period
 		lineageTag: 9c882202-896d-4c78-a93d-a9ccb27aecc5
+
+		changedProperty = IsHidden
 
 	measure Visits_Previous_Quarter = ```
 			
@@ -278,6 +341,8 @@ table Fact_Visit
 		displayFolder: Time Intelligence\Previous Period
 		lineageTag: f1b149b6-d087-414b-9d8d-dcb5677a907f
 
+		changedProperty = IsHidden
+
 	measure Visits_Previous_Year = ```
 			
 			        CALCULATE(
@@ -288,6 +353,8 @@ table Fact_Visit
 		formatString: #,##0
 		displayFolder: Time Intelligence\Previous Period
 		lineageTag: b2879c35-7bf0-4531-9452-1648c0f3c82d
+
+		changedProperty = IsHidden
 
 	measure Visits_MoM_Growth = ```
 			
@@ -300,6 +367,8 @@ table Fact_Visit
 		formatString: +0.0%;-0.0%;0.0%
 		displayFolder: Time Intelligence\Growth
 		lineageTag: 670cb828-a5fb-44f7-aae7-fe07a77be1e7
+
+		changedProperty = IsHidden
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
@@ -315,6 +384,8 @@ table Fact_Visit
 		displayFolder: Time Intelligence\Growth
 		lineageTag: d0100c9e-e3c7-4afc-813e-b1c5706a3c15
 
+		changedProperty = IsHidden
+
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Visits_Rolling_7_Days = ```
@@ -328,6 +399,8 @@ table Fact_Visit
 		displayFolder: Time Intelligence\Rolling
 		lineageTag: 6983840a-3280-419a-ac14-e39226e6aaed
 
+		changedProperty = IsHidden
+
 	measure Visits_Rolling_30_Days = ```
 			
 			        CALCULATE(
@@ -339,15 +412,18 @@ table Fact_Visit
 		displayFolder: Time Intelligence\Rolling
 		lineageTag: c367a91b-f506-458c-93bf-081dea8dc71a
 
-	measure Unique_Territories = ```
+		changedProperty = IsHidden
+
+	measure Unique_Territories =
 			CALCULATE(
-				DISTINCTCOUNT('Dim_Territory'[TerritoryID]),
-				USERELATIONSHIP('Fact_Visit'[territory_id], 'Dim_Territory'[TerritoryID])
+				DISTINCTCOUNT('Dim_Territory'[id]),
+				USERELATIONSHIP('Fact_Visit'[territory_id], 'Dim_Territory'[id])
 			)
-			```
 		formatString: #,##0
 		displayFolder: GPS & Territory
 		lineageTag: 4566f4a9-877b-46a3-9235-59dec5a91fa7
+
+		changedProperty = IsHidden
 
 	measure Avg_Visits_Per_Day = ```
 			
@@ -359,6 +435,8 @@ table Fact_Visit
 		formatString: #,##0.0
 		displayFolder: Ratios\Daily
 		lineageTag: 66563689-57d2-40c5-ac30-a7c55ff2a025
+
+		changedProperty = IsHidden
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
@@ -373,6 +451,8 @@ table Fact_Visit
 		displayFolder: Performance\Benchmarks
 		lineageTag: a3669f58-61a5-49ef-9d63-9450f26dea6c
 
+		changedProperty = IsHidden
+
 	measure Bottom_Performer_Visits = ```
 			
 			        MINX(
@@ -383,6 +463,8 @@ table Fact_Visit
 		formatString: #,##0
 		displayFolder: Performance\Benchmarks
 		lineageTag: 431cb596-4d15-41eb-a9e7-a71d3389072d
+
+		changedProperty = IsHidden
 
 	measure Employees_Above_Target = ```
 			
@@ -399,6 +481,8 @@ table Fact_Visit
 		displayFolder: Performance\Targets
 		lineageTag: 53b4d37a-fadf-4f2d-8c96-83172b1a6de5
 
+		changedProperty = IsHidden
+
 	measure Employee_Performance_Index =
 			
 			VAR VisitScore = DIVIDE([Total_Visits], [Top_Performer_Visits], 0) * 40
@@ -409,6 +493,8 @@ table Fact_Visit
 		formatString: 0.0
 		displayFolder: Analytics
 		lineageTag: e1a2b3c4-d5e6-f7a8-b9c0-d1e2f3a4b5c6
+
+		changedProperty = IsHidden
 
 	measure Visit_Pareto_Running_Total = ```
 			
@@ -430,6 +516,8 @@ table Fact_Visit
 		displayFolder: Analytics
 		lineageTag: f2a3b4c5-e6d7-a8b9-c0d1-e2f3a4b5c6d7
 
+		changedProperty = IsHidden
+
 	measure Visits_Anomaly_Flag =
 			VAR AvgVisits = AVERAGEX(ALL('Dim_Date'[Date]), [Total_Visits])
 			VAR StdDeviation = STDEVX.P(ALL('Dim_Date'[Date]), [Total_Visits])
@@ -441,6 +529,8 @@ table Fact_Visit
 		displayFolder: Analytics
 		lineageTag: a3b4c5d6-e7f8-a9b0-c1d2-e3f4a5b6c7d8
 
+		changedProperty = IsHidden
+
 	measure Visits_Anomaly_Direction =
 			VAR AvgVisits = AVERAGEX(ALL('Dim_Date'[Date]), [Total_Visits])
 			VAR StdDeviation = STDEVX.P(ALL('Dim_Date'[Date]), [Total_Visits])
@@ -451,6 +541,8 @@ table Fact_Visit
 		displayFolder: Analytics\Anomaly Detection
 		lineageTag: 575a37eb-189e-4037-8c7e-192f4d7e9d2d
 
+		changedProperty = IsHidden
+
 	measure Days_Since_Last_Visit =
 			VAR LastVisitDate = MAX('Fact_Visit'[DateKey])
 			VAR Today = TODAY()
@@ -459,6 +551,8 @@ table Fact_Visit
 		formatString: 0
 		displayFolder: Analytics
 		lineageTag: c5d6e7f8-a9b0-c1d2-e3f4-a5b6c7d8e9f0
+
+		changedProperty = IsHidden
 
 	measure Avg_Days_Between_Visits =
 			
@@ -470,6 +564,8 @@ table Fact_Visit
 		formatString: 0.0
 		displayFolder: Analytics\Recency
 		lineageTag: d6e7f8a9-b0c1-d2e3-f4a5-b6c7d8e9f0a1
+
+		changedProperty = IsHidden
 
 	measure Employee_Rank_by_Visits =
 			
@@ -484,6 +580,8 @@ table Fact_Visit
 		formatString: 0
 		displayFolder: Performance\Rankings
 		lineageTag: e7f8a9b0-c1d2-e3f4-a5b6-c7d8e9f0a1b2
+
+		changedProperty = IsHidden
 
 	measure Top_5_Employees_Contribution = ```
 			
@@ -501,6 +599,8 @@ table Fact_Visit
 		formatString: 0.0%
 		displayFolder: Performance\Rankings
 		lineageTag: f8a9b0c1-d2e3-f4a5-b6c7-d8e9f0a1b2c3
+
+		changedProperty = IsHidden
 
 	measure Visit_Streak_Days = ```
 			
@@ -521,6 +621,8 @@ table Fact_Visit
 		displayFolder: Analytics\Engagement
 		lineageTag: a9b0c1d2-e3f4-a5b6-c7d8-e9f0a1b2c3d4
 
+		changedProperty = IsHidden
+
 	measure Visits_WTD =
 			CALCULATE(
 			    [Total_Visits],
@@ -533,6 +635,8 @@ table Fact_Visit
 		formatString: 0
 		displayFolder: Time Intelligence
 		lineageTag: 4d5e6f7a-8b9c-0d1e-2f3a-4b5c6d7e8f9a
+
+		changedProperty = IsHidden
 
 	measure Visits_DateFiltered =
 			VAR SelectedFilter = SELECTEDVALUE('DateFilterParam'[FilterOption], "MTD")
@@ -552,15 +656,18 @@ table Fact_Visit
 		displayFolder: FRD Dashboard
 		lineageTag: 5e6f7a8b-9c0d-1e2f-3a4b-5c6d7e8f9a0b
 
-	measure Visits_By_Territory = ```
+		changedProperty = IsHidden
+
+	measure Visits_By_Territory =
 			CALCULATE(
 			    [Total_Visits],
-			    USERELATIONSHIP('Fact_Visit'[territory_id], 'Dim_Territory'[TerritoryID])
+			    USERELATIONSHIP('Fact_Visit'[territory_id], 'Dim_Territory'[id])
 			)
-			```
 		formatString: 0
 		displayFolder: FRD Dashboard
 		lineageTag: 6f7a8b9c-0d1e-2f3a-4b5c-6d7e8f9a0b1c
+
+		changedProperty = IsHidden
 
 	measure Average_Visit_FRD = ```
 			
@@ -577,6 +684,8 @@ table Fact_Visit
 		displayFolder: FRD Dashboard\KPI Tiles
 		lineageTag: 2b3c4d5e-6f7a-8901-bcde-f12345678901
 
+		changedProperty = IsHidden
+
 	measure Visits_Current_Month = ```
 			
 					CALCULATE(
@@ -587,6 +696,8 @@ table Fact_Visit
 		formatString: #,##0
 		displayFolder: FRD Dashboard\MoM Comparison
 		lineageTag: 3c4d5e6f-7a8b-9012-cdef-123456789012
+
+		changedProperty = IsHidden
 
 	measure Visits_Previous_Calendar_Month = ```
 			
@@ -599,10 +710,14 @@ table Fact_Visit
 		displayFolder: FRD Dashboard\MoM Comparison
 		lineageTag: 4d5e6f7a-8b9c-0123-def0-234567890123
 
+		changedProperty = IsHidden
+
 	measure MoM_Variance = [Visits_Current_Month] - [Visits_Previous_Calendar_Month]
 		formatString: +#,##0;-#,##0;0
 		displayFolder: FRD Dashboard\MoM Comparison
 		lineageTag: 5e6f7a8b-9c0d-1234-ef01-345678901234
+
+		changedProperty = IsHidden
 
 	measure MoM_Variance_Pct = ```
 			
@@ -615,6 +730,8 @@ table Fact_Visit
 		formatString: +0.0%;-0.0%;0.0%
 		displayFolder: FRD Dashboard\MoM Comparison
 		lineageTag: 6f7a8b9c-0d1e-2345-f012-456789012345
+
+		changedProperty = IsHidden
 
 	measure Employee_Rank_Asc = ```
 			
@@ -639,6 +756,8 @@ table Fact_Visit
 		displayFolder: FRD Dashboard\Rankings
 		lineageTag: 8b9c0d1e-2f3a-4567-1234-678901234567
 
+		changedProperty = IsHidden
+
 	measure Employee_Rank_Desc = ```
 			
 					VAR CurrentVisits = [Total_Visits]
@@ -662,15 +781,21 @@ table Fact_Visit
 		displayFolder: FRD Dashboard\Rankings
 		lineageTag: 9c0d1e2f-3a4b-5678-2345-789012345678
 
+		changedProperty = IsHidden
+
 	measure Is_Top_10 = IF([Employee_Rank_Desc] <= 10, 1, 0)
 		formatString: 0
 		displayFolder: FRD Dashboard\Rankings
 		lineageTag: 0d1e2f3a-4b5c-6789-3456-890123456789
 
+		changedProperty = IsHidden
+
 	measure Is_Bottom_10 = IF([Employee_Rank_Asc] <= 10, 1, 0)
 		formatString: 0
 		displayFolder: FRD Dashboard\Rankings
 		lineageTag: 1e2f3a4b-5c6d-7890-4567-901234567890
+
+		changedProperty = IsHidden
 
 	measure Visits_Clients = ```
 			
@@ -683,6 +808,8 @@ table Fact_Visit
 		displayFolder: FRD Dashboard\Entity Filters
 		lineageTag: 2f3a4b5c-6d7e-8901-5678-012345678901
 
+		changedProperty = IsHidden
+
 	measure Visits_Influencers = ```
 			
 					CALCULATE(
@@ -693,6 +820,8 @@ table Fact_Visit
 		formatString: #,##0
 		displayFolder: FRD Dashboard\Entity Filters
 		lineageTag: 3a4b5c6d-7e8f-9012-6789-123456789012
+
+		changedProperty = IsHidden
 
 	measure Visits_Customers = ```
 			
@@ -705,6 +834,8 @@ table Fact_Visit
 		displayFolder: FRD Dashboard\Entity Filters
 		lineageTag: 4b5c6d7e-8f90-1234-7890-234567890123
 
+		changedProperty = IsHidden
+
 	measure Last_Refresh_DateTime = ```
 			
 					VAR LastUpdate = MAX('Fact_Visit'[updated_at])
@@ -713,6 +844,8 @@ table Fact_Visit
 			```
 		displayFolder: FRD Dashboard\Metadata
 		lineageTag: 5c6d7e8f-9012-3456-8901-345678901234
+
+		changedProperty = IsHidden
 
 	measure Location_Label_Dynamic = ```
 					VAR SelectedLevel = SELECTEDVALUE('LocationLevelParam'[LevelOption], "Area")
@@ -731,6 +864,8 @@ table Fact_Visit
 		displayFolder: FRD Dashboard\Location
 		lineageTag: 6d7e8f90-1234-5678-9012-456789012345
 
+		changedProperty = IsHidden
+
 	measure Total_Engineer_Visits =
 			CALCULATE(
 				[Total_Visits],
@@ -739,6 +874,8 @@ table Fact_Visit
 		formatString: 0
 		displayFolder: Visit Counts
 		lineageTag: a1b2c3d4-5e6f-7890-abcd-ef0123456789
+
+		changedProperty = IsHidden
 
 	measure Total_Contractor_Visits =
 			CALCULATE(
@@ -749,6 +886,8 @@ table Fact_Visit
 		displayFolder: Visit Counts
 		lineageTag: b2c3d4e5-6f7a-8901-bcde-f01234567890
 
+		changedProperty = IsHidden
+
 	measure Total_IHB_Visits =
 			CALCULATE(
 				[Total_Visits],
@@ -757,6 +896,8 @@ table Fact_Visit
 		formatString: 0
 		displayFolder: Visit Counts
 		lineageTag: d4e5f6a7-8b9c-0123-def0-123456789012
+
+		changedProperty = IsHidden
 
 	measure Total_Influencers_Visits =
 			CALCULATE(
@@ -767,92 +908,107 @@ table Fact_Visit
 		displayFolder: Visit Counts
 		lineageTag: e5f6a7b8-9c0d-1234-ef01-234567890123
 
-	measure Visited_Dealers = ```
+		changedProperty = IsHidden
+
+	measure Visited_Dealers =
 			CALCULATE(
 				DISTINCTCOUNT('Fact_Visit'[ClientKey]),
 				'Fact_Visit'[ClientType] = "Dealer"
 			)
-			```
 		formatString: #,##0
 		displayFolder: FRD Dashboard\Visited Counts
 		lineageTag: frd-visited-dealers-001
 
-	measure Visited_Retailers = ```
+		changedProperty = IsHidden
+
+	measure Visited_Retailers =
 			CALCULATE(
 				DISTINCTCOUNT('Fact_Visit'[ClientKey]),
 				'Fact_Visit'[ClientType] = "Retailer"
 			)
-			```
 		formatString: #,##0
 		displayFolder: FRD Dashboard\Visited Counts
 		lineageTag: frd-visited-retailers-002
 
-	measure Visited_Sites_IHB = ```
+		changedProperty = IsHidden
+
+	measure Visited_Sites_IHB =
 			CALCULATE(
 				DISTINCTCOUNT('Fact_Visit'[ClientKey]),
 				'Fact_Visit'[ClientType] IN {"Site", "IHB"}
 			)
-			```
 		formatString: #,##0
 		displayFolder: FRD Dashboard\Visited Counts
 		lineageTag: frd-visited-sites-ihb-003
+
+		changedProperty = IsHidden
 
 	measure Customer_Target = CALCULATE(SUM(Fact_Target[DailyTarget]), Fact_Target[EntityGroup] = "Customers")
 		formatString: #,##0
 		displayFolder: FRD Dashboard\Targets
 		lineageTag: frd-customer-target-004
 
-	measure Customer_Total_Visited = ```
+		changedProperty = IsHidden
+
+	measure Customer_Total_Visited =
 			// Customers = Dealers + Retailers (Channel Partners)
 			CALCULATE(
 				DISTINCTCOUNT('Fact_Visit'[ClientKey]),
 				'Fact_Visit'[ClientType] IN {"Dealer", "Retailer"}
 			)
-			```
 		formatString: 0
 		displayFolder: FRD Dashboard\Performance
 		lineageTag: frd-customer-total-005
 
-	measure Customer_Achievement_Pct = ```
+		changedProperty = IsHidden
+
+	measure Customer_Achievement_Pct =
 			VAR Target = [Customer_Target]
 			VAR Actual = [Customer_Total_Visited]
 			RETURN
 			IF(Target = 0, BLANK(), DIVIDE(Actual, Target, 0))
-			```
 		formatString: 0%
 		displayFolder: FRD Dashboard\Performance
 		lineageTag: frd-customer-ach-006
+
+		changedProperty = IsHidden
 
 	measure Influencer_Target = CALCULATE(SUM(Fact_Target[DailyTarget]), Fact_Target[EntityGroup] = "Influencers")
 		formatString: #,##0
 		displayFolder: FRD Dashboard\Targets
 		lineageTag: frd-influencer-target-007
 
-	measure Influencer_Total_Visited = ```
+		changedProperty = IsHidden
+
+	measure Influencer_Total_Visited =
 			// Influencers = Engineers + Contractors (Technical Influencers)
 			CALCULATE(
 				DISTINCTCOUNT('Fact_Visit'[ClientKey]),
 				'Fact_Visit'[ClientType] IN {"Engineer", "Contractor"}
 			)
-			```
 		formatString: 0
 		displayFolder: FRD Dashboard\Performance
 		lineageTag: frd-influencer-total-008
 
-	measure Influencer_Achievement_Pct = ```
+		changedProperty = IsHidden
+
+	measure Influencer_Achievement_Pct =
 			VAR Target = [Influencer_Target]
 			VAR Actual = [Influencer_Total_Visited]
 			RETURN
 			IF(Target = 0, BLANK(), DIVIDE(Actual, Target, 0))
-			```
 		formatString: 0%
 		displayFolder: FRD Dashboard\Performance
 		lineageTag: frd-influencer-ach-009
+
+		changedProperty = IsHidden
 
 	measure Total_Target = CALCULATE(SUM(Fact_Target[DailyTarget]), Fact_Target[EntityGroup] IN {"Customers", "Influencers"})
 		formatString: #,##0
 		displayFolder: FRD Dashboard\Targets
 		lineageTag: frd-total-target-010
+
+		changedProperty = IsHidden
 
 	measure Total_Achievement_Pct = ```
 			DIVIDE(
@@ -865,92 +1021,157 @@ table Fact_Visit
 		displayFolder: FRD Dashboard\Performance
 		lineageTag: frd-total-ach-011
 
-	measure Sites_Visited_Count = ```
+		changedProperty = IsHidden
+
+	measure Sites_Visited_Count =
 			// Consumers: Sites (Potential Construction Sites)
 			CALCULATE(
 				DISTINCTCOUNT('Fact_Visit'[ClientKey]),
 				'Fact_Visit'[ClientType] = "Site"
 			)
-			```
 		formatString: 0
 		displayFolder: FRD Dashboard\Consumer
 		lineageTag: frd-sites-visited-012
 
-	measure IHB_Visited_Count = ```
+		changedProperty = IsHidden
+
+	measure IHB_Visited_Count =
 			// Consumers: IHB (Individual House Builders)
 			CALCULATE(
 				DISTINCTCOUNT('Fact_Visit'[ClientKey]),
 				'Fact_Visit'[ClientType] = "IHB"
 			)
-			```
 		formatString: 0
 		displayFolder: FRD Dashboard\Consumer
 		lineageTag: frd-ihb-visited-013
+
+		changedProperty = IsHidden
+
+	measure Visits_By_Zone =
+			CALCULATE(
+				[Total_Visits],
+				USERELATIONSHIP('Fact_Visit'[territory_id], 'Dim_Territory'[id])
+			)
+		formatString: #,##0
+		displayFolder: Territory Analysis
+		lineageTag: territory-visits-zone-001
+
+		changedProperty = IsHidden
+
+	measure Visits_By_Area =
+			CALCULATE(
+				[Total_Visits],
+				USERELATIONSHIP('Fact_Visit'[territory_id], 'Dim_Territory'[id])
+			)
+		formatString: #,##0
+		displayFolder: Territory Analysis
+		lineageTag: territory-visits-area-002
+
+		changedProperty = IsHidden
+
+	measure Territory_Visit_Coverage =
+			VAR TotalTerritories = CALCULATE(DISTINCTCOUNT('Dim_Territory'[id]), ALL('Dim_Territory'))
+			VAR VisitedTerritories = CALCULATE(
+				DISTINCTCOUNT('Dim_Territory'[id]),
+				USERELATIONSHIP('Fact_Visit'[territory_id], 'Dim_Territory'[id])
+			)
+			RETURN
+			DIVIDE(VisitedTerritories, TotalTerritories, 0)
+		formatString: 0.0%
+		displayFolder: Territory Analysis
+		lineageTag: territory-coverage-003
+
+		changedProperty = IsHidden
+
+	measure Zone_Name_Selected =
+			CALCULATE(
+				SELECTEDVALUE('Dim_Territory'[zone_name], "All Zones"),
+				USERELATIONSHIP('Fact_Visit'[territory_id], 'Dim_Territory'[id])
+			)
+		displayFolder: Territory Analysis\Labels
+		lineageTag: territory-zone-label-004
+
+		changedProperty = IsHidden
+
+	measure Area_Name_Selected =
+			CALCULATE(
+				SELECTEDVALUE('Dim_Territory'[area_name], "All Areas"),
+				USERELATIONSHIP('Fact_Visit'[territory_id], 'Dim_Territory'[id])
+			)
+		displayFolder: Territory Analysis\Labels
+		lineageTag: territory-area-label-005
+
+		changedProperty = IsHidden
+
+	measure Territory_Name_Selected =
+			CALCULATE(
+				SELECTEDVALUE('Dim_Territory'[name], "All Territories"),
+				USERELATIONSHIP('Fact_Visit'[territory_id], 'Dim_Territory'[id])
+			)
+		displayFolder: Territory Analysis\Labels
+		lineageTag: territory-name-label-006
+
+		changedProperty = IsHidden
 
 	measure FRD_Target = DISTINCTCOUNT('Fact_Visit'[ClientKey])
 		formatString: #,##0
 		displayFolder: FRD Dashboard\Tertiary Sales
 		lineageTag: frd-target-count-017
 
-	measure Visits_By_Zone = ```
-			CALCULATE(
-				[Total_Visits],
-				USERELATIONSHIP('Fact_Visit'[territory_id], 'Dim_Territory'[TerritoryID])
-			)
-			```
-		formatString: #,##0
-		displayFolder: Territory Analysis
-		lineageTag: territory-visits-zone-001
+		changedProperty = IsHidden
 
-	measure Visits_By_Area = ```
-			CALCULATE(
-				[Total_Visits],
-				USERELATIONSHIP('Fact_Visit'[territory_id], 'Dim_Territory'[TerritoryID])
-			)
-			```
-		formatString: #,##0
-		displayFolder: Territory Analysis
-		lineageTag: territory-visits-area-002
+	measure simple_target = SUM(Fact_Target[DailyTarget])
+		formatString: 0
+		lineageTag: 649c1c48-53f9-48de-b660-6f00a26e49c0
 
-	measure Territory_Visit_Coverage = ```
-			VAR TotalTerritories = CALCULATE(DISTINCTCOUNT('Dim_Territory'[TerritoryID]), ALL('Dim_Territory'))
-			VAR VisitedTerritories = CALCULATE(
-				DISTINCTCOUNT('Dim_Territory'[TerritoryID]),
-				USERELATIONSHIP('Fact_Visit'[territory_id], 'Dim_Territory'[TerritoryID])
-			)
-			RETURN
-			DIVIDE(VisitedTerritories, TotalTerritories, 0)
-			```
-		formatString: 0.0%
-		displayFolder: Territory Analysis
-		lineageTag: territory-coverage-003
+		changedProperty = IsHidden
 
-	measure Zone_Name_Selected = ```
-			CALCULATE(
-				SELECTEDVALUE('Dim_Territory'[ZoneName], "All Zones"),
-				USERELATIONSHIP('Fact_Visit'[territory_id], 'Dim_Territory'[TerritoryID])
-			)
-			```
-		displayFolder: Territory Analysis\Labels
-		lineageTag: territory-zone-label-004
+	measure sim_ach = DIVIDE([Total_Visits], [simple_target],"N/A")
+		lineageTag: 10de036b-8dae-4856-8d05-17381ce8483e
 
-	measure Area_Name_Selected = ```
-			CALCULATE(
-				SELECTEDVALUE('Dim_Territory'[AreaName], "All Areas"),
-				USERELATIONSHIP('Fact_Visit'[territory_id], 'Dim_Territory'[TerritoryID])
-			)
-			```
-		displayFolder: Territory Analysis\Labels
-		lineageTag: territory-area-label-005
+		changedProperty = IsHidden
 
-	measure Territory_Name_Selected = ```
-			CALCULATE(
-				SELECTEDVALUE('Dim_Territory'[TerritoryName], "All Territories"),
-				USERELATIONSHIP('Fact_Visit'[territory_id], 'Dim_Territory'[TerritoryID])
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Site + IHB Visits' =
+			
+			CALCULATE (
+			    [Total_Visits],
+			    'Fact_Visit'[ClientType] IN { "Site", "IHB" }
 			)
-			```
-		displayFolder: Territory Analysis\Labels
-		lineageTag: territory-name-label-006
+		formatString: 0
+		displayFolder: Visit Counts
+		lineageTag: ab809b21-5472-4387-b2ce-d385d8db2027
+
+		changedProperty = IsHidden
+
+	measure TT_Dealer_Visits =
+			
+			IF( SELECTEDVALUE( Dim_EntityGroup[EntityGroup] ) = "Customers", [Total_Dealer_Visits], BLANK() )
+		formatString: 0
+		lineageTag: a72031f4-f2bb-4934-a452-12995e065622
+
+		changedProperty = IsHidden
+
+	measure TT_Retailer_Visits =
+			
+			IF( SELECTEDVALUE( Dim_EntityGroup[EntityGroup] ) = "Customers", [Total_Retailer_Visits], BLANK() )
+		formatString: 0
+		lineageTag: a9331727-fd3c-46d2-a035-6e968831dc47
+
+		changedProperty = IsHidden
+
+	measure TT_IHB_Visits =
+			
+			IF( SELECTEDVALUE( Dim_EntityGroup[EntityGroup] ) = "Consumers", [Total_IHB_Visits], BLANK() )
+		formatString: 0
+		lineageTag: d3c138eb-cd26-4637-8e58-da3a0f1e22a6
+
+		changedProperty = IsHidden
+
+	measure 'Unique Employees With Visits' = DISTINCTCOUNT('Fact_Visit'[EmployeeID])
+		formatString: 0
+		lineageTag: 225a035a-e599-4c04-a7fd-fedf4d9d6a8b
 
 	column VisitID
 		dataType: int64
@@ -958,6 +1179,8 @@ table Fact_Visit
 		lineageTag: b0de3cfc-46f7-497b-a6be-4687f8f16deb
 		summarizeBy: count
 		sourceColumn: VisitID
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -967,6 +1190,8 @@ table Fact_Visit
 		lineageTag: 072c2531-4ca1-482c-9013-186853e98d95
 		summarizeBy: none
 		sourceColumn: DateKey
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -979,6 +1204,8 @@ table Fact_Visit
 		summarizeBy: none
 		sourceColumn: EmployeeID
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column EmployeeName
@@ -987,14 +1214,18 @@ table Fact_Visit
 		summarizeBy: none
 		sourceColumn: EmployeeName
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column RoleLevel
 		dataType: int64
 		formatString: 0
 		lineageTag: 1765b72a-1d08-4220-8ce0-7e66db466411
-		summarizeBy: none
+		summarizeBy: sum
 		sourceColumn: RoleLevel
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -1004,6 +1235,8 @@ table Fact_Visit
 		summarizeBy: none
 		sourceColumn: ClientKey
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column ClientType
@@ -1011,6 +1244,8 @@ table Fact_Visit
 		lineageTag: 66689d2b-c845-400e-99f1-7debb4cedff7
 		summarizeBy: none
 		sourceColumn: ClientType
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -1021,6 +1256,8 @@ table Fact_Visit
 		summarizeBy: count
 		sourceColumn: ClientID
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column ResponsibleRole
@@ -1029,6 +1266,8 @@ table Fact_Visit
 		summarizeBy: none
 		sourceColumn: ResponsibleRole
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column visit_type
@@ -1036,6 +1275,8 @@ table Fact_Visit
 		lineageTag: f096ca87-88eb-4825-a3cb-cd483bc02d44
 		summarizeBy: none
 		sourceColumn: visit_type
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -1046,6 +1287,8 @@ table Fact_Visit
 		summarizeBy: none
 		sourceColumn: VisitCategoryID
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column VisitPhaseID
@@ -1054,6 +1297,8 @@ table Fact_Visit
 		lineageTag: 38120914-2534-4578-86bf-f60cc971db1d
 		summarizeBy: none
 		sourceColumn: VisitPhaseID
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -1064,14 +1309,18 @@ table Fact_Visit
 		summarizeBy: count
 		sourceColumn: VisitStageID
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column organization_id
 		dataType: int64
 		formatString: 0
 		lineageTag: 53f429e7-23bb-40cc-a22f-d4c956fc11e1
-		summarizeBy: none
+		summarizeBy: sum
 		sourceColumn: organization_id
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -1081,6 +1330,8 @@ table Fact_Visit
 		summarizeBy: none
 		sourceColumn: status
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column feedback
@@ -1088,6 +1339,8 @@ table Fact_Visit
 		lineageTag: 73a0cd4c-1110-4464-ab0d-5eb8172167e1
 		summarizeBy: none
 		sourceColumn: feedback
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -1097,6 +1350,8 @@ table Fact_Visit
 		summarizeBy: none
 		sourceColumn: visit_photo
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column product_photo
@@ -1105,6 +1360,8 @@ table Fact_Visit
 		summarizeBy: none
 		sourceColumn: product_photo
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column delete_status
@@ -1112,6 +1369,8 @@ table Fact_Visit
 		lineageTag: 48a49dcc-c249-42af-afe2-04b667df6df8
 		summarizeBy: none
 		sourceColumn: delete_status
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -1122,6 +1381,8 @@ table Fact_Visit
 		summarizeBy: sum
 		sourceColumn: HasPhoto
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column HasProductPhoto
@@ -1130,6 +1391,8 @@ table Fact_Visit
 		lineageTag: a2943f65-bd16-41e3-accc-5b05923fec37
 		summarizeBy: sum
 		sourceColumn: HasProductPhoto
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -1140,6 +1403,8 @@ table Fact_Visit
 		summarizeBy: sum
 		sourceColumn: HasFeedback
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column HasTerritory
@@ -1149,14 +1414,18 @@ table Fact_Visit
 		summarizeBy: sum
 		sourceColumn: HasTerritory
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column territory_id
 		dataType: int64
 		formatString: 0
 		lineageTag: 0ec2e29b-23a6-4b38-a6db-7d11bc622979
-		summarizeBy: none
+		summarizeBy: sum
 		sourceColumn: territory_id
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -1165,6 +1434,8 @@ table Fact_Visit
 		lineageTag: 17a78ca3-d95e-4965-a6a1-f74f66154cc2
 		summarizeBy: none
 		sourceColumn: territory_name
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -1180,6 +1451,8 @@ table Fact_Visit
 			relationship: 962be8ce-82e9-48c1-98c7-0feb32f403e5
 			defaultHierarchy: LocalDateTable_b78652d6-96b5-4ce0-b950-81d1fcd8e989.'Date Hierarchy'
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column origin
@@ -1187,6 +1460,8 @@ table Fact_Visit
 		lineageTag: 5d0ddd02-2778-4dd6-997c-18508974a8d8
 		summarizeBy: none
 		sourceColumn: origin
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -1202,6 +1477,8 @@ table Fact_Visit
 			relationship: 78d7e16f-3448-48a9-8ea1-824a10536011
 			defaultHierarchy: LocalDateTable_4ccd853a-ffaa-4612-9342-019595dc6792.'Date Hierarchy'
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column created_at
@@ -1215,6 +1492,8 @@ table Fact_Visit
 			isDefault
 			relationship: 1987ce8d-274c-4244-acb1-fe2b4f761ec6
 			defaultHierarchy: LocalDateTable_80dc7739-add9-4cfa-bfd4-0f267802e538.'Date Hierarchy'
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -1230,13 +1509,17 @@ table Fact_Visit
 			relationship: 7d5ccdec-0a55-48d8-8dfb-4451b0266308
 			defaultHierarchy: LocalDateTable_f8d9e743-e68c-4f07-9f25-9ac4ce880065.'Date Hierarchy'
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column latitude
 		dataType: double
 		lineageTag: c3d4e5f6-7890-abcd-ef12-345678901234
-		summarizeBy: none
+		summarizeBy: sum
 		sourceColumn: latitude
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -1245,8 +1528,10 @@ table Fact_Visit
 	column longitude
 		dataType: double
 		lineageTag: d4e5f678-90ab-cdef-1234-567890123456
-		summarizeBy: none
+		summarizeBy: sum
 		sourceColumn: longitude
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -1257,6 +1542,8 @@ table Fact_Visit
 		lineageTag: 7e8f9012-3456-7890-abcd-567890123456
 		summarizeBy: none
 		sourceColumn: CompanyCode
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -1469,6 +1756,8 @@ table Fact_Visit
 				in
 				    TypedTable
 				```
+
+	changedProperty = IsHidden
 
 	annotation PBI_ResultType = Table
 

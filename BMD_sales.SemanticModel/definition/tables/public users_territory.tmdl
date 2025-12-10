@@ -1,10 +1,8 @@
 table 'public users_territory'
-	isHidden
 	lineageTag: bc693e23-0b4a-4d11-a926-c9327e702c5c
 
 	column users_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 01513b98-a04f-426c-8f44-2392fc05a06e
 		summarizeBy: sum
@@ -16,7 +14,6 @@ table 'public users_territory'
 
 	column territory_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: e37ec832-10e8-44c8-b6f0-76e3fd0cac79
 		summarizeBy: sum

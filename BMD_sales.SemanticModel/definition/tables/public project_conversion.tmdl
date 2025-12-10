@@ -1,10 +1,8 @@
 table 'public project_conversion'
-	isHidden
 	lineageTag: ec5a74f4-ab0c-434b-9884-22d73db21766
 
 	column id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: d0070d72-2387-4564-91a5-f4bb5f20efe9
 		summarizeBy: sum
@@ -16,7 +14,6 @@ table 'public project_conversion'
 
 	column assigned_agm
 		dataType: string
-		isHidden
 		lineageTag: 6c19c95c-0d65-4b00-997b-34317ad4802b
 		summarizeBy: none
 		sourceColumn: assigned_agm
@@ -27,7 +24,6 @@ table 'public project_conversion'
 
 	column assigned_asm
 		dataType: string
-		isHidden
 		lineageTag: 580bcf7e-d962-4f60-baf6-ca033d0fc5d9
 		summarizeBy: none
 		sourceColumn: assigned_asm
@@ -38,7 +34,6 @@ table 'public project_conversion'
 
 	column assigned_bdo
 		dataType: string
-		isHidden
 		lineageTag: 5f3cbfe7-c535-4bbc-adbf-3a94dc3ad064
 		summarizeBy: none
 		sourceColumn: assigned_bdo
@@ -49,7 +44,6 @@ table 'public project_conversion'
 
 	column assigned_cro
 		dataType: string
-		isHidden
 		lineageTag: fcd58742-cc88-4773-b744-a16c372a6db8
 		summarizeBy: none
 		sourceColumn: assigned_cro
@@ -60,7 +54,6 @@ table 'public project_conversion'
 
 	column assigned_gm
 		dataType: string
-		isHidden
 		lineageTag: 90d37837-5fbf-4eef-8e8e-fcf99f36e057
 		summarizeBy: none
 		sourceColumn: assigned_gm
@@ -71,7 +64,6 @@ table 'public project_conversion'
 
 	column assigned_sr
 		dataType: string
-		isHidden
 		lineageTag: 28a33aa9-b034-4eda-85f7-8fc28ae18a14
 		summarizeBy: none
 		sourceColumn: assigned_sr
@@ -82,7 +74,6 @@ table 'public project_conversion'
 
 	column assigned_zsm
 		dataType: string
-		isHidden
 		lineageTag: 9cdf0547-71b9-4cc6-86a1-833df167d67e
 		summarizeBy: none
 		sourceColumn: assigned_zsm
@@ -93,7 +84,6 @@ table 'public project_conversion'
 
 	column bazaar_name
 		dataType: string
-		isHidden
 		lineageTag: eb2d642b-c4a8-4f00-9aff-f743f22cb1bf
 		summarizeBy: none
 		sourceColumn: bazaar_name
@@ -104,7 +94,6 @@ table 'public project_conversion'
 
 	column bd_team
 		dataType: string
-		isHidden
 		lineageTag: 7ac2e74f-fb27-40d5-ad90-eb973d6f8d01
 		summarizeBy: none
 		sourceColumn: bd_team
@@ -115,7 +104,6 @@ table 'public project_conversion'
 
 	column business_unit
 		dataType: string
-		isHidden
 		lineageTag: d82b85e3-5b2d-4b20-899b-aedc7f50468b
 		summarizeBy: none
 		sourceColumn: business_unit
@@ -126,7 +114,6 @@ table 'public project_conversion'
 
 	column consultancy_firm
 		dataType: string
-		isHidden
 		lineageTag: 3b066eb3-46ab-4907-8bfc-820d7a88968b
 		summarizeBy: none
 		sourceColumn: consultancy_firm
@@ -137,7 +124,6 @@ table 'public project_conversion'
 
 	column contractor_loyalty
 		dataType: string
-		isHidden
 		lineageTag: 9a4a52d7-94c1-4a04-ac20-d4a04cd44ece
 		summarizeBy: none
 		sourceColumn: contractor_loyalty
@@ -148,7 +134,6 @@ table 'public project_conversion'
 
 	column created_at
 		dataType: dateTime
-		isHidden
 		formatString: General Date
 		lineageTag: 2cf9ac6b-f9e8-4825-84d8-4a889f2e2dde
 		summarizeBy: none
@@ -165,7 +150,6 @@ table 'public project_conversion'
 
 	column created_by
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 66a4b5cf-4d73-4b58-8ab5-48c4d7f8841c
 		summarizeBy: sum
@@ -177,7 +161,6 @@ table 'public project_conversion'
 
 	column dealer_name
 		dataType: string
-		isHidden
 		lineageTag: dfc0012b-a184-4b94-b16c-c91e15b2d554
 		summarizeBy: none
 		sourceColumn: dealer_name
@@ -188,7 +171,6 @@ table 'public project_conversion'
 
 	column dealer_record_id
 		dataType: string
-		isHidden
 		lineageTag: 5bc66d88-0943-44c8-831a-7990a3f8688f
 		summarizeBy: none
 		sourceColumn: dealer_record_id
@@ -199,7 +181,6 @@ table 'public project_conversion'
 
 	column delete_status
 		dataType: string
-		isHidden
 		lineageTag: 754e358b-36d7-4401-ab70-7f8775a7c97a
 		summarizeBy: none
 		sourceColumn: delete_status
@@ -210,7 +191,6 @@ table 'public project_conversion'
 
 	column delivery_address
 		dataType: string
-		isHidden
 		lineageTag: dfdff5d4-dbe0-482e-9a84-3f4452d97d5e
 		summarizeBy: none
 		sourceColumn: delivery_address
@@ -221,7 +201,6 @@ table 'public project_conversion'
 
 	column delivery_method
 		dataType: string
-		isHidden
 		lineageTag: 100cdd79-7e1f-432a-8520-edcb0f204e62
 		summarizeBy: none
 		sourceColumn: delivery_method
@@ -232,7 +211,6 @@ table 'public project_conversion'
 
 	column dn_number
 		dataType: string
-		isHidden
 		lineageTag: 3a24fba6-d5fd-40cd-89eb-f98c547c33e4
 		summarizeBy: none
 		sourceColumn: dn_number
@@ -243,7 +221,6 @@ table 'public project_conversion'
 
 	column end_user
 		dataType: string
-		isHidden
 		lineageTag: d3a918be-2d5f-4235-a123-efd0a04b9437
 		summarizeBy: none
 		sourceColumn: end_user
@@ -254,7 +231,6 @@ table 'public project_conversion'
 
 	column engineer_loyalty
 		dataType: string
-		isHidden
 		lineageTag: 95440384-bff6-4813-97ce-9df9cc4a3227
 		summarizeBy: none
 		sourceColumn: engineer_loyalty
@@ -265,7 +241,6 @@ table 'public project_conversion'
 
 	column engineer_name
 		dataType: string
-		isHidden
 		lineageTag: 343c0417-6d4e-4f3b-8a61-d2f75bbf66b3
 		summarizeBy: none
 		sourceColumn: engineer_name
@@ -276,7 +251,6 @@ table 'public project_conversion'
 
 	column engineer_type
 		dataType: string
-		isHidden
 		lineageTag: 28cd2e0c-4a77-482d-928d-cc7135eebd7f
 		summarizeBy: none
 		sourceColumn: engineer_type
@@ -287,7 +261,6 @@ table 'public project_conversion'
 
 	column engineer_type_name
 		dataType: string
-		isHidden
 		lineageTag: d2fa7d65-7612-4a05-99d2-aaadaa8c3028
 		summarizeBy: none
 		sourceColumn: engineer_type_name
@@ -298,7 +271,6 @@ table 'public project_conversion'
 
 	column feedbacks
 		dataType: string
-		isHidden
 		lineageTag: e0f820d6-e2f0-4c02-8d9c-f3913dc94e2a
 		summarizeBy: none
 		sourceColumn: feedbacks
@@ -309,7 +281,6 @@ table 'public project_conversion'
 
 	column ihb
 		dataType: string
-		isHidden
 		lineageTag: 4406172a-ea72-4d41-9ecf-07a0e571a18b
 		summarizeBy: none
 		sourceColumn: ihb
@@ -320,7 +291,6 @@ table 'public project_conversion'
 
 	column loyalty_of_contractor
 		dataType: boolean
-		isHidden
 		formatString: """TRUE"";""TRUE"";""FALSE"""
 		lineageTag: ae2a8916-b991-42bc-b90b-03c481f77529
 		summarizeBy: none
@@ -332,7 +302,6 @@ table 'public project_conversion'
 
 	column loyalty_of_engineer
 		dataType: boolean
-		isHidden
 		formatString: """TRUE"";""TRUE"";""FALSE"""
 		lineageTag: 85770800-2c68-43e5-bea9-92a5020dc0ec
 		summarizeBy: none
@@ -344,7 +313,6 @@ table 'public project_conversion'
 
 	column memo_photo
 		dataType: string
-		isHidden
 		lineageTag: 3fe398c0-7e93-4cac-b6ad-410c01fd29f5
 		summarizeBy: none
 		sourceColumn: memo_photo
@@ -355,7 +323,6 @@ table 'public project_conversion'
 
 	column meta
 		dataType: string
-		isHidden
 		lineageTag: 50cd5342-afa8-4ee2-9913-54c5187cc3a5
 		summarizeBy: none
 		sourceColumn: meta
@@ -366,7 +333,6 @@ table 'public project_conversion'
 
 	column moduleid
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: b977c496-b9ec-44ad-9ca8-2c3319073cd5
 		summarizeBy: sum
@@ -378,7 +344,6 @@ table 'public project_conversion'
 
 	column namespaceid
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: a2b92df1-57ce-4384-8af8-7d750be56bcb
 		summarizeBy: sum
@@ -390,7 +355,6 @@ table 'public project_conversion'
 
 	column notes
 		dataType: string
-		isHidden
 		lineageTag: 9b81a9fa-699e-4154-8df3-2352cb953f82
 		summarizeBy: none
 		sourceColumn: notes
@@ -401,7 +365,6 @@ table 'public project_conversion'
 
 	column order_status
 		dataType: string
-		isHidden
 		lineageTag: 1e691462-cd8c-4cba-b0b4-bd182a285ceb
 		summarizeBy: none
 		sourceColumn: order_status
@@ -412,7 +375,6 @@ table 'public project_conversion'
 
 	column owned_by
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 289bff18-4ed3-46de-9034-141dab99050f
 		summarizeBy: sum
@@ -424,7 +386,6 @@ table 'public project_conversion'
 
 	column payload
 		dataType: string
-		isHidden
 		lineageTag: de33efec-6f5e-42a0-9272-25e8b2ba0fbf
 		summarizeBy: none
 		sourceColumn: payload
@@ -435,7 +396,6 @@ table 'public project_conversion'
 
 	column potential_project
 		dataType: string
-		isHidden
 		lineageTag: 48fe4d23-d41f-42be-87b4-f197011d5bbd
 		summarizeBy: none
 		sourceColumn: potential_project
@@ -446,7 +406,6 @@ table 'public project_conversion'
 
 	column potential_site_address
 		dataType: string
-		isHidden
 		lineageTag: 0037f0d0-cb19-47f4-b6f2-c69d7ec681fa
 		summarizeBy: none
 		sourceColumn: potential_site_address
@@ -457,7 +416,6 @@ table 'public project_conversion'
 
 	column potential_site_owner_name
 		dataType: string
-		isHidden
 		lineageTag: f779e95b-33ca-4fe9-b599-384c98079195
 		summarizeBy: none
 		sourceColumn: potential_site_owner_name
@@ -468,7 +426,6 @@ table 'public project_conversion'
 
 	column potential_site_record_id
 		dataType: string
-		isHidden
 		lineageTag: 6df6465a-a0d5-4232-bf9a-dbae87d7bf68
 		summarizeBy: none
 		sourceColumn: potential_site_record_id
@@ -479,7 +436,6 @@ table 'public project_conversion'
 
 	column primary_contract
 		dataType: string
-		isHidden
 		lineageTag: 092dd2ff-f759-4d2c-8eb3-f5aac9c6dee2
 		summarizeBy: none
 		sourceColumn: primary_contract
@@ -490,7 +446,6 @@ table 'public project_conversion'
 
 	column recordid
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: c2b8b09e-4c14-4778-b75f-5c2c2777cd70
 		summarizeBy: sum
@@ -502,7 +457,6 @@ table 'public project_conversion'
 
 	column retailer
 		dataType: string
-		isHidden
 		lineageTag: 59ad473f-8d8b-4643-bf8a-c09722edeed3
 		summarizeBy: none
 		sourceColumn: retailer
@@ -513,7 +467,6 @@ table 'public project_conversion'
 
 	column retailer_name
 		dataType: string
-		isHidden
 		lineageTag: 21a46019-3f88-446b-a471-7e35e4e8780e
 		summarizeBy: none
 		sourceColumn: retailer_name
@@ -524,7 +477,6 @@ table 'public project_conversion'
 
 	column revision
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: ceef8892-2bb8-4e88-a4ec-75562d0b7807
 		summarizeBy: sum
@@ -536,7 +488,6 @@ table 'public project_conversion'
 
 	column select_eng
 		dataType: string
-		isHidden
 		lineageTag: e7abdef7-9d90-4cbd-94a9-f00c9c074f17
 		summarizeBy: none
 		sourceColumn: select_eng
@@ -547,7 +498,6 @@ table 'public project_conversion'
 
 	column stage
 		dataType: string
-		isHidden
 		lineageTag: df4004e2-37b1-45e2-9e99-3dc1f02c4287
 		summarizeBy: none
 		sourceColumn: stage
@@ -558,7 +508,6 @@ table 'public project_conversion'
 
 	column status
 		dataType: string
-		isHidden
 		lineageTag: c54e9462-a81b-4b16-b6fe-2ac8b533a957
 		summarizeBy: none
 		sourceColumn: status
@@ -569,7 +518,6 @@ table 'public project_conversion'
 
 	column territory_name
 		dataType: string
-		isHidden
 		lineageTag: 05a643d2-7d1f-4d9c-b2e0-395e18149e77
 		summarizeBy: none
 		sourceColumn: territory_name
@@ -580,7 +528,6 @@ table 'public project_conversion'
 
 	column total_amount
 		dataType: string
-		isHidden
 		lineageTag: 8bce8e52-457d-4e3e-8c46-8c9fadbecd28
 		summarizeBy: none
 		sourceColumn: total_amount
@@ -591,7 +538,6 @@ table 'public project_conversion'
 
 	column total_qty
 		dataType: string
-		isHidden
 		lineageTag: c4705351-0b8a-437a-af85-45fd633a5104
 		summarizeBy: none
 		sourceColumn: total_qty
@@ -602,7 +548,6 @@ table 'public project_conversion'
 
 	column total_quantity
 		dataType: string
-		isHidden
 		lineageTag: f3f71e86-1cff-45af-9ad4-9b8cb7242764
 		summarizeBy: none
 		sourceColumn: total_quantity
@@ -613,7 +558,6 @@ table 'public project_conversion'
 
 	column unit
 		dataType: string
-		isHidden
 		lineageTag: cf29bc31-4cce-46d7-b3cf-4ee48ee1ffc5
 		summarizeBy: none
 		sourceColumn: unit
@@ -624,7 +568,6 @@ table 'public project_conversion'
 
 	column updated_at
 		dataType: dateTime
-		isHidden
 		formatString: General Date
 		lineageTag: efdd7a36-248a-4719-846a-02584aaba4bc
 		summarizeBy: none
@@ -641,7 +584,6 @@ table 'public project_conversion'
 
 	column updated_by
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 0495157f-193e-458d-a83d-50e1a5e55ad0
 		summarizeBy: sum
@@ -653,7 +595,6 @@ table 'public project_conversion'
 
 	column visit_photo
 		dataType: string
-		isHidden
 		lineageTag: 75ba606c-4d13-43c4-973b-0e5bebc9a13a
 		summarizeBy: none
 		sourceColumn: visit_photo
@@ -664,7 +605,6 @@ table 'public project_conversion'
 
 	column visit_status
 		dataType: string
-		isHidden
 		lineageTag: 028691a5-b06a-455e-80b8-2c1c19dc1d4a
 		summarizeBy: none
 		sourceColumn: visit_status
@@ -675,7 +615,6 @@ table 'public project_conversion'
 
 	column dealer_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 1c7f4855-a9a1-4c8b-8fff-39ce250a5455
 		summarizeBy: sum
@@ -687,7 +626,6 @@ table 'public project_conversion'
 
 	column engineer_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 45724175-b251-4ac8-932a-19d35ba2fa0a
 		summarizeBy: sum
@@ -699,7 +637,6 @@ table 'public project_conversion'
 
 	column bazaar_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: d09da485-2031-40cd-8f62-3baa2ee559b1
 		summarizeBy: sum
@@ -711,7 +648,6 @@ table 'public project_conversion'
 
 	column retailer_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: c66774dd-d36a-4052-97b3-816a44d4b6e9
 		summarizeBy: sum
@@ -723,7 +659,6 @@ table 'public project_conversion'
 
 	column organization_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: a22d9dbd-70e0-49c4-a760-65de4b1d0f30
 		summarizeBy: sum
@@ -735,7 +670,6 @@ table 'public project_conversion'
 
 	column potential_site_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 043c6f50-9d12-4182-8da6-388fd5d65638
 		summarizeBy: sum
@@ -747,7 +681,6 @@ table 'public project_conversion'
 
 	column project_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 6fda8a7a-9be1-4ea7-9a3a-fd411e96283e
 		summarizeBy: sum
@@ -759,7 +692,6 @@ table 'public project_conversion'
 
 	column site_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: abef38ae-bcbc-488d-aa7b-f5ba66c4e520
 		summarizeBy: sum
@@ -771,7 +703,6 @@ table 'public project_conversion'
 
 	column requested_order_status
 		dataType: string
-		isHidden
 		lineageTag: a3e8e03d-8874-49a6-bb85-99006e5bd66a
 		summarizeBy: none
 		sourceColumn: requested_order_status
@@ -782,7 +713,6 @@ table 'public project_conversion'
 
 	column order_category
 		dataType: string
-		isHidden
 		lineageTag: 75de6209-5b9d-4804-b2ed-66fe586e1b47
 		summarizeBy: none
 		sourceColumn: order_category

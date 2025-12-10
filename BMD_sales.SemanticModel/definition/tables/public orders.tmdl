@@ -1,10 +1,8 @@
 table 'public orders'
-	isHidden
 	lineageTag: e7b08ce3-e0f5-4242-9def-08dac432c14d
 
 	column id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 9548e3f5-b861-44f7-8fa8-e4535e843311
 		summarizeBy: sum
@@ -16,7 +14,6 @@ table 'public orders'
 
 	column corteza_record_ref
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 707a3aef-40ba-47f9-ae28-b35829d44f56
 		summarizeBy: sum
@@ -28,7 +25,6 @@ table 'public orders'
 
 	column created_at
 		dataType: dateTime
-		isHidden
 		formatString: General Date
 		lineageTag: 9c7be183-47b3-40eb-901c-f612120f68f9
 		summarizeBy: none
@@ -45,7 +41,6 @@ table 'public orders'
 
 	column order_no
 		dataType: string
-		isHidden
 		lineageTag: 942ff8f1-4c7d-4c2e-995c-d0bd6805c684
 		summarizeBy: none
 		sourceColumn: order_no
@@ -56,7 +51,6 @@ table 'public orders'
 
 	column status
 		dataType: string
-		isHidden
 		lineageTag: 7c736044-61fe-469a-94a5-7bbadf72c070
 		summarizeBy: none
 		sourceColumn: status
@@ -67,7 +61,6 @@ table 'public orders'
 
 	column updated_at
 		dataType: dateTime
-		isHidden
 		formatString: General Date
 		lineageTag: 38f3a619-f158-4210-b7d9-23ae52d51847
 		summarizeBy: none
@@ -84,7 +77,6 @@ table 'public orders'
 
 	column created_by_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: be0e6bfb-f34f-420a-bcfe-34cd5c5e0bb6
 		summarizeBy: sum
@@ -96,7 +88,6 @@ table 'public orders'
 
 	column customer_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 96e0aaaa-c804-4ca5-a8c8-f0b62c39fe7b
 		summarizeBy: sum
@@ -108,7 +99,6 @@ table 'public orders'
 
 	column disbursement_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 7d0532fa-955e-4160-ada9-3acfbd81fcd1
 		summarizeBy: sum
@@ -120,7 +110,6 @@ table 'public orders'
 
 	column engineer_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 3408a187-a660-4620-8eb1-7ce2e7fe3137
 		summarizeBy: sum
@@ -132,7 +121,6 @@ table 'public orders'
 
 	column retailer_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: f737e562-422e-4738-bd49-548ae870d00a
 		summarizeBy: sum

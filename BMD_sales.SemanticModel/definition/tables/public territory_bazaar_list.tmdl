@@ -1,10 +1,8 @@
 table 'public territory_bazaar_list'
-	isHidden
 	lineageTag: 42ca98d3-caae-4661-90c1-1a39ddf2990e
 
 	column territory_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 6d42c29e-957b-4dcd-966f-4acde3dbd097
 		summarizeBy: sum
@@ -16,7 +14,6 @@ table 'public territory_bazaar_list'
 
 	column bazaar_list_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 4a61408a-4b2b-479d-85c4-5b709045929a
 		summarizeBy: sum
@@ -31,9 +28,12 @@ table 'public territory_bazaar_list'
 		source =
 				let
 				  Source = PostgreSQL.Database("172.17.19.21", "bmdsalesdb"),
-				  #"Navigation 1" = Source{[Schema = "public", Item = "territory_bazaar_list"]}[Data]
+				  #"Navigation 1" = Source{[Schema = "public", Item = "territory_bazaar_list"]}[Data],
+				  #"Removed duplicates" = Table.Distinct(#"Navigation 1")
 				in
-				  #"Navigation 1"
+				  #"Removed duplicates"
 
 	changedProperty = IsHidden
+
+	annotation PBI_ResultType = Table
 

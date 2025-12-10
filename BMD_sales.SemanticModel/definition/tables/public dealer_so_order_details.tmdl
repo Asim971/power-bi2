@@ -1,10 +1,8 @@
 table 'public dealer_so_order_details'
-	isHidden
 	lineageTag: b14e8637-bdcb-4a22-9149-13871f5dd975
 
 	column id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 7bb13a9e-10af-4926-a55c-af3cd97f804d
 		summarizeBy: sum
@@ -16,7 +14,6 @@ table 'public dealer_so_order_details'
 
 	column qty
 		dataType: double
-		isHidden
 		lineageTag: 232d6ad9-d24d-43a0-acd5-5dfe75098953
 		summarizeBy: sum
 		sourceColumn: qty
@@ -29,7 +26,6 @@ table 'public dealer_so_order_details'
 
 	column unit_price
 		dataType: double
-		isHidden
 		lineageTag: 7af29f86-9818-4646-a790-8ea64a7025b0
 		summarizeBy: sum
 		sourceColumn: unit_price
@@ -42,7 +38,6 @@ table 'public dealer_so_order_details'
 
 	column unit_type
 		dataType: string
-		isHidden
 		lineageTag: 07556e56-a012-44bc-8e6d-ea81814e5ecf
 		summarizeBy: none
 		sourceColumn: unit_type
@@ -53,7 +48,6 @@ table 'public dealer_so_order_details'
 
 	column dealer_so_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 5872daac-4a68-4827-b48b-6ea3ed1676e2
 		summarizeBy: sum
@@ -65,7 +59,6 @@ table 'public dealer_so_order_details'
 
 	column sku_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 02559a1f-c408-40a8-8f85-eff316a3a7c6
 		summarizeBy: sum

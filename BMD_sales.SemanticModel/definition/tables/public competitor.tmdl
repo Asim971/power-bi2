@@ -1,10 +1,8 @@
 table 'public competitor'
-	isHidden
 	lineageTag: 6d881958-cc89-4837-9af0-63879a83b6a4
 
 	column id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 7906d5b2-0027-4793-bbe3-a39e86993981
 		summarizeBy: sum
@@ -16,7 +14,6 @@ table 'public competitor'
 
 	column created_at
 		dataType: dateTime
-		isHidden
 		formatString: General Date
 		lineageTag: 4385a225-52c2-4455-ac1a-d5d93576370e
 		summarizeBy: none
@@ -33,7 +30,6 @@ table 'public competitor'
 
 	column delete_status
 		dataType: string
-		isHidden
 		lineageTag: 2740f610-1785-4707-b661-9d32e8405f5d
 		summarizeBy: none
 		sourceColumn: delete_status
@@ -44,7 +40,6 @@ table 'public competitor'
 
 	column name
 		dataType: string
-		isHidden
 		lineageTag: 546ed80e-a304-4605-9b0d-f9e7a40ec009
 		summarizeBy: none
 		sourceColumn: name
@@ -55,7 +50,6 @@ table 'public competitor'
 
 	column updated_at
 		dataType: dateTime
-		isHidden
 		formatString: General Date
 		lineageTag: 807fde04-12e6-4fe0-b7a5-4bfbde8ba7bd
 		summarizeBy: none
@@ -72,7 +66,6 @@ table 'public competitor'
 
 	column created_by_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: e9068e82-83ea-44fe-b995-6f55bb44700a
 		summarizeBy: sum
@@ -84,7 +77,6 @@ table 'public competitor'
 
 	column organization_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 1656e5b8-ad57-4bf6-88af-4108f7d95fc8
 		summarizeBy: sum
@@ -96,7 +88,6 @@ table 'public competitor'
 
 	column updated_by_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: b690b029-c84e-46d0-a259-d550f129b1bc
 		summarizeBy: sum

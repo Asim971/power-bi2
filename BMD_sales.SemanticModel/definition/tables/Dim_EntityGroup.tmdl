@@ -8,11 +8,13 @@ table Dim_EntityGroup
 		summarizeBy: none
 		sourceColumn: EntityGroup
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	partition Dim_EntityGroup = m
 		mode: import
-		source = ```
+		source =
 				let
 				    Source = Table.FromRecords({
 				        [EntityGroup = "Customers"],
@@ -22,6 +24,8 @@ table Dim_EntityGroup
 				    TypedTable = Table.TransformColumnTypes(Source, {{"EntityGroup", type text}})
 				in
 				    TypedTable
-				```
+
+	changedProperty = IsHidden
 
 	annotation PBI_ResultType = Table
+

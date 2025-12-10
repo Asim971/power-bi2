@@ -1,10 +1,8 @@
 table 'public dealers'
-	isHidden
 	lineageTag: 9b8461ed-375a-4788-b4bd-d7e97f536bd7
 
 	column id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 79751c89-f188-440e-a013-e91d27bf9cd3
 		summarizeBy: sum
@@ -16,7 +14,6 @@ table 'public dealers'
 
 	column ac_name
 		dataType: string
-		isHidden
 		lineageTag: 80d046ec-df83-4c64-b6cd-a4d538aa0327
 		summarizeBy: none
 		sourceColumn: ac_name
@@ -27,7 +24,6 @@ table 'public dealers'
 
 	column ac_no
 		dataType: string
-		isHidden
 		lineageTag: b12b8189-4f83-455a-9c2e-04454032d680
 		summarizeBy: none
 		sourceColumn: ac_no
@@ -38,7 +34,6 @@ table 'public dealers'
 
 	column address
 		dataType: string
-		isHidden
 		lineageTag: d9c57e6f-b2c7-4901-aadb-b934fc2988c3
 		summarizeBy: none
 		sourceColumn: address
@@ -49,7 +44,6 @@ table 'public dealers'
 
 	column assigned_gm
 		dataType: string
-		isHidden
 		lineageTag: 2d78b9e4-b39f-43cb-877f-98bd51e111b7
 		summarizeBy: none
 		sourceColumn: assigned_gm
@@ -60,7 +54,6 @@ table 'public dealers'
 
 	column bank
 		dataType: string
-		isHidden
 		lineageTag: d45ebf06-aec0-468c-bb24-e0b0009be8fe
 		summarizeBy: none
 		sourceColumn: bank
@@ -71,7 +64,6 @@ table 'public dealers'
 
 	column bkash_no
 		dataType: string
-		isHidden
 		lineageTag: 089f7363-8c54-4636-969d-9661d410d4ae
 		summarizeBy: none
 		sourceColumn: bkash_no
@@ -82,7 +74,6 @@ table 'public dealers'
 
 	column branch_name
 		dataType: string
-		isHidden
 		lineageTag: db10e5b2-5e3c-4c0e-ae47-39cfad484e38
 		summarizeBy: none
 		sourceColumn: branch_name
@@ -93,7 +84,6 @@ table 'public dealers'
 
 	column created_at
 		dataType: dateTime
-		isHidden
 		formatString: General Date
 		lineageTag: 54d45fb5-3dbf-4197-be91-933b727526d7
 		summarizeBy: none
@@ -110,7 +100,6 @@ table 'public dealers'
 
 	column dealer_status
 		dataType: string
-		isHidden
 		lineageTag: 66ee4e3c-d079-4e0d-8d82-7bc804bffa16
 		summarizeBy: none
 		sourceColumn: dealer_status
@@ -121,7 +110,6 @@ table 'public dealers'
 
 	column delete_status
 		dataType: string
-		isHidden
 		lineageTag: f4d98e2a-878c-4b36-ad50-134136daefc8
 		summarizeBy: none
 		sourceColumn: delete_status
@@ -132,7 +120,6 @@ table 'public dealers'
 
 	column district_name
 		dataType: string
-		isHidden
 		lineageTag: 36e1969c-cd32-4a6a-bd95-c0228a930a36
 		summarizeBy: none
 		sourceColumn: district_name
@@ -143,7 +130,6 @@ table 'public dealers'
 
 	column district_name_text
 		dataType: string
-		isHidden
 		lineageTag: 981b7e4a-256f-4963-8e85-94bb0bff5278
 		summarizeBy: none
 		sourceColumn: district_name_text
@@ -154,7 +140,6 @@ table 'public dealers'
 
 	column dob
 		dataType: string
-		isHidden
 		lineageTag: bbcb0599-2304-429d-b4c4-c92c1daebd55
 		summarizeBy: none
 		sourceColumn: dob
@@ -165,7 +150,6 @@ table 'public dealers'
 
 	column experience
 		dataType: string
-		isHidden
 		lineageTag: 9bf7db4a-6114-46bc-bd92-11d78afa1b2b
 		summarizeBy: none
 		sourceColumn: experience
@@ -176,7 +160,6 @@ table 'public dealers'
 
 	column is_deleted
 		dataType: string
-		isHidden
 		lineageTag: 5ca97714-c044-4086-9ccf-d438ecca7df7
 		summarizeBy: none
 		sourceColumn: is_deleted
@@ -187,7 +170,6 @@ table 'public dealers'
 
 	column is_soft_deleted
 		dataType: boolean
-		isHidden
 		formatString: """TRUE"";""TRUE"";""FALSE"""
 		lineageTag: 568c58af-adac-41b0-ad8a-c092a8ea98bb
 		summarizeBy: none
@@ -199,7 +181,6 @@ table 'public dealers'
 
 	column mobile_no
 		dataType: string
-		isHidden
 		lineageTag: 219211e1-59bb-4eff-b6f0-02dedec2d966
 		summarizeBy: none
 		sourceColumn: mobile_no
@@ -210,7 +191,6 @@ table 'public dealers'
 
 	column moduleid
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 5f17c954-a1dd-4329-be68-faeb11eeee80
 		summarizeBy: sum
@@ -222,7 +202,6 @@ table 'public dealers'
 
 	column name
 		dataType: string
-		isHidden
 		lineageTag: fbb5a02c-e416-4878-92e1-f56b161ca185
 		summarizeBy: none
 		sourceColumn: name
@@ -233,7 +212,6 @@ table 'public dealers'
 
 	column namespaceid
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 884eb714-b5b7-4d2b-a589-c0c79a063f9b
 		summarizeBy: sum
@@ -245,7 +223,6 @@ table 'public dealers'
 
 	column nation_name
 		dataType: string
-		isHidden
 		lineageTag: 40243efd-c958-43d5-b0d5-72f6cd465615
 		summarizeBy: none
 		sourceColumn: nation_name
@@ -256,7 +233,6 @@ table 'public dealers'
 
 	column nation_name_text
 		dataType: string
-		isHidden
 		lineageTag: 1f25d6c9-299c-4be6-a3dd-0db8b6524980
 		summarizeBy: none
 		sourceColumn: nation_name_text
@@ -267,7 +243,6 @@ table 'public dealers'
 
 	column nid_no
 		dataType: string
-		isHidden
 		lineageTag: 49d27455-9bd9-460d-9bb5-cf38540053da
 		summarizeBy: none
 		sourceColumn: nid_no
@@ -278,7 +253,6 @@ table 'public dealers'
 
 	column nid_photo
 		dataType: string
-		isHidden
 		lineageTag: 42ff585c-3070-4228-826e-e693f4b6fb0d
 		summarizeBy: none
 		sourceColumn: nid_photo
@@ -289,7 +263,6 @@ table 'public dealers'
 
 	column number_of_upazillas
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 5651e049-4b08-4e04-a14c-a1f458f30e0e
 		summarizeBy: sum
@@ -301,7 +274,6 @@ table 'public dealers'
 
 	column photo
 		dataType: string
-		isHidden
 		lineageTag: 1f1805ae-9ed4-4987-91a5-32e02e3ef22b
 		summarizeBy: none
 		sourceColumn: photo
@@ -312,7 +284,6 @@ table 'public dealers'
 
 	column recordid
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 3756af5b-10ba-4bdb-9558-ab6bb0b38ae0
 		summarizeBy: sum
@@ -324,7 +295,6 @@ table 'public dealers'
 
 	column revision
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 411c213d-b814-4b68-8f78-53f111df226e
 		summarizeBy: sum
@@ -336,7 +306,6 @@ table 'public dealers'
 
 	column routing_no
 		dataType: string
-		isHidden
 		lineageTag: c1eaa910-6560-40cc-88df-9ac990c2e654
 		summarizeBy: none
 		sourceColumn: routing_no
@@ -347,7 +316,6 @@ table 'public dealers'
 
 	column shop_address
 		dataType: string
-		isHidden
 		lineageTag: a1595cbc-0162-4981-98e9-8bc62644e2bd
 		summarizeBy: none
 		sourceColumn: shop_address
@@ -358,7 +326,6 @@ table 'public dealers'
 
 	column shop_name
 		dataType: string
-		isHidden
 		lineageTag: 3bdfc139-734e-4847-9a01-4af60ce86f39
 		summarizeBy: none
 		sourceColumn: shop_name
@@ -369,7 +336,6 @@ table 'public dealers'
 
 	column trade_license
 		dataType: string
-		isHidden
 		lineageTag: 8b00fea7-575c-46e2-ab90-9f730cadaf80
 		summarizeBy: none
 		sourceColumn: trade_license
@@ -380,7 +346,6 @@ table 'public dealers'
 
 	column upazilla_names_text
 		dataType: string
-		isHidden
 		lineageTag: eb700c10-241e-4058-98fe-5750c521f9b4
 		summarizeBy: none
 		sourceColumn: upazilla_names_text
@@ -391,7 +356,6 @@ table 'public dealers'
 
 	column updated_at
 		dataType: dateTime
-		isHidden
 		formatString: General Date
 		lineageTag: 96581397-e923-4dba-8548-ddcd0fdfb775
 		summarizeBy: none
@@ -408,7 +372,6 @@ table 'public dealers'
 
 	column created_by_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 9db49041-0239-4452-a4b5-d6036f321780
 		summarizeBy: sum
@@ -420,7 +383,6 @@ table 'public dealers'
 
 	column organization_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 224fd7ff-83b7-4317-8845-7e5a35c945fa
 		summarizeBy: sum
@@ -432,7 +394,6 @@ table 'public dealers'
 
 	column deleted_by
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 0f37f77b-c158-4ca8-8a3f-637a74ef759b
 		summarizeBy: sum
@@ -444,7 +405,6 @@ table 'public dealers'
 
 	column updated_by
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 9dcc8a35-23df-4fad-ac7f-dce8f68a0cbd
 		summarizeBy: sum

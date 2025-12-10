@@ -1,10 +1,8 @@
 table 'public site_managers'
-	isHidden
 	lineageTag: c1af9fa8-47d4-40b4-991f-75c72e94f300
 
 	column assignedsr
 		dataType: string
-		isHidden
 		lineageTag: f1092a47-43e9-4390-8bbc-e54e99d89652
 		summarizeBy: none
 		sourceColumn: assignedsr
@@ -15,7 +13,6 @@ table 'public site_managers'
 
 	column moduleid
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 19eaaf51-a0fb-446c-ae86-ba54d062a793
 		summarizeBy: sum
@@ -27,7 +24,6 @@ table 'public site_managers'
 
 	column namespaceid
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: b70cd8c9-b74b-46ef-bdca-5113509fb63e
 		summarizeBy: sum
@@ -39,7 +35,6 @@ table 'public site_managers'
 
 	column owned_by
 		dataType: string
-		isHidden
 		lineageTag: 72618aea-a3c0-4124-960e-a15e9ae60abe
 		summarizeBy: none
 		sourceColumn: owned_by
@@ -50,7 +45,6 @@ table 'public site_managers'
 
 	column recordid
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 7b314eca-e7dd-4380-9346-d46988a11965
 		summarizeBy: sum
@@ -62,7 +56,6 @@ table 'public site_managers'
 
 	column revision
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: a8c66082-3401-4b49-8e52-0e25f6b48ea4
 		summarizeBy: sum
@@ -74,7 +67,6 @@ table 'public site_managers'
 
 	column updated_by
 		dataType: string
-		isHidden
 		lineageTag: 53003dda-df2d-4786-9504-52c1b1fdc75b
 		summarizeBy: none
 		sourceColumn: updated_by
@@ -85,7 +77,6 @@ table 'public site_managers'
 
 	column id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: e48a753e-d358-4ed3-8ab3-b47f1609b37a
 		summarizeBy: sum

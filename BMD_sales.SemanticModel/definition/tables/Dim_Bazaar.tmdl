@@ -9,6 +9,8 @@ table Dim_Bazaar
 		summarizeBy: none
 		sourceColumn: BazaarID
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column BazaarName
@@ -17,6 +19,8 @@ table Dim_Bazaar
 		summarizeBy: none
 		sourceColumn: BazaarName
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column BazaarType
@@ -24,6 +28,30 @@ table Dim_Bazaar
 		lineageTag: 4d5e6f7a-8b9c-0123-def0-123456789012
 		summarizeBy: none
 		sourceColumn: BazaarType
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column bd_territory_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 5557fdcf-e63c-4aac-a60b-ef01c65f366b
+		summarizeBy: sum
+		sourceColumn: bd_territory_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column territory_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 785bb0fc-70a2-4b5e-9569-81cc2d4ec977
+		summarizeBy: sum
+		sourceColumn: territory_id
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -60,9 +88,17 @@ table Dim_Bazaar
 				        {"BazaarID", Int64.Type},
 				        {"BazaarName", type text},
 				        {"BazaarType", type text}
-				    })
+				    }),
+				  #"Merged queries" = Table.NestedJoin(TypedTable, {"BazaarID"}, #"public bd_territory_bazaars", {"bazaar_id"}, "public bd_territory_bazaars", JoinKind.LeftOuter),
+				  #"Expanded public bd_territory_bazaars" = Table.ExpandTableColumn(#"Merged queries", "public bd_territory_bazaars", {"bd_territory_id"}, {"bd_territory_id"}),
+				  #"Merged queries 1" = Table.NestedJoin(#"Expanded public bd_territory_bazaars", {"BazaarID"}, #"public territory_bazaar_list", {"bazaar_list_id"}, "public territory_bazaar_list", JoinKind.LeftOuter),
+				  #"Expanded public territory_bazaar_list" = Table.ExpandTableColumn(#"Merged queries 1", "public territory_bazaar_list", {"territory_id"}, {"territory_id"}),
+				  #"Removed duplicates" = Table.Distinct(#"Expanded public territory_bazaar_list", {"BazaarID"})
 				in
-				    TypedTable
+				    #"Removed duplicates"
 				```
 
+	changedProperty = IsHidden
+
 	annotation PBI_ResultType = Table
+

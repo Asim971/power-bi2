@@ -1,10 +1,8 @@
 table 'public territory_upazilla'
-	isHidden
 	lineageTag: bfbccd49-f057-454e-8f07-75b7878dfc8b
 
 	column id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: fcb8b8be-cb91-4752-971e-47c1724265f7
 		summarizeBy: sum
@@ -16,7 +14,6 @@ table 'public territory_upazilla'
 
 	column territoty_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 3a241234-fdc7-4e14-a913-a5ddace597c3
 		summarizeBy: sum
@@ -28,7 +25,6 @@ table 'public territory_upazilla'
 
 	column upazilla_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: b5b511eb-e5ee-490e-86ec-a28fcd1df40e
 		summarizeBy: sum

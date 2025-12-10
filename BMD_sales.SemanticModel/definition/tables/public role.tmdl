@@ -1,10 +1,8 @@
 table 'public role'
-	isHidden
 	lineageTag: b11e8d75-0e49-4e26-af8d-03832fb3cf5c
 
 	column id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: bd2def9f-97db-4bd9-876a-b1fde3fb1064
 		summarizeBy: sum
@@ -16,7 +14,6 @@ table 'public role'
 
 	column department
 		dataType: string
-		isHidden
 		lineageTag: 604955da-ce7c-4647-b81b-085420fa5331
 		summarizeBy: none
 		sourceColumn: department
@@ -27,7 +24,6 @@ table 'public role'
 
 	column designation
 		dataType: string
-		isHidden
 		lineageTag: c18827e0-daf6-41bf-9ec0-4f55a1ff8ef1
 		summarizeBy: none
 		sourceColumn: designation
@@ -38,7 +34,6 @@ table 'public role'
 
 	column level
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 4892bc1a-cbf1-4b69-a4f8-617939610c7b
 		summarizeBy: sum
@@ -50,7 +45,6 @@ table 'public role'
 
 	column name
 		dataType: string
-		isHidden
 		lineageTag: a70b880f-8cd3-48f0-bd46-dc7581f44d39
 		summarizeBy: none
 		sourceColumn: name

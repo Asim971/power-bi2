@@ -8,6 +8,8 @@ table Dim_VisitCategory
 		summarizeBy: none
 		sourceColumn: VisitCategoryID
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column CategoryName
@@ -16,6 +18,8 @@ table Dim_VisitCategory
 		summarizeBy: none
 		sourceColumn: CategoryName
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column CategoryGroup
@@ -23,6 +27,8 @@ table Dim_VisitCategory
 		lineageTag: b888da47-844f-4c4b-816d-80e42649478c
 		summarizeBy: none
 		sourceColumn: CategoryGroup
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -33,6 +39,8 @@ table Dim_VisitCategory
 		summarizeBy: none
 		sourceColumn: IsInfluencer
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column CategorySortOrder
@@ -41,6 +49,8 @@ table Dim_VisitCategory
 		lineageTag: e83796bf-015d-463c-bba3-7008d4adf53a
 		summarizeBy: none
 		sourceColumn: CategorySortOrder
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -108,6 +118,8 @@ table Dim_VisitCategory
 				in
 				    TypedTable
 				```
+
+	changedProperty = IsHidden
 
 	annotation PBI_ResultType = Table
 

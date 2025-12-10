@@ -1,10 +1,8 @@
 table 'public dealer_upazilla'
-	isHidden
 	lineageTag: 93240e5d-420d-40f7-95f7-1499e91bbadd
 
 	column id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 3fca3a43-a483-42ca-98c3-cf14f14df97b
 		summarizeBy: sum
@@ -16,7 +14,6 @@ table 'public dealer_upazilla'
 
 	column dealer_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: d790fa77-ff5b-4420-afcf-9c508008cc3e
 		summarizeBy: sum
@@ -28,7 +25,6 @@ table 'public dealer_upazilla'
 
 	column bmd_upazilla_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: b5b252a5-745e-4efa-9d57-c226676c83bb
 		summarizeBy: sum

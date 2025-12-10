@@ -1,10 +1,8 @@
 table 'public disbursements'
-	isHidden
 	lineageTag: 858e17a6-938d-4c31-93af-87f2e7ecc736
 
 	column id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: c2d36145-365c-440a-8ebd-2de77570e512
 		summarizeBy: sum
@@ -16,7 +14,6 @@ table 'public disbursements'
 
 	column amount
 		dataType: double
-		isHidden
 		lineageTag: 25268fff-0d11-4ab1-b394-1814e5a47813
 		summarizeBy: sum
 		sourceColumn: amount
@@ -29,7 +26,6 @@ table 'public disbursements'
 
 	column created_by
 		dataType: string
-		isHidden
 		lineageTag: b0125eba-e5dc-40da-be82-c01fb6fb79f5
 		summarizeBy: none
 		sourceColumn: created_by
@@ -40,7 +36,6 @@ table 'public disbursements'
 
 	column disbursement_date
 		dataType: dateTime
-		isHidden
 		formatString: Long Date
 		lineageTag: 2b5adebc-4cc1-42de-809d-cdab84444817
 		summarizeBy: none
@@ -59,7 +54,6 @@ table 'public disbursements'
 
 	column status
 		dataType: string
-		isHidden
 		lineageTag: ca6ce2be-e484-4619-96db-91fe4e98a674
 		summarizeBy: none
 		sourceColumn: status

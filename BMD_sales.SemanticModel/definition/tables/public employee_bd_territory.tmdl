@@ -1,10 +1,8 @@
 table 'public employee_bd_territory'
-	isHidden
 	lineageTag: da82b089-31e5-4078-b643-dfe924268cb8
 
 	column id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 94b46ee3-ce1c-42bb-bb3a-a26f0d07d6ae
 		summarizeBy: sum
@@ -16,7 +14,6 @@ table 'public employee_bd_territory'
 
 	column bd_territory_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 9767309a-6912-4355-92f1-7072846be0b6
 		summarizeBy: sum
@@ -28,7 +25,6 @@ table 'public employee_bd_territory'
 
 	column employee_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 6e931441-406f-464e-8b12-21602597bc80
 		summarizeBy: sum

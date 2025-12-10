@@ -6,6 +6,8 @@ table Fact_ProjectConversion
 		displayFolder: Conversion Counts
 		lineageTag: 1a1b1c1d-1e1f-1a1b-1c1d-1e1f1a1b1c1d
 
+		changedProperty = IsHidden
+
 	measure Converted_Projects =
 			CALCULATE(
 			    COUNTROWS('Fact_ProjectConversion'),
@@ -15,10 +17,14 @@ table Fact_ProjectConversion
 		displayFolder: Conversion Counts
 		lineageTag: 2a2b2c2d-2e2f-2a2b-2c2d-2e2f2a2b2c2d
 
+		changedProperty = IsHidden
+
 	measure Project_Conversion_Rate = DIVIDE([Converted_Projects], [Total_Conversions], 0)
 		formatString: 0.0%
 		displayFolder: Rates
 		lineageTag: 3a3b3c3d-3e3f-3a3b-3c3d-3e3f3a3b3c3d
+
+		changedProperty = IsHidden
 
 	measure Engineer_Reward_Eligible_Count =
 			CALCULATE(
@@ -29,6 +35,8 @@ table Fact_ProjectConversion
 		displayFolder: Rewards\Engineer
 		lineageTag: 4a4b4c4d-4e4f-4a4b-4c4d-4e4f4a4b4c4d
 
+		changedProperty = IsHidden
+
 	measure Contractor_Reward_Eligible_Count =
 			CALCULATE(
 			    COUNTROWS('Fact_ProjectConversion'),
@@ -38,6 +46,8 @@ table Fact_ProjectConversion
 		displayFolder: Rewards\Contractor
 		lineageTag: 5a5b5c5d-5e5f-5a5b-5c5d-5e5f5a5b5c5d
 
+		changedProperty = IsHidden
+
 	measure Conversion_Funnel_Stage_Distribution =
 			VAR TotalByStage = COUNTROWS('Fact_ProjectConversion')
 			VAR GrandTotal = CALCULATE(COUNTROWS('Fact_ProjectConversion'), ALL('Fact_ProjectConversion'[stage]))
@@ -46,6 +56,8 @@ table Fact_ProjectConversion
 		formatString: 0.0%
 		displayFolder: Analytics\Funnel
 		lineageTag: 6a6b6c6d-6e6f-6a6b-6c6d-6e6f6a6b6c6d
+
+		changedProperty = IsHidden
 
 	measure Conversion_Velocity_Days = ```
 			VAR AvgDaysToConvert = 
@@ -60,6 +72,8 @@ table Fact_ProjectConversion
 		displayFolder: Analytics\Velocity
 		lineageTag: 7a7b7c7d-7e7f-7a7b-7c7d-7e7f7a7b7c7d
 
+		changedProperty = IsHidden
+
 	measure Conversion_Trend_MoM =
 			VAR CurrentMonthConversions = [Converted_Projects]
 			VAR PreviousMonthConversions = CALCULATE([Converted_Projects], PREVIOUSMONTH('Dim_Date'[Date]))
@@ -68,6 +82,8 @@ table Fact_ProjectConversion
 		formatString: +0.0%;-0.0%;0.0%
 		displayFolder: Time Intelligence\Growth
 		lineageTag: 8a8b8c8d-8e8f-8a8b-8c8d-8e8f8a8b8c8d
+
+		changedProperty = IsHidden
 
 	measure Retail_Delivery_Rate =
 			VAR RetailDeliveries = CALCULATE(
@@ -80,6 +96,8 @@ table Fact_ProjectConversion
 		displayFolder: Rates\Delivery
 		lineageTag: 9a9b9c9d-9e9f-9a9b-9c9d-9e9f9a9b9c9d
 
+		changedProperty = IsHidden
+
 	measure Pending_Conversions =
 			CALCULATE(
 			    COUNTROWS('Fact_ProjectConversion'),
@@ -88,6 +106,8 @@ table Fact_ProjectConversion
 		formatString: 0
 		displayFolder: Conversion Counts\By Status
 		lineageTag: 0b0c0d0e-0f0a-0b0c-0d0e-0f0a0b0c0d0e
+
+		changedProperty = IsHidden
 
 	measure Conversion_Anomaly_Flag =
 			VAR AvgConversions = AVERAGEX(ALL('Dim_Date'[Date]), [Converted_Projects])
@@ -99,6 +119,8 @@ table Fact_ProjectConversion
 		formatString: 0
 		displayFolder: Analytics\Anomaly Detection
 		lineageTag: 1c1d1e1f-1a1b-1c1d-1e1f-1a1b1c1d1e1f
+
+		changedProperty = IsHidden
 
 	measure Site_Conversion_Pareto = ```
 			VAR CurrentSiteConversions = [Converted_Projects]
@@ -118,12 +140,16 @@ table Fact_ProjectConversion
 		displayFolder: Analytics\Pareto
 		lineageTag: 2d2e2f2a-2b2c-2d2e-2f2a-2b2c2d2e2f2a
 
+		changedProperty = IsHidden
+
 	column ConversionID
 		dataType: int64
 		formatString: 0
 		lineageTag: cce26385-305f-4699-ba2e-f8e40dea0371
 		summarizeBy: count
 		sourceColumn: ConversionID
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -133,6 +159,8 @@ table Fact_ProjectConversion
 		summarizeBy: none
 		sourceColumn: OrderStatus
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column DeliveryMethod
@@ -141,6 +169,8 @@ table Fact_ProjectConversion
 		summarizeBy: none
 		sourceColumn: DeliveryMethod
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column delete_status
@@ -148,6 +178,8 @@ table Fact_ProjectConversion
 		lineageTag: 3f0f1c5e-354a-405d-8728-36b3773c2eaf
 		summarizeBy: none
 		sourceColumn: delete_status
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -158,6 +190,8 @@ table Fact_ProjectConversion
 		summarizeBy: count
 		sourceColumn: SiteID
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column EngineerID
@@ -166,6 +200,8 @@ table Fact_ProjectConversion
 		lineageTag: 564aa26d-0a27-42d2-9471-f2d14d5b0018
 		summarizeBy: count
 		sourceColumn: EngineerID
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -176,6 +212,8 @@ table Fact_ProjectConversion
 		summarizeBy: count
 		sourceColumn: DealerID
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column RetailerID
@@ -185,6 +223,8 @@ table Fact_ProjectConversion
 		summarizeBy: count
 		sourceColumn: RetailerID
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column BazaarID
@@ -193,6 +233,8 @@ table Fact_ProjectConversion
 		lineageTag: 52ff5d65-41d0-4719-949a-3fe0341ed946
 		summarizeBy: count
 		sourceColumn: BazaarID
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -208,6 +250,8 @@ table Fact_ProjectConversion
 			relationship: 40e0b41f-2c92-480d-8ea9-bc5383ee8bb6
 			defaultHierarchy: LocalDateTable_0d8631db-0d2b-4bc9-83d7-7193d040d338.'Date Hierarchy'
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column updated_at
@@ -222,6 +266,8 @@ table Fact_ProjectConversion
 			relationship: e7083863-fdf3-471b-8e7f-e490769e27a1
 			defaultHierarchy: LocalDateTable_4beddf4e-b976-4a3b-ac7d-2908f72fca86.'Date Hierarchy'
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column EngineerLoyalty
@@ -230,6 +276,8 @@ table Fact_ProjectConversion
 		lineageTag: cad10395-175a-4271-be08-d3d4545aedfc
 		summarizeBy: none
 		sourceColumn: EngineerLoyalty
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -240,6 +288,8 @@ table Fact_ProjectConversion
 		summarizeBy: none
 		sourceColumn: ContractorLoyalty
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column assigned_sr
@@ -247,6 +297,8 @@ table Fact_ProjectConversion
 		lineageTag: 5d976dda-718a-4679-a906-1d2c21dfa5bb
 		summarizeBy: none
 		sourceColumn: assigned_sr
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -256,6 +308,8 @@ table Fact_ProjectConversion
 		summarizeBy: none
 		sourceColumn: assigned_cro
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column assigned_bdo
@@ -263,6 +317,8 @@ table Fact_ProjectConversion
 		lineageTag: adf7107e-c69f-497c-9462-d6507b9b798d
 		summarizeBy: none
 		sourceColumn: assigned_bdo
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -272,6 +328,8 @@ table Fact_ProjectConversion
 		summarizeBy: none
 		sourceColumn: assigned_asm
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column total_amount
@@ -279,6 +337,8 @@ table Fact_ProjectConversion
 		lineageTag: f1bdc296-ef57-4ea5-bbe3-7152f19cc968
 		summarizeBy: sum
 		sourceColumn: total_amount
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -290,6 +350,8 @@ table Fact_ProjectConversion
 		summarizeBy: none
 		sourceColumn: stage
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column ConversionDateKey
@@ -298,6 +360,8 @@ table Fact_ProjectConversion
 		lineageTag: 2d508ee4-6c00-4041-ad9b-c92baa661900
 		summarizeBy: none
 		sourceColumn: ConversionDateKey
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -309,6 +373,8 @@ table Fact_ProjectConversion
 		summarizeBy: none
 		sourceColumn: ClientKey
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column DeliveryType
@@ -317,6 +383,8 @@ table Fact_ProjectConversion
 		summarizeBy: none
 		sourceColumn: DeliveryType
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column StatusGroup
@@ -324,6 +392,8 @@ table Fact_ProjectConversion
 		lineageTag: f9242ed7-92ec-4977-9942-991ff2ae69d0
 		summarizeBy: none
 		sourceColumn: StatusGroup
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -334,6 +404,8 @@ table Fact_ProjectConversion
 		summarizeBy: sum
 		sourceColumn: IsConverted
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column IsEngineerRewardEligible
@@ -343,6 +415,8 @@ table Fact_ProjectConversion
 		summarizeBy: sum
 		sourceColumn: IsEngineerRewardEligible
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column IsContractorRewardEligible
@@ -351,6 +425,8 @@ table Fact_ProjectConversion
 		lineageTag: 736df42f-0251-44b4-b011-32bd1b3554d6
 		summarizeBy: sum
 		sourceColumn: IsContractorRewardEligible
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -513,6 +589,8 @@ table Fact_ProjectConversion
 				in
 				    TypedTable
 				```
+
+	changedProperty = IsHidden
 
 	annotation PBI_ResultType = Table
 

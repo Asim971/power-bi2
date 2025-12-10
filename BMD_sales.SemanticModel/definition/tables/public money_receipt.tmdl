@@ -1,10 +1,8 @@
 table 'public money_receipt'
-	isHidden
 	lineageTag: 7fce40ab-f3c9-45e5-b946-84a750efbf7d
 
 	column id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 5a799228-65cc-4df9-a7da-138276a7e1bf
 		summarizeBy: sum
@@ -16,7 +14,6 @@ table 'public money_receipt'
 
 	column amount
 		dataType: double
-		isHidden
 		lineageTag: 663f461e-cde9-41a2-9111-921ffa3fbbc4
 		summarizeBy: sum
 		sourceColumn: amount
@@ -29,7 +26,6 @@ table 'public money_receipt'
 
 	column approved_date
 		dataType: dateTime
-		isHidden
 		formatString: General Date
 		lineageTag: 18e56c46-23c5-478c-a125-4a686e160c81
 		summarizeBy: none
@@ -46,7 +42,6 @@ table 'public money_receipt'
 
 	column created_at
 		dataType: dateTime
-		isHidden
 		formatString: General Date
 		lineageTag: ce25b4a5-a180-466c-b9e7-e810535c8966
 		summarizeBy: none
@@ -63,7 +58,6 @@ table 'public money_receipt'
 
 	column is_deleted
 		dataType: boolean
-		isHidden
 		formatString: """TRUE"";""TRUE"";""FALSE"""
 		lineageTag: 24d5605f-cb0a-488d-9ad8-e4e81555c5b1
 		summarizeBy: none
@@ -75,7 +69,6 @@ table 'public money_receipt'
 
 	column deleted_at
 		dataType: dateTime
-		isHidden
 		formatString: General Date
 		lineageTag: 00d0a66b-a393-4c11-91ae-7d41e4e29a6e
 		summarizeBy: none
@@ -92,7 +85,6 @@ table 'public money_receipt'
 
 	column image_url
 		dataType: string
-		isHidden
 		lineageTag: 802c58cd-f348-438c-bd53-61e3b74ae9c5
 		summarizeBy: none
 		sourceColumn: image_url
@@ -103,7 +95,6 @@ table 'public money_receipt'
 
 	column rejection_feedback
 		dataType: string
-		isHidden
 		lineageTag: 2cbbef1b-9a40-452d-ab89-f4c2adf981c5
 		summarizeBy: none
 		sourceColumn: rejection_feedback
@@ -114,7 +105,6 @@ table 'public money_receipt'
 
 	column status
 		dataType: string
-		isHidden
 		lineageTag: f34f5113-a7d3-48df-b77e-9b14b4c8b616
 		summarizeBy: none
 		sourceColumn: status
@@ -125,7 +115,6 @@ table 'public money_receipt'
 
 	column transaction_no
 		dataType: string
-		isHidden
 		lineageTag: 1fea8822-653d-4cf5-b1a7-91521fbd41c4
 		summarizeBy: none
 		sourceColumn: transaction_no
@@ -136,7 +125,6 @@ table 'public money_receipt'
 
 	column updated_at
 		dataType: dateTime
-		isHidden
 		formatString: General Date
 		lineageTag: dbe43635-f8c8-43dd-a00d-e530baacb318
 		summarizeBy: none
@@ -153,7 +141,6 @@ table 'public money_receipt'
 
 	column verified_date
 		dataType: dateTime
-		isHidden
 		formatString: General Date
 		lineageTag: ca55e616-4dca-4dce-802a-f06eb965a462
 		summarizeBy: none
@@ -170,7 +157,6 @@ table 'public money_receipt'
 
 	column approved_by
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: ece7458f-c0af-449f-bd33-523b7195a810
 		summarizeBy: sum
@@ -182,7 +168,6 @@ table 'public money_receipt'
 
 	column bank_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: ecb7982e-82df-4e44-976e-6c3286cfc33f
 		summarizeBy: sum
@@ -194,7 +179,6 @@ table 'public money_receipt'
 
 	column created_by
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: f913a762-af1a-4c5a-aeec-3e08b9322f75
 		summarizeBy: sum
@@ -206,7 +190,6 @@ table 'public money_receipt'
 
 	column dealer_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 4d07aba3-2496-4ac8-b375-0cff22c64b39
 		summarizeBy: sum
@@ -218,7 +201,6 @@ table 'public money_receipt'
 
 	column deleted_by
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: d125cb8b-9f22-46d1-a8fa-6221bc11124e
 		summarizeBy: sum
@@ -230,7 +212,6 @@ table 'public money_receipt'
 
 	column updated_by
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 43a2efe7-edbe-4b2d-a7f6-8f48eab762c5
 		summarizeBy: sum
@@ -242,7 +223,6 @@ table 'public money_receipt'
 
 	column verified_by
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 1f849e96-7af9-45a0-b8b7-d36c92c874f3
 		summarizeBy: sum

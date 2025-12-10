@@ -8,7 +8,11 @@ table Fact_Target
 		summarizeBy: none
 		sourceColumn: DateKey
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
 
 	column UserID
 		dataType: int64
@@ -16,6 +20,8 @@ table Fact_Target
 		lineageTag: 675804bf-0add-4e5c-919c-a1f5ce82b2cd
 		summarizeBy: none
 		sourceColumn: UserID
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -25,6 +31,8 @@ table Fact_Target
 		summarizeBy: none
 		sourceColumn: EntityGroup
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column DailyTarget
@@ -33,6 +41,8 @@ table Fact_Target
 		lineageTag: 9d832446-e801-41bb-b6cf-ea05c70bd9f7
 		summarizeBy: sum
 		sourceColumn: DailyTarget
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -84,4 +94,7 @@ table Fact_Target
 				    FinalTable
 				```
 
+	changedProperty = IsHidden
+
 	annotation PBI_ResultType = Table
+
