@@ -542,6 +542,23 @@ table Fact_ProjectConversion
 				    // ---- Check if loyalty columns exist (evaluate once) ----
 				    HasEngineerLoyalty = Table.HasColumns(FinalRenames, "EngineerLoyalty"),
 				    HasContractorLoyalty = Table.HasColumns(FinalRenames, "ContractorLoyalty"),
+				
+				    // ---- Helper: normalize flags to 0/1 safely (supports 0/1, true/false, and common text) ----
+				    AsFlag01 = (v as any) as nullable number =>
+				        let
+				            n = try Number.From(v) otherwise null,
+				            t =
+				                if n <> null then n
+				                else
+				                    let
+				                        s = try Text.Lower(Text.From(v)) otherwise null
+				                    in
+				                        if s = null then null
+				                        else if s = "true" or s = "t" or s = "yes" or s = "y" then 1
+				                        else if s = "false" or s = "f" or s = "no" or s = "n" then 0
+				                        else try Number.FromText(s) otherwise null
+				        in
+				            if t = null then null else if t <> 0 then 1 else 0,
 				    
 				    // ---- Filter out deleted records ----
 				    ActiveRecords =
@@ -600,16 +617,19 @@ table Fact_ProjectConversion
 				        if [StatusGroup] = "Converted" then 1 else 0,
 				        Int64.Type
 				    ),
+				
+				    // Buffer to avoid query-folding type mismatches (e.g., integer = boolean in PostgreSQL)
+				    BufferedForEligibility = Table.Buffer(WithConvertedFlag),
 				    
 				    // ---- Engineer Eligible for Reward ----
-				    WithEngineerReward = Table.AddColumn(WithConvertedFlag, "IsEngineerRewardEligible", each 
-				        if HasEngineerLoyalty and [IsConverted] = 1 and [EngineerLoyalty] = true then 1 else 0,
+				    WithEngineerReward = Table.AddColumn(BufferedForEligibility, "IsEngineerRewardEligible", each 
+				        if HasEngineerLoyalty and [IsConverted] = 1 and AsFlag01([EngineerLoyalty]) = 1 then 1 else 0,
 				        Int64.Type
 				    ),
 				    
 				    // ---- Contractor Eligible for Reward ----
 				    WithContractorReward = Table.AddColumn(WithEngineerReward, "IsContractorRewardEligible", each 
-				        if HasContractorLoyalty and [IsConverted] = 1 and [ContractorLoyalty] = true then 1 else 0,
+				        if HasContractorLoyalty and [IsConverted] = 1 and AsFlag01([ContractorLoyalty]) = 1 then 1 else 0,
 				        Int64.Type
 				    ),
 				    
