@@ -50,6 +50,9 @@ let
             }
         }
     ),
+
+    // Buffer lookup to prevent gateway/PostgreSQL folding issues during join (integer = boolean)
+    VisitUserLookupBuffered = Table.Buffer(VisitUserLookup),
     
     // ---- Rename Columns ----
     RenamedColumns = Table.RenameColumns(SelectedColumns, {
@@ -90,7 +93,7 @@ let
     // This links orders to the user who created the associated site visit
     WithUserLookup = Table.NestedJoin(
         WithCompanyCode, {"SiteID"},
-        VisitUserLookup, {"potential_site_id"},
+        VisitUserLookupBuffered, {"potential_site_id"},
         "VisitUserTable", JoinKind.LeftOuter
     ),
     

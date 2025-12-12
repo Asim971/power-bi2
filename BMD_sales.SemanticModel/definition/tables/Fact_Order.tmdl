@@ -1257,6 +1257,9 @@ table Fact_Order
 				                        if FirstRow = null then null else FirstRow[created_by_id],
 				                Int64.Type
 				            }
+					
+						// Buffer lookup to prevent gateway/PostgreSQL folding issues during join (integer = boolean)
+						VisitUserLookupBuffered = Table.Buffer(VisitUserLookup),
 				        }
 				    ),
 				    
@@ -1299,7 +1302,7 @@ table Fact_Order
 				    // This links orders to the user who created the associated site visit
 				    WithUserLookup = Table.NestedJoin(
 				        WithCompanyCode, {"SiteID"},
-				        VisitUserLookup, {"potential_site_id"},
+					    VisitUserLookupBuffered, {"potential_site_id"},
 				        "VisitUserTable", JoinKind.LeftOuter
 				    ),
 				    
