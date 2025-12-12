@@ -1347,9 +1347,38 @@ table Fact_Order
 				        if [MemoPhoto] <> null and [MemoPhoto] <> "" then 1 else 0,
 				        Int64.Type
 				    ),
+				
+				    // ---- Helper: normalize flags to logical safely (supports 0/1, true/false, and common text) ----
+				    AsLogicalFlag = (v as any) as nullable logical =>
+				        let
+				            n = try Number.From(v) otherwise null,
+				            s = if n <> null then null else (try Text.Lower(Text.From(v)) otherwise null),
+				            b =
+				                if n <> null then (n <> 0)
+				                else if s = null then null
+				                else if s = "true" or s = "t" or s = "yes" or s = "y" then true
+				                else if s = "false" or s = "f" or s = "no" or s = "n" then false
+				                else
+				                    let
+				                        nn = try Number.FromText(s) otherwise null
+				                    in
+				                        if nn = null then null else (nn <> 0)
+				        in
+				            b,
+				
+				    // Normalize eligibility flags before typing to avoid PostgreSQL folding issues (integer = boolean)
+				    WithEligibilityFlags = Table.TransformColumns(
+				        WithMemoPhotoFlag,
+				        {
+				            {"IsEngineerEligible", each AsLogicalFlag(_), type nullable logical},
+				            {"IsPartnerEligible", each AsLogicalFlag(_), type nullable logical}
+				        },
+				        null,
+				        MissingField.Ignore
+				    ),
 				    
 				    // ---- Set Data Types ----
-				    TypedTable = Table.TransformColumnTypes(WithMemoPhotoFlag, {
+				    TypedTable = Table.TransformColumnTypes(WithEligibilityFlags, {
 				        {"OrderID", Int64.Type},
 				        {"OrderStatus", type text},
 				        {"OrderType", type text},
@@ -1365,8 +1394,6 @@ table Fact_Order
 				        {"TotalAmount", type text},  // Stored as text in source
 				        {"Stage", type text},
 				        {"DeliveryAddress", type text},
-				        {"IsEngineerEligible", type logical},
-				        {"IsPartnerEligible", type logical},
 				        {"MemoPhoto", type text},
 				        {"Feedback", type text},
 				        {"OrderDateKey", type date},
