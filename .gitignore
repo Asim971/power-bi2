@@ -21,6 +21,22 @@ node_modules/
 *.pbix
 *.tmp
 
+# Office temporary/duplicate files
+~$*.docx
+~$*.xlsx
+*.docx
+*.doc
+*.xlsx
+*.xls
+*.pptx
+*.ppt
+* (1).docx
+* (1).xlsx
+* (1) (1).xlsx
+
+# Power BI notebook scratch files
+BMD_sales.SemanticModel/definition/tables/Untitled-*.pbinb
+
 # Logs
 *.log
 
