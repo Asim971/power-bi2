@@ -1256,12 +1256,12 @@ table Fact_Order
 				                    in
 				                        if FirstRow = null then null else FirstRow[created_by_id],
 				                Int64.Type
-				            }
+					        }
+					    }
+					),
 					
-						// Buffer lookup to prevent gateway/PostgreSQL folding issues during join (integer = boolean)
-						VisitUserLookupBuffered = Table.Buffer(VisitUserLookup),
-				        }
-				    ),
+					// Buffer lookup to prevent gateway/PostgreSQL folding issues during join (integer = boolean)
+					VisitUserLookupBuffered = Table.Buffer(VisitUserLookup),
 				    
 				    // ---- Rename Columns ----
 				    RenamedColumns = Table.RenameColumns(SelectedColumns, {
