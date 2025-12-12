@@ -1,8 +1,10 @@
 table 'public end_user'
+	isHidden
 	lineageTag: a8d26098-c538-46b1-98a8-61246d0f1127
 
 	column id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 0958bbc8-a3a8-4779-b424-9155d95c3c9a
 		summarizeBy: sum
@@ -14,6 +16,7 @@ table 'public end_user'
 
 	column address
 		dataType: string
+		isHidden
 		lineageTag: 5bbdbafd-df49-4dcf-a1f1-d2da299a5179
 		summarizeBy: none
 		sourceColumn: address
@@ -24,6 +27,7 @@ table 'public end_user'
 
 	column bd_territory_name
 		dataType: string
+		isHidden
 		lineageTag: c9bad2df-11ba-45ca-8211-2f7103a9ccdd
 		summarizeBy: none
 		sourceColumn: bd_territory_name
@@ -34,6 +38,7 @@ table 'public end_user'
 
 	column cement_territory
 		dataType: string
+		isHidden
 		lineageTag: f4b1d89c-fb64-410d-ad34-b807b0bba31e
 		summarizeBy: none
 		sourceColumn: cement_territory
@@ -44,6 +49,7 @@ table 'public end_user'
 
 	column end_stage
 		dataType: string
+		isHidden
 		lineageTag: c7f26345-da3e-47ea-9a00-19247c9c0760
 		summarizeBy: none
 		sourceColumn: end_stage
@@ -54,6 +60,7 @@ table 'public end_user'
 
 	column engineer_type
 		dataType: string
+		isHidden
 		lineageTag: 9d82e2b6-5e02-49b6-af92-cc6cf0cc29ae
 		summarizeBy: none
 		sourceColumn: engineer_type
@@ -64,6 +71,7 @@ table 'public end_user'
 
 	column est_vol_cmt
 		dataType: string
+		isHidden
 		lineageTag: 391a93e2-7d46-40a2-9a0a-a7ec3aca42dc
 		summarizeBy: none
 		sourceColumn: est_vol_cmt
@@ -74,6 +82,7 @@ table 'public end_user'
 
 	column est_vol_ispat
 		dataType: string
+		isHidden
 		lineageTag: 21a993ef-d6e3-4419-ab1c-35779d8a4924
 		summarizeBy: none
 		sourceColumn: est_vol_ispat
@@ -84,6 +93,7 @@ table 'public end_user'
 
 	column ispat_territory
 		dataType: string
+		isHidden
 		lineageTag: bf201881-a683-4486-a7c3-2bea54876f7e
 		summarizeBy: none
 		sourceColumn: ispat_territory
@@ -94,6 +104,7 @@ table 'public end_user'
 
 	column mobile_no
 		dataType: string
+		isHidden
 		lineageTag: 02b28eb3-7819-490a-86cc-8e94f14d8e14
 		summarizeBy: none
 		sourceColumn: mobile_no
@@ -104,6 +115,7 @@ table 'public end_user'
 
 	column name
 		dataType: string
+		isHidden
 		lineageTag: 8f329237-18f5-492a-904c-810c9efea10b
 		summarizeBy: none
 		sourceColumn: name
@@ -114,6 +126,7 @@ table 'public end_user'
 
 	column notes
 		dataType: string
+		isHidden
 		lineageTag: 7687c7c7-c221-4cc0-9ecc-d2dc490b2616
 		summarizeBy: none
 		sourceColumn: notes
@@ -124,6 +137,7 @@ table 'public end_user'
 
 	column potential_site
 		dataType: string
+		isHidden
 		lineageTag: 0a7cba4d-ed98-4b01-912f-f19f8e4d5a46
 		summarizeBy: none
 		sourceColumn: potential_site
@@ -134,6 +148,7 @@ table 'public end_user'
 
 	column project_contact_name
 		dataType: string
+		isHidden
 		lineageTag: e6838329-4a13-4462-b05f-3e66b666f376
 		summarizeBy: none
 		sourceColumn: project_contact_name
@@ -144,6 +159,7 @@ table 'public end_user'
 
 	column ref_engineer_name
 		dataType: string
+		isHidden
 		lineageTag: d67c4b0e-c821-4dae-824c-f0571f941ae4
 		summarizeBy: none
 		sourceColumn: ref_engineer_name
@@ -154,6 +170,7 @@ table 'public end_user'
 
 	column site_type
 		dataType: string
+		isHidden
 		lineageTag: 01f0b876-8080-4951-b87c-0b99db8b0115
 		summarizeBy: none
 		sourceColumn: site_type
@@ -164,6 +181,7 @@ table 'public end_user'
 
 	column start_stage
 		dataType: string
+		isHidden
 		lineageTag: 6d3866da-6904-4d74-8aa1-a1a2e8fcad20
 		summarizeBy: none
 		sourceColumn: start_stage
@@ -174,6 +192,7 @@ table 'public end_user'
 
 	column storied_building
 		dataType: string
+		isHidden
 		lineageTag: 1eecf843-b20a-4e2e-85b3-2277052450a1
 		summarizeBy: none
 		sourceColumn: storied_building
@@ -184,6 +203,7 @@ table 'public end_user'
 
 	column submitted_by
 		dataType: string
+		isHidden
 		lineageTag: 028fc304-0249-4865-b16d-5f46da1e2e30
 		summarizeBy: none
 		sourceColumn: submitted_by
@@ -194,6 +214,7 @@ table 'public end_user'
 
 	column territory_name
 		dataType: string
+		isHidden
 		lineageTag: ba7155e4-20c6-475b-8956-1fee31c61682
 		summarizeBy: none
 		sourceColumn: territory_name
@@ -204,6 +225,7 @@ table 'public end_user'
 
 	column visit_images
 		dataType: string
+		isHidden
 		lineageTag: ec49c828-0d02-4c80-a3e2-c46cecc5fe44
 		summarizeBy: none
 		sourceColumn: visit_images

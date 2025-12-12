@@ -1,8 +1,10 @@
 table 'public head_masons'
+	isHidden
 	lineageTag: 152b0a06-2f74-4c19-83e6-af9420992476
 
 	column assignedsr
 		dataType: string
+		isHidden
 		lineageTag: 26d9d3d0-29b3-4a05-b03e-06a5e3064720
 		summarizeBy: none
 		sourceColumn: assignedsr
@@ -13,6 +15,7 @@ table 'public head_masons'
 
 	column delete_status
 		dataType: string
+		isHidden
 		lineageTag: 106dc9be-d748-4399-97ef-275c9e4e0cc5
 		summarizeBy: none
 		sourceColumn: delete_status
@@ -23,6 +26,7 @@ table 'public head_masons'
 
 	column moduleid
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 99969aa2-bedc-48d8-85c3-f874623fa37f
 		summarizeBy: sum
@@ -34,6 +38,7 @@ table 'public head_masons'
 
 	column namespaceid
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 6915cc35-bc5a-4f42-9cd2-2356f811cd9b
 		summarizeBy: sum
@@ -45,6 +50,7 @@ table 'public head_masons'
 
 	column owned_by
 		dataType: string
+		isHidden
 		lineageTag: d628900a-3cbc-4b57-ac3a-0d7dcf62d3eb
 		summarizeBy: none
 		sourceColumn: owned_by
@@ -55,6 +61,7 @@ table 'public head_masons'
 
 	column recordid
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 07599593-72ad-4d51-a838-cf5738f8f12c
 		summarizeBy: sum
@@ -66,6 +73,7 @@ table 'public head_masons'
 
 	column revision
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 2e99cbcd-016f-48e9-a98c-9002db5fe306
 		summarizeBy: sum
@@ -77,6 +85,7 @@ table 'public head_masons'
 
 	column updated_by
 		dataType: string
+		isHidden
 		lineageTag: df831e12-2bf9-4d54-acd8-1568f8822e34
 		summarizeBy: none
 		sourceColumn: updated_by
@@ -87,6 +96,7 @@ table 'public head_masons'
 
 	column id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 0f69bfcb-b43d-4b18-bf18-e920eceb21fe
 		summarizeBy: sum

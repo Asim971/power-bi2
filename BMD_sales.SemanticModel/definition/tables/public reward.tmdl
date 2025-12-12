@@ -1,8 +1,10 @@
 table 'public reward'
+	isHidden
 	lineageTag: fbbe0254-0133-44ea-9ddd-4d888f9083a6
 
 	column id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: b7d79c4b-f633-48ed-ad36-de475ea7b1fd
 		summarizeBy: sum
@@ -14,6 +16,7 @@ table 'public reward'
 
 	column corteza_record_ref
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 829d29c7-eb7e-4c0c-a570-508ca1515b5a
 		summarizeBy: sum
@@ -25,6 +28,7 @@ table 'public reward'
 
 	column point_per_uom
 		dataType: double
+		isHidden
 		lineageTag: 9b91f973-0cf4-4fa8-b560-27419729bec4
 		summarizeBy: sum
 		sourceColumn: point_per_uom
@@ -37,6 +41,7 @@ table 'public reward'
 
 	column type
 		dataType: string
+		isHidden
 		lineageTag: ea6fa6e6-ab4b-4d79-8edb-508300f7a584
 		summarizeBy: none
 		sourceColumn: type
@@ -47,6 +52,7 @@ table 'public reward'
 
 	column uom
 		dataType: string
+		isHidden
 		lineageTag: 3f72eba0-4c65-4e93-b9c5-369099a88c6c
 		summarizeBy: none
 		sourceColumn: uom

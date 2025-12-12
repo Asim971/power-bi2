@@ -1,8 +1,10 @@
 table 'public dealer_so'
+	isHidden
 	lineageTag: 397bad69-d91f-4246-8997-81e5aaf82b71
 
 	column id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 0d2ef554-cbae-42de-aa9c-dc7a9df7bb6f
 		summarizeBy: sum
@@ -14,6 +16,7 @@ table 'public dealer_so'
 
 	column address
 		dataType: string
+		isHidden
 		lineageTag: 06d81ad9-afa6-4f86-854b-1d45fee7d11a
 		summarizeBy: none
 		sourceColumn: address
@@ -24,6 +27,7 @@ table 'public dealer_so'
 
 	column address_type
 		dataType: string
+		isHidden
 		lineageTag: bea62730-3d2c-4c1b-a8a6-836df77eb3cc
 		summarizeBy: none
 		sourceColumn: address_type
@@ -34,6 +38,7 @@ table 'public dealer_so'
 
 	column approved_date
 		dataType: dateTime
+		isHidden
 		formatString: General Date
 		lineageTag: b512e7eb-5daf-4d82-89e5-4df7aebc0dd0
 		summarizeBy: none
@@ -50,6 +55,7 @@ table 'public dealer_so'
 
 	column contact_person
 		dataType: string
+		isHidden
 		lineageTag: 3cbf8820-3e53-4d7d-a964-836c3ec1c541
 		summarizeBy: none
 		sourceColumn: contact_person
@@ -60,6 +66,7 @@ table 'public dealer_so'
 
 	column created_at
 		dataType: dateTime
+		isHidden
 		formatString: General Date
 		lineageTag: 7c052f8e-451d-4a20-8eb3-cf6d9f05ab57
 		summarizeBy: none
@@ -76,6 +83,7 @@ table 'public dealer_so'
 
 	column dealer_so_status
 		dataType: string
+		isHidden
 		lineageTag: 413781b3-94a1-4799-9747-66f71e69d8b5
 		summarizeBy: none
 		sourceColumn: dealer_so_status
@@ -86,6 +94,7 @@ table 'public dealer_so'
 
 	column is_deleted
 		dataType: boolean
+		isHidden
 		formatString: """TRUE"";""TRUE"";""FALSE"""
 		lineageTag: c90e2fe8-ec2e-48b4-9261-129e4c2238ce
 		summarizeBy: none
@@ -97,6 +106,7 @@ table 'public dealer_so'
 
 	column deleted_at
 		dataType: dateTime
+		isHidden
 		formatString: General Date
 		lineageTag: e59f7922-d28d-4e6e-84ef-6218c892aa0a
 		summarizeBy: none
@@ -113,6 +123,7 @@ table 'public dealer_so'
 
 	column feedback
 		dataType: string
+		isHidden
 		lineageTag: 4c738ba5-08c5-4ed9-8e9e-17143d3cf42b
 		summarizeBy: none
 		sourceColumn: feedback
@@ -123,6 +134,7 @@ table 'public dealer_so'
 
 	column phone_number
 		dataType: string
+		isHidden
 		lineageTag: c8876ad9-3bd2-409b-b3dc-a70d0a3c4f90
 		summarizeBy: none
 		sourceColumn: phone_number
@@ -133,6 +145,7 @@ table 'public dealer_so'
 
 	column rejection_feedback
 		dataType: string
+		isHidden
 		lineageTag: 19981d31-a9df-4a04-a173-4cc8e36339eb
 		summarizeBy: none
 		sourceColumn: rejection_feedback
@@ -143,6 +156,7 @@ table 'public dealer_so'
 
 	column so_type
 		dataType: string
+		isHidden
 		lineageTag: ce4ac711-4128-4726-baf5-2be1d11a982d
 		summarizeBy: none
 		sourceColumn: so_type
@@ -153,6 +167,7 @@ table 'public dealer_so'
 
 	column total_amount
 		dataType: double
+		isHidden
 		lineageTag: 4156fe9e-4e9c-4aab-8510-64a6641286b3
 		summarizeBy: sum
 		sourceColumn: total_amount
@@ -165,6 +180,7 @@ table 'public dealer_so'
 
 	column total_quantity
 		dataType: double
+		isHidden
 		lineageTag: 8d025e4d-5db0-4819-85c9-0d433f574c99
 		summarizeBy: sum
 		sourceColumn: total_quantity
@@ -177,6 +193,7 @@ table 'public dealer_so'
 
 	column unit_type
 		dataType: string
+		isHidden
 		lineageTag: ab62ad91-a7e2-4f72-a3a0-2053a43c7a7f
 		summarizeBy: none
 		sourceColumn: unit_type
@@ -187,6 +204,7 @@ table 'public dealer_so'
 
 	column updated_at
 		dataType: dateTime
+		isHidden
 		formatString: General Date
 		lineageTag: 3c59d4eb-916a-4c39-9423-3312f128dd8c
 		summarizeBy: none
@@ -203,6 +221,7 @@ table 'public dealer_so'
 
 	column verified_date
 		dataType: dateTime
+		isHidden
 		formatString: General Date
 		lineageTag: 6372b1f8-3611-4b8d-b6d8-b0f5117a0a41
 		summarizeBy: none
@@ -219,6 +238,7 @@ table 'public dealer_so'
 
 	column approved_by
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 97619350-9cca-4a92-a171-c0b7f7a0d29f
 		summarizeBy: sum
@@ -230,6 +250,7 @@ table 'public dealer_so'
 
 	column created_by
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 3174e046-f49a-43b9-9513-1ef2c03a5e51
 		summarizeBy: sum
@@ -241,6 +262,7 @@ table 'public dealer_so'
 
 	column dealer_id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 8b7cf018-8f3c-47b8-81a5-1a9d1e6b6d34
 		summarizeBy: sum
@@ -252,6 +274,7 @@ table 'public dealer_so'
 
 	column deleted_by
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: c1e415e5-4832-43e5-a817-8d180bbc3404
 		summarizeBy: sum
@@ -263,6 +286,7 @@ table 'public dealer_so'
 
 	column updated_by
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 4c525ea6-7eea-4025-97c3-7325391acd14
 		summarizeBy: sum
@@ -274,6 +298,7 @@ table 'public dealer_so'
 
 	column verified_by
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 773833f6-c828-4104-8fb6-35232153ad3e
 		summarizeBy: sum

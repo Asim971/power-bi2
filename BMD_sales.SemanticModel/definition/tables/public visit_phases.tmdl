@@ -1,8 +1,10 @@
 table 'public visit_phases'
+	isHidden
 	lineageTag: 13c5135e-26d7-4538-85bd-b15a8f773d37
 
 	column id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 0b590a11-7bb2-4976-89de-0980b81fa129
 		summarizeBy: sum
@@ -14,6 +16,7 @@ table 'public visit_phases'
 
 	column created_at
 		dataType: dateTime
+		isHidden
 		formatString: General Date
 		lineageTag: ebf681c8-92b4-490c-a4e4-557bc59fc654
 		summarizeBy: none
@@ -30,6 +33,7 @@ table 'public visit_phases'
 
 	column delete_status
 		dataType: string
+		isHidden
 		lineageTag: 01ca3b56-77b7-46fe-b375-aafefe26b209
 		summarizeBy: none
 		sourceColumn: delete_status
@@ -40,6 +44,7 @@ table 'public visit_phases'
 
 	column description
 		dataType: string
+		isHidden
 		lineageTag: 13fb4b6b-aebc-491b-8a39-61c9fa626638
 		summarizeBy: none
 		sourceColumn: description
@@ -50,6 +55,7 @@ table 'public visit_phases'
 
 	column name
 		dataType: string
+		isHidden
 		lineageTag: 569df6ab-411a-4b4b-91fa-18392c7782a4
 		summarizeBy: none
 		sourceColumn: name
@@ -60,6 +66,7 @@ table 'public visit_phases'
 
 	column updated_at
 		dataType: dateTime
+		isHidden
 		formatString: General Date
 		lineageTag: 32b6f7a0-3820-4035-bdff-c8fcd65865db
 		summarizeBy: none

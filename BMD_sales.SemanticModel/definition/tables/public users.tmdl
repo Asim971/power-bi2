@@ -1,8 +1,10 @@
 table 'public users'
+	isHidden
 	lineageTag: 96433d13-8147-44ca-a53f-f6665d590d5e
 
 	column id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 4d037e7e-ddb3-4995-b14a-48c6f43db00d
 		summarizeBy: sum
@@ -14,6 +16,7 @@ table 'public users'
 
 	column area_record_ref
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 79850b9a-91f1-4d18-924e-ad96cee2c9fc
 		summarizeBy: sum
@@ -25,6 +28,7 @@ table 'public users'
 
 	column corteza_record_ref
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 1882494d-6b9b-4c2f-b624-8c628f951747
 		summarizeBy: sum
@@ -36,6 +40,7 @@ table 'public users'
 
 	column corteza_user_id
 		dataType: string
+		isHidden
 		lineageTag: 8fa455d9-1024-4225-933a-53939b1b4e94
 		summarizeBy: none
 		sourceColumn: corteza_user_id
@@ -46,6 +51,7 @@ table 'public users'
 
 	column created_at
 		dataType: dateTime
+		isHidden
 		formatString: General Date
 		lineageTag: c9f30c97-7d33-4f67-98aa-a7b4a3ddd8a3
 		summarizeBy: none
@@ -62,6 +68,7 @@ table 'public users'
 
 	column delete_status
 		dataType: string
+		isHidden
 		lineageTag: 7b1c6dbd-468b-4f2e-9fd1-ed49d4d63d5a
 		summarizeBy: none
 		sourceColumn: delete_status
@@ -72,6 +79,7 @@ table 'public users'
 
 	column division_record_ref
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 15b82390-72f8-4027-8df6-f6d022e3a7cd
 		summarizeBy: sum
@@ -83,6 +91,7 @@ table 'public users'
 
 	column email
 		dataType: string
+		isHidden
 		lineageTag: 01624310-b9cb-4fa6-af4c-935f1b2cbd1e
 		summarizeBy: none
 		sourceColumn: email
@@ -93,6 +102,7 @@ table 'public users'
 
 	column line_manager
 		dataType: string
+		isHidden
 		lineageTag: 83ccf978-5f01-4086-a2f1-30a867869773
 		summarizeBy: none
 		sourceColumn: line_manager
@@ -103,6 +113,7 @@ table 'public users'
 
 	column meta
 		dataType: string
+		isHidden
 		lineageTag: 82791fb2-a45b-4216-98b7-c7c16f65b35c
 		summarizeBy: none
 		sourceColumn: meta
@@ -113,6 +124,7 @@ table 'public users'
 
 	column name
 		dataType: string
+		isHidden
 		lineageTag: 082d84f2-4e0f-4acd-b2f1-e34f4c740a02
 		summarizeBy: none
 		sourceColumn: name
@@ -123,6 +135,7 @@ table 'public users'
 
 	column nation_record_ref
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 367ea436-8259-4195-9f20-dea4373a4061
 		summarizeBy: sum
@@ -134,6 +147,7 @@ table 'public users'
 
 	column phone_number
 		dataType: string
+		isHidden
 		lineageTag: b3f635e9-a933-4a41-9185-c64755160036
 		summarizeBy: none
 		sourceColumn: phone_number
@@ -144,6 +158,7 @@ table 'public users'
 
 	column recordid
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 6177f6fc-63fb-4df6-8131-dd104211c1ad
 		summarizeBy: sum
@@ -155,6 +170,7 @@ table 'public users'
 
 	column territory_record_ref
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: afd96254-dec7-414f-a045-bc81c6364d59
 		summarizeBy: sum
@@ -166,6 +182,7 @@ table 'public users'
 
 	column updated_at
 		dataType: dateTime
+		isHidden
 		formatString: General Date
 		lineageTag: 327ceb6e-7f7c-431f-b6b3-188740e2ac8e
 		summarizeBy: none
@@ -182,6 +199,7 @@ table 'public users'
 
 	column user_designation
 		dataType: string
+		isHidden
 		lineageTag: 2db0b52d-75a9-46cb-b6c7-bcae4db9db1d
 		summarizeBy: none
 		sourceColumn: user_designation
@@ -192,6 +210,7 @@ table 'public users'
 
 	column zone_record_ref
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: d41a2112-6791-4535-bab5-2b414c0b957a
 		summarizeBy: sum
@@ -203,6 +222,7 @@ table 'public users'
 
 	column area_id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: b75ecb06-2fa2-41a4-9699-a338a1618710
 		summarizeBy: sum
@@ -214,6 +234,7 @@ table 'public users'
 
 	column bd_territory_id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 69b859d3-8a11-4927-89c8-ecd305972e48
 		summarizeBy: sum
@@ -225,6 +246,7 @@ table 'public users'
 
 	column nation_id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 5b17ed82-e94c-4978-a36f-7baae1098461
 		summarizeBy: sum
@@ -236,6 +258,7 @@ table 'public users'
 
 	column organization_id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: ff055055-750d-406e-8df1-e34ebfef93e0
 		summarizeBy: sum
@@ -247,6 +270,7 @@ table 'public users'
 
 	column region_id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 1de5bd49-55b8-4f6b-ad9d-e70330a45a91
 		summarizeBy: sum
@@ -258,6 +282,7 @@ table 'public users'
 
 	column role_id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 13100574-4f52-4970-ac3f-0e99f9261ba6
 		summarizeBy: sum
@@ -269,6 +294,7 @@ table 'public users'
 
 	column zone_id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: fc6d4e75-46ee-4352-86b6-a7c983b381ac
 		summarizeBy: sum
@@ -280,6 +306,7 @@ table 'public users'
 
 	column created_by
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 2e960ca7-7f12-414f-9cb9-907952babfed
 		summarizeBy: sum
@@ -291,6 +318,7 @@ table 'public users'
 
 	column deleted_by
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 5006eef9-8438-4f7c-8979-b371ee5e7574
 		summarizeBy: sum
@@ -302,6 +330,7 @@ table 'public users'
 
 	column updated_by
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 02a3696c-fef3-4548-8741-8f391a7e46bd
 		summarizeBy: sum

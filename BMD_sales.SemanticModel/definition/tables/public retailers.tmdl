@@ -1,8 +1,10 @@
 table 'public retailers'
+	isHidden
 	lineageTag: bf54b939-8923-4cdb-af74-939d7d4c6eb9
 
 	column id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 65933941-b937-4963-a847-787b8b0a49c3
 		summarizeBy: sum
@@ -14,6 +16,7 @@ table 'public retailers'
 
 	column ac_name
 		dataType: string
+		isHidden
 		lineageTag: 590300d9-407e-4c81-9962-c3b6f50c3bca
 		summarizeBy: none
 		sourceColumn: ac_name
@@ -24,6 +27,7 @@ table 'public retailers'
 
 	column ac_no
 		dataType: string
+		isHidden
 		lineageTag: ee43f0ce-8f5e-4e20-9347-be7e995306a4
 		summarizeBy: none
 		sourceColumn: ac_no
@@ -34,6 +38,7 @@ table 'public retailers'
 
 	column address
 		dataType: string
+		isHidden
 		lineageTag: eefc1987-69ef-43e7-8a1e-9b1d4635ec33
 		summarizeBy: none
 		sourceColumn: address
@@ -44,6 +49,7 @@ table 'public retailers'
 
 	column area_of_work
 		dataType: string
+		isHidden
 		lineageTag: bca755dd-c714-404e-939c-1b19a880e2d6
 		summarizeBy: none
 		sourceColumn: area_of_work
@@ -54,6 +60,7 @@ table 'public retailers'
 
 	column assigned_agm
 		dataType: string
+		isHidden
 		lineageTag: aaedbf28-83d9-493a-a641-1eda9f801144
 		summarizeBy: none
 		sourceColumn: assigned_agm
@@ -64,6 +71,7 @@ table 'public retailers'
 
 	column assigned_asm
 		dataType: string
+		isHidden
 		lineageTag: 97f295c2-b81d-4eff-871b-2873a14f9e73
 		summarizeBy: none
 		sourceColumn: assigned_asm
@@ -74,6 +82,7 @@ table 'public retailers'
 
 	column assigned_gm
 		dataType: string
+		isHidden
 		lineageTag: 2be1d6be-e044-4e4b-ac65-dffd0624347e
 		summarizeBy: none
 		sourceColumn: assigned_gm
@@ -84,6 +93,7 @@ table 'public retailers'
 
 	column assigned_sr
 		dataType: string
+		isHidden
 		lineageTag: 73a207d6-ed4d-4d82-9234-5cf05869fed1
 		summarizeBy: none
 		sourceColumn: assigned_sr
@@ -94,6 +104,7 @@ table 'public retailers'
 
 	column assigned_sr_name
 		dataType: string
+		isHidden
 		lineageTag: 01e30183-0568-4d17-8f81-29cb80a3f57c
 		summarizeBy: none
 		sourceColumn: assigned_sr_name
@@ -104,6 +115,7 @@ table 'public retailers'
 
 	column assigned_zsm
 		dataType: string
+		isHidden
 		lineageTag: 5189432e-0ea2-4cd0-9093-d8f72308620d
 		summarizeBy: none
 		sourceColumn: assigned_zsm
@@ -114,6 +126,7 @@ table 'public retailers'
 
 	column bank_name
 		dataType: string
+		isHidden
 		lineageTag: da132e27-fd30-4ff2-93e3-d85e917fca1f
 		summarizeBy: none
 		sourceColumn: bank_name
@@ -124,6 +137,7 @@ table 'public retailers'
 
 	column bazaar_name
 		dataType: string
+		isHidden
 		lineageTag: de915f1c-b757-4db7-b34e-178d5896cf6f
 		summarizeBy: none
 		sourceColumn: bazaar_name
@@ -134,6 +148,7 @@ table 'public retailers'
 
 	column bazaar_name_text
 		dataType: string
+		isHidden
 		lineageTag: bbe81dfb-50a1-421f-af7c-6711e0d3ebd0
 		summarizeBy: none
 		sourceColumn: bazaar_name_text
@@ -144,6 +159,7 @@ table 'public retailers'
 
 	column bkash_no
 		dataType: string
+		isHidden
 		lineageTag: 68490d06-ca58-42e4-add9-84f4c22b3825
 		summarizeBy: none
 		sourceColumn: bkash_no
@@ -154,6 +170,7 @@ table 'public retailers'
 
 	column branch_name
 		dataType: string
+		isHidden
 		lineageTag: b3e9e576-f027-4bc4-8201-0166ba3d3ba0
 		summarizeBy: none
 		sourceColumn: branch_name
@@ -164,6 +181,7 @@ table 'public retailers'
 
 	column created_at
 		dataType: dateTime
+		isHidden
 		formatString: General Date
 		lineageTag: 99ec9e86-b60a-46b0-b401-6557a1c82e3f
 		summarizeBy: none
@@ -180,6 +198,7 @@ table 'public retailers'
 
 	column created_by
 		dataType: string
+		isHidden
 		lineageTag: 996b4908-6fad-4ecf-9763-b823ebd0f8cc
 		summarizeBy: none
 		sourceColumn: created_by
@@ -190,6 +209,7 @@ table 'public retailers'
 
 	column dealer_name
 		dataType: string
+		isHidden
 		lineageTag: a8140bd4-6502-4c46-8fcc-fa91b29b37d0
 		summarizeBy: none
 		sourceColumn: dealer_name
@@ -200,6 +220,7 @@ table 'public retailers'
 
 	column dob
 		dataType: string
+		isHidden
 		lineageTag: 78e7c6de-7741-4782-96ec-056bdcd148fd
 		summarizeBy: none
 		sourceColumn: dob
@@ -210,6 +231,7 @@ table 'public retailers'
 
 	column experience
 		dataType: string
+		isHidden
 		lineageTag: 91c29b3f-da68-4a2a-afec-fb8836a87ce0
 		summarizeBy: none
 		sourceColumn: experience
@@ -220,6 +242,7 @@ table 'public retailers'
 
 	column is_deleted
 		dataType: string
+		isHidden
 		lineageTag: 3b7ecac8-a430-4276-8d87-c91bb4e7b4ef
 		summarizeBy: none
 		sourceColumn: is_deleted
@@ -230,6 +253,7 @@ table 'public retailers'
 
 	column message
 		dataType: string
+		isHidden
 		lineageTag: 22998356-7d47-430d-894a-1a40d985b60c
 		summarizeBy: none
 		sourceColumn: message
@@ -240,6 +264,7 @@ table 'public retailers'
 
 	column mobile_no
 		dataType: string
+		isHidden
 		lineageTag: 757ff347-356e-497b-ae11-0a3154ace2dd
 		summarizeBy: none
 		sourceColumn: mobile_no
@@ -250,6 +275,7 @@ table 'public retailers'
 
 	column moduleid
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: ac2b0d5e-16b8-4c7b-817e-22d5c4c96128
 		summarizeBy: sum
@@ -261,6 +287,7 @@ table 'public retailers'
 
 	column name
 		dataType: string
+		isHidden
 		lineageTag: fd818888-4638-489c-af36-7d22e59614b0
 		summarizeBy: none
 		sourceColumn: name
@@ -271,6 +298,7 @@ table 'public retailers'
 
 	column namespaceid
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: a4bd9b6d-82eb-4a28-bf3d-b1cc3749ffda
 		summarizeBy: sum
@@ -282,6 +310,7 @@ table 'public retailers'
 
 	column nid_no
 		dataType: string
+		isHidden
 		lineageTag: 0d8b54b2-c75b-44f5-9bc9-1b18d3c63a06
 		summarizeBy: none
 		sourceColumn: nid_no
@@ -292,6 +321,7 @@ table 'public retailers'
 
 	column nid_photo
 		dataType: string
+		isHidden
 		lineageTag: 03739a5b-b83d-4daa-8016-09ba048ac273
 		summarizeBy: none
 		sourceColumn: nid_photo
@@ -302,6 +332,7 @@ table 'public retailers'
 
 	column owned_by
 		dataType: string
+		isHidden
 		lineageTag: b88c65e6-7a99-401a-94a6-3ad8432a5685
 		summarizeBy: none
 		sourceColumn: owned_by
@@ -312,6 +343,7 @@ table 'public retailers'
 
 	column photo
 		dataType: string
+		isHidden
 		lineageTag: 1b1a8f8f-a479-46db-9983-ee6c800937ab
 		summarizeBy: none
 		sourceColumn: photo
@@ -322,6 +354,7 @@ table 'public retailers'
 
 	column preferred_mfs
 		dataType: string
+		isHidden
 		lineageTag: bd2c64b5-894b-4ed5-93a2-36abd1e81a0e
 		summarizeBy: none
 		sourceColumn: preferred_mfs
@@ -332,6 +365,7 @@ table 'public retailers'
 
 	column present_address
 		dataType: string
+		isHidden
 		lineageTag: a6ae341a-1c05-4c65-b008-4f604d436153
 		summarizeBy: none
 		sourceColumn: present_address
@@ -342,6 +376,7 @@ table 'public retailers'
 
 	column recordid
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 3ee836ad-f545-47fa-837f-c1251dd0dfc9
 		summarizeBy: sum
@@ -353,6 +388,7 @@ table 'public retailers'
 
 	column revision
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: cb30c07b-70ec-4c00-b098-91bf4fdebc7b
 		summarizeBy: sum
@@ -364,6 +400,7 @@ table 'public retailers'
 
 	column routing_no
 		dataType: string
+		isHidden
 		lineageTag: 626b60e7-2558-412f-930d-95adf20db7df
 		summarizeBy: none
 		sourceColumn: routing_no
@@ -374,6 +411,7 @@ table 'public retailers'
 
 	column shop_address
 		dataType: string
+		isHidden
 		lineageTag: 2f42668a-cec7-4a6b-b48f-9a7a6ed5ec04
 		summarizeBy: none
 		sourceColumn: shop_address
@@ -384,6 +422,7 @@ table 'public retailers'
 
 	column shop_name
 		dataType: string
+		isHidden
 		lineageTag: 6f3d5751-9b8e-45b2-9731-53f0b208c630
 		summarizeBy: none
 		sourceColumn: shop_name
@@ -394,6 +433,7 @@ table 'public retailers'
 
 	column status
 		dataType: string
+		isHidden
 		lineageTag: 0c1a4775-c128-4785-96ff-0703ab61d979
 		summarizeBy: none
 		sourceColumn: status
@@ -404,6 +444,7 @@ table 'public retailers'
 
 	column updated_at
 		dataType: dateTime
+		isHidden
 		formatString: General Date
 		lineageTag: a7e0d10e-a16b-4adc-bd8e-aa9c8872d343
 		summarizeBy: none
@@ -420,6 +461,7 @@ table 'public retailers'
 
 	column updated_by
 		dataType: string
+		isHidden
 		lineageTag: c437b3bd-8ee0-44d1-944f-58bd1f45feea
 		summarizeBy: none
 		sourceColumn: updated_by
@@ -430,6 +472,7 @@ table 'public retailers'
 
 	column bazaar_id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: b29c61ac-a6bb-43db-9bbc-f874f6afd47f
 		summarizeBy: sum
@@ -441,6 +484,7 @@ table 'public retailers'
 
 	column created_by_user_id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 5d00f2aa-828b-4346-8d19-c274536ab6ad
 		summarizeBy: sum
@@ -452,6 +496,7 @@ table 'public retailers'
 
 	column dealer_id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: f5c21f4e-4ef4-4f29-8d46-c6622b23a7ef
 		summarizeBy: sum
@@ -463,6 +508,7 @@ table 'public retailers'
 
 	column organization_id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 6e6f3634-90a9-4514-aae5-dbce4ef1bf17
 		summarizeBy: sum
@@ -474,6 +520,7 @@ table 'public retailers'
 
 	column uncovered_retailer_id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 228fc9f3-0e8b-452f-88e6-284b56752701
 		summarizeBy: sum
@@ -485,6 +532,7 @@ table 'public retailers'
 
 	column deleted_by
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 83408571-5ed7-4c8b-874b-8133ac21230b
 		summarizeBy: sum
@@ -496,6 +544,7 @@ table 'public retailers'
 
 	column updated_by_user
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 19a835db-8d7d-4acc-8c38-b977b835bc3a
 		summarizeBy: sum

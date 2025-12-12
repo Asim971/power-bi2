@@ -1,8 +1,10 @@
 table 'public visit_categories'
+	isHidden
 	lineageTag: f1e9c046-5326-4dad-b4d2-ad4f7e224535
 
 	column id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 05641f57-00ae-425b-80bc-01caa7494860
 		summarizeBy: sum
@@ -14,6 +16,7 @@ table 'public visit_categories'
 
 	column category_name
 		dataType: string
+		isHidden
 		lineageTag: 0f894cd1-a61b-4ece-bd79-778be5b36372
 		summarizeBy: none
 		sourceColumn: category_name
@@ -24,6 +27,7 @@ table 'public visit_categories'
 
 	column created_at
 		dataType: dateTime
+		isHidden
 		formatString: General Date
 		lineageTag: fc9be08e-9b33-405e-9f9f-af592aee1acc
 		summarizeBy: none
@@ -40,6 +44,7 @@ table 'public visit_categories'
 
 	column delete_status
 		dataType: string
+		isHidden
 		lineageTag: 92fa87e9-fc2d-4ac1-a617-a88e17f3993e
 		summarizeBy: none
 		sourceColumn: delete_status
@@ -50,6 +55,7 @@ table 'public visit_categories'
 
 	column recordid
 		dataType: string
+		isHidden
 		lineageTag: 84d7bbd0-4d6a-4a62-8f18-562a5062a0a4
 		summarizeBy: none
 		sourceColumn: recordid
@@ -60,6 +66,7 @@ table 'public visit_categories'
 
 	column updated_at
 		dataType: dateTime
+		isHidden
 		formatString: General Date
 		lineageTag: 84c8cdc7-577d-4505-ac5f-650dd41ec857
 		summarizeBy: none
@@ -76,6 +83,7 @@ table 'public visit_categories'
 
 	column created_by_id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 742f660d-818f-4d2e-bd44-d07cc4953457
 		summarizeBy: sum
@@ -87,6 +95,7 @@ table 'public visit_categories'
 
 	column updated_by_id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 9fa74f7f-b3df-49b9-b756-f76c7935a944
 		summarizeBy: sum

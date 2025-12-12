@@ -1,8 +1,10 @@
 table 'public retailer_order_image_url_list'
+	isHidden
 	lineageTag: 0281698e-599d-4d6d-b3de-a8bfd93b9a4d
 
 	column retailer_order_id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 3475ec9e-55af-4122-ad58-e8ac4a56b976
 		summarizeBy: sum
@@ -14,6 +16,7 @@ table 'public retailer_order_image_url_list'
 
 	column image_url
 		dataType: string
+		isHidden
 		lineageTag: 331f1c28-931a-4bae-9165-57f9dccbd781
 		summarizeBy: none
 		sourceColumn: image_url

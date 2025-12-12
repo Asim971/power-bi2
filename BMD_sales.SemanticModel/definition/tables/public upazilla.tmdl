@@ -1,8 +1,10 @@
 table 'public upazilla'
+	isHidden
 	lineageTag: 4c009138-a6ef-4574-9091-b98a6fe7a272
 
 	column id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: ceb8ac94-20b6-4d55-9e64-bd9faf21c0bb
 		summarizeBy: sum
@@ -14,6 +16,7 @@ table 'public upazilla'
 
 	column assigned_agm
 		dataType: string
+		isHidden
 		lineageTag: 2f53e0d8-6eaa-461a-ae9e-a2c8345ea4a1
 		summarizeBy: none
 		sourceColumn: assigned_agm
@@ -24,6 +27,7 @@ table 'public upazilla'
 
 	column assigned_asm
 		dataType: string
+		isHidden
 		lineageTag: 20886535-12fd-481d-81ca-819734595182
 		summarizeBy: none
 		sourceColumn: assigned_asm
@@ -34,6 +38,7 @@ table 'public upazilla'
 
 	column assigned_gm
 		dataType: string
+		isHidden
 		lineageTag: 8fbf1dee-2ff1-47c3-b431-da0245949edb
 		summarizeBy: none
 		sourceColumn: assigned_gm
@@ -44,6 +49,7 @@ table 'public upazilla'
 
 	column assigned_sr
 		dataType: string
+		isHidden
 		lineageTag: 03c4bab1-a228-4111-be1d-adc125c1f539
 		summarizeBy: none
 		sourceColumn: assigned_sr
@@ -54,6 +60,7 @@ table 'public upazilla'
 
 	column assigned_zsm
 		dataType: string
+		isHidden
 		lineageTag: fb4b457b-5cc9-4056-8fda-9fc0a67a2f25
 		summarizeBy: none
 		sourceColumn: assigned_zsm
@@ -64,6 +71,7 @@ table 'public upazilla'
 
 	column created_at
 		dataType: string
+		isHidden
 		lineageTag: 5c61a737-6ee3-48f3-8034-9444a62d0bc5
 		summarizeBy: none
 		sourceColumn: created_at
@@ -74,6 +82,7 @@ table 'public upazilla'
 
 	column created_by
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 6453d669-4518-4e13-8930-6f268c24571a
 		summarizeBy: sum
@@ -85,6 +94,7 @@ table 'public upazilla'
 
 	column delete_status
 		dataType: string
+		isHidden
 		lineageTag: e57ab2ab-e39c-4c10-813f-c2b07f86fde7
 		summarizeBy: none
 		sourceColumn: delete_status
@@ -95,6 +105,7 @@ table 'public upazilla'
 
 	column district_name
 		dataType: string
+		isHidden
 		lineageTag: baa47ec1-c119-4536-8dfc-42adcadcd6c0
 		summarizeBy: none
 		sourceColumn: district_name
@@ -105,6 +116,7 @@ table 'public upazilla'
 
 	column module_id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 51499a19-1795-46d3-8978-2da75e11161d
 		summarizeBy: sum
@@ -116,6 +128,7 @@ table 'public upazilla'
 
 	column namespace_id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 77506fba-d0f2-4871-8216-cea02305e7f2
 		summarizeBy: sum
@@ -127,6 +140,7 @@ table 'public upazilla'
 
 	column nation_name
 		dataType: string
+		isHidden
 		lineageTag: 9fba4ad9-2672-415c-9327-fc09f5a3fd93
 		summarizeBy: none
 		sourceColumn: nation_name
@@ -137,6 +151,7 @@ table 'public upazilla'
 
 	column owned_by
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 582ec601-76de-4574-96d0-747e7210f726
 		summarizeBy: sum
@@ -148,6 +163,7 @@ table 'public upazilla'
 
 	column record_id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: a0b5a1de-eb0c-43cc-aea0-cb78ef412855
 		summarizeBy: sum
@@ -159,6 +175,7 @@ table 'public upazilla'
 
 	column revision
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: c71696d6-046e-46c3-9c5b-27c8d0073aff
 		summarizeBy: sum
@@ -170,6 +187,7 @@ table 'public upazilla'
 
 	column territory_name
 		dataType: string
+		isHidden
 		lineageTag: 6a83c85d-0375-4e0e-9a4d-1070131dbcbe
 		summarizeBy: none
 		sourceColumn: territory_name
@@ -180,6 +198,7 @@ table 'public upazilla'
 
 	column upazilla_name
 		dataType: string
+		isHidden
 		lineageTag: a7159739-10c4-47c5-ab04-d208903285b4
 		summarizeBy: none
 		sourceColumn: upazilla_name
@@ -190,6 +209,7 @@ table 'public upazilla'
 
 	column updated_at
 		dataType: string
+		isHidden
 		lineageTag: 1664896c-32db-4d9d-b600-29fab9060b9d
 		summarizeBy: none
 		sourceColumn: updated_at
@@ -200,6 +220,7 @@ table 'public upazilla'
 
 	column updated_by
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 278e0ef7-c98a-42c3-97e4-b102b6bd5170
 		summarizeBy: sum
@@ -211,6 +232,7 @@ table 'public upazilla'
 
 	column zone_name
 		dataType: string
+		isHidden
 		lineageTag: 04464d86-869a-441c-b0f5-04c6de8318c6
 		summarizeBy: none
 		sourceColumn: zone_name
@@ -221,6 +243,7 @@ table 'public upazilla'
 
 	column district_id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 0acfae7e-8bae-4b60-b017-81d87384db1b
 		summarizeBy: sum
@@ -232,6 +255,7 @@ table 'public upazilla'
 
 	column division_id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: eb49e932-186c-495f-9ffd-9203042ea997
 		summarizeBy: sum
@@ -243,6 +267,7 @@ table 'public upazilla'
 
 	column nation_id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: d899b412-9416-41d5-8ace-731a21858a2e
 		summarizeBy: sum
@@ -254,6 +279,7 @@ table 'public upazilla'
 
 	column zone_id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 4138db45-a3e5-44c5-812c-71bc8a51bb85
 		summarizeBy: sum
@@ -265,6 +291,7 @@ table 'public upazilla'
 
 	column deleted_by
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 9ce5be42-8ce7-41e4-a8d4-aaed0c4fae49
 		summarizeBy: sum

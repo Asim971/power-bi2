@@ -1,8 +1,10 @@
 table 'public visit_site_stock_records'
+	isHidden
 	lineageTag: 4db82a89-40ba-47f5-8c26-9661a304b016
 
 	column visit_id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 7f585da4-dbad-48eb-95c6-fd7bc361d36e
 		summarizeBy: sum
@@ -14,6 +16,7 @@ table 'public visit_site_stock_records'
 
 	column visit_site_stock_id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 3d0eda88-1bda-47e7-8bc3-2b733644bf16
 		summarizeBy: sum

@@ -1,8 +1,10 @@
 table 'public visit_sub_stage_records'
+	isHidden
 	lineageTag: 76803532-5d9a-46df-a989-cccd5d8c3024
 
 	column id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 25d8c95e-dd83-4c7e-bfb8-cd476dc30277
 		summarizeBy: sum
@@ -14,6 +16,7 @@ table 'public visit_sub_stage_records'
 
 	column sub_stage_feedback
 		dataType: string
+		isHidden
 		lineageTag: 5ddca790-e99f-4439-b5cc-2a6a28491d05
 		summarizeBy: none
 		sourceColumn: sub_stage_feedback
@@ -24,6 +27,7 @@ table 'public visit_sub_stage_records'
 
 	column visit_id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: f3513115-19cf-446d-ac0d-a6e42365d027
 		summarizeBy: sum
@@ -35,6 +39,7 @@ table 'public visit_sub_stage_records'
 
 	column visit_sub_stage_id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 813814f4-1039-4f7a-93b0-9d63d1e5d31d
 		summarizeBy: sum

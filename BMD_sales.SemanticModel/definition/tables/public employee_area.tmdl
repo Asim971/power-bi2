@@ -1,8 +1,10 @@
 table 'public employee_area'
+	isHidden
 	lineageTag: 594c894d-4066-403d-9bd4-e5a44e461d7e
 
 	column id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 1fb61730-ddd2-4238-94dd-a3f84c44e9da
 		summarizeBy: sum
@@ -14,6 +16,7 @@ table 'public employee_area'
 
 	column area_id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 796dd07f-17fc-439e-9f0f-b3aaef3e4934
 		summarizeBy: sum
@@ -25,6 +28,7 @@ table 'public employee_area'
 
 	column employee_id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 87bba522-146d-40dd-a1a7-13a4d736d106
 		summarizeBy: sum

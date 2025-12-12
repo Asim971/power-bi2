@@ -1,8 +1,10 @@
 table USER-ZONE
+	isHidden
 	lineageTag: af1a53b2-ab7d-4ff5-b00d-5cc33c63acf2
 
 	column EmployeeEmail
 		dataType: string
+		isHidden
 		lineageTag: f60ee5fc-0b11-4666-835e-ef5cd010d0cb
 		summarizeBy: none
 		sourceColumn: EmployeeEmail
@@ -13,6 +15,7 @@ table USER-ZONE
 
 	column ZoneID
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 4bd7ee16-836a-43cb-92d7-0eee2663a66f
 		summarizeBy: count
@@ -24,6 +27,7 @@ table USER-ZONE
 
 	column ZoneName
 		dataType: string
+		isHidden
 		lineageTag: 16dbfba8-22a5-439d-9a02-6702347508af
 		summarizeBy: none
 		sourceColumn: ZoneName
@@ -34,6 +38,7 @@ table USER-ZONE
 
 	column AccessLevel
 		dataType: string
+		isHidden
 		lineageTag: 75581f00-e0f0-4113-8d4d-7eb724aa9fb1
 		summarizeBy: none
 		sourceColumn: AccessLevel
@@ -44,6 +49,7 @@ table USER-ZONE
 
 	column RegionIDs
 		dataType: string
+		isHidden
 		lineageTag: 2ac66c4a-3fc0-451b-91f8-7e9c3bf2704d
 		summarizeBy: none
 		sourceColumn: RegionIDs

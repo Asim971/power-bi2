@@ -1,8 +1,10 @@
 table 'public visit_access_aop'
+	isHidden
 	lineageTag: abcf1778-9396-4f41-9558-61f22829b674
 
 	column visit_id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: d6049c4b-65c8-46ad-8f19-a4c717562c40
 		summarizeBy: sum
@@ -14,6 +16,7 @@ table 'public visit_access_aop'
 
 	column territory_id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: bad5fdd8-f275-4249-854b-2e7bc302951e
 		summarizeBy: sum

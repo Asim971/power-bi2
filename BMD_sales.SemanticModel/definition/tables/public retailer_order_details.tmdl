@@ -1,8 +1,10 @@
 table 'public retailer_order_details'
+	isHidden
 	lineageTag: fec43869-e0ff-4c3c-a7e0-ebbc83115764
 
 	column id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: ab7561b7-c34e-44f7-9bb7-ceb728349149
 		summarizeBy: sum
@@ -14,6 +16,7 @@ table 'public retailer_order_details'
 
 	column quantity
 		dataType: double
+		isHidden
 		lineageTag: 72141cd6-ee2e-4989-ac3f-a1ae1e3d26a2
 		summarizeBy: sum
 		sourceColumn: quantity
@@ -26,6 +29,7 @@ table 'public retailer_order_details'
 
 	column sku_name
 		dataType: string
+		isHidden
 		lineageTag: 631cf687-14e3-46c4-8788-bb1e21823e31
 		summarizeBy: none
 		sourceColumn: sku_name
@@ -36,6 +40,7 @@ table 'public retailer_order_details'
 
 	column unit_price
 		dataType: double
+		isHidden
 		lineageTag: 87448a35-595b-4698-8324-2dac89b59fae
 		summarizeBy: sum
 		sourceColumn: unit_price
@@ -48,6 +53,7 @@ table 'public retailer_order_details'
 
 	column unit_type
 		dataType: string
+		isHidden
 		lineageTag: 688a096f-066c-4fb4-8c95-2b3da8bbf9d0
 		summarizeBy: none
 		sourceColumn: unit_type
@@ -58,6 +64,7 @@ table 'public retailer_order_details'
 
 	column retailer_order_id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: f4705860-5850-4c9d-894a-0bbda01fd877
 		summarizeBy: sum
@@ -69,6 +76,7 @@ table 'public retailer_order_details'
 
 	column sku_id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 5a168e34-f39e-45fd-9274-59ec7a3b9fbf
 		summarizeBy: sum

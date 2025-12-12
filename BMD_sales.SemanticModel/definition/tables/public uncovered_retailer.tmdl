@@ -1,8 +1,10 @@
 table 'public uncovered_retailer'
+	isHidden
 	lineageTag: 9df3d3ec-3387-43f3-8eae-c56cfc9501c8
 
 	column competitor_names
 		dataType: string
+		isHidden
 		lineageTag: ebdb857e-085e-4cc5-89fb-37fe0c32b73e
 		summarizeBy: none
 		sourceColumn: competitor_names
@@ -13,6 +15,7 @@ table 'public uncovered_retailer'
 
 	column is_converted_to_retailer
 		dataType: string
+		isHidden
 		lineageTag: a4135378-a60b-4606-87a0-4fdb6a8b79f8
 		summarizeBy: none
 		sourceColumn: is_converted_to_retailer
@@ -23,6 +26,7 @@ table 'public uncovered_retailer'
 
 	column product_types
 		dataType: string
+		isHidden
 		lineageTag: 10debcee-e4b5-48e3-9d07-52af7958dad8
 		summarizeBy: none
 		sourceColumn: product_types
@@ -33,6 +37,7 @@ table 'public uncovered_retailer'
 
 	column shop_address
 		dataType: string
+		isHidden
 		lineageTag: 4bb2b4ed-6027-4511-a2cc-12bb61f1a3fa
 		summarizeBy: none
 		sourceColumn: shop_address
@@ -43,6 +48,7 @@ table 'public uncovered_retailer'
 
 	column shop_photo
 		dataType: string
+		isHidden
 		lineageTag: bc41a10d-1b60-462f-b73c-38b74b79186c
 		summarizeBy: none
 		sourceColumn: shop_photo
@@ -53,6 +59,7 @@ table 'public uncovered_retailer'
 
 	column id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 9ec0d6fb-e990-48f3-b4c6-0cf80b616372
 		summarizeBy: sum
@@ -64,6 +71,7 @@ table 'public uncovered_retailer'
 
 	column bazaar_id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 4500022d-986b-4c68-9ecc-b3ea0658f853
 		summarizeBy: sum

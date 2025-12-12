@@ -1,8 +1,10 @@
 table 'public modules'
+	isHidden
 	lineageTag: 184e78e9-fc6f-4ecd-93ad-8d7768ee6954
 
 	column id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 7ed84730-0fa4-457d-afb3-48c7bc64aa5d
 		summarizeBy: sum
@@ -14,6 +16,7 @@ table 'public modules'
 
 	column base_path
 		dataType: string
+		isHidden
 		lineageTag: 4d84fc53-630e-4186-93b4-a2e952462e6c
 		summarizeBy: none
 		sourceColumn: base_path
@@ -24,6 +27,7 @@ table 'public modules'
 
 	column display_order
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: e7c76317-f72d-4f9a-8c2c-dcdb37f833b8
 		summarizeBy: sum
@@ -35,6 +39,7 @@ table 'public modules'
 
 	column icon
 		dataType: string
+		isHidden
 		lineageTag: c331ef44-e4ec-4310-9e9f-8f4584e01899
 		summarizeBy: none
 		sourceColumn: icon
@@ -45,6 +50,7 @@ table 'public modules'
 
 	column is_create_type_module
 		dataType: boolean
+		isHidden
 		formatString: """TRUE"";""TRUE"";""FALSE"""
 		lineageTag: 988df377-5f3e-4f6b-a5c0-2217f7e751b7
 		summarizeBy: none
@@ -56,6 +62,7 @@ table 'public modules'
 
 	column module_type
 		dataType: string
+		isHidden
 		lineageTag: 6e998375-24b1-49e0-8934-aac6055c4364
 		summarizeBy: none
 		sourceColumn: module_type
@@ -66,6 +73,7 @@ table 'public modules'
 
 	column name
 		dataType: string
+		isHidden
 		lineageTag: 9d2f43fe-a36a-4ee9-a59b-719d3a6b2f0d
 		summarizeBy: none
 		sourceColumn: name
@@ -76,6 +84,7 @@ table 'public modules'
 
 	column route
 		dataType: string
+		isHidden
 		lineageTag: a33b38db-e681-4d20-b4a0-0ff64bfc93ee
 		summarizeBy: none
 		sourceColumn: route
@@ -86,6 +95,7 @@ table 'public modules'
 
 	column show_in_menu
 		dataType: boolean
+		isHidden
 		formatString: """TRUE"";""TRUE"";""FALSE"""
 		lineageTag: b5e80c15-cad7-44ac-accc-f08575b973bb
 		summarizeBy: none
@@ -97,6 +107,7 @@ table 'public modules'
 
 	column uri
 		dataType: string
+		isHidden
 		lineageTag: fb56b400-06fe-4331-a741-2901277c87a0
 		summarizeBy: none
 		sourceColumn: uri
@@ -107,6 +118,7 @@ table 'public modules'
 
 	column parent_module_id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 09e6e72e-6a8f-4883-a8de-b53adb4b1494
 		summarizeBy: sum

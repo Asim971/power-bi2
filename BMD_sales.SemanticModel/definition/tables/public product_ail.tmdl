@@ -1,8 +1,10 @@
 table 'public product_ail'
+	isHidden
 	lineageTag: 0ff0ddb5-dd88-4294-8dc1-f7e2a70ba576
 
 	column id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 6764a657-d348-48fa-b75f-8d0fd844aef9
 		summarizeBy: sum
@@ -14,6 +16,7 @@ table 'public product_ail'
 
 	column mt_conversion_rate
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: df0130ad-df0e-4902-89cb-464afbbb6d0e
 		summarizeBy: sum
@@ -25,6 +28,7 @@ table 'public product_ail'
 
 	column name
 		dataType: string
+		isHidden
 		lineageTag: 65ce1a45-78c7-4136-a30c-1b6cc5a26b8e
 		summarizeBy: none
 		sourceColumn: name
@@ -35,6 +39,7 @@ table 'public product_ail'
 
 	column unit
 		dataType: string
+		isHidden
 		lineageTag: 4ec1cd10-9bce-40ef-a883-30beba3abd55
 		summarizeBy: none
 		sourceColumn: unit
@@ -45,6 +50,7 @@ table 'public product_ail'
 
 	column uom
 		dataType: string
+		isHidden
 		lineageTag: 44dee671-9c4a-40ca-914c-bb728fdb49f1
 		summarizeBy: none
 		sourceColumn: uom

@@ -1,8 +1,10 @@
 table 'public delivery_order_image_url_list'
+	isHidden
 	lineageTag: 92b30596-9709-408a-9cb5-88d11f6f7e10
 
 	column delivery_order_id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 0f20a19e-ef7d-4f09-88ad-c09f25339064
 		summarizeBy: sum
@@ -14,6 +16,7 @@ table 'public delivery_order_image_url_list'
 
 	column image_url
 		dataType: string
+		isHidden
 		lineageTag: 9d882755-08df-4320-b214-32464d925f25
 		summarizeBy: none
 		sourceColumn: image_url

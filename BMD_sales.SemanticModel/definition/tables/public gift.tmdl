@@ -1,8 +1,10 @@
 table 'public gift'
+	isHidden
 	lineageTag: eff5c2ee-7ca1-4426-a44f-a127386c2ed9
 
 	column id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 3498cb2f-c1c3-47ba-b540-2477cfa8019e
 		summarizeBy: sum
@@ -14,6 +16,7 @@ table 'public gift'
 
 	column description
 		dataType: string
+		isHidden
 		lineageTag: 55f3c1df-40e2-4ad0-bd55-948cddf98a2d
 		summarizeBy: none
 		sourceColumn: description
@@ -24,6 +27,7 @@ table 'public gift'
 
 	column gift_photo
 		dataType: string
+		isHidden
 		lineageTag: 9e0a400d-4693-47a4-8375-9e56906f5df2
 		summarizeBy: none
 		sourceColumn: gift_photo
@@ -34,6 +38,7 @@ table 'public gift'
 
 	column name
 		dataType: string
+		isHidden
 		lineageTag: d47528a0-c079-4971-a0d4-3e7e9f207a0f
 		summarizeBy: none
 		sourceColumn: name

@@ -1,8 +1,10 @@
 table 'public order_attachments'
+	isHidden
 	lineageTag: 013c8211-021b-4c4c-9f4e-eede14abeabe
 
 	column id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 92de92dc-23b7-4dce-baff-3be02413e08e
 		summarizeBy: sum
@@ -14,6 +16,7 @@ table 'public order_attachments'
 
 	column corteza_record_ref
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 135b2171-d985-450d-8911-44187f920e23
 		summarizeBy: sum
@@ -25,6 +28,7 @@ table 'public order_attachments'
 
 	column mime_type
 		dataType: string
+		isHidden
 		lineageTag: d2fa160f-cb39-40b3-8a43-bbbc440e7aad
 		summarizeBy: none
 		sourceColumn: mime_type
@@ -35,6 +39,7 @@ table 'public order_attachments'
 
 	column path
 		dataType: string
+		isHidden
 		lineageTag: 9c0339d0-1a52-4cb7-9759-a6c80c9313fd
 		summarizeBy: none
 		sourceColumn: path
@@ -45,6 +50,7 @@ table 'public order_attachments'
 
 	column order_id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: a30caa1d-4117-48d4-bce9-56eb7b5da1a3
 		summarizeBy: sum

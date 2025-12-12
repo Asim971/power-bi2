@@ -1,8 +1,10 @@
 table 'public visit_sub_stage_record_sub_stage_photos'
+	isHidden
 	lineageTag: 70c59e19-19ad-47bc-ab1b-dc09a8c47a91
 
 	column visit_sub_stage_record_id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 34f6012e-2bb2-4de6-b566-7cdc1e14cf57
 		summarizeBy: sum
@@ -14,6 +16,7 @@ table 'public visit_sub_stage_record_sub_stage_photos'
 
 	column sub_stage_photos
 		dataType: string
+		isHidden
 		lineageTag: af50af94-43d8-4f0b-a685-d50544b622f1
 		summarizeBy: none
 		sourceColumn: sub_stage_photos

@@ -1,8 +1,10 @@
 table 'public role_modules'
+	isHidden
 	lineageTag: 6c3e548b-9abf-4f93-93f5-dda4665ee58f
 
 	column module_id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: c8ccb933-aa7a-4276-b24d-b09203cb07e8
 		summarizeBy: sum
@@ -14,6 +16,7 @@ table 'public role_modules'
 
 	column role_id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 6e3b089a-5b56-41c7-b918-94e793aba97f
 		summarizeBy: sum

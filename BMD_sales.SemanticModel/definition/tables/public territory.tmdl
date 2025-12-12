@@ -1,8 +1,10 @@
 table 'public territory'
+	isHidden
 	lineageTag: fe933e5b-ba4b-4a07-9cbb-472146fb5604
 
 	column id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 0be8dc8c-7f1c-46e6-8272-9141f759d44b
 		summarizeBy: sum
@@ -14,6 +16,7 @@ table 'public territory'
 
 	column area_name
 		dataType: string
+		isHidden
 		lineageTag: ab269618-1e16-4d71-891f-e64cb4af6b0d
 		summarizeBy: none
 		sourceColumn: area_name
@@ -24,6 +27,7 @@ table 'public territory'
 
 	column assigned_agm
 		dataType: string
+		isHidden
 		lineageTag: 9e057c5e-1fe5-4e82-9c55-914501dd0ac2
 		summarizeBy: none
 		sourceColumn: assigned_agm
@@ -34,6 +38,7 @@ table 'public territory'
 
 	column assigned_asm
 		dataType: string
+		isHidden
 		lineageTag: 5fcc576f-a1f5-480f-af63-e51ea816420d
 		summarizeBy: none
 		sourceColumn: assigned_asm
@@ -44,6 +49,7 @@ table 'public territory'
 
 	column assigned_bdo
 		dataType: string
+		isHidden
 		lineageTag: c02f6ad7-faee-4651-aeb1-1cd5b678e097
 		summarizeBy: none
 		sourceColumn: assigned_bdo
@@ -54,6 +60,7 @@ table 'public territory'
 
 	column assigned_cro
 		dataType: string
+		isHidden
 		lineageTag: 66de63aa-4427-4925-ad61-40afcf0f217e
 		summarizeBy: none
 		sourceColumn: assigned_cro
@@ -64,6 +71,7 @@ table 'public territory'
 
 	column assigned_gm
 		dataType: string
+		isHidden
 		lineageTag: 2b86b95a-a2af-463c-af34-35704f7c954a
 		summarizeBy: none
 		sourceColumn: assigned_gm
@@ -74,6 +82,7 @@ table 'public territory'
 
 	column assigned_sr
 		dataType: string
+		isHidden
 		lineageTag: ad5e96d2-aae4-488c-92a2-d4005f9238c2
 		summarizeBy: none
 		sourceColumn: assigned_sr
@@ -84,6 +93,7 @@ table 'public territory'
 
 	column assigned_zsm
 		dataType: string
+		isHidden
 		lineageTag: 4460e5dc-9640-40cf-9a40-045db60eb13d
 		summarizeBy: none
 		sourceColumn: assigned_zsm
@@ -94,6 +104,7 @@ table 'public territory'
 
 	column bd_territory_names
 		dataType: string
+		isHidden
 		lineageTag: 1c8e5159-6c68-44a1-8ce9-a9d4739d6b70
 		summarizeBy: none
 		sourceColumn: bd_territory_names
@@ -104,6 +115,7 @@ table 'public territory'
 
 	column created_at
 		dataType: string
+		isHidden
 		lineageTag: 38b75439-d1d0-4b7a-97a7-5e6d4ced9457
 		summarizeBy: none
 		sourceColumn: created_at
@@ -114,6 +126,7 @@ table 'public territory'
 
 	column created_by
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 464fab4c-3e9f-40cd-b31a-ed3caf25fd4c
 		summarizeBy: sum
@@ -125,6 +138,7 @@ table 'public territory'
 
 	column delete_status
 		dataType: string
+		isHidden
 		lineageTag: f7344a35-1e68-402e-b6e7-45c6bc1860a4
 		summarizeBy: none
 		sourceColumn: delete_status
@@ -135,6 +149,7 @@ table 'public territory'
 
 	column district_name
 		dataType: string
+		isHidden
 		lineageTag: 1af2cfb1-8696-4c97-9cc9-db10e149196f
 		summarizeBy: none
 		sourceColumn: district_name
@@ -145,6 +160,7 @@ table 'public territory'
 
 	column moduleid
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 2a64dd96-90e2-4bad-9891-4cadf09307a6
 		summarizeBy: sum
@@ -156,6 +172,7 @@ table 'public territory'
 
 	column name
 		dataType: string
+		isHidden
 		lineageTag: 4abad3f9-2b59-4962-96b8-469d26b00f08
 		summarizeBy: none
 		sourceColumn: name
@@ -166,6 +183,7 @@ table 'public territory'
 
 	column namespaceid
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 487ec2e7-8bc8-4a5f-8634-9dc5dbdb17c4
 		summarizeBy: sum
@@ -177,6 +195,7 @@ table 'public territory'
 
 	column nation_name
 		dataType: string
+		isHidden
 		lineageTag: 3e8887d3-c138-45f6-a705-a90b5ea7c48f
 		summarizeBy: none
 		sourceColumn: nation_name
@@ -187,6 +206,7 @@ table 'public territory'
 
 	column owned_by
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 70a042e7-b4de-47f4-81bf-664115d52b8c
 		summarizeBy: sum
@@ -198,6 +218,7 @@ table 'public territory'
 
 	column recordid
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 3a04c19e-65d1-472d-8a72-0518cf7a66e0
 		summarizeBy: sum
@@ -209,6 +230,7 @@ table 'public territory'
 
 	column region_name
 		dataType: string
+		isHidden
 		lineageTag: b10d21e0-7547-4f20-b597-7efe7663acde
 		summarizeBy: none
 		sourceColumn: region_name
@@ -219,6 +241,7 @@ table 'public territory'
 
 	column revision
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: b00bbfbf-9cf4-4498-8b06-017f1f2a8702
 		summarizeBy: sum
@@ -230,6 +253,7 @@ table 'public territory'
 
 	column upazilla_names
 		dataType: string
+		isHidden
 		lineageTag: 2b652c9a-8490-4e8b-8376-a6d0458caab9
 		summarizeBy: none
 		sourceColumn: upazilla_names
@@ -240,6 +264,7 @@ table 'public territory'
 
 	column updated_at
 		dataType: string
+		isHidden
 		lineageTag: 550ad7e1-f26a-4c44-8d36-1bba41443d38
 		summarizeBy: none
 		sourceColumn: updated_at
@@ -250,6 +275,7 @@ table 'public territory'
 
 	column updated_by
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: abf907d2-2318-4590-9e3a-7c8f88c8af79
 		summarizeBy: sum
@@ -261,6 +287,7 @@ table 'public territory'
 
 	column zone_name
 		dataType: string
+		isHidden
 		lineageTag: 42f4cbbd-7c96-4902-95fa-4b52e79197c5
 		summarizeBy: none
 		sourceColumn: zone_name
@@ -271,6 +298,7 @@ table 'public territory'
 
 	column area_id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 5bd0b1b7-e399-4429-83a3-8855d32939a6
 		summarizeBy: sum
@@ -282,6 +310,7 @@ table 'public territory'
 
 	column district_id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 5cf9388d-9d39-4414-b5e6-0df36de8437f
 		summarizeBy: sum
@@ -293,6 +322,7 @@ table 'public territory'
 
 	column nation_id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 14d50654-7eb9-470a-9df4-bf5bba800a26
 		summarizeBy: sum
@@ -304,6 +334,7 @@ table 'public territory'
 
 	column organization_id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 85711d21-0303-41e9-88fa-8d7401eca385
 		summarizeBy: sum
@@ -315,6 +346,7 @@ table 'public territory'
 
 	column region_id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: d3c921f6-3b49-45a5-80a6-60f843dd8d0d
 		summarizeBy: sum
@@ -326,6 +358,7 @@ table 'public territory'
 
 	column zone_id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 1bf14c5f-4639-47f8-a0d5-3827912475ee
 		summarizeBy: sum
@@ -337,6 +370,7 @@ table 'public territory'
 
 	column deleted_by
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: f566ef8c-be05-421c-9f7c-71ad4b79c63d
 		summarizeBy: sum

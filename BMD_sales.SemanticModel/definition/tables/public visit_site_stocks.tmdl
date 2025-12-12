@@ -1,8 +1,10 @@
 table 'public visit_site_stocks'
+	isHidden
 	lineageTag: b7fd996d-e3d0-47bf-ac8c-1f3e57771af5
 
 	column id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: b73a2198-0a4a-4379-90fe-8d7711924603
 		summarizeBy: sum
@@ -14,6 +16,7 @@ table 'public visit_site_stocks'
 
 	column name
 		dataType: string
+		isHidden
 		lineageTag: 4a057136-535e-4438-b559-b74fa72630e7
 		summarizeBy: none
 		sourceColumn: name
@@ -24,6 +27,7 @@ table 'public visit_site_stocks'
 
 	column note
 		dataType: string
+		isHidden
 		lineageTag: 7464fdf8-d0ae-46a5-a218-4a7c95b907d0
 		summarizeBy: none
 		sourceColumn: note
@@ -34,6 +38,7 @@ table 'public visit_site_stocks'
 
 	column organization_id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: fdb8eb0d-b18d-46ea-85a0-61e86215cf2c
 		summarizeBy: sum
@@ -45,6 +50,7 @@ table 'public visit_site_stocks'
 
 	column organization_name
 		dataType: string
+		isHidden
 		lineageTag: 6892024b-6aed-4f8f-88d8-8bb357b78eac
 		summarizeBy: none
 		sourceColumn: organization_name
@@ -55,6 +61,7 @@ table 'public visit_site_stocks'
 
 	column product
 		dataType: string
+		isHidden
 		lineageTag: acba0375-80b7-4829-b47d-ce652499ba37
 		summarizeBy: none
 		sourceColumn: product
@@ -65,6 +72,7 @@ table 'public visit_site_stocks'
 
 	column product_photo
 		dataType: string
+		isHidden
 		lineageTag: 79c4e145-adad-409f-b2ab-7a419b5b2948
 		summarizeBy: none
 		sourceColumn: product_photo
@@ -75,6 +83,7 @@ table 'public visit_site_stocks'
 
 	column qty
 		dataType: double
+		isHidden
 		lineageTag: 8b6fc0ff-c79a-4e24-a60a-dba9689a4938
 		summarizeBy: sum
 		sourceColumn: qty
@@ -87,6 +96,7 @@ table 'public visit_site_stocks'
 
 	column unit
 		dataType: string
+		isHidden
 		lineageTag: 3ecd9ebc-cb3e-437c-8004-26ad635c8c7a
 		summarizeBy: none
 		sourceColumn: unit
@@ -97,6 +107,7 @@ table 'public visit_site_stocks'
 
 	column unit_price
 		dataType: double
+		isHidden
 		lineageTag: 54cd8edd-5ef9-4e63-952d-455c31de0200
 		summarizeBy: sum
 		sourceColumn: unit_price
@@ -109,6 +120,7 @@ table 'public visit_site_stocks'
 
 	column brand_id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 29a050c6-6cee-46e0-adaa-e3ba99fa7c37
 		summarizeBy: sum
@@ -120,6 +132,7 @@ table 'public visit_site_stocks'
 
 	column sku_id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 5ad6ef33-8f2a-435f-aa91-011a217ace31
 		summarizeBy: sum

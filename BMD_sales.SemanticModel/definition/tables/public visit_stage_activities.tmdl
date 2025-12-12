@@ -1,8 +1,10 @@
 table 'public visit_stage_activities'
+	isHidden
 	lineageTag: 1dd22367-cd30-4ff4-85d8-e335af5aa9f5
 
 	column id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: a1311470-5514-45b6-8b1f-0a71157d1ef5
 		summarizeBy: sum
@@ -14,6 +16,7 @@ table 'public visit_stage_activities'
 
 	column created_at
 		dataType: dateTime
+		isHidden
 		formatString: General Date
 		lineageTag: 440f96cc-4ea7-4a58-b8e7-a369957b7615
 		summarizeBy: none
@@ -30,6 +33,7 @@ table 'public visit_stage_activities'
 
 	column delete_status
 		dataType: string
+		isHidden
 		lineageTag: 935513dd-414d-4715-be8c-35fde57d872c
 		summarizeBy: none
 		sourceColumn: delete_status
@@ -40,6 +44,7 @@ table 'public visit_stage_activities'
 
 	column description
 		dataType: string
+		isHidden
 		lineageTag: f6f26d17-d6c1-4ac8-895f-f2a4d040ff54
 		summarizeBy: none
 		sourceColumn: description
@@ -50,6 +55,7 @@ table 'public visit_stage_activities'
 
 	column name
 		dataType: string
+		isHidden
 		lineageTag: bd2a51a4-6afc-47d0-bd9d-c67d2132daf7
 		summarizeBy: none
 		sourceColumn: name
@@ -60,6 +66,7 @@ table 'public visit_stage_activities'
 
 	column updated_at
 		dataType: dateTime
+		isHidden
 		formatString: General Date
 		lineageTag: 4d8dd4e4-6624-49ad-822f-964547fe7170
 		summarizeBy: none
@@ -76,6 +83,7 @@ table 'public visit_stage_activities'
 
 	column visit_stage_id
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 5f63479c-af13-440c-b52f-9f9871e589b0
 		summarizeBy: sum
