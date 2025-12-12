@@ -338,6 +338,11 @@ relationship 4527ae37-192e-b7f2-acbf-539c061d30b9
 	fromColumn: Fact_Order.ClientKey
 	toColumn: Dim_Client_Simple.ClientKey
 
+relationship c1d2e3f4-5a6b-4c7d-8e9f-0123456789ab
+	isActive: false
+	fromColumn: Fact_Order.ProjectConversionID
+	toColumn: Fact_ProjectConversion.ConversionID
+
 relationship 6792aed9-a286-29f3-b7e7-5d654435e4a4
 	fromColumn: Dim_VisitStage.VisitPhaseID
 	toColumn: Dim_VisitPhase.VisitPhaseID

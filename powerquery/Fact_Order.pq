@@ -10,22 +10,45 @@ let
     Source = #"public user_orders",
     
     // ---- Select Core Columns from actual schema ----
+    // Use MissingField.UseNull to avoid refresh failures if columns are absent in a given environment.
     SelectedColumns = Table.SelectColumns(Source, {
         "id", "order_status", "order_type", "order_category", "delivery_method",
         "site_id", "dealer_id", "retailer_id", "bazaar_id", "project_conversion_id",
+        "organization_id",
         "total_amount", "stage", "delivery_address",
         "is_engineer_eligible", "is_partner_eligible",
         "memo_photo", "feedback", "created_at", "updated_at"
-    }),
+    }, MissingField.UseNull),
     
     // ---- Get User ID from Visits table (via site_id linkage) ----
-    // Create lookup table from visits: site_id -> created_by_id
+    // Create a 1-row-per-site lookup (prevents order duplication on join)
     VisitsSource = #"public visits",
-    VisitUserLookup = Table.SelectColumns(
-        Table.Distinct(
-            Table.SelectColumns(VisitsSource, {"potential_site_id", "created_by_id"})
-        ),
-        {"potential_site_id", "created_by_id"}
+    VisitsForLookup = Table.SelectColumns(
+        VisitsSource,
+        {"potential_site_id", "created_by_id", "created_at", "delete_status"},
+        MissingField.UseNull
+    ),
+    VisitsActive = Table.SelectRows(
+        VisitsForLookup,
+        each [potential_site_id] <> null
+            and [created_by_id] <> null
+            and ([delete_status] = null or Text.Upper(Text.From([delete_status])) = "NO")
+    ),
+    VisitUserLookup = Table.Group(
+        VisitsActive,
+        {"potential_site_id"},
+        {
+            {
+                "created_by_id",
+                each
+                    let
+                        Sorted = Table.Sort(_, {{"created_at", Order.Ascending}}),
+                        FirstRow = try Sorted{0} otherwise null
+                    in
+                        if FirstRow = null then null else FirstRow[created_by_id],
+                Int64.Type
+            }
+        }
     ),
     
     // ---- Rename Columns ----
@@ -40,6 +63,7 @@ let
         {"retailer_id", "RetailerID"},
         {"bazaar_id", "BazaarID"},
         {"project_conversion_id", "ProjectConversionID"},
+        {"organization_id", "OrganizationID"},
         {"total_amount", "TotalAmount"},
         {"stage", "Stage"},
         {"delivery_address", "DeliveryAddress"},
@@ -47,12 +71,25 @@ let
         {"is_partner_eligible", "IsPartnerEligible"},
         {"memo_photo", "MemoPhoto"},
         {"feedback", "Feedback"}
-    }),
+    }, MissingField.Ignore),
+
+    // Ensure OrganizationID exists even if the source column is missing
+    WithOrganizationID = if Table.HasColumns(RenamedColumns, "OrganizationID")
+        then RenamedColumns
+        else Table.AddColumn(RenamedColumns, "OrganizationID", each null, Int64.Type),
+
+    // ---- Company Code (ACL/AIL) ----
+    WithCompanyCode = Table.AddColumn(WithOrganizationID, "CompanyCode", each
+        if [OrganizationID] = 1 then "ACL"
+        else if [OrganizationID] = 2 then "AIL"
+        else "Unknown",
+        type text
+    ),
     
     // ---- Join with Visit Lookup to get UserID (CreatedBy) ----
     // This links orders to the user who created the associated site visit
     WithUserLookup = Table.NestedJoin(
-        RenamedColumns, {"SiteID"},
+        WithCompanyCode, {"SiteID"},
         VisitUserLookup, {"potential_site_id"},
         "VisitUserTable", JoinKind.LeftOuter
     ),
@@ -76,6 +113,7 @@ let
         if [SiteID] <> null then "Site-" & Text.From([SiteID])
         else if [DealerID] <> null then "Dealer-" & Text.From([DealerID])
         else if [RetailerID] <> null then "Retailer-" & Text.From([RetailerID])
+        else if [BazaarID] <> null then "Bazaar-" & Text.From([BazaarID])
         else null,
         type text
     ),
@@ -113,6 +151,8 @@ let
         {"RetailerID", Int64.Type},
         {"BazaarID", Int64.Type},
         {"ProjectConversionID", Int64.Type},
+        {"OrganizationID", Int64.Type},
+        {"CompanyCode", type text},
         {"TotalAmount", type text},  // Stored as text in source
         {"Stage", type text},
         {"DeliveryAddress", type text},
@@ -132,14 +172,25 @@ let
     
     // ---- Convert TotalAmount to number ----
     WithNumericAmount = Table.TransformColumns(TypedTable, {{"TotalAmount", each try Number.From(_) otherwise 0, type number}}),
+
+    // ---- Quantity Normalization ----
+    // Audit rule: ACL orders are in bags (20 bags = 1 MT), AIL orders are already in MT.
+    WithTotalQuantityRaw = Table.AddColumn(WithNumericAmount, "TotalQuantityRaw", each [TotalAmount], type number),
+    WithTotalQuantityMT = Table.AddColumn(WithTotalQuantityRaw, "TotalQuantityMT", each
+        if [CompanyCode] = "ACL" then [TotalQuantityRaw] / 20
+        else if [CompanyCode] = "AIL" then [TotalQuantityRaw]
+        else null,
+        type number
+    ),
     
     // ---- Reorder Columns ----
-    ReorderedColumns = Table.ReorderColumns(WithNumericAmount, {
-        "OrderID", "OrderDateKey", "UserID", "ClientKey", 
+    ReorderedColumns = Table.ReorderColumns(WithTotalQuantityMT, {
+        "OrderID", "OrderDateKey", "UserID", "ClientKey",
         "SiteID", "DealerID", "RetailerID", "BazaarID", "ProjectConversionID",
+        "OrganizationID", "CompanyCode",
         "OrderStatus", "StatusGroup", "OrderType", "OrderCategory",
         "DeliveryMethod", "DeliveryAddress", "Stage",
-        "TotalAmount", "IsConverted", "HasMemoPhoto",
+        "TotalAmount", "TotalQuantityRaw", "TotalQuantityMT", "IsConverted", "HasMemoPhoto",
         "IsEngineerEligible", "IsPartnerEligible",
         "MemoPhoto", "Feedback",
         "created_at", "updated_at"

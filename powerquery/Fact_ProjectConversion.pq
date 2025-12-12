@@ -23,6 +23,7 @@ let
     // ---- Define Expected Columns (based on ERD) ----
     ExpectedCoreColumns = {
         "id", "order_status", "delivery_method", "delete_status",
+        "organization_id",
         "site_id", "engineer_id", "dealer_id", "retailer_id", "bazaar_id",
         "created_at", "updated_at"
     },
@@ -47,14 +48,20 @@ let
         {"id", "ConversionID"},
         {"order_status", "OrderStatus"},
         {"delivery_method", "DeliveryMethod"},
+        {"organization_id", "OrganizationID"},
         {"site_id", "SiteID"},
         {"bazaar_id", "BazaarID"}
     }, MissingField.Ignore),
+
+    // Ensure OrganizationID exists even if the source column is missing
+    WithOrganizationID = if Table.HasColumns(RenamedColumns, "OrganizationID")
+        then RenamedColumns
+        else Table.AddColumn(RenamedColumns, "OrganizationID", each null, Int64.Type),
     
     // ---- Conditionally Rename Optional Columns ----
-    WithRenames1 = if Table.HasColumns(RenamedColumns, "engineer_id") 
-        then Table.RenameColumns(RenamedColumns, {{"engineer_id", "EngineerID"}})
-        else RenamedColumns,
+    WithRenames1 = if Table.HasColumns(WithOrganizationID, "engineer_id") 
+        then Table.RenameColumns(WithOrganizationID, {{"engineer_id", "EngineerID"}})
+        else WithOrganizationID,
     
     WithRenames2 = if Table.HasColumns(WithRenames1, "dealer_id") 
         then Table.RenameColumns(WithRenames1, {{"dealer_id", "DealerID"}})
@@ -79,10 +86,29 @@ let
     HasContractorLoyalty = Table.HasColumns(FinalRenames, "ContractorLoyalty"),
     
     // ---- Filter out deleted records ----
-    ActiveRecords = Table.SelectRows(FinalRenames, each [delete_status] = "NO"),
+    ActiveRecords =
+        if Table.HasColumns(FinalRenames, "delete_status") then
+            Table.SelectRows(
+                FinalRenames,
+                each
+                    let
+                        ds = try Text.Upper(Text.From([delete_status])) otherwise null
+                    in
+                        ds = null or ds = "NO"
+            )
+        else
+            FinalRenames,
+
+    // ---- Company Code (ACL/AIL) ----
+    WithCompanyCode = Table.AddColumn(ActiveRecords, "CompanyCode", each
+        if [OrganizationID] = 1 then "ACL"
+        else if [OrganizationID] = 2 then "AIL"
+        else "Unknown",
+        type text
+    ),
     
     // ---- Extract Date Key ----
-    WithDateKey = Table.AddColumn(ActiveRecords, "ConversionDateKey", each 
+    WithDateKey = Table.AddColumn(WithCompanyCode, "ConversionDateKey", each 
         Date.From([created_at]),
         type date
     ),
@@ -119,17 +145,13 @@ let
     
     // ---- Engineer Eligible for Reward ----
     WithEngineerReward = Table.AddColumn(WithConvertedFlag, "IsEngineerRewardEligible", each 
-        if HasEngineerLoyalty then
-            if [EngineerLoyalty] = true then 1 else 0
-        else 0,
+        if HasEngineerLoyalty and [IsConverted] = 1 and [EngineerLoyalty] = true then 1 else 0,
         Int64.Type
     ),
     
     // ---- Contractor Eligible for Reward ----
     WithContractorReward = Table.AddColumn(WithEngineerReward, "IsContractorRewardEligible", each 
-        if HasContractorLoyalty then
-            if [ContractorLoyalty] = true then 1 else 0
-        else 0,
+        if HasContractorLoyalty and [IsConverted] = 1 and [ContractorLoyalty] = true then 1 else 0,
         Int64.Type
     ),
     
@@ -138,6 +160,8 @@ let
         {"ConversionID", Int64.Type},
         {"OrderStatus", type text},
         {"DeliveryMethod", type text},
+        {"OrganizationID", Int64.Type},
+        {"CompanyCode", type text},
         {"SiteID", Int64.Type},
         {"BazaarID", Int64.Type},
         {"ConversionDateKey", type date},
