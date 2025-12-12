@@ -483,10 +483,12 @@ table Dim_User
 								        {"users_id"},
 								        {{"FirstTerritoryID", each List.First([territory_id]), type nullable number}}
 								    ),
+								    // Buffer to prevent gateway/PostgreSQL folding issues during join
+								    TerritoryBridgeGroupedBuffered = Table.Buffer(TerritoryBridgeGrouped),
 				
 								    WithTerritoryBridgeJoin = Table.NestedJoin(
 								        WithAreaExpanded, {"id"},
-								        TerritoryBridgeGrouped, {"users_id"},
+								        TerritoryBridgeGroupedBuffered, {"users_id"},
 								        "TerritoryBridgeData", JoinKind.LeftOuter
 								    ),
 				
@@ -526,10 +528,12 @@ table Dim_User
 								        {"users_id"},
 								        {{"FirstBDTerritoryID", each List.First([bd_territory_id]), type nullable number}}
 								    ),
+								    // Buffer to prevent gateway/PostgreSQL folding issues during join
+								    BDTerritoryBridgeGroupedBuffered = Table.Buffer(BDTerritoryBridgeGrouped),
 				
 								    WithBDTerritoryBridgeJoin = Table.NestedJoin(
 								        WithAreaFixed, {"id"},
-								        BDTerritoryBridgeGrouped, {"users_id"},
+								        BDTerritoryBridgeGroupedBuffered, {"users_id"},
 								        "BDTerritoryBridgeData", JoinKind.LeftOuter
 								    ),
 				
@@ -560,10 +564,12 @@ table Dim_User
 								        {"bd_territory_id"},
 								        {{"FirstBazaarID", each List.First([bazaar_id]), type nullable number}}
 								    ),
+								    // Buffer to prevent gateway/PostgreSQL folding issues during join
+								    BazaarBridgeGroupedBuffered = Table.Buffer(BazaarBridgeGrouped),
 				
 								    WithBazaarJoin = Table.NestedJoin(
 								        WithBDTerritoryExpanded, {"BDTerritoryID"},
-								        BazaarBridgeGrouped, {"bd_territory_id"},
+								        BazaarBridgeGroupedBuffered, {"bd_territory_id"},
 								        "BazaarData", JoinKind.LeftOuter
 								    ),
 				

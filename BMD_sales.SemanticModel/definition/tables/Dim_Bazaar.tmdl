@@ -89,9 +89,12 @@ table Dim_Bazaar
 				        {"BazaarName", type text},
 				        {"BazaarType", type text}
 				    }),
-				  #"Merged queries" = Table.NestedJoin(TypedTable, {"BazaarID"}, #"public bd_territory_bazaars", {"bazaar_id"}, "public bd_territory_bazaars", JoinKind.LeftOuter),
+				    // Buffer to prevent gateway/PostgreSQL folding issues during joins
+				    BDTerritoryBazaarsBuffered = Table.Buffer(#"public bd_territory_bazaars"),
+				    TerritoryBazaarListBuffered = Table.Buffer(#"public territory_bazaar_list"),
+				  #"Merged queries" = Table.NestedJoin(TypedTable, {"BazaarID"}, BDTerritoryBazaarsBuffered, {"bazaar_id"}, "public bd_territory_bazaars", JoinKind.LeftOuter),
 				  #"Expanded public bd_territory_bazaars" = Table.ExpandTableColumn(#"Merged queries", "public bd_territory_bazaars", {"bd_territory_id"}, {"bd_territory_id"}),
-				  #"Merged queries 1" = Table.NestedJoin(#"Expanded public bd_territory_bazaars", {"BazaarID"}, #"public territory_bazaar_list", {"bazaar_list_id"}, "public territory_bazaar_list", JoinKind.LeftOuter),
+				  #"Merged queries 1" = Table.NestedJoin(#"Expanded public bd_territory_bazaars", {"BazaarID"}, TerritoryBazaarListBuffered, {"bazaar_list_id"}, "public territory_bazaar_list", JoinKind.LeftOuter),
 				  #"Expanded public territory_bazaar_list" = Table.ExpandTableColumn(#"Merged queries 1", "public territory_bazaar_list", {"territory_id"}, {"territory_id"}),
 				  #"Removed duplicates" = Table.Distinct(#"Expanded public territory_bazaar_list", {"BazaarID"})
 				in

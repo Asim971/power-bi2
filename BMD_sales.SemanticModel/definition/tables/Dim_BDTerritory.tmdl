@@ -121,7 +121,9 @@ table Dim_BDTerritory
 								        "id", "bd_territory_name", "district_id", "upazilla_id",
 								        "delete_status", "created_at", "updated_at"
 								    }),
-				  #"Merged queries" = Table.NestedJoin(SelectedColumns, {"id"}, #"public users_bd_territory", {"bd_territory_id"}, "public users_bd_territory", JoinKind.LeftOuter),
+					  // Buffer to prevent gateway/PostgreSQL folding issues during join
+					  UsersBDTerritoryBridgeBuffered = Table.Buffer(#"public users_bd_territory"),
+					  #"Merged queries" = Table.NestedJoin(SelectedColumns, {"id"}, UsersBDTerritoryBridgeBuffered, {"bd_territory_id"}, "public users_bd_territory", JoinKind.LeftOuter),
 				  #"Expanded public users_bd_territory" = Table.ExpandTableColumn(#"Merged queries", "public users_bd_territory", {"users_id"}, {"users_id"}),
 								    
 								    // ---- Filter Active BD Territories ----

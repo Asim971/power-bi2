@@ -226,7 +226,9 @@ table Dim_Territory
 				    
 				    // ---- Filter Active Territories ----
 				    ActiveTerritories = Table.SelectRows(SelectedColumns, each [delete_status] = "NO"),
-				  #"Merged queries" = Table.NestedJoin(ActiveTerritories, {"id"}, #"public users_territory", {"territory_id"}, "public users_territory", JoinKind.LeftOuter),
+				    // Buffer to prevent gateway/PostgreSQL folding issues during join
+				    UsersTerritoryBridgeBuffered = Table.Buffer(#"public users_territory"),
+				  #"Merged queries" = Table.NestedJoin(ActiveTerritories, {"id"}, UsersTerritoryBridgeBuffered, {"territory_id"}, "public users_territory", JoinKind.LeftOuter),
 				  #"Expanded public users_territory" = Table.ExpandTableColumn(#"Merged queries", "public users_territory", {"users_id"}, {"users_id"})
 				in
 				    #"Expanded public users_territory"
