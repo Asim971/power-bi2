@@ -278,7 +278,7 @@ Add to `BMD_sales.SemanticModel/definition/tables/Fact_Order.tmdl`:
 // ============================================
 
 measure User_Order_Total_MT = 
-    DIVIDE(SUM('Fact_Order'[TotalAmount]), 1000, 0)
+    SUM('Fact_Order'[TotalQuantityMT])
     formatString: #,##0.0
     displayFolder: FRD Dashboard\Order Performance
     lineageTag: frd-order-mt-014
@@ -552,6 +552,8 @@ Document - './tables/Fact_Order' Line Number - 712
 | **Comments inside expressions** | Comments ARE allowed inside M or DAX multi-line blocks | ✅ Inside triple backticks |
 | **Consistent indentation** | Child properties must be exactly 1 tab more than parent | `measure` at 1 tab, `formatString` at 2 tabs |
 
+<!-- markdownlint-disable MD010 -->
+
 **Valid TMDL Structure:**
 ```tmdl
 table MyTable
@@ -573,6 +575,8 @@ table MyTable
 	
 	measure Measure1 = SUM(Table[Column])
 ```
+
+<!-- markdownlint-enable MD010 -->
 
 **Resolution Applied:** Removed all standalone comment blocks from `Fact_Order.tmdl` and `Fact_Visit.tmdl`.
 
@@ -773,7 +777,7 @@ table MyTable
 | 11 | `Total_Achievement_Pct` | Fact_Visit | `DIVIDE(Combined, Total_Target)` |
 | 12 | `Sites_Visited_Count` | Fact_Visit | `DISTINCTCOUNT Site clients` |
 | 13 | `IHB_Visited_Count` | Fact_Visit | `DISTINCTCOUNT IHB clients` |
-| 14 | `User_Order_Total_MT` | Fact_Order | `SUM(TotalAmount) / 1000` |
+| 14 | `User_Order_Total_MT` | Fact_Order | `SUM(TotalQuantityMT)` |
 | 15 | `User_Order_Target_MT` | Fact_Order | Static: `20` |
 | 16 | `User_Order_Achievement_Pct` | Fact_Order | `DIVIDE(Total, Target)` |
 
