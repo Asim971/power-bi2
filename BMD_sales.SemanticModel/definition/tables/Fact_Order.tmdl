@@ -329,12 +329,17 @@ table Fact_Order
 				        "ClientType",
 				        each
 				            let
-				                oc = if [order_category] <> null then Text.Upper(Text.From([order_category])) else null
+				                oc = if [order_category] <> null then Text.Upper(Text.From([order_category])) else null,
+				                hasSite = [site_id] <> null,
+				                hasRetailer = [retailer_id] <> null,
+				                hasDealer = [dealer_id] <> null
 				            in
-				                if oc = "SITE" and [site_id] <> null then "Site"
-				                else if [retailer_id] <> null then "Retailer"
-				                else if [dealer_id] <> null then "Dealer"
-				                else if [bazaar_id] <> null then "Bazaar"
+				                if oc <> null and Text.Contains(oc, "SITE") and hasSite then "Site"
+				                else if oc = "RETAILER" and hasRetailer then "Retailer"
+				                else if oc = "DEALER" and hasDealer then "Dealer"
+				                else if hasSite then "Site"
+				                else if hasRetailer then "Retailer"
+				                else if hasDealer then "Dealer"
 				                else null,
 				        type text
 				    ),
@@ -344,12 +349,17 @@ table Fact_Order
 				        "ClientID",
 				        each
 				            let
-				                oc = if [order_category] <> null then Text.Upper(Text.From([order_category])) else null
+				                oc = if [order_category] <> null then Text.Upper(Text.From([order_category])) else null,
+				                hasSite = [site_id] <> null,
+				                hasRetailer = [retailer_id] <> null,
+				                hasDealer = [dealer_id] <> null
 				            in
-				                if oc = "SITE" and [site_id] <> null then AsInt64([site_id])
-				                else if [retailer_id] <> null then AsInt64([retailer_id])
-				                else if [dealer_id] <> null then AsInt64([dealer_id])
-				                else if [bazaar_id] <> null then AsInt64([bazaar_id])
+				                if oc <> null and Text.Contains(oc, "SITE") and hasSite then AsInt64([site_id])
+				                else if oc = "RETAILER" and hasRetailer then AsInt64([retailer_id])
+				                else if oc = "DEALER" and hasDealer then AsInt64([dealer_id])
+				                else if hasSite then AsInt64([site_id])
+				                else if hasRetailer then AsInt64([retailer_id])
+				                else if hasDealer then AsInt64([dealer_id])
 				                else null,
 				        Int64.Type
 				    ),
