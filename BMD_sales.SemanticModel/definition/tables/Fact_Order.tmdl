@@ -237,8 +237,7 @@ table Fact_Order
 				// Fact_Order - Order Fact Table (Order Header Grain)
 				// 
 				// Sources:
-				// - public user_orders (order->user mapping; authoritative UserID)
-				// - public orders
+				// - public user_orders (authoritative order header)
 				// - public order_items (aggregated to order level)
 				// 
 				// Outputs (one row per OrderID):
@@ -250,11 +249,9 @@ table Fact_Order
 				
 				let
 				    // Reference shared expressions (connection-only) created in Phase 2
-				    UserOrdersRaw = #"public user_orders",
-				    OrdersRaw = #"public orders",
+				    OrdersRaw = #"public user_orders",
 				    ItemsRaw = #"public order_items",
 				
-				    UserOrdersCols = Table.ColumnNames(UserOrdersRaw),
 				    OrdersCols = Table.ColumnNames(OrdersRaw),
 				    ItemsCols = Table.ColumnNames(ItemsRaw),
 				
@@ -262,96 +259,23 @@ table Fact_Order
 				    AsInt64 = (v as any) as nullable number => try Int64.From(v) otherwise null,
 				    AsNumber = (v as any) as nullable number => try Number.From(v) otherwise null,
 				    AsDateTime = (v as any) as nullable datetime => try DateTime.From(v) otherwise null,
-				    NormalizeClientType = (v as any) as nullable text =>
-				        let
-				            s = try Text.Lower(Text.From(v)) otherwise null
-				        in
-				            if s = null then null
-				            else if Text.Contains(s, "retail") then "Retailer"
-				            else if Text.Contains(s, "dealer") then "Dealer"
-				            else if Text.Contains(s, "engineer") then "Engineer"
-				            else if Text.Contains(s, "contract") or Text.Contains(s, "partner") then "Contractor"
-				            else if Text.Contains(s, "ihb") then "IHB"
-				            else if Text.Contains(s, "site") then "Site"
-				            else Text.Proper(s),
 				
 				    // -------------------------
-				    // USER_ORDERS (Order->User mapping)
-				    // -------------------------
-				    UserOrdersSelected = Table.SelectColumns(
-				        UserOrdersRaw,
-				        {
-				            "id",
-				            "order_id", "orders_id",
-				            "user_id", "users_id",
-				            "created_by_id", "created_by",
-				            "delete_status",
-				            "created_at", "updated_at"
-				        },
-				        MissingField.UseNull
-				    ),
-				
-				    UserOrdersFiltered = if List.Contains(UserOrdersCols, "delete_status")
-				        then Table.SelectRows(UserOrdersSelected, each [delete_status] = "NO")
-				        else UserOrdersSelected,
-				
-				    WithOrderID_UserOrders = Table.AddColumn(
-				        UserOrdersFiltered,
-				        "OrderID",
-				        each
-				            let
-				                o1 = AsInt64([order_id]),
-				                o2 = AsInt64([orders_id])
-				            in
-				                if o1 <> null then o1 else o2,
-				        Int64.Type
-				    ),
-				
-				    WithUserID_UserOrders = Table.AddColumn(
-				        WithOrderID_UserOrders,
-				        "UserID_UserOrders",
-				        each
-				            let
-				                u1 = AsInt64([user_id]),
-				                u2 = AsInt64([users_id]),
-				                u3 = AsInt64([created_by_id]),
-				                u4 = AsInt64([created_by])
-				            in
-				                if u1 <> null then u1 else if u2 <> null then u2 else if u3 <> null then u3 else u4,
-				        Int64.Type
-				    ),
-				
-				    UserOrdersForAgg = Table.SelectRows(WithUserID_UserOrders, each [OrderID] <> null and [UserID_UserOrders] <> null),
-				
-				    // If multiple users exist for an order, take a deterministic one (min)
-				    UserOrdersAgg = Table.Group(
-				        UserOrdersForAgg,
-				        {"OrderID"},
-				        {
-				            {"UserID_UserOrders", each List.Min(List.RemoveNulls([UserID_UserOrders])), Int64.Type}
-				        }
-				    ),
-				
-				    // -------------------------
-				    // ORDERS (header)
+				    // USER_ORDERS (header)
 				    // -------------------------
 				    OrdersSelected = Table.SelectColumns(
 				        OrdersRaw,
 				        {
 				            "id", "order_id",
-				            "order_date", "order_date_time",
 				            "created_at", "updated_at",
 				            "delete_status",
-				            "order_status", "status",
 				            "delivery_method",
+				            "order_status",
+				            "order_category",
 				            "organization_id",
-				            "created_by_id", "user_id", "created_by",
-				            "client_type", "client_id", "client_key",
-				            "customer_type", "customer_id",
-				            "retailer_id", "dealer_id", "site_id", "potential_site_id",
-				            "engineer_id", "contractor_id", "ihb_registration_id",
-				            "total_amount", "total_quantity",
-				            "unit", "uom", "unit_name"
+				            "bazaar_id", "dealer_id", "site_id", "retailer_id",
+				            "created_by", "updated_by",
+				            "total_amount", "total_quantity"
 				        },
 				        MissingField.UseNull
 				    ),
@@ -374,12 +298,10 @@ table Fact_Order
 				        "OrderDateTime",
 				        each
 				            let
-				                d1 = AsDateTime([order_date]),
-				                d2 = AsDateTime([order_date_time]),
-				                d3 = AsDateTime([created_at]),
-				                d4 = AsDateTime([updated_at])
+				                d1 = AsDateTime([created_at]),
+				                d2 = AsDateTime([updated_at])
 				            in
-				                if d1 <> null then d1 else if d2 <> null then d2 else if d3 <> null then d3 else d4,
+				                if d1 <> null then d1 else d2,
 				        type datetime
 				    ),
 				
@@ -395,45 +317,25 @@ table Fact_Order
 				        "UserID",
 				        each
 				            let
-				                u1 = AsInt64([created_by_id]),
-				                u2 = AsInt64([user_id]),
-				                u3 = AsInt64([created_by])
+				                u1 = AsInt64([created_by]),
+				                u2 = AsInt64([updated_by])
 				            in
-				                if u1 <> null then u1 else if u2 <> null then u2 else u3,
+				                if u1 <> null then u1 else u2,
 				        Int64.Type
 				    ),
-				
-				    // Prefer UserID from public user_orders when available
-				    MergedUserOrders = Table.NestedJoin(WithUserID, {"OrderID"}, UserOrdersAgg, {"OrderID"}, "UserOrdersAgg", JoinKind.LeftOuter),
-				    ExpandedUserOrders = Table.ExpandTableColumn(MergedUserOrders, "UserOrdersAgg", {"UserID_UserOrders"}, {"UserID_UserOrders"}),
-				    WithUserIDFinal = Table.AddColumn(
-				        ExpandedUserOrders,
-				        "UserID_Final",
-				        each
-				            let
-				                uuo = AsInt64([UserID_UserOrders]),
-				                u = AsInt64([UserID])
-				            in
-				                if uuo <> null then uuo else u,
-				        Int64.Type
-				    ),
-				    RemovedUserCols = Table.RemoveColumns(WithUserIDFinal, {"UserID", "UserID_UserOrders"}),
-				    RenamedUserID = Table.RenameColumns(RemovedUserCols, {{"UserID_Final", "UserID"}}),
 				
 				    WithClientType = Table.AddColumn(
-				        RenamedUserID,
+				        WithUserID,
 				        "ClientType",
 				        each
-				            if [retailer_id] <> null then "Retailer"
-				            else if [dealer_id] <> null then "Dealer"
-				            else if [site_id] <> null then "Site"
-				            else if [potential_site_id] <> null then "Site"
-				            else if [engineer_id] <> null then "Engineer"
-				            else if [contractor_id] <> null then "Contractor"
-				            else if [ihb_registration_id] <> null then "IHB"
-				            else if [client_type] <> null then NormalizeClientType([client_type])
-				            else if [customer_type] <> null then NormalizeClientType([customer_type])
-				            else null,
+				            let
+				                oc = if [order_category] <> null then Text.Upper(Text.From([order_category])) else null
+				            in
+				                if oc = "SITE" and [site_id] <> null then "Site"
+				                else if [retailer_id] <> null then "Retailer"
+				                else if [dealer_id] <> null then "Dealer"
+				                else if [bazaar_id] <> null then "Bazaar"
+				                else null,
 				        type text
 				    ),
 				
@@ -442,29 +344,20 @@ table Fact_Order
 				        "ClientID",
 				        each
 				            let
-				                c =
-				                    if [retailer_id] <> null then AsInt64([retailer_id])
-				                    else if [dealer_id] <> null then AsInt64([dealer_id])
-				                    else if [site_id] <> null then AsInt64([site_id])
-				                    else if [potential_site_id] <> null then AsInt64([potential_site_id])
-				                    else if [engineer_id] <> null then AsInt64([engineer_id])
-				                    else if [contractor_id] <> null then AsInt64([contractor_id])
-				                    else if [ihb_registration_id] <> null then AsInt64([ihb_registration_id])
-				                    else if [client_id] <> null then AsInt64([client_id])
-				                    else if [customer_id] <> null then AsInt64([customer_id])
-				                    else null
+				                oc = if [order_category] <> null then Text.Upper(Text.From([order_category])) else null
 				            in
-				                c,
+				                if oc = "SITE" and [site_id] <> null then AsInt64([site_id])
+				                else if [retailer_id] <> null then AsInt64([retailer_id])
+				                else if [dealer_id] <> null then AsInt64([dealer_id])
+				                else if [bazaar_id] <> null then AsInt64([bazaar_id])
+				                else null,
 				        Int64.Type
 				    ),
 				
 				    WithClientKey = Table.AddColumn(
 				        WithClientID,
 				        "ClientKey",
-				        each
-				            if [client_key] <> null then Text.From([client_key])
-				            else if [ClientType] <> null and [ClientID] <> null then [ClientType] & "-" & Text.From([ClientID])
-				            else null,
+				        each if [ClientType] <> null and [ClientID] <> null then [ClientType] & "-" & Text.From([ClientID]) else null,
 				        type text
 				    ),
 				
@@ -485,7 +378,7 @@ table Fact_Order
 				    WithOrderStatus = Table.AddColumn(
 				        WithCompanyCode,
 				        "OrderStatus",
-				        each if [order_status] <> null then Text.From([order_status]) else if [status] <> null then Text.From([status]) else null,
+				        each if [order_status] <> null then Text.From([order_status]) else null,
 				        type text
 				    ),
 				
@@ -549,8 +442,8 @@ table Fact_Order
 				        type number
 				    ),
 				
-				WithItemAmount = Table.AddColumn(
-				    WithItemQtyInMT,
+				    WithItemAmount = Table.AddColumn(
+				        WithItemQtyInMT,
 				        "ItemAmount",
 				        each
 				            let
@@ -628,16 +521,9 @@ table Fact_Order
 				            let
 				                // Prefer item-derived MT (handles mixed units)
 				                qim = AsNumber([qty_in_mt_items]),
-				                // Fallback to header unit if present
-				                uh =
-				                    if [unit] <> null then try Text.Lower(Text.From([unit])) otherwise null
-				                    else if [uom] <> null then try Text.Lower(Text.From([uom])) otherwise null
-				                    else if [unit_name] <> null then try Text.Lower(Text.From([unit_name])) otherwise null
-				                    else null,
-				                isBag = if uh = null then false else Text.Contains(uh, "bag"),
 				                tq = AsNumber([TotalQuantity])
 				            in
-				                if qim <> null then qim else if tq = null then null else if isBag then tq * 20 else tq,
+				                if qim <> null then qim else if tq = null then null else tq,
 				        type number
 				    ),
 				
@@ -650,41 +536,20 @@ table Fact_Order
 				        }
 				    ),
 				
-				    // Cleanup intermediate/source columns (keep created_at/updated_at)
-				    RemovedColumns = Table.RemoveColumns(
+				    // Project the final curated columns only
+				    FinalSelected = Table.SelectColumns(
 				        CountsFilled,
-				        {
-				            "id", "order_id",
-				            "order_date", "order_date_time",
-				            "delete_status",
-				            "order_status", "status",
-				            "delivery_method",
-				            "organization_id",
-				            "created_by_id", "user_id", "created_by",
-				            "client_type", "client_id", "client_key",
-				            "customer_type", "customer_id",
-				            "retailer_id", "dealer_id", "site_id", "potential_site_id",
-				            "engineer_id", "contractor_id", "ihb_registration_id",
-				            "total_amount", "total_quantity",
-				            "unit", "uom", "unit_name",
-				            "OrderDateTime",
-				            "OrderAmount_Items", "OrderQuantity_Items",
-				            "qty_in_mt_items"
-				        }
-				    ),
-				
-				    ReorderedColumns = Table.ReorderColumns(
-				        RemovedColumns,
 				        {
 				            "OrderID", "DateKey", "UserID", "ClientKey", "ClientType", "ClientID",
 				            "OrderStatus", "DeliveryMethod", "OrganizationID", "CompanyCode",
 				            "TotalAmount", "TotalQuantity", "qty_in_mt", "OrderItemCount", "DistinctSKUCount",
 				            "created_at", "updated_at"
-				        }
+				        },
+				        MissingField.UseNull
 				    ),
 				
 				    TypedTable = Table.TransformColumnTypes(
-				        ReorderedColumns,
+				        FinalSelected,
 				        {
 				            {"OrderID", Int64.Type},
 				            {"DateKey", type date},
