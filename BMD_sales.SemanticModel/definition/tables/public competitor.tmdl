@@ -22,11 +22,6 @@ table 'public competitor'
 		summarizeBy: none
 		sourceColumn: created_at
 
-		variation Variation
-			isDefault
-			relationship: 767de876-410f-42d1-b9c9-46cd1bdef54e
-			defaultHierarchy: LocalDateTable_437b03b9-9eec-48b7-b0ef-fc2f9dc29f61.'Date Hierarchy'
-
 		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
@@ -60,11 +55,6 @@ table 'public competitor'
 		lineageTag: 807fde04-12e6-4fe0-b7a5-4bfbde8ba7bd
 		summarizeBy: none
 		sourceColumn: updated_at
-
-		variation Variation
-			isDefault
-			relationship: c4045c13-e43d-4199-986a-1c20bdd520e2
-			defaultHierarchy: LocalDateTable_88cc9a87-6c1c-4005-97d8-73cb5027cd1a.'Date Hierarchy'
 
 		changedProperty = IsHidden
 

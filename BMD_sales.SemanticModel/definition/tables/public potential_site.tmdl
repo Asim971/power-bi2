@@ -188,11 +188,6 @@ table 'public potential_site'
 		summarizeBy: none
 		sourceColumn: created_at
 
-		variation Variation
-			isDefault
-			relationship: 738e74e5-d193-4aa9-96e6-70d743c43a0c
-			defaultHierarchy: LocalDateTable_d6210dcb-fb04-44b7-8b89-192a719cf7a9.'Date Hierarchy'
-
 		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
@@ -623,11 +618,6 @@ table 'public potential_site'
 		lineageTag: ce2c327e-deec-4d4f-967d-f4a4d293fa78
 		summarizeBy: none
 		sourceColumn: updated_at
-
-		variation Variation
-			isDefault
-			relationship: 10461af1-74e6-4298-aa2f-11cf0f8f1e74
-			defaultHierarchy: LocalDateTable_1f2ac2e0-3f13-4f39-8838-68fbd1eb283e.'Date Hierarchy'
 
 		changedProperty = IsHidden
 

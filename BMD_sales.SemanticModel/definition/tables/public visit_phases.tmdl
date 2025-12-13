@@ -22,11 +22,6 @@ table 'public visit_phases'
 		summarizeBy: none
 		sourceColumn: created_at
 
-		variation Variation
-			isDefault
-			relationship: be298aef-01b3-422b-92fa-d2021af34a03
-			defaultHierarchy: LocalDateTable_8484f6a2-9aa7-4294-a060-594188c9d8c3.'Date Hierarchy'
-
 		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
@@ -71,11 +66,6 @@ table 'public visit_phases'
 		lineageTag: 32b6f7a0-3820-4035-bdff-c8fcd65865db
 		summarizeBy: none
 		sourceColumn: updated_at
-
-		variation Variation
-			isDefault
-			relationship: 5b9595b6-a2ea-49c2-bbae-5067f200aa1e
-			defaultHierarchy: LocalDateTable_e78fd47b-88ff-4b8c-bcd4-1deef3cf193f.'Date Hierarchy'
 
 		changedProperty = IsHidden
 

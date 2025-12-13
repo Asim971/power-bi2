@@ -57,11 +57,6 @@ table 'public users'
 		summarizeBy: none
 		sourceColumn: created_at
 
-		variation Variation
-			isDefault
-			relationship: 2e863ff1-5e24-4d17-ac14-d2b372cb418f
-			defaultHierarchy: LocalDateTable_3c15039e-a1ab-484b-b96c-e63633d22063.'Date Hierarchy'
-
 		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
@@ -187,11 +182,6 @@ table 'public users'
 		lineageTag: 327ceb6e-7f7c-431f-b6b3-188740e2ac8e
 		summarizeBy: none
 		sourceColumn: updated_at
-
-		variation Variation
-			isDefault
-			relationship: 500f629d-6cb8-4ab6-82d4-c622afdb06a8
-			defaultHierarchy: LocalDateTable_f0e41ccc-1cde-49c5-bfab-16ab31bc87bb.'Date Hierarchy'
 
 		changedProperty = IsHidden
 

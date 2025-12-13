@@ -35,11 +35,6 @@ table 'public money_receipt'
 		summarizeBy: none
 		sourceColumn: approved_date
 
-		variation Variation
-			isDefault
-			relationship: 76e7138a-8d5f-4034-b35d-3d20316a8db6
-			defaultHierarchy: LocalDateTable_bb19429c-818c-460f-b1be-238a4629c8b4.'Date Hierarchy'
-
 		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
@@ -51,11 +46,6 @@ table 'public money_receipt'
 		lineageTag: ce25b4a5-a180-466c-b9e7-e810535c8966
 		summarizeBy: none
 		sourceColumn: created_at
-
-		variation Variation
-			isDefault
-			relationship: 9755c215-4d11-4a5f-bf10-33efa1b9f556
-			defaultHierarchy: LocalDateTable_1aa2ac6a-9616-466d-81f0-6f1d9a42cb88.'Date Hierarchy'
 
 		changedProperty = IsHidden
 
@@ -80,11 +70,6 @@ table 'public money_receipt'
 		lineageTag: 00d0a66b-a393-4c11-91ae-7d41e4e29a6e
 		summarizeBy: none
 		sourceColumn: deleted_at
-
-		variation Variation
-			isDefault
-			relationship: 0c49bc71-3e5e-48b2-ba07-ee8ca1ab6dc3
-			defaultHierarchy: LocalDateTable_117a39c9-56f0-4b99-9277-e217eaaddf6a.'Date Hierarchy'
 
 		changedProperty = IsHidden
 
@@ -142,11 +127,6 @@ table 'public money_receipt'
 		summarizeBy: none
 		sourceColumn: updated_at
 
-		variation Variation
-			isDefault
-			relationship: 5397a2aa-7796-4451-98a5-d92bf0006779
-			defaultHierarchy: LocalDateTable_44256a2a-a98d-4750-8838-7271e7d77f49.'Date Hierarchy'
-
 		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
@@ -158,11 +138,6 @@ table 'public money_receipt'
 		lineageTag: ca55e616-4dca-4dce-802a-f06eb965a462
 		summarizeBy: none
 		sourceColumn: verified_date
-
-		variation Variation
-			isDefault
-			relationship: 6936b9b4-337c-4f42-930a-8f8fc018d375
-			defaultHierarchy: LocalDateTable_748c3280-4bb2-4ae2-83f4-dae7ae57dd1d.'Date Hierarchy'
 
 		changedProperty = IsHidden
 

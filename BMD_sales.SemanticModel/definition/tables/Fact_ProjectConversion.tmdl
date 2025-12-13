@@ -253,11 +253,6 @@ table Fact_ProjectConversion
 		summarizeBy: none
 		sourceColumn: created_at
 
-		variation Variation
-			isDefault
-			relationship: 40e0b41f-2c92-480d-8ea9-bc5383ee8bb6
-			defaultHierarchy: LocalDateTable_0d8631db-0d2b-4bc9-83d7-7193d040d338.'Date Hierarchy'
-
 		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
@@ -268,11 +263,6 @@ table Fact_ProjectConversion
 		lineageTag: a82998e0-4551-4273-a3d5-2205354e87b7
 		summarizeBy: none
 		sourceColumn: updated_at
-
-		variation Variation
-			isDefault
-			relationship: e7083863-fdf3-471b-8e7f-e490769e27a1
-			defaultHierarchy: LocalDateTable_4beddf4e-b976-4a3b-ac7d-2908f72fca86.'Date Hierarchy'
 
 		changedProperty = IsHidden
 

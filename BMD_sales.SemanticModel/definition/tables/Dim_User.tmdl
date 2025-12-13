@@ -132,11 +132,6 @@ table Dim_User
 		summarizeBy: none
 		sourceColumn: created_at
 
-		variation Variation
-			isDefault
-			relationship: d8f418c8-914a-48f0-8aca-5d32bb211a03
-			defaultHierarchy: LocalDateTable_9b5f3741-9efa-4402-933e-a3106abe5657.'Date Hierarchy'
-
 		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
@@ -147,11 +142,6 @@ table Dim_User
 		lineageTag: 0856598e-4229-4ae4-834e-680e974dbe4a
 		summarizeBy: none
 		sourceColumn: updated_at
-
-		variation Variation
-			isDefault
-			relationship: 3e7d49a3-80cc-404e-97d9-6dc1c9eb4e65
-			defaultHierarchy: LocalDateTable_3d8119aa-b5e9-4412-9570-414eb61d773d.'Date Hierarchy'
 
 		changedProperty = IsHidden
 

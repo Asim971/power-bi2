@@ -187,11 +187,6 @@ table 'public retailers'
 		summarizeBy: none
 		sourceColumn: created_at
 
-		variation Variation
-			isDefault
-			relationship: 4d8429cc-a652-4581-815a-5a9fd11ea10e
-			defaultHierarchy: LocalDateTable_60a98303-bc45-4256-85db-aa03a6a9c1b9.'Date Hierarchy'
-
 		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
@@ -449,11 +444,6 @@ table 'public retailers'
 		lineageTag: a7e0d10e-a16b-4adc-bd8e-aa9c8872d343
 		summarizeBy: none
 		sourceColumn: updated_at
-
-		variation Variation
-			isDefault
-			relationship: a46436cc-b934-4bba-a615-a6c9f2cf594c
-			defaultHierarchy: LocalDateTable_6e3cb1a4-aa77-4112-bdb5-d2b1db0c5b65.'Date Hierarchy'
 
 		changedProperty = IsHidden
 

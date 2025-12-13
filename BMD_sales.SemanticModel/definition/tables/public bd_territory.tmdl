@@ -33,11 +33,6 @@ table 'public bd_territory'
 		summarizeBy: none
 		sourceColumn: created_at
 
-		variation Variation
-			isDefault
-			relationship: b5f31576-7fcb-4b65-846c-1df10d3d8001
-			defaultHierarchy: LocalDateTable_9b88220e-3a30-4e47-aa74-fd06b3dfbffc.'Date Hierarchy'
-
 		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
@@ -120,11 +115,6 @@ table 'public bd_territory'
 		lineageTag: 59602787-681b-4664-b1d5-feb19400ce3a
 		summarizeBy: none
 		sourceColumn: updated_at
-
-		variation Variation
-			isDefault
-			relationship: 22a8c75c-7eef-49a4-9592-86737330cbdd
-			defaultHierarchy: LocalDateTable_3933c8a2-48ca-40a1-821d-309263541f6a.'Date Hierarchy'
 
 		changedProperty = IsHidden
 

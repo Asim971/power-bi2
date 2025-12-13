@@ -44,11 +44,6 @@ table 'public dealer_so'
 		summarizeBy: none
 		sourceColumn: approved_date
 
-		variation Variation
-			isDefault
-			relationship: 3712e4fe-762a-481c-a74a-406195358ac2
-			defaultHierarchy: LocalDateTable_73f73b84-2d30-49d3-8d7e-719aaa38f913.'Date Hierarchy'
-
 		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
@@ -71,11 +66,6 @@ table 'public dealer_so'
 		lineageTag: 7c052f8e-451d-4a20-8eb3-cf6d9f05ab57
 		summarizeBy: none
 		sourceColumn: created_at
-
-		variation Variation
-			isDefault
-			relationship: e71446cc-d09b-4827-94c2-7fea8d92848e
-			defaultHierarchy: LocalDateTable_a46524ef-3b0d-4bbd-986c-a8c383008780.'Date Hierarchy'
 
 		changedProperty = IsHidden
 
@@ -111,11 +101,6 @@ table 'public dealer_so'
 		lineageTag: e59f7922-d28d-4e6e-84ef-6218c892aa0a
 		summarizeBy: none
 		sourceColumn: deleted_at
-
-		variation Variation
-			isDefault
-			relationship: fa099523-9255-4559-bba4-ea0fafe70a39
-			defaultHierarchy: LocalDateTable_6f8e5297-4fa6-4f1d-bee8-906022b4fb1d.'Date Hierarchy'
 
 		changedProperty = IsHidden
 
@@ -210,11 +195,6 @@ table 'public dealer_so'
 		summarizeBy: none
 		sourceColumn: updated_at
 
-		variation Variation
-			isDefault
-			relationship: f17e5702-6c1d-45f0-afef-0db964532d46
-			defaultHierarchy: LocalDateTable_eef03136-6f3d-4ece-905c-1100217c92a4.'Date Hierarchy'
-
 		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
@@ -226,11 +206,6 @@ table 'public dealer_so'
 		lineageTag: 6372b1f8-3611-4b8d-b6d8-b0f5117a0a41
 		summarizeBy: none
 		sourceColumn: verified_date
-
-		variation Variation
-			isDefault
-			relationship: f57c77c6-c1e4-4f07-8a68-2e9d4774096a
-			defaultHierarchy: LocalDateTable_dadce756-3998-4181-867a-ec255a95e44c.'Date Hierarchy'
 
 		changedProperty = IsHidden
 

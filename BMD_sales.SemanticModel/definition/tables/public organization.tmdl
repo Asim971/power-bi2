@@ -22,11 +22,6 @@ table 'public organization'
 		summarizeBy: none
 		sourceColumn: created_at
 
-		variation Variation
-			isDefault
-			relationship: 7be72c70-6581-4d69-b73a-5836371f4e56
-			defaultHierarchy: LocalDateTable_38dfd1f8-62aa-44c3-9c5d-15a7a0bafa6d.'Date Hierarchy'
-
 		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
@@ -72,11 +67,6 @@ table 'public organization'
 		lineageTag: 5ef2d95f-0b47-4c16-ab6f-e1df4e95a0b3
 		summarizeBy: none
 		sourceColumn: updated_at
-
-		variation Variation
-			isDefault
-			relationship: 8e5748d9-0a48-4c01-a68a-c90015e22466
-			defaultHierarchy: LocalDateTable_c6aaf8fd-a34a-481b-adce-8985f99eafb7.'Date Hierarchy'
 
 		changedProperty = IsHidden
 

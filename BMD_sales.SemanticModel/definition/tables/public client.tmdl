@@ -89,11 +89,6 @@ table 'public client'
 		summarizeBy: none
 		sourceColumn: created_at
 
-		variation Variation
-			isDefault
-			relationship: 970e9560-d94a-4fa3-9fa9-a09e693f737f
-			defaultHierarchy: LocalDateTable_ddef1d47-51ab-4c4d-9a85-94acc7207125.'Date Hierarchy'
-
 		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
@@ -193,11 +188,6 @@ table 'public client'
 		lineageTag: 83e38b49-ec76-48e1-895f-f8c05ce8c96a
 		summarizeBy: none
 		sourceColumn: updated_at
-
-		variation Variation
-			isDefault
-			relationship: 9a5abe1d-695d-4268-9751-63e77323da21
-			defaultHierarchy: LocalDateTable_06cfc82c-1850-4478-94f5-d7ded18a5485.'Date Hierarchy'
 
 		changedProperty = IsHidden
 

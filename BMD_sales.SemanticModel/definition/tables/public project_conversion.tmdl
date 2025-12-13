@@ -154,11 +154,6 @@ table 'public project_conversion'
 		summarizeBy: none
 		sourceColumn: created_at
 
-		variation Variation
-			isDefault
-			relationship: 264944f7-e308-4a14-9663-a4868bb979a8
-			defaultHierarchy: LocalDateTable_0ce45fed-867a-4c6b-8d6f-897b3ca570b4.'Date Hierarchy'
-
 		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
@@ -629,11 +624,6 @@ table 'public project_conversion'
 		lineageTag: efdd7a36-248a-4719-846a-02584aaba4bc
 		summarizeBy: none
 		sourceColumn: updated_at
-
-		variation Variation
-			isDefault
-			relationship: c49d5476-d2a6-400e-9623-b1c583b62c28
-			defaultHierarchy: LocalDateTable_52b0b932-92f2-4469-a908-710fa9eaf185.'Date Hierarchy'
 
 		changedProperty = IsHidden
 

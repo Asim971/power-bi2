@@ -33,11 +33,6 @@ table 'public project_handover'
 		summarizeBy: none
 		sourceColumn: created_at
 
-		variation Variation
-			isDefault
-			relationship: 829855e6-39d9-44e9-9de4-ca953354133f
-			defaultHierarchy: LocalDateTable_a87ee6c7-eb96-4623-8d48-1729e5a04ae5.'Date Hierarchy'
-
 		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
@@ -209,11 +204,6 @@ table 'public project_handover'
 		lineageTag: 580981f4-6085-4b3b-81e3-2b06a4d56996
 		summarizeBy: none
 		sourceColumn: updated_at
-
-		variation Variation
-			isDefault
-			relationship: 7cdc30c4-5b3c-4605-bcdb-dd151d8c530d
-			defaultHierarchy: LocalDateTable_779b0b5d-a944-4613-bfc2-e374f0393ffa.'Date Hierarchy'
 
 		changedProperty = IsHidden
 

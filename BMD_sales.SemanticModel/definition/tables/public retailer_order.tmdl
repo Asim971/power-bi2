@@ -22,11 +22,6 @@ table 'public retailer_order'
 		summarizeBy: none
 		sourceColumn: approval_date
 
-		variation Variation
-			isDefault
-			relationship: c4735871-8d6d-496d-8a8b-24a5215e4f57
-			defaultHierarchy: LocalDateTable_b16b785f-373e-4855-9f8c-76a8460b9e36.'Date Hierarchy'
-
 		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
@@ -93,11 +88,6 @@ table 'public retailer_order'
 		lineageTag: 3374a418-bc55-4eb6-be64-5bc41ae7c7ac
 		summarizeBy: none
 		sourceColumn: order_date
-
-		variation Variation
-			isDefault
-			relationship: 1c8482c4-6609-4b67-8a0e-500ff488bf1e
-			defaultHierarchy: LocalDateTable_ac297264-562f-4440-bc1e-8d9125ac8e9e.'Date Hierarchy'
 
 		changedProperty = IsHidden
 

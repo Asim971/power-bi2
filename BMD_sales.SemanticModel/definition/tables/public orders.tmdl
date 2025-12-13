@@ -34,11 +34,6 @@ table 'public orders'
 		summarizeBy: none
 		sourceColumn: created_at
 
-		variation Variation
-			isDefault
-			relationship: 741871be-d823-4884-b17d-b34ec287c38d
-			defaultHierarchy: LocalDateTable_fe701380-f3ae-4287-a279-cf28cf8fbe39.'Date Hierarchy'
-
 		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
@@ -72,11 +67,6 @@ table 'public orders'
 		lineageTag: 38f3a619-f158-4210-b7d9-23ae52d51847
 		summarizeBy: none
 		sourceColumn: updated_at
-
-		variation Variation
-			isDefault
-			relationship: 1ed1f421-a187-4934-bc02-e2865494ca56
-			defaultHierarchy: LocalDateTable_e5023c53-dde6-43c8-9259-02d8369978f2.'Date Hierarchy'
 
 		changedProperty = IsHidden
 

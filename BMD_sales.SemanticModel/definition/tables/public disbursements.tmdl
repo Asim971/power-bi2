@@ -46,11 +46,6 @@ table 'public disbursements'
 		summarizeBy: none
 		sourceColumn: disbursement_date
 
-		variation Variation
-			isDefault
-			relationship: cbf0b908-8773-420b-8707-018db35f1657
-			defaultHierarchy: LocalDateTable_45bc60a7-4c3c-498a-99ce-9c4ecbca84d9.'Date Hierarchy'
-
 		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic

@@ -22,11 +22,6 @@ table 'public handed_over_site'
 		summarizeBy: none
 		sourceColumn: handed_over_date
 
-		variation Variation
-			isDefault
-			relationship: e37b6390-39f0-4056-b647-a74a695cc364
-			defaultHierarchy: LocalDateTable_8e7f91ba-7bb6-4dce-878f-277644b6caff.'Date Hierarchy'
-
 		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic

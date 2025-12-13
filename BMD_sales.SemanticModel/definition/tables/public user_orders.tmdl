@@ -22,11 +22,6 @@ table 'public user_orders'
 		summarizeBy: none
 		sourceColumn: created_at
 
-		variation Variation
-			isDefault
-			relationship: 4c6455f3-58c4-43bc-8c44-e3c2848c68c5
-			defaultHierarchy: LocalDateTable_23ef06b9-c79c-46d0-a2a8-53d8397deec9.'Date Hierarchy'
-
 		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
@@ -194,11 +189,6 @@ table 'public user_orders'
 		lineageTag: 3faf26de-cad8-4b9b-9eb9-0e8499cca5d9
 		summarizeBy: none
 		sourceColumn: updated_at
-
-		variation Variation
-			isDefault
-			relationship: 4b0640cd-9a73-44d5-85dc-b0d935316e21
-			defaultHierarchy: LocalDateTable_d714eaa1-fafb-4160-a48b-0779102214e0.'Date Hierarchy'
 
 		changedProperty = IsHidden
 

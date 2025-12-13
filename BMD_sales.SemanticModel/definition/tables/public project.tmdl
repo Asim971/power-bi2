@@ -154,11 +154,6 @@ table 'public project'
 		summarizeBy: none
 		sourceColumn: created_at
 
-		variation Variation
-			isDefault
-			relationship: da2faa37-4983-4dc6-86f0-faabd66b53d4
-			defaultHierarchy: LocalDateTable_a8bfa095-0f64-42fa-a7cd-ef42547289ef.'Date Hierarchy'
-
 		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
@@ -561,11 +556,6 @@ table 'public project'
 		lineageTag: c66fdec4-caba-4402-9311-3ae74e3f4595
 		summarizeBy: none
 		sourceColumn: updated_at
-
-		variation Variation
-			isDefault
-			relationship: 3d297c96-402c-41a5-a41b-c4cb8c1ed2e3
-			defaultHierarchy: LocalDateTable_be712ada-04d5-415e-8518-e02912c87d9c.'Date Hierarchy'
 
 		changedProperty = IsHidden
 

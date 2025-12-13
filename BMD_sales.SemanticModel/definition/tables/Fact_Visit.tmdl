@@ -1445,11 +1445,6 @@ table Fact_Visit
 		summarizeBy: none
 		sourceColumn: followup_date
 
-		variation Variation
-			isDefault
-			relationship: 962be8ce-82e9-48c1-98c7-0feb32f403e5
-			defaultHierarchy: LocalDateTable_b78652d6-96b5-4ce0-b950-81d1fcd8e989.'Date Hierarchy'
-
 		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
@@ -1471,11 +1466,6 @@ table Fact_Visit
 		summarizeBy: none
 		sourceColumn: visit_date_time
 
-		variation Variation
-			isDefault
-			relationship: 78d7e16f-3448-48a9-8ea1-824a10536011
-			defaultHierarchy: LocalDateTable_4ccd853a-ffaa-4612-9342-019595dc6792.'Date Hierarchy'
-
 		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
@@ -1487,11 +1477,6 @@ table Fact_Visit
 		summarizeBy: none
 		sourceColumn: created_at
 
-		variation Variation
-			isDefault
-			relationship: 1987ce8d-274c-4244-acb1-fe2b4f761ec6
-			defaultHierarchy: LocalDateTable_80dc7739-add9-4cfa-bfd4-0f267802e538.'Date Hierarchy'
-
 		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
@@ -1502,11 +1487,6 @@ table Fact_Visit
 		lineageTag: 833797d2-9dee-4d6f-9dfc-ff14387a0820
 		summarizeBy: none
 		sourceColumn: updated_at
-
-		variation Variation
-			isDefault
-			relationship: 7d5ccdec-0a55-48d8-8dfb-4451b0266308
-			defaultHierarchy: LocalDateTable_f8d9e743-e68c-4f07-9f25-9ac4ce880065.'Date Hierarchy'
 
 		changedProperty = IsHidden
 

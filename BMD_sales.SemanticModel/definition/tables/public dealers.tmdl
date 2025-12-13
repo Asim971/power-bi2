@@ -99,11 +99,6 @@ table 'public dealers'
 		summarizeBy: none
 		sourceColumn: created_at
 
-		variation Variation
-			isDefault
-			relationship: 9dbff31b-c120-4efd-b27c-5d8382d58735
-			defaultHierarchy: LocalDateTable_b59de126-cfb7-48f2-a067-a1673ccd0319.'Date Hierarchy'
-
 		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
@@ -396,11 +391,6 @@ table 'public dealers'
 		lineageTag: 96581397-e923-4dba-8548-ddcd0fdfb775
 		summarizeBy: none
 		sourceColumn: updated_at
-
-		variation Variation
-			isDefault
-			relationship: a8140dcd-c2f2-4e3e-b0f2-ccc76b19e2fc
-			defaultHierarchy: LocalDateTable_1f773804-8318-4f5e-afa3-321caaf0fe5c.'Date Hierarchy'
 
 		changedProperty = IsHidden
 

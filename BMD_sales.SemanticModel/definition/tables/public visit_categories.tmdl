@@ -33,11 +33,6 @@ table 'public visit_categories'
 		summarizeBy: none
 		sourceColumn: created_at
 
-		variation Variation
-			isDefault
-			relationship: 72d4c69f-b893-4b37-9204-609c8525d138
-			defaultHierarchy: LocalDateTable_c6774d43-2286-4e4c-8557-ef22a148db0a.'Date Hierarchy'
-
 		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
@@ -71,11 +66,6 @@ table 'public visit_categories'
 		lineageTag: 84c8cdc7-577d-4505-ac5f-650dd41ec857
 		summarizeBy: none
 		sourceColumn: updated_at
-
-		variation Variation
-			isDefault
-			relationship: cb531107-dea2-4f9b-b394-9654747a331e
-			defaultHierarchy: LocalDateTable_0c866f1c-c864-4527-a777-f9471678da3f.'Date Hierarchy'
 
 		changedProperty = IsHidden
 
