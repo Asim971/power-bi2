@@ -22,6 +22,13 @@ table Fact_Order
 
 		changedProperty = IsHidden
 
+	measure Total_Order_Quantity_MT = SUM('Fact_Order'[qty_in_mt])
+		formatString: #,##0.00
+		displayFolder: Orders\Base
+		lineageTag: 3f6a2d61-6b0e-4c2d-9d68-2b27e1f8a4c2
+
+		changedProperty = IsHidden
+
 	measure Average_Order_Value = DIVIDE([Total_Order_Amount], [Total_Orders], 0)
 		formatString: #,##0.00
 		displayFolder: Orders\Rates
@@ -167,6 +174,18 @@ table Fact_Order
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	column qty_in_mt
+		dataType: double
+		lineageTag: 5c7e7c60-5e3c-4c77-8d16-2a7e7ac2d4b0
+		summarizeBy: sum
+		sourceColumn: qty_in_mt
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
 	column OrderItemCount
 		dataType: int64
 		formatString: 0
@@ -271,7 +290,8 @@ table Fact_Order
 				            "customer_type", "customer_id",
 				            "retailer_id", "dealer_id", "site_id", "potential_site_id",
 				            "engineer_id", "contractor_id", "ihb_registration_id",
-				            "total_amount", "total_quantity"
+				            "total_amount", "total_quantity",
+				            "unit", "uom", "unit_name"
 				        },
 				        MissingField.UseNull
 				    ),
@@ -409,6 +429,7 @@ table Fact_Order
 				            "order_id", "orders_id",
 				            "sku_id",
 				            "quantity", "qty", "order_qty",
+				            "unit", "uom", "unit_name",
 				            "unit_price", "price",
 				            "amount", "total_amount", "total_price",
 				            "delete_status",
@@ -434,8 +455,25 @@ table Fact_Order
 				        type number
 				    ),
 				
-				    WithItemAmount = Table.AddColumn(
+				    WithItemQtyInMT = Table.AddColumn(
 				        WithItemQuantity,
+				        "ItemQtyInMT",
+				        each
+				            let
+				                u =
+				                    if [unit] <> null then try Text.Lower(Text.From([unit])) otherwise null
+				                    else if [uom] <> null then try Text.Lower(Text.From([uom])) otherwise null
+				                    else if [unit_name] <> null then try Text.Lower(Text.From([unit_name])) otherwise null
+				                    else null,
+				                isBag = if u = null then false else Text.Contains(u, "bag"),
+				                q = [ItemQuantity]
+				            in
+				                if q = null then null else if isBag then q * 20 else q,
+				        type number
+				    ),
+				
+				WithItemAmount = Table.AddColumn(
+				    WithItemQtyInMT,
 				        "ItemAmount",
 				        each
 				            let
@@ -471,7 +509,8 @@ table Fact_Order
 				            {"OrderItemCount", each Table.RowCount(_), Int64.Type},
 				            {"OrderQuantity_Items", each List.Sum(List.RemoveNulls([ItemQuantity])), type number},
 				            {"OrderAmount_Items", each List.Sum(List.RemoveNulls([ItemAmount])), type number},
-				            {"DistinctSKUCount", each List.NonNullCount(List.Distinct([sku_id])), Int64.Type}
+				            {"DistinctSKUCount", each List.NonNullCount(List.Distinct([sku_id])), Int64.Type},
+				            {"qty_in_mt_items", each List.Sum(List.RemoveNulls([ItemQtyInMT])), type number}
 				        }
 				    ),
 				
@@ -479,7 +518,7 @@ table Fact_Order
 				    // MERGE ITEMS AGG INTO ORDERS
 				    // -------------------------
 				    Merged = Table.NestedJoin(WithDeliveryMethod, {"OrderID"}, ItemsAgg, {"OrderID"}, "ItemsAgg", JoinKind.LeftOuter),
-				    Expanded = Table.ExpandTableColumn(Merged, "ItemsAgg", {"OrderItemCount", "OrderQuantity_Items", "OrderAmount_Items", "DistinctSKUCount"}, {"OrderItemCount", "OrderQuantity_Items", "OrderAmount_Items", "DistinctSKUCount"}),
+				    Expanded = Table.ExpandTableColumn(Merged, "ItemsAgg", {"OrderItemCount", "OrderQuantity_Items", "OrderAmount_Items", "DistinctSKUCount", "qty_in_mt_items"}, {"OrderItemCount", "OrderQuantity_Items", "OrderAmount_Items", "DistinctSKUCount", "qty_in_mt_items"}),
 				
 				    WithTotalAmount = Table.AddColumn(
 				        Expanded,
@@ -505,9 +544,29 @@ table Fact_Order
 				        type number
 				    ),
 				
+				    WithQtyInMT = Table.AddColumn(
+				        WithTotalQuantity,
+				        "qty_in_mt",
+				        each
+				            let
+				                // Prefer item-derived MT (handles mixed units)
+				                qim = AsNumber([qty_in_mt_items]),
+				                // Fallback to header unit if present
+				                uh =
+				                    if [unit] <> null then try Text.Lower(Text.From([unit])) otherwise null
+				                    else if [uom] <> null then try Text.Lower(Text.From([uom])) otherwise null
+				                    else if [unit_name] <> null then try Text.Lower(Text.From([unit_name])) otherwise null
+				                    else null,
+				                isBag = if uh = null then false else Text.Contains(uh, "bag"),
+				                tq = AsNumber([TotalQuantity])
+				            in
+				                if qim <> null then qim else if tq = null then null else if isBag then tq * 20 else tq,
+				        type number
+				    ),
+				
 				    // Ensure counts are 0 instead of null for orders without items
 				    CountsFilled = Table.TransformColumns(
-				        WithTotalQuantity,
+				        WithQtyInMT,
 				        {
 				            {"OrderItemCount", each if _ = null then 0 else _, Int64.Type},
 				            {"DistinctSKUCount", each if _ = null then 0 else _, Int64.Type}
@@ -525,11 +584,15 @@ table Fact_Order
 				            "delivery_method",
 				            "organization_id",
 				            "created_by_id", "user_id", "created_by",
+				            "client_type", "client_id", "client_key",
+				            "customer_type", "customer_id",
 				            "retailer_id", "dealer_id", "site_id", "potential_site_id",
 				            "engineer_id", "contractor_id", "ihb_registration_id",
 				            "total_amount", "total_quantity",
+				            "unit", "uom", "unit_name",
 				            "OrderDateTime",
-				            "OrderAmount_Items", "OrderQuantity_Items"
+				            "OrderAmount_Items", "OrderQuantity_Items",
+				            "qty_in_mt_items"
 				        }
 				    ),
 				
@@ -538,7 +601,7 @@ table Fact_Order
 				        {
 				            "OrderID", "DateKey", "UserID", "ClientKey", "ClientType", "ClientID",
 				            "OrderStatus", "DeliveryMethod", "OrganizationID", "CompanyCode",
-				            "TotalAmount", "TotalQuantity", "OrderItemCount", "DistinctSKUCount",
+				            "TotalAmount", "TotalQuantity", "qty_in_mt", "OrderItemCount", "DistinctSKUCount",
 				            "created_at", "updated_at"
 				        }
 				    ),
@@ -558,14 +621,14 @@ table Fact_Order
 				            {"CompanyCode", type text},
 				            {"TotalAmount", type number},
 				            {"TotalQuantity", type number},
+				            {"qty_in_mt", type number},
 				            {"OrderItemCount", Int64.Type},
 				            {"DistinctSKUCount", Int64.Type},
 				            {"created_at", type datetime},
 				            {"updated_at", type datetime}
 				        }
 				    )
-				in
-				    TypedTable
+				in TypedTable
 				```
 
 	changedProperty = IsHidden
