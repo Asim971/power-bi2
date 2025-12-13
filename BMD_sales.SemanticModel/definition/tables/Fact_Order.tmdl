@@ -1,0 +1,552 @@
+table Fact_Order
+	lineageTag: 2fa8efb5-1fd1-4ed4-a564-8e1e3c2f06c7
+
+	measure Total_Orders = DISTINCTCOUNT('Fact_Order'[OrderID])
+		formatString: #,##0
+		displayFolder: Orders\Base
+		lineageTag: 5a5ed38d-4f5a-44a7-9c7a-8a7a7a3d6b35
+
+		changedProperty = IsHidden
+
+	measure Total_Order_Amount = SUM('Fact_Order'[TotalAmount])
+		formatString: #,##0.00
+		displayFolder: Orders\Base
+		lineageTag: 15df1a60-6a52-4d5b-8ca1-5a3b1a4e1e3a
+
+		changedProperty = IsHidden
+
+	measure Total_Order_Quantity = SUM('Fact_Order'[TotalQuantity])
+		formatString: #,##0.00
+		displayFolder: Orders\Base
+		lineageTag: 8a2d1c7a-8a3a-4da2-9aa1-1f0b3f66c81a
+
+		changedProperty = IsHidden
+
+	measure Average_Order_Value = DIVIDE([Total_Order_Amount], [Total_Orders], 0)
+		formatString: #,##0.00
+		displayFolder: Orders\Rates
+		lineageTag: b7d8d0a5-f5e0-4c9a-9b5a-40f38a1f8f35
+
+		changedProperty = IsHidden
+
+	measure Average_Items_Per_Order = DIVIDE(SUM('Fact_Order'[OrderItemCount]), [Total_Orders], 0)
+		formatString: #,##0.00
+		displayFolder: Orders\Rates
+		lineageTag: 2b5c19f0-49df-4b63-9f5c-9f2c7b5d87b1
+
+		changedProperty = IsHidden
+
+	column OrderID
+		dataType: int64
+		formatString: 0
+		lineageTag: 1d9902a5-2b63-4c0a-9f38-1c27998a69b0
+		summarizeBy: count
+		sourceColumn: OrderID
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column DateKey
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: d2b0cc2d-6f49-41fb-9c52-9dcebb26cb7a
+		summarizeBy: none
+		sourceColumn: DateKey
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column UserID
+		dataType: int64
+		formatString: 0
+		lineageTag: 5b72c6ac-8a90-4c59-87b5-6c7b9c0e2de7
+		summarizeBy: count
+		sourceColumn: UserID
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column ClientKey
+		dataType: string
+		lineageTag: 7659b460-94ee-4a0f-bb3a-3e8d2f4e9db5
+		summarizeBy: none
+		sourceColumn: ClientKey
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column ClientType
+		dataType: string
+		lineageTag: f0a0d6f6-20a4-49e3-a1c2-7d4f48a91b3e
+		summarizeBy: none
+		sourceColumn: ClientType
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column ClientID
+		dataType: int64
+		formatString: 0
+		lineageTag: a8f4b0c2-3b01-4e1a-8c3f-3d8f6a0f0b8f
+		summarizeBy: count
+		sourceColumn: ClientID
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrderStatus
+		dataType: string
+		lineageTag: 248f4c2b-f2d0-45f4-9a3a-8ad11e9f0c92
+		summarizeBy: none
+		sourceColumn: OrderStatus
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column DeliveryMethod
+		dataType: string
+		lineageTag: 6b0f196d-ffb3-4d38-ae3a-99cf2c3de4c7
+		summarizeBy: none
+		sourceColumn: DeliveryMethod
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrganizationID
+		dataType: int64
+		formatString: 0
+		lineageTag: 5b19b0e6-47c5-42de-a9f2-bc8f9af3bb55
+		summarizeBy: sum
+		sourceColumn: OrganizationID
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column CompanyCode
+		dataType: string
+		lineageTag: 90fb5c13-3ff6-4f98-87aa-345cd15e0b07
+		summarizeBy: none
+		sourceColumn: CompanyCode
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column TotalAmount
+		dataType: double
+		lineageTag: 7fd2e0f6-3a55-4c0d-b9e8-7a11f8f5db64
+		summarizeBy: sum
+		sourceColumn: TotalAmount
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column TotalQuantity
+		dataType: double
+		lineageTag: b86f4c63-1c64-4f97-8d0b-1d0e9e2c7d9c
+		summarizeBy: sum
+		sourceColumn: TotalQuantity
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column OrderItemCount
+		dataType: int64
+		formatString: 0
+		lineageTag: 0c9f2a30-0788-4b8a-a4b5-9a6e3cc6be9c
+		summarizeBy: sum
+		sourceColumn: OrderItemCount
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column DistinctSKUCount
+		dataType: int64
+		formatString: 0
+		lineageTag: 5ed9c34c-7c43-4e7d-bf19-d3e9d7f92c7a
+		summarizeBy: sum
+		sourceColumn: DistinctSKUCount
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column created_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 98b8f0e3-4d1e-4b69-8d23-4a45b7f7a3a2
+		summarizeBy: none
+		sourceColumn: created_at
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column updated_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 7cb4bb7f-cb5a-4c11-9f1d-9bd32ce7c6aa
+		summarizeBy: none
+		sourceColumn: updated_at
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Fact_Order = m
+		mode: import
+		source = ```
+				// ============================================================
+				// Fact_Order - Order Fact Table (Order Header Grain)
+				// 
+				// Sources:
+				// - public orders
+				// - public order_items (aggregated to order level)
+				// 
+				// Outputs (one row per OrderID):
+				// - DateKey for Dim_Date join
+				// - ClientKey compatible with Dim_Client_Simple (ClientType-ClientID)
+				// - UserID compatible with Dim_User
+				// - Item aggregates: item count, qty, amount, distinct SKU count
+				// ============================================================
+				
+				let
+				    // Reference shared expressions (connection-only) created in Phase 2
+				    OrdersRaw = #"public orders",
+				    ItemsRaw = #"public order_items",
+				
+				    OrdersCols = Table.ColumnNames(OrdersRaw),
+				    ItemsCols = Table.ColumnNames(ItemsRaw),
+				
+				    // Safe conversion helpers
+				    AsInt64 = (v as any) as nullable number => try Int64.From(v) otherwise null,
+				    AsNumber = (v as any) as nullable number => try Number.From(v) otherwise null,
+				    AsDateTime = (v as any) as nullable datetime => try DateTime.From(v) otherwise null,
+				
+				    // -------------------------
+				    // ORDERS (header)
+				    // -------------------------
+				    OrdersSelected = Table.SelectColumns(
+				        OrdersRaw,
+				        {
+				            "id", "order_id",
+				            "order_date", "order_date_time",
+				            "created_at", "updated_at",
+				            "delete_status",
+				            "order_status", "status",
+				            "delivery_method",
+				            "organization_id",
+				            "created_by_id", "user_id", "created_by",
+				            "retailer_id", "dealer_id", "site_id", "potential_site_id",
+				            "engineer_id", "contractor_id", "ihb_registration_id",
+				            "total_amount", "total_quantity"
+				        },
+				        MissingField.UseNull
+				    ),
+				
+				    OrdersFiltered = if List.Contains(OrdersCols, "delete_status")
+				        then Table.SelectRows(OrdersSelected, each [delete_status] = "NO")
+				        else OrdersSelected,
+				
+				    WithOrderID = Table.AddColumn(
+				        OrdersFiltered,
+				        "OrderID",
+				        each let a = AsInt64([id]) in if a <> null then a else AsInt64([order_id]),
+				        Int64.Type
+				    ),
+				
+				    OrdersNonNull = Table.SelectRows(WithOrderID, each [OrderID] <> null),
+				
+				    WithOrderDateTime = Table.AddColumn(
+				        OrdersNonNull,
+				        "OrderDateTime",
+				        each
+				            let
+				                d1 = AsDateTime([order_date]),
+				                d2 = AsDateTime([order_date_time]),
+				                d3 = AsDateTime([created_at]),
+				                d4 = AsDateTime([updated_at])
+				            in
+				                if d1 <> null then d1 else if d2 <> null then d2 else if d3 <> null then d3 else d4,
+				        type datetime
+				    ),
+				
+				    WithDateKey = Table.AddColumn(
+				        WithOrderDateTime,
+				        "DateKey",
+				        each try Date.From([OrderDateTime]) otherwise null,
+				        type date
+				    ),
+				
+				    WithUserID = Table.AddColumn(
+				        WithDateKey,
+				        "UserID",
+				        each
+				            let
+				                u1 = AsInt64([created_by_id]),
+				                u2 = AsInt64([user_id]),
+				                u3 = AsInt64([created_by])
+				            in
+				                if u1 <> null then u1 else if u2 <> null then u2 else u3,
+				        Int64.Type
+				    ),
+				
+				    WithClientType = Table.AddColumn(
+				        WithUserID,
+				        "ClientType",
+				        each
+				            if [retailer_id] <> null then "Retailer"
+				            else if [dealer_id] <> null then "Dealer"
+				            else if [site_id] <> null then "Site"
+				            else if [potential_site_id] <> null then "Site"
+				            else if [engineer_id] <> null then "Engineer"
+				            else if [contractor_id] <> null then "Contractor"
+				            else if [ihb_registration_id] <> null then "IHB"
+				            else null,
+				        type text
+				    ),
+				
+				    WithClientID = Table.AddColumn(
+				        WithClientType,
+				        "ClientID",
+				        each
+				            let
+				                c =
+				                    if [retailer_id] <> null then AsInt64([retailer_id])
+				                    else if [dealer_id] <> null then AsInt64([dealer_id])
+				                    else if [site_id] <> null then AsInt64([site_id])
+				                    else if [potential_site_id] <> null then AsInt64([potential_site_id])
+				                    else if [engineer_id] <> null then AsInt64([engineer_id])
+				                    else if [contractor_id] <> null then AsInt64([contractor_id])
+				                    else if [ihb_registration_id] <> null then AsInt64([ihb_registration_id])
+				                    else null
+				            in
+				                c,
+				        Int64.Type
+				    ),
+				
+				    WithClientKey = Table.AddColumn(
+				        WithClientID,
+				        "ClientKey",
+				        each if [ClientType] <> null and [ClientID] <> null then [ClientType] & "-" & Text.From([ClientID]) else null,
+				        type text
+				    ),
+				
+				    WithOrganizationID = Table.AddColumn(
+				        WithClientKey,
+				        "OrganizationID",
+				        each AsInt64([organization_id]),
+				        Int64.Type
+				    ),
+				
+				    WithCompanyCode = Table.AddColumn(
+				        WithOrganizationID,
+				        "CompanyCode",
+				        each if [OrganizationID] = 1 then "ACL" else if [OrganizationID] = 2 then "AIL" else "Unknown",
+				        type text
+				    ),
+				
+				    WithOrderStatus = Table.AddColumn(
+				        WithCompanyCode,
+				        "OrderStatus",
+				        each if [order_status] <> null then Text.From([order_status]) else if [status] <> null then Text.From([status]) else null,
+				        type text
+				    ),
+				
+				    WithDeliveryMethod = Table.AddColumn(
+				        WithOrderStatus,
+				        "DeliveryMethod",
+				        each if [delivery_method] <> null then Text.From([delivery_method]) else null,
+				        type text
+				    ),
+				
+				    // -------------------------
+				    // ORDER ITEMS (aggregate to header)
+				    // -------------------------
+				    ItemsSelected = Table.SelectColumns(
+				        ItemsRaw,
+				        {
+				            "id",
+				            "order_id", "orders_id",
+				            "sku_id",
+				            "quantity", "qty", "order_qty",
+				            "unit_price", "price",
+				            "amount", "total_amount", "total_price",
+				            "delete_status",
+				            "created_at", "updated_at"
+				        },
+				        MissingField.UseNull
+				    ),
+				
+				    ItemsFiltered = if List.Contains(ItemsCols, "delete_status")
+				        then Table.SelectRows(ItemsSelected, each [delete_status] = "NO")
+				        else ItemsSelected,
+				
+				    WithItemQuantity = Table.AddColumn(
+				        ItemsFiltered,
+				        "ItemQuantity",
+				        each
+				            let
+				                q1 = AsNumber([quantity]),
+				                q2 = AsNumber([qty]),
+				                q3 = AsNumber([order_qty])
+				            in
+				                if q1 <> null then q1 else if q2 <> null then q2 else q3,
+				        type number
+				    ),
+				
+				    WithItemAmount = Table.AddColumn(
+				        WithItemQuantity,
+				        "ItemAmount",
+				        each
+				            let
+				                a1 = AsNumber([amount]),
+				                a2 = AsNumber([total_amount]),
+				                a3 = AsNumber([total_price]),
+				                up = AsNumber([unit_price]),
+				                p = AsNumber([price]),
+				                q = [ItemQuantity]
+				            in
+				                if a1 <> null then a1
+				                else if a2 <> null then a2
+				                else if a3 <> null then a3
+				                else if up <> null and q <> null then up * q
+				                else if p <> null and q <> null then p * q
+				                else null,
+				        type number
+				    ),
+				
+				    WithOrderID_Items = Table.AddColumn(
+				        WithItemAmount,
+				        "OrderID",
+				        each let a = AsInt64([order_id]) in if a <> null then a else AsInt64([orders_id]),
+				        Int64.Type
+				    ),
+				
+				    ItemsForAgg = Table.SelectRows(WithOrderID_Items, each [OrderID] <> null),
+				
+				    ItemsAgg = Table.Group(
+				        ItemsForAgg,
+				        {"OrderID"},
+				        {
+				            {"OrderItemCount", each Table.RowCount(_), Int64.Type},
+				            {"OrderQuantity_Items", each List.Sum(List.RemoveNulls([ItemQuantity])), type number},
+				            {"OrderAmount_Items", each List.Sum(List.RemoveNulls([ItemAmount])), type number},
+				            {"DistinctSKUCount", each List.NonNullCount(List.Distinct([sku_id])), Int64.Type}
+				        }
+				    ),
+				
+				    // -------------------------
+				    // MERGE ITEMS AGG INTO ORDERS
+				    // -------------------------
+				    Merged = Table.NestedJoin(WithDeliveryMethod, {"OrderID"}, ItemsAgg, {"OrderID"}, "ItemsAgg", JoinKind.LeftOuter),
+				    Expanded = Table.ExpandTableColumn(Merged, "ItemsAgg", {"OrderItemCount", "OrderQuantity_Items", "OrderAmount_Items", "DistinctSKUCount"}, {"OrderItemCount", "OrderQuantity_Items", "OrderAmount_Items", "DistinctSKUCount"}),
+				
+				    WithTotalAmount = Table.AddColumn(
+				        Expanded,
+				        "TotalAmount",
+				        each
+				            let
+				                a = AsNumber([total_amount]),
+				                ai = AsNumber([OrderAmount_Items])
+				            in
+				                if a <> null then a else if ai <> null then ai else 0,
+				        type number
+				    ),
+				
+				    WithTotalQuantity = Table.AddColumn(
+				        WithTotalAmount,
+				        "TotalQuantity",
+				        each
+				            let
+				                q = AsNumber([total_quantity]),
+				                qi = AsNumber([OrderQuantity_Items])
+				            in
+				                if q <> null then q else if qi <> null then qi else 0,
+				        type number
+				    ),
+				
+				    // Ensure counts are 0 instead of null for orders without items
+				    CountsFilled = Table.TransformColumns(
+				        WithTotalQuantity,
+				        {
+				            {"OrderItemCount", each if _ = null then 0 else _, Int64.Type},
+				            {"DistinctSKUCount", each if _ = null then 0 else _, Int64.Type}
+				        }
+				    ),
+				
+				    // Cleanup intermediate/source columns (keep created_at/updated_at)
+				    RemovedColumns = Table.RemoveColumns(
+				        CountsFilled,
+				        {
+				            "id", "order_id",
+				            "order_date", "order_date_time",
+				            "delete_status",
+				            "order_status", "status",
+				            "delivery_method",
+				            "organization_id",
+				            "created_by_id", "user_id", "created_by",
+				            "retailer_id", "dealer_id", "site_id", "potential_site_id",
+				            "engineer_id", "contractor_id", "ihb_registration_id",
+				            "total_amount", "total_quantity",
+				            "OrderDateTime",
+				            "OrderAmount_Items", "OrderQuantity_Items"
+				        }
+				    ),
+				
+				    ReorderedColumns = Table.ReorderColumns(
+				        RemovedColumns,
+				        {
+				            "OrderID", "DateKey", "UserID", "ClientKey", "ClientType", "ClientID",
+				            "OrderStatus", "DeliveryMethod", "OrganizationID", "CompanyCode",
+				            "TotalAmount", "TotalQuantity", "OrderItemCount", "DistinctSKUCount",
+				            "created_at", "updated_at"
+				        }
+				    ),
+				
+				    TypedTable = Table.TransformColumnTypes(
+				        ReorderedColumns,
+				        {
+				            {"OrderID", Int64.Type},
+				            {"DateKey", type date},
+				            {"UserID", Int64.Type},
+				            {"ClientKey", type text},
+				            {"ClientType", type text},
+				            {"ClientID", Int64.Type},
+				            {"OrderStatus", type text},
+				            {"DeliveryMethod", type text},
+				            {"OrganizationID", Int64.Type},
+				            {"CompanyCode", type text},
+				            {"TotalAmount", type number},
+				            {"TotalQuantity", type number},
+				            {"OrderItemCount", Int64.Type},
+				            {"DistinctSKUCount", Int64.Type},
+				            {"created_at", type datetime},
+				            {"updated_at", type datetime}
+				        }
+				    )
+				in
+				    TypedTable
+				```
+
+	changedProperty = IsHidden
+
+	annotation PBI_ResultType = Table

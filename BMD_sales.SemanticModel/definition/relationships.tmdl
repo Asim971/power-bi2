@@ -81,3 +81,15 @@ relationship a82988d2-2f94-c2a9-041d-0d9169e1b7bd
 	fromColumn: Dim_Bazaar.territory_id
 	toColumn: Dim_Territory.territory_id
 
+relationship 0b8c0f55-4b62-4dc0-8fe6-6f0d77b7d8c3
+	fromColumn: Fact_Order.DateKey
+	toColumn: Dim_Date.DateKey
+
+relationship 77c0ab7a-9a3e-4b1b-9c1a-1cb0e8b2f9a7
+	fromColumn: Fact_Order.ClientKey
+	toColumn: Dim_Client_Simple.ClientKey
+
+relationship 5b2d6c4f-0a5e-4a49-9e8e-2e6802b3d622
+	fromColumn: Fact_Order.UserID
+	toColumn: Dim_User.UserID
+
