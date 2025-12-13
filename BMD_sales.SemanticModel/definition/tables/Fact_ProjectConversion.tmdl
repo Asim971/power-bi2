@@ -144,7 +144,7 @@ table Fact_ProjectConversion
 
 		changedProperty = IsHidden
 
-	measure Total_conversions_MT = SUM(Fact_ProjectConversion[total_quantity])
+	measure Total_conversions_MT = SUM(Fact_ProjectConversion[qty_in_mt])
 		displayFolder: Analytics\Engagement
 		lineageTag: 8147ebce-77aa-4288-99dd-0b068f9b1cea
 
@@ -467,6 +467,16 @@ table Fact_ProjectConversion
 
 		annotation SummarizationSetBy = Automatic
 
+	column qty_in_mt
+		dataType: double
+		lineageTag: 6c4b1e2a-4b6a-4a7d-9b1b-3b0d0a6f1b3c
+		summarizeBy: sum
+		sourceColumn: qty_in_mt
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
 	column contractor_id
 		dataType: int64
 		formatString: 0
@@ -711,8 +721,20 @@ table Fact_ProjectConversion
 				    }),
 				  #"Merged queries" = Table.NestedJoin(TypedTable, {"ConversionID"}, #"public project_conversion", {"id"}, "public project_conversion", JoinKind.LeftOuter),
 				  #"Expanded public project_conversion" = Table.ExpandTableColumn(#"Merged queries", "public project_conversion", {"total_quantity", "unit"}, {"total_quantity", "unit"}),
-				  #"Changed column type" = Table.TransformColumnTypes(#"Expanded public project_conversion", {{"total_quantity", type number}}),
-				  #"Merged queries 1" = Table.NestedJoin(#"Changed column type", {"SiteID"}, #"public potential_site", {"id"}, "public potential_site", JoinKind.LeftOuter),
+				  #"Changed column type" = Table.TransformColumnTypes(#"Expanded public project_conversion", {{"total_quantity", type number}, {"unit", type text}}),
+				  #"Added qty_in_mt" = Table.AddColumn(
+				    #"Changed column type",
+				    "qty_in_mt",
+				    each
+				      let
+				        q = try Number.From([total_quantity]) otherwise null,
+				        u = try Text.Lower(Text.From([unit])) otherwise null,
+				        isBag = if u = null then false else Text.Contains(u, "bag")
+				      in
+				        if q = null then null else if isBag then q * 20 else q,
+				    type number
+				  ),
+				  #"Merged queries 1" = Table.NestedJoin(#"Added qty_in_mt", {"SiteID"}, #"public potential_site", {"id"}, "public potential_site", JoinKind.LeftOuter),
 				  #"Expanded public potential_site" = Table.ExpandTableColumn(#"Merged queries 1", "public potential_site", {"contractor_id"}, {"contractor_id"}),
 				  #"Merged queries 2" = Table.NestedJoin(#"Expanded public potential_site", {"contractor_id"}, #"public client", {"id"}, "public client", JoinKind.LeftOuter),
 				  #"Expanded public client" = Table.ExpandTableColumn(#"Merged queries 2", "public client", {"bkash_number", "name", "phone", "bank_account_id"}, {"bkash_number", "name", "phone", "bank_account_id"}),
