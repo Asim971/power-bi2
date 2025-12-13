@@ -397,6 +397,7 @@ relationship 039d8645-0adc-acff-d9e6-3f2bdb0ca7b8
 	toColumn: Dim_BDTerritory.BDTerritoryID
 
 relationship f6799f3a-889e-954f-c7b2-eb9ce9f6233c
+	isActive: false
 	fromColumn: Dim_BDTerritory.users_id
 	toColumn: Dim_User.UserID
 
