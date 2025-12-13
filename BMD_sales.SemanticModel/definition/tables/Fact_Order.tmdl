@@ -240,6 +240,18 @@ table Fact_Order
 				    AsInt64 = (v as any) as nullable number => try Int64.From(v) otherwise null,
 				    AsNumber = (v as any) as nullable number => try Number.From(v) otherwise null,
 				    AsDateTime = (v as any) as nullable datetime => try DateTime.From(v) otherwise null,
+				    NormalizeClientType = (v as any) as nullable text =>
+				        let
+				            s = try Text.Lower(Text.From(v)) otherwise null
+				        in
+				            if s = null then null
+				            else if Text.Contains(s, "retail") then "Retailer"
+				            else if Text.Contains(s, "dealer") then "Dealer"
+				            else if Text.Contains(s, "engineer") then "Engineer"
+				            else if Text.Contains(s, "contract") or Text.Contains(s, "partner") then "Contractor"
+				            else if Text.Contains(s, "ihb") then "IHB"
+				            else if Text.Contains(s, "site") then "Site"
+				            else Text.Proper(s),
 				
 				    // -------------------------
 				    // ORDERS (header)
@@ -255,6 +267,8 @@ table Fact_Order
 				            "delivery_method",
 				            "organization_id",
 				            "created_by_id", "user_id", "created_by",
+				            "client_type", "client_id", "client_key",
+				            "customer_type", "customer_id",
 				            "retailer_id", "dealer_id", "site_id", "potential_site_id",
 				            "engineer_id", "contractor_id", "ihb_registration_id",
 				            "total_amount", "total_quantity"
@@ -320,6 +334,8 @@ table Fact_Order
 				            else if [engineer_id] <> null then "Engineer"
 				            else if [contractor_id] <> null then "Contractor"
 				            else if [ihb_registration_id] <> null then "IHB"
+				            else if [client_type] <> null then NormalizeClientType([client_type])
+				            else if [customer_type] <> null then NormalizeClientType([customer_type])
 				            else null,
 				        type text
 				    ),
@@ -337,6 +353,8 @@ table Fact_Order
 				                    else if [engineer_id] <> null then AsInt64([engineer_id])
 				                    else if [contractor_id] <> null then AsInt64([contractor_id])
 				                    else if [ihb_registration_id] <> null then AsInt64([ihb_registration_id])
+				                    else if [client_id] <> null then AsInt64([client_id])
+				                    else if [customer_id] <> null then AsInt64([customer_id])
 				                    else null
 				            in
 				                c,
@@ -346,7 +364,10 @@ table Fact_Order
 				    WithClientKey = Table.AddColumn(
 				        WithClientID,
 				        "ClientKey",
-				        each if [ClientType] <> null and [ClientID] <> null then [ClientType] & "-" & Text.From([ClientID]) else null,
+				        each
+				            if [client_key] <> null then Text.From([client_key])
+				            else if [ClientType] <> null and [ClientID] <> null then [ClientType] & "-" & Text.From([ClientID])
+				            else null,
 				        type text
 				    ),
 				
