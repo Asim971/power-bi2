@@ -237,6 +237,7 @@ table Fact_Order
 				// Fact_Order - Order Fact Table (Order Header Grain)
 				// 
 				// Sources:
+				// - public user_orders (order->user mapping; authoritative UserID)
 				// - public orders
 				// - public order_items (aggregated to order level)
 				// 
@@ -249,9 +250,11 @@ table Fact_Order
 				
 				let
 				    // Reference shared expressions (connection-only) created in Phase 2
+				    UserOrdersRaw = #"public user_orders",
 				    OrdersRaw = #"public orders",
 				    ItemsRaw = #"public order_items",
 				
+				    UserOrdersCols = Table.ColumnNames(UserOrdersRaw),
 				    OrdersCols = Table.ColumnNames(OrdersRaw),
 				    ItemsCols = Table.ColumnNames(ItemsRaw),
 				
@@ -271,6 +274,63 @@ table Fact_Order
 				            else if Text.Contains(s, "ihb") then "IHB"
 				            else if Text.Contains(s, "site") then "Site"
 				            else Text.Proper(s),
+				
+				    // -------------------------
+				    // USER_ORDERS (Order->User mapping)
+				    // -------------------------
+				    UserOrdersSelected = Table.SelectColumns(
+				        UserOrdersRaw,
+				        {
+				            "id",
+				            "order_id", "orders_id",
+				            "user_id", "users_id",
+				            "created_by_id", "created_by",
+				            "delete_status",
+				            "created_at", "updated_at"
+				        },
+				        MissingField.UseNull
+				    ),
+				
+				    UserOrdersFiltered = if List.Contains(UserOrdersCols, "delete_status")
+				        then Table.SelectRows(UserOrdersSelected, each [delete_status] = "NO")
+				        else UserOrdersSelected,
+				
+				    WithOrderID_UserOrders = Table.AddColumn(
+				        UserOrdersFiltered,
+				        "OrderID",
+				        each
+				            let
+				                o1 = AsInt64([order_id]),
+				                o2 = AsInt64([orders_id])
+				            in
+				                if o1 <> null then o1 else o2,
+				        Int64.Type
+				    ),
+				
+				    WithUserID_UserOrders = Table.AddColumn(
+				        WithOrderID_UserOrders,
+				        "UserID_UserOrders",
+				        each
+				            let
+				                u1 = AsInt64([user_id]),
+				                u2 = AsInt64([users_id]),
+				                u3 = AsInt64([created_by_id]),
+				                u4 = AsInt64([created_by])
+				            in
+				                if u1 <> null then u1 else if u2 <> null then u2 else if u3 <> null then u3 else u4,
+				        Int64.Type
+				    ),
+				
+				    UserOrdersForAgg = Table.SelectRows(WithUserID_UserOrders, each [OrderID] <> null and [UserID_UserOrders] <> null),
+				
+				    // If multiple users exist for an order, take a deterministic one (min)
+				    UserOrdersAgg = Table.Group(
+				        UserOrdersForAgg,
+				        {"OrderID"},
+				        {
+				            {"UserID_UserOrders", each List.Min(List.RemoveNulls([UserID_UserOrders])), Int64.Type}
+				        }
+				    ),
 				
 				    // -------------------------
 				    // ORDERS (header)
@@ -343,8 +403,25 @@ table Fact_Order
 				        Int64.Type
 				    ),
 				
+				    // Prefer UserID from public user_orders when available
+				    MergedUserOrders = Table.NestedJoin(WithUserID, {"OrderID"}, UserOrdersAgg, {"OrderID"}, "UserOrdersAgg", JoinKind.LeftOuter),
+				    ExpandedUserOrders = Table.ExpandTableColumn(MergedUserOrders, "UserOrdersAgg", {"UserID_UserOrders"}, {"UserID_UserOrders"}),
+				    WithUserIDFinal = Table.AddColumn(
+				        ExpandedUserOrders,
+				        "UserID_Final",
+				        each
+				            let
+				                uuo = AsInt64([UserID_UserOrders]),
+				                u = AsInt64([UserID])
+				            in
+				                if uuo <> null then uuo else u,
+				        Int64.Type
+				    ),
+				    RemovedUserCols = Table.RemoveColumns(WithUserIDFinal, {"UserID", "UserID_UserOrders"}),
+				    RenamedUserID = Table.RenameColumns(RemovedUserCols, {{"UserID_Final", "UserID"}}),
+				
 				    WithClientType = Table.AddColumn(
-				        WithUserID,
+				        RenamedUserID,
 				        "ClientType",
 				        each
 				            if [retailer_id] <> null then "Retailer"
