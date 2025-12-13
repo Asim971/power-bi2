@@ -388,7 +388,6 @@ relationship e6b8d482-2bff-50aa-7f6e-bffa12e51363
 	toColumn: Dim_Date.Date
 
 relationship 7b48bb68-9340-4676-d8b7-f27e260e7455
-	crossFilteringBehavior: bothDirections
 	fromColumn: Dim_Bazaar.bd_territory_id
 	toColumn: Dim_BDTerritory.BDTerritoryID
 
