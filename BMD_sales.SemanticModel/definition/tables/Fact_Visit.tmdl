@@ -86,16 +86,7 @@ table Fact_Visit
 
 		changedProperty = IsHidden
 
-	measure Unique_Clients_Visited = ```
-			
-			SUMX(
-			    VALUES('Fact_Visit'[DateKey]),
-			    CALCULATE(
-			        DISTINCTCOUNT('Fact_Visit'[ClientKey])
-			    )
-			)
-			
-			```
+	measure Unique_Clients_Visited = DISTINCTCOUNT('Fact_Visit'[ClientKey])
 		formatString: #,##0
 		displayFolder: Visit Counts\Base
 		lineageTag: 31ee6a27-68ba-41ec-ac33-8867a08436aa
@@ -416,8 +407,8 @@ table Fact_Visit
 
 	measure Unique_Territories =
 			CALCULATE(
-				DISTINCTCOUNT('Dim_Territory'[id]),
-				USERELATIONSHIP('Fact_Visit'[territory_id], 'Dim_Territory'[id])
+				DISTINCTCOUNT('Fact_Visit'[territory_id]),
+				'Fact_Visit'[HasTerritory] = 1
 			)
 		formatString: #,##0
 		displayFolder: GPS & Territory
@@ -658,10 +649,21 @@ table Fact_Visit
 		changedProperty = IsHidden
 
 	measure Visits_By_Territory =
-			CALCULATE(
-			    [Total_Visits],
-			    USERELATIONSHIP('Fact_Visit'[territory_id], 'Dim_Territory'[id])
-			)
+			VAR HasTerritoryFilter =
+				ISFILTERED('Dim_Territory'[territory_id])
+					|| ISFILTERED('Dim_Territory'[mainZoneName])
+					|| ISFILTERED('Dim_Territory'[mainRegionName])
+					|| ISFILTERED('Dim_Territory'[mainTerritoryName])
+					|| ISFILTERED('Dim_Territory'[AreaName])
+			RETURN
+				IF(
+					HasTerritoryFilter,
+					CALCULATE(
+						[Total_Visits],
+						TREATAS(VALUES('Dim_Territory'[territory_id]), 'Fact_Visit'[territory_id])
+					),
+					[Total_Visits]
+				)
 		formatString: 0
 		displayFolder: FRD Dashboard
 		lineageTag: 6f7a8b9c-0d1e-2f3a-4b5c-6d7e8f9a0b1c
@@ -847,17 +849,19 @@ table Fact_Visit
 		changedProperty = IsHidden
 
 	measure Location_Label_Dynamic = ```
-					VAR SelectedLevel = SELECTEDVALUE('LocationLevelParam'[LevelOption], "Area")
-					RETURN
+				VAR SelectedLevel = SELECTEDVALUE('LocationLevelParam'[LevelOption], "Area")
+				VAR TerritoryContext =
+					TREATAS(VALUES('Fact_Visit'[territory_id]), 'Dim_Territory'[territory_id])
+				RETURN
 					CALCULATE(
 						SWITCH(
 							SelectedLevel,
 							"Area", SELECTEDVALUE('Dim_Territory'[AreaName]),
-							"Zone", SELECTEDVALUE('Dim_Territory'[ZoneName]),
-							"Territory", SELECTEDVALUE('Dim_Territory'[TerritoryName]),
+							"Zone", SELECTEDVALUE('Dim_Territory'[mainZoneName]),
+							"Territory", SELECTEDVALUE('Dim_Territory'[mainTerritoryName]),
 							SELECTEDVALUE('Dim_Territory'[AreaName])
 						),
-						USERELATIONSHIP('Fact_Visit'[territory_id], 'Dim_Territory'[TerritoryID])
+						TerritoryContext
 					)
 			```
 		displayFolder: FRD Dashboard\Location
@@ -1047,10 +1051,21 @@ table Fact_Visit
 		changedProperty = IsHidden
 
 	measure Visits_By_Zone =
-			CALCULATE(
-				[Total_Visits],
-				USERELATIONSHIP('Fact_Visit'[territory_id], 'Dim_Territory'[id])
-			)
+			VAR HasTerritoryFilter =
+				ISFILTERED('Dim_Territory'[territory_id])
+					|| ISFILTERED('Dim_Territory'[mainZoneName])
+					|| ISFILTERED('Dim_Territory'[mainRegionName])
+					|| ISFILTERED('Dim_Territory'[mainTerritoryName])
+					|| ISFILTERED('Dim_Territory'[AreaName])
+			RETURN
+				IF(
+					HasTerritoryFilter,
+					CALCULATE(
+						[Total_Visits],
+						TREATAS(VALUES('Dim_Territory'[territory_id]), 'Fact_Visit'[territory_id])
+					),
+					[Total_Visits]
+				)
 		formatString: #,##0
 		displayFolder: Territory Analysis
 		lineageTag: territory-visits-zone-001
@@ -1058,10 +1073,21 @@ table Fact_Visit
 		changedProperty = IsHidden
 
 	measure Visits_By_Area =
-			CALCULATE(
-				[Total_Visits],
-				USERELATIONSHIP('Fact_Visit'[territory_id], 'Dim_Territory'[id])
-			)
+			VAR HasTerritoryFilter =
+				ISFILTERED('Dim_Territory'[territory_id])
+					|| ISFILTERED('Dim_Territory'[mainZoneName])
+					|| ISFILTERED('Dim_Territory'[mainRegionName])
+					|| ISFILTERED('Dim_Territory'[mainTerritoryName])
+					|| ISFILTERED('Dim_Territory'[AreaName])
+			RETURN
+				IF(
+					HasTerritoryFilter,
+					CALCULATE(
+						[Total_Visits],
+						TREATAS(VALUES('Dim_Territory'[territory_id]), 'Fact_Visit'[territory_id])
+					),
+					[Total_Visits]
+				)
 		formatString: #,##0
 		displayFolder: Territory Analysis
 		lineageTag: territory-visits-area-002
@@ -1069,13 +1095,18 @@ table Fact_Visit
 		changedProperty = IsHidden
 
 	measure Territory_Visit_Coverage =
-			VAR TotalTerritories = CALCULATE(DISTINCTCOUNT('Dim_Territory'[id]), ALL('Dim_Territory'))
-			VAR VisitedTerritories = CALCULATE(
-				DISTINCTCOUNT('Dim_Territory'[id]),
-				USERELATIONSHIP('Fact_Visit'[territory_id], 'Dim_Territory'[id])
-			)
+			VAR TotalTerritories =
+				CALCULATE(
+					DISTINCTCOUNT('Dim_Territory'[territory_id]),
+					ALL('Dim_Territory')
+				)
+			VAR VisitedTerritories =
+				CALCULATE(
+					DISTINCTCOUNT('Fact_Visit'[territory_id]),
+					'Fact_Visit'[HasTerritory] = 1
+				)
 			RETURN
-			DIVIDE(VisitedTerritories, TotalTerritories, 0)
+				DIVIDE(VisitedTerritories, TotalTerritories, 0)
 		formatString: 0.0%
 		displayFolder: Territory Analysis
 		lineageTag: territory-coverage-003
@@ -1083,30 +1114,21 @@ table Fact_Visit
 		changedProperty = IsHidden
 
 	measure Zone_Name_Selected =
-			CALCULATE(
-				SELECTEDVALUE('Dim_Territory'[zone_name], "All Zones"),
-				USERELATIONSHIP('Fact_Visit'[territory_id], 'Dim_Territory'[id])
-			)
+			SELECTEDVALUE('Dim_Territory'[mainZoneName], "All Zones")
 		displayFolder: Territory Analysis\Labels
 		lineageTag: territory-zone-label-004
 
 		changedProperty = IsHidden
 
 	measure Area_Name_Selected =
-			CALCULATE(
-				SELECTEDVALUE('Dim_Territory'[area_name], "All Areas"),
-				USERELATIONSHIP('Fact_Visit'[territory_id], 'Dim_Territory'[id])
-			)
+			SELECTEDVALUE('Dim_Territory'[AreaName], "All Areas")
 		displayFolder: Territory Analysis\Labels
 		lineageTag: territory-area-label-005
 
 		changedProperty = IsHidden
 
 	measure Territory_Name_Selected =
-			CALCULATE(
-				SELECTEDVALUE('Dim_Territory'[name], "All Territories"),
-				USERELATIONSHIP('Fact_Visit'[territory_id], 'Dim_Territory'[id])
-			)
+			SELECTEDVALUE('Dim_Territory'[mainTerritoryName], "All Territories")
 		displayFolder: Territory Analysis\Labels
 		lineageTag: territory-name-label-006
 
