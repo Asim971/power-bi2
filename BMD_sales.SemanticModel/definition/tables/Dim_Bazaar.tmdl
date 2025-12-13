@@ -37,7 +37,7 @@ table Dim_Bazaar
 		dataType: int64
 		formatString: 0
 		lineageTag: 5557fdcf-e63c-4aac-a60b-ef01c65f366b
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: bd_territory_id
 
 		changedProperty = IsHidden
@@ -48,10 +48,28 @@ table Dim_Bazaar
 		dataType: int64
 		formatString: 0
 		lineageTag: 785bb0fc-70a2-4b5e-9569-81cc2d4ec977
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: territory_id
 
 		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column district_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 13c316b2-e10f-49b8-91bd-6480d365becc
+		summarizeBy: sum
+		sourceColumn: district_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column upazilla_id
+		dataType: int64
+		formatString: 0
+		lineageTag: da82ef6d-983c-4782-92e0-2661583cb1fb
+		summarizeBy: sum
+		sourceColumn: upazilla_id
 
 		annotation SummarizationSetBy = Automatic
 
@@ -63,7 +81,7 @@ table Dim_Bazaar
 				    BazaarsSource = #"public bazaars",
 				    
 				    // Select key columns
-				    SelectedColumns = Table.SelectColumns(BazaarsSource, {"id", "bazaar_name"}),
+				    SelectedColumns = Table.SelectColumns(BazaarsSource, {"id", "bazaar_name", "district_id", "upazilla_id"}),
 				    
 				    // Rename columns
 				    RenamedColumns = Table.RenameColumns(SelectedColumns, {

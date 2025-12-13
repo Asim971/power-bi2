@@ -613,11 +613,10 @@ table Fact_Visit
 			            VAR HasVisit = CALCULATE(COUNTROWS('Fact_Visit'), 'Dim_Date'[Date] = CheckDate) > 0
 			            RETURN ROW("@Day", [Value], "@Has", HasVisit)
 			        ),
-			        IF([@Has] && EARLIER([@Day]) = 0 || ([@Has] && CALCULATE(MAX([@Has]), FILTER(ALL([@Day]), [@Day] < EARLIER([@Day])))) = TRUE(), 1, 0)
+			        IF([@Has] && EARLIER([@Days]) = 0 || ([@Has] && CALCULATE(MAX([@Has]), FILTER(ALL([@Day]), [@Day] < EARLIER([@Day])))) = TRUE(), 1, 0)
 			    )
 			RETURN ConsecutiveDays
 			```
-		formatString: 0
 		displayFolder: Analytics\Engagement
 		lineageTag: a9b0c1d2-e3f4-a5b6-c7d8-e9f0a1b2c3d4
 
@@ -1201,7 +1200,7 @@ table Fact_Visit
 		dataType: int64
 		formatString: 0
 		lineageTag: ebe2fbff-df71-4ba9-8959-aacb4ae544f5
-		summarizeBy: none
+		summarizeBy: count
 		sourceColumn: EmployeeID
 
 		changedProperty = IsHidden

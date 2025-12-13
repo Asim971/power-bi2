@@ -1,192 +1,6 @@
 table Dim_Territory
 	lineageTag: db5d884b-6597-4180-9777-910caa2361d1
 
-	column zone_id
-		dataType: int64
-		formatString: 0
-		lineageTag: 50f3f619-0a75-4644-a84d-4caf4af7af2a
-		summarizeBy: count
-		sourceColumn: zone_id
-
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
-
-	column zone_name
-		dataType: string
-		lineageTag: d75f803f-af45-4365-b68d-b6d9291288f3
-		summarizeBy: none
-		sourceColumn: zone_name
-
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
-
-	column region_id
-		dataType: int64
-		formatString: 0
-		lineageTag: 9cfefd4e-e5fc-4e89-a996-b3dfd44af963
-		summarizeBy: count
-		sourceColumn: region_id
-
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
-
-	column region_name
-		dataType: string
-		lineageTag: f4b7956a-9300-481c-aa24-88c84c0f914b
-		summarizeBy: none
-		sourceColumn: region_name
-
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
-
-	column area_id
-		dataType: int64
-		formatString: 0
-		lineageTag: 49bf659c-a5e3-49ee-82d8-32f8b3be567a
-		summarizeBy: count
-		sourceColumn: area_id
-
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
-
-	column area_name
-		dataType: string
-		lineageTag: cb53eb18-73a4-4264-a85c-3e8250c0437f
-		summarizeBy: none
-		sourceColumn: area_name
-
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
-
-	column nation_id
-		dataType: int64
-		formatString: 0
-		lineageTag: beb0ebc3-f7b2-47f7-a820-fe4d8c9291b7
-		summarizeBy: count
-		sourceColumn: nation_id
-
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
-
-	column nation_name
-		dataType: string
-		lineageTag: a3067a9a-3152-4971-b8bd-869a841f85e3
-		summarizeBy: none
-		sourceColumn: nation_name
-
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
-
-	column organization_id
-		dataType: int64
-		formatString: 0
-		lineageTag: ded7c21d-31fb-4fb4-80b2-4062e7944276
-		summarizeBy: count
-		sourceColumn: organization_id
-
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
-
-	column assigned_zsm
-		dataType: string
-		lineageTag: 64b0d8c7-90d8-4d73-be35-cfd439f2aff2
-		summarizeBy: none
-		sourceColumn: assigned_zsm
-
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
-
-	column assigned_gm
-		dataType: string
-		lineageTag: 6f2f0bee-e27d-4a82-9473-bc201c4c4f97
-		summarizeBy: none
-		sourceColumn: assigned_gm
-
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
-
-	column assigned_agm
-		dataType: string
-		lineageTag: c0516678-66a3-48d1-8968-969608fbaae1
-		summarizeBy: none
-		sourceColumn: assigned_agm
-
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
-
-	column assigned_asm
-		dataType: string
-		lineageTag: 0bbb4e7a-d829-4984-8b70-6d533602c226
-		summarizeBy: none
-		sourceColumn: assigned_asm
-
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
-
-	column id
-		dataType: int64
-		formatString: 0
-		lineageTag: territory-id-001
-		summarizeBy: count
-		sourceColumn: id
-
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
-
-	column name
-		dataType: string
-		lineageTag: territory-name-001
-		summarizeBy: none
-		sourceColumn: name
-
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
-
-	column assigned_sr
-		dataType: string
-		lineageTag: assigned-sr-001
-		summarizeBy: none
-		sourceColumn: assigned_sr
-
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
-
-	column assigned_bdo
-		dataType: string
-		lineageTag: assigned-bdo-001
-		summarizeBy: none
-		sourceColumn: assigned_bdo
-
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
-
-	column assigned_cro
-		dataType: string
-		lineageTag: assigned-cro-001
-		summarizeBy: none
-		sourceColumn: assigned_cro
-
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
-
 	column users_id
 		dataType: int64
 		formatString: 0
@@ -198,13 +12,53 @@ table Dim_Territory
 
 		annotation SummarizationSetBy = Automatic
 
-	column delete_status
-		dataType: string
-		lineageTag: 6d3a0f5e-ff7e-486e-b200-0188d3ed3210
+	column territory_id
+		dataType: int64
+		isKey
+		formatString: 0
+		lineageTag: 3b5a100f-e280-4775-b6a6-532e4c3efa48
 		summarizeBy: none
-		sourceColumn: delete_status
+		sourceColumn: territory_id
 
-		changedProperty = IsHidden
+		annotation SummarizationSetBy = Automatic
+
+	column mainOrganizationName
+		dataType: string
+		lineageTag: 7838605c-0969-4d3a-a212-509f26e98286
+		summarizeBy: none
+		sourceColumn: mainOrganizationName
+
+		annotation SummarizationSetBy = Automatic
+
+	column mainZoneName
+		dataType: string
+		lineageTag: 5c863bb5-004b-4c81-8ef6-5e5796669de5
+		summarizeBy: none
+		sourceColumn: mainZoneName
+
+		annotation SummarizationSetBy = Automatic
+
+	column mainRegionName
+		dataType: string
+		lineageTag: 256a9515-8ad9-44cf-9f65-be9af2ea6532
+		summarizeBy: none
+		sourceColumn: mainRegionName
+
+		annotation SummarizationSetBy = Automatic
+
+	column mainTerritoryName
+		dataType: string
+		lineageTag: 52fab69a-180f-475c-b8f7-3f29368410ef
+		summarizeBy: none
+		sourceColumn: mainTerritoryName
+
+		annotation SummarizationSetBy = Automatic
+
+	column AreaName
+		dataType: string
+		lineageTag: f883ff80-8aaa-4e87-a1ef-4fc841abfe73
+		summarizeBy: none
+		sourceColumn: AreaName
 
 		annotation SummarizationSetBy = Automatic
 
@@ -228,10 +82,11 @@ table Dim_Territory
 				    ActiveTerritories = Table.SelectRows(SelectedColumns, each [delete_status] = "NO"),
 				    // Buffer to prevent gateway/PostgreSQL folding issues during join
 				    UsersTerritoryBridgeBuffered = Table.Buffer(#"public users_territory"),
-				  #"Merged queries" = Table.NestedJoin(ActiveTerritories, {"id"}, UsersTerritoryBridgeBuffered, {"territory_id"}, "public users_territory", JoinKind.LeftOuter),
-				  #"Expanded public users_territory" = Table.ExpandTableColumn(#"Merged queries", "public users_territory", {"users_id"}, {"users_id"})
+				  #"Merged queries 1" = Table.NestedJoin(UsersTerritoryBridgeBuffered, {"users_id"}, Dim_User, {"UserID"}, "Dim_User", JoinKind.LeftOuter),
+				  #"Expanded Dim_User 1" = Table.ExpandTableColumn(#"Merged queries 1", "Dim_User", {"OrganizationName", "ZoneName", "RegionName", "TerritoryName", "AreaName"}, {"OrganizationName", "ZoneName", "RegionName", "TerritoryName", "AreaName"}),
+				  #"Renamed columns" = Table.RenameColumns(#"Expanded Dim_User 1", {{"OrganizationName", "mainOrganizationName"}, {"ZoneName", "mainZoneName"}, {"RegionName", "mainRegionName"}, {"TerritoryName", "mainTerritoryName"}})
 				in
-				    #"Expanded public users_territory"
+				    #"Renamed columns"
 				```
 
 	changedProperty = IsHidden

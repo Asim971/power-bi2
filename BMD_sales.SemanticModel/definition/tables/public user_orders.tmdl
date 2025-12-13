@@ -275,6 +275,24 @@ table 'public user_orders'
 
 		annotation SummarizationSetBy = Automatic
 
+	column created_by
+		dataType: int64
+		formatString: 0
+		lineageTag: 8e79160a-6d42-45c1-9557-78efc2231ed5
+		summarizeBy: sum
+		sourceColumn: created_by
+
+		annotation SummarizationSetBy = Automatic
+
+	column updated_by
+		dataType: int64
+		formatString: 0
+		lineageTag: b09d5601-e24f-43b9-911f-7b7a17b5cb9c
+		summarizeBy: sum
+		sourceColumn: updated_by
+
+		annotation SummarizationSetBy = Automatic
+
 	partition 'public user_orders' = m
 		mode: import
 		source =

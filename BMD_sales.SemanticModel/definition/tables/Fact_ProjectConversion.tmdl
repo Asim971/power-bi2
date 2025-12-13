@@ -144,6 +144,12 @@ table Fact_ProjectConversion
 
 		changedProperty = IsHidden
 
+	measure Total_conversions_MT = SUM(Fact_ProjectConversion[total_quantity])
+		displayFolder: Analytics\Engagement
+		lineageTag: 8147ebce-77aa-4288-99dd-0b068f9b1cea
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
 	column ConversionID
 		dataType: int64
 		formatString: 0
@@ -170,27 +176,6 @@ table Fact_ProjectConversion
 		lineageTag: 9faacf23-70e9-4f17-aeb4-d34a9f58d0d9
 		summarizeBy: none
 		sourceColumn: DeliveryMethod
-
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
-
-	column OrganizationID
-		dataType: int64
-		formatString: 0
-		lineageTag: 4f6f53e8-0af7-4d23-8c32-0e55f9d4da3a
-		summarizeBy: count
-		sourceColumn: OrganizationID
-
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
-
-	column CompanyCode
-		dataType: string
-		lineageTag: 6bfc4d83-6b3a-4dcb-b2c2-4f97a48fce5a
-		summarizeBy: none
-		sourceColumn: CompanyCode
 
 		changedProperty = IsHidden
 
@@ -453,6 +438,87 @@ table Fact_ProjectConversion
 
 		annotation SummarizationSetBy = Automatic
 
+	column OrganizationID
+		dataType: int64
+		formatString: 0
+		lineageTag: 4f6f53e8-0af7-4d23-8c32-0e55f9d4da3a
+		summarizeBy: count
+		sourceColumn: OrganizationID
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column CompanyCode
+		dataType: string
+		lineageTag: 6bfc4d83-6b3a-4dcb-b2c2-4f97a48fce5a
+		summarizeBy: none
+		sourceColumn: CompanyCode
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_quantity
+		dataType: double
+		lineageTag: 997b3f03-6a38-4237-bf0c-56203522f519
+		summarizeBy: sum
+		sourceColumn: total_quantity
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column unit
+		dataType: string
+		lineageTag: fe3a178b-a30a-4e0b-abba-4e08ba84545d
+		summarizeBy: none
+		sourceColumn: unit
+
+		annotation SummarizationSetBy = Automatic
+
+	column contractor_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 583cbbe3-feb5-4988-9a19-d394d2255f1c
+		summarizeBy: sum
+		sourceColumn: contractor_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column bkash_number
+		dataType: string
+		lineageTag: 27d88a7f-58a9-4817-9425-4571b6cb9d18
+		summarizeBy: none
+		sourceColumn: bkash_number
+
+		annotation SummarizationSetBy = Automatic
+
+	column contractor_name
+		dataType: string
+		lineageTag: 19f25acb-7780-41a2-a2a7-65df169f3069
+		summarizeBy: none
+		sourceColumn: contractor_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column contractor_phone
+		dataType: string
+		lineageTag: f2bfd5ff-bb65-43ab-94c4-e81425a2ae89
+		summarizeBy: none
+		sourceColumn: contractor_phone
+
+		annotation SummarizationSetBy = Automatic
+
+	column bank_account_id
+		dataType: int64
+		formatString: 0
+		lineageTag: a6f00428-a058-413a-bb22-bf83bde43ccd
+		summarizeBy: sum
+		sourceColumn: bank_account_id
+
+		annotation SummarizationSetBy = Automatic
+
 	partition Fact_ProjectConversion = m
 		mode: import
 		source = ```
@@ -652,9 +718,17 @@ table Fact_ProjectConversion
 				        {"total_amount", type number},
 				        {"created_at", type datetime},
 				        {"updated_at", type datetime}
-				    })
+				    }),
+				  #"Merged queries" = Table.NestedJoin(TypedTable, {"ConversionID"}, #"public project_conversion", {"id"}, "public project_conversion", JoinKind.LeftOuter),
+				  #"Expanded public project_conversion" = Table.ExpandTableColumn(#"Merged queries", "public project_conversion", {"total_quantity", "unit"}, {"total_quantity", "unit"}),
+				  #"Changed column type" = Table.TransformColumnTypes(#"Expanded public project_conversion", {{"total_quantity", type number}}),
+				  #"Merged queries 1" = Table.NestedJoin(#"Changed column type", {"SiteID"}, #"public potential_site", {"id"}, "public potential_site", JoinKind.LeftOuter),
+				  #"Expanded public potential_site" = Table.ExpandTableColumn(#"Merged queries 1", "public potential_site", {"contractor_id"}, {"contractor_id"}),
+				  #"Merged queries 2" = Table.NestedJoin(#"Expanded public potential_site", {"contractor_id"}, #"public client", {"id"}, "public client", JoinKind.LeftOuter),
+				  #"Expanded public client" = Table.ExpandTableColumn(#"Merged queries 2", "public client", {"bkash_number", "name", "phone", "bank_account_id"}, {"bkash_number", "name", "phone", "bank_account_id"}),
+				  #"Renamed columns" = Table.RenameColumns(#"Expanded public client", {{"name", "contractor_name"}, {"phone", "contractor_phone"}})
 				in
-				    TypedTable
+				    #"Renamed columns"
 				```
 
 	changedProperty = IsHidden

@@ -318,6 +318,7 @@ table Dim_Client_Simple
 
 	column ClientKey
 		dataType: string
+		isKey
 		lineageTag: 0a17d132-6804-48b8-8d27-c2cf96bc5a03
 		summarizeBy: none
 		sourceColumn: ClientKey
@@ -330,7 +331,7 @@ table Dim_Client_Simple
 		dataType: int64
 		formatString: 0
 		lineageTag: a2a76574-ee27-4b38-9474-5c2c04bddc8c
-		summarizeBy: none
+		summarizeBy: count
 		sourceColumn: ClientID
 
 		changedProperty = IsHidden
@@ -408,26 +409,6 @@ table Dim_Client_Simple
 
 		annotation SummarizationSetBy = Automatic
 
-	column TerritoryName
-		dataType: string
-		lineageTag: c9b8c638-9cdf-44f7-be48-506fcae81638
-		summarizeBy: none
-		sourceColumn: TerritoryName
-
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
-
-	column AreaName
-		dataType: string
-		lineageTag: 75978420-9016-4252-9369-f7c6d18bdb5f
-		summarizeBy: none
-		sourceColumn: AreaName
-
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
-
 	column EntityGroup =
 			SWITCH(
 			    [ClientType],
@@ -443,6 +424,40 @@ table Dim_Client_Simple
 		summarizeBy: none
 
 		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column bd_territory_id
+		dataType: int64
+		formatString: 0
+		lineageTag: f0560325-b75e-4917-9390-dc9dba0de7d6
+		summarizeBy: sum
+		sourceColumn: bd_territory_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column territory_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 0292c323-2eec-4535-b109-b70f4a27a7e2
+		summarizeBy: sum
+		sourceColumn: territory_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column TerritoryName
+		dataType: string
+		lineageTag: 283eb63f-c665-441a-8bf2-227fc71a5679
+		summarizeBy: none
+		sourceColumn: TerritoryName
+
+		annotation SummarizationSetBy = Automatic
+
+	column AreaName
+		dataType: string
+		lineageTag: 68787523-c45b-474f-8e02-b0e2b214652d
+		summarizeBy: none
+		sourceColumn: AreaName
 
 		annotation SummarizationSetBy = Automatic
 
@@ -642,9 +657,11 @@ table Dim_Client_Simple
 				        {"BazaarID", Int64.Type},
 				        {"TerritoryName", type text},
 				        {"AreaName", type text}
-				    })
+				    }),
+				  #"Merged queries" = Table.NestedJoin(TypedTable, {"BazaarID"}, Dim_Bazaar, {"BazaarID"}, "Dim_Bazaar", JoinKind.LeftOuter),
+				  #"Expanded Dim_Bazaar" = Table.ExpandTableColumn(#"Merged queries", "Dim_Bazaar", {"bd_territory_id", "territory_id"}, {"bd_territory_id", "territory_id"})
 				in
-				    TypedTable
+				    #"Expanded Dim_Bazaar"
 				```
 
 	changedProperty = IsHidden

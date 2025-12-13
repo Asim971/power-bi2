@@ -9,6 +9,7 @@ table Dim_User
 
 	column UserID
 		dataType: int64
+		isKey
 		formatString: 0
 		lineageTag: c6cf996d-9bb4-47e8-b97e-5e84d6d7d26c
 		summarizeBy: none
@@ -31,6 +32,7 @@ table Dim_User
 	column EmployeeEmail
 		dataType: string
 		lineageTag: aea33dae-fef0-4f40-b39a-0c137e448872
+		isDefaultLabel
 		summarizeBy: none
 		sourceColumn: EmployeeEmail
 
@@ -200,7 +202,7 @@ table Dim_User
 		dataType: int64
 		formatString: 0
 		lineageTag: 30efb800-f538-489b-9472-0a1eb39a708e
-		summarizeBy: none
+		summarizeBy: count
 		sourceColumn: EmployeeID
 
 		changedProperty = IsHidden
@@ -323,7 +325,7 @@ table Dim_User
 		dataType: int64
 		formatString: 0
 		lineageTag: 7a8b9c0d-1e2f-3456-0123-567890123408
-		summarizeBy: count
+		summarizeBy: none
 		sourceColumn: BazaarID
 
 		changedProperty = IsHidden
