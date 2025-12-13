@@ -519,6 +519,14 @@ expression 'public user_orders' =
 				  #"Navigation 1"
 	lineageTag: cf531c15-0abd-44de-adb4-2c4ba5c753e6
 
+expression 'public user_order_history_details' =
+				let
+				  Source = PostgreSQL.Database("172.17.19.21", "bmdsalesdb"),
+				  #"Navigation 1" = Source{[Schema = "public", Item = "user_order_history_details"]}[Data]
+				in
+				  #"Navigation 1"
+	lineageTag: 6e1f2d3c-4b5a-6789-9abc-def012345678
+
 expression 'public users' =
 				let
 				  Source = PostgreSQL.Database("172.17.19.21", "bmdsalesdb"),
