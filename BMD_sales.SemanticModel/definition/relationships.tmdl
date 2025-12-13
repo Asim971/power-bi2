@@ -313,6 +313,7 @@ relationship a763fcdb-f284-17ec-e74a-65d52e17ed6d
 	toColumn: Dim_VisitCategory.VisitCategoryID
 
 relationship b2be16bb-8052-2c34-e100-8d85e7ab7a34
+	isActive: false
 	fromColumn: Fact_Visit.VisitPhaseID
 	toColumn: Dim_VisitPhase.VisitPhaseID
 
@@ -321,7 +322,6 @@ relationship 6792aed9-a286-29f3-b7e7-5d654435e4a4
 	toColumn: Dim_VisitPhase.VisitPhaseID
 
 relationship a1b2c3d4-e5f6-7890-abcd-ef1234567890
-	crossFilteringBehavior: bothDirections
 	fromColumn: Fact_Visit.ClientKey
 	toColumn: Dim_Client_Simple.ClientKey
 
@@ -341,6 +341,14 @@ relationship 1987ce8d-274c-4244-acb1-fe2b4f761ec6
 relationship 9f6d8aeb-4c79-c167-c7d9-7f8716100e93
 	fromColumn: Fact_Visit.DateKey
 	toColumn: Dim_Date.DateKey
+
+relationship 2d2d9a1f-4f3c-4d7e-b8b3-4e0b5a8f1b21
+	fromColumn: Fact_Visit.EmployeeID
+	toColumn: Dim_User.UserID
+
+relationship 6e7b6f2a-9c33-4b8a-93ff-1e9b8a9a6b4a
+	fromColumn: Fact_Visit.VisitStageID
+	toColumn: Dim_VisitStage.VisitStageID
 
 relationship f23e599f-aaf9-4af1-a7d3-0fa21d772a6a
 	joinOnDateBehavior: datePartOnly
