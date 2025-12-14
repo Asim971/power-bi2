@@ -163,6 +163,32 @@ table Fact_ProjectConversion
 		displayFolder: Conversion Counts\By Status
 		lineageTag: 7f05a2a2-0e1b-4d4f-a65e-1a8fbaea8799
 
+	measure Total_Orders_By_Contractor =
+			COALESCE(
+				CALCULATE(
+					COUNTROWS('Fact_ProjectConversion'),
+					NOT ISBLANK('Fact_ProjectConversion'[contractor_id])
+				),
+				0
+			)
+		formatString: 0
+		displayFolder: Analytics\Engagement
+		lineageTag: 8c1c1ee6-e53a-4b95-bb40-7fe0b8dd86a9
+
+	measure Total_MT_By_Contractor =
+			COALESCE(
+				CALCULATE(
+					SUM('Fact_ProjectConversion'[qty_in_mt]),
+					NOT ISBLANK('Fact_ProjectConversion'[contractor_id])
+				),
+				0
+			)
+		formatString: 0.00
+		displayFolder: Analytics\Engagement
+		lineageTag: 5a8a7c2a-f5da-4c0b-8fb8-64b207fd9d20
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
 	column ConversionID
 		dataType: int64
 		formatString: 0
