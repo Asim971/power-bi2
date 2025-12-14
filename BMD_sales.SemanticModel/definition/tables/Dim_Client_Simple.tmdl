@@ -54,6 +54,30 @@ table Dim_Client_Simple
 
 		changedProperty = IsHidden
 
+	measure Site_Status_Selected_Month =
+			VAR _IsSite = SELECTEDVALUE('Dim_Client_Simple'[ClientType]) = "Site"
+			VAR _ActivityThisMonth =
+				CALCULATE(
+					COUNTROWS('Fact_Order') + COUNTROWS('Fact_ProjectConversion')
+				)
+			VAR _ActivityEver =
+				CALCULATE(
+					COUNTROWS('Fact_Order') + COUNTROWS('Fact_ProjectConversion'),
+					REMOVEFILTERS('Dim_Date')
+				)
+			RETURN
+				IF(
+					NOT _IsSite,
+					BLANK(),
+					IF(
+						_ActivityEver = 0,
+						"Potential",
+						IF(_ActivityThisMonth > 0, "Active", "Inactive")
+					)
+				)
+		displayFolder: Site Analysis\Status
+		lineageTag: 7c2b9f1d-4c8e-4c9a-9df6-02c5c3c6f7a1
+
 	measure Total_Engineers =
 			CALCULATE(
 				DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
@@ -424,6 +448,22 @@ table Dim_Client_Simple
 		summarizeBy: none
 
 		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column site_status =
+			VAR _IsSite = [ClientType] = "Site"
+			VAR _HasEver =
+				COUNTROWS(RELATEDTABLE('Fact_Order'))
+					+ COUNTROWS(RELATEDTABLE('Fact_ProjectConversion'))
+			RETURN
+				IF(
+					NOT _IsSite,
+					BLANK(),
+					IF(_HasEver > 0, "Active", "Potential")
+				)
+		lineageTag: 1fd41b25-6b34-4ef6-a1d9-2a9c4b7f3d5e
+		summarizeBy: none
 
 		annotation SummarizationSetBy = Automatic
 
