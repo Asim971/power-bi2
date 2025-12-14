@@ -150,6 +150,19 @@ table Fact_ProjectConversion
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	measure Active_Contractors =
+			COALESCE(
+				CALCULATE(
+					DISTINCTCOUNT('Fact_ProjectConversion'[contractor_id]),
+					NOT ISBLANK('Fact_ProjectConversion'[contractor_id]),
+					UPPER('Fact_ProjectConversion'[OrderStatus]) = "APPROVED"
+				),
+				0
+			)
+		formatString: 0
+		displayFolder: Conversion Counts\By Status
+		lineageTag: 7f05a2a2-0e1b-4d4f-a65e-1a8fbaea8799
+
 	column ConversionID
 		dataType: int64
 		formatString: 0
