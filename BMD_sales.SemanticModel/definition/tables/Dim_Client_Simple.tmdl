@@ -55,20 +55,26 @@ table Dim_Client_Simple
 		changedProperty = IsHidden
 
 	measure Total_Active_Sites =
-			CALCULATE(
-				DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
-				'Dim_Client_Simple'[ClientType] = "Site",
-				'Dim_Client_Simple'['Active Sites'] = TRUE()
+			COALESCE(
+				CALCULATE(
+					DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
+					'Dim_Client_Simple'[ClientType] = "Site",
+					'Dim_Client_Simple'[Active Sites] = TRUE()
+				),
+				0
 			)
 		formatString: #,##0
 		displayFolder: Site Analysis\Counts
 		lineageTag: 2c8a6c3f-1b2d-4b7a-9b8b-3d6a2d7c1e4f
 
 	measure Total_Potential_Sites =
-			CALCULATE(
-				DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
-				'Dim_Client_Simple'[ClientType] = "Site",
-				'Dim_Client_Simple'['Potential Site'] = TRUE()
+			COALESCE(
+				CALCULATE(
+					DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
+					'Dim_Client_Simple'[ClientType] = "Site",
+					'Dim_Client_Simple'[Potential Site] = TRUE()
+				),
+				0
 			)
 		formatString: #,##0
 		displayFolder: Site Analysis\Counts
