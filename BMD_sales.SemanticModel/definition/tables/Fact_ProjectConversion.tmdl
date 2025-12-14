@@ -467,16 +467,6 @@ table Fact_ProjectConversion
 
 		annotation SummarizationSetBy = Automatic
 
-	column qty_in_mt
-		dataType: double
-		lineageTag: 6c4b1e2a-4b6a-4a7d-9b1b-3b0d0a6f1b3c
-		summarizeBy: sum
-		sourceColumn: qty_in_mt
-
-		annotation SummarizationSetBy = Automatic
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
 	column contractor_id
 		dataType: int64
 		formatString: 0
@@ -518,6 +508,16 @@ table Fact_ProjectConversion
 		sourceColumn: bank_account_id
 
 		annotation SummarizationSetBy = Automatic
+
+	column qty_in_mt
+		dataType: double
+		lineageTag: 6c4b1e2a-4b6a-4a7d-9b1b-3b0d0a6f1b3c
+		summarizeBy: sum
+		sourceColumn: qty_in_mt
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	partition Fact_ProjectConversion = m
 		mode: import
@@ -731,7 +731,7 @@ table Fact_ProjectConversion
 				        u = try Text.Lower(Text.From([unit])) otherwise null,
 				        isBag = if u = null then false else Text.Contains(u, "bag")
 				      in
-				        if q = null then null else if isBag then q * 20 else q,
+				        if q = null then null else if isBag then q / 20 else q,
 				    type number
 				  ),
 				  #"Merged queries 1" = Table.NestedJoin(#"Added qty_in_mt", {"SiteID"}, #"public potential_site", {"id"}, "public potential_site", JoinKind.LeftOuter),

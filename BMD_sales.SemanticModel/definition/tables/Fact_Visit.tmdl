@@ -1113,22 +1113,19 @@ table Fact_Visit
 
 		changedProperty = IsHidden
 
-	measure Zone_Name_Selected =
-			SELECTEDVALUE('Dim_Territory'[mainZoneName], "All Zones")
+	measure Zone_Name_Selected = SELECTEDVALUE('Dim_Territory'[mainZoneName], "All Zones")
 		displayFolder: Territory Analysis\Labels
 		lineageTag: territory-zone-label-004
 
 		changedProperty = IsHidden
 
-	measure Area_Name_Selected =
-			SELECTEDVALUE('Dim_Territory'[AreaName], "All Areas")
+	measure Area_Name_Selected = SELECTEDVALUE('Dim_Territory'[AreaName], "All Areas")
 		displayFolder: Territory Analysis\Labels
 		lineageTag: territory-area-label-005
 
 		changedProperty = IsHidden
 
-	measure Territory_Name_Selected =
-			SELECTEDVALUE('Dim_Territory'[mainTerritoryName], "All Territories")
+	measure Territory_Name_Selected = SELECTEDVALUE('Dim_Territory'[mainTerritoryName], "All Territories")
 		displayFolder: Territory Analysis\Labels
 		lineageTag: territory-name-label-006
 

@@ -54,36 +54,6 @@ table Dim_Client_Simple
 
 		changedProperty = IsHidden
 
-	measure Site_Status_Selected_Month =
-			VAR _IsSite = SELECTEDVALUE('Dim_Client_Simple'[ClientType]) = "Site"
-			VAR _ContextMaxDate = COALESCE(MAX('Dim_Date'[Date]), TODAY())
-			VAR _MonthStart = DATE(YEAR(_ContextMaxDate), MONTH(_ContextMaxDate), 1)
-			VAR _MonthEnd = EOMONTH(_MonthStart, 0)
-			VAR _ActivityThisMonth =
-				CALCULATE(
-					COUNTROWS('Fact_Order') + COUNTROWS('Fact_ProjectConversion'),
-					REMOVEFILTERS('Dim_Date'),
-					'Dim_Date'[Date] >= _MonthStart,
-					'Dim_Date'[Date] <= _MonthEnd
-				)
-			VAR _ActivityEver =
-				CALCULATE(
-					COUNTROWS('Fact_Order') + COUNTROWS('Fact_ProjectConversion'),
-					REMOVEFILTERS('Dim_Date')
-				)
-			RETURN
-				IF(
-					NOT _IsSite,
-					BLANK(),
-					IF(
-						_ActivityEver = 0,
-						"Potential",
-						IF(_ActivityThisMonth > 0, "Active", "Inactive")
-					)
-				)
-		displayFolder: Site Analysis\Status
-		lineageTag: 7c2b9f1d-4c8e-4c9a-9df6-02c5c3c6f7a1
-
 	measure Total_Engineers =
 			CALCULATE(
 				DISTINCTCOUNT('Dim_Client_Simple'[ClientID]),
@@ -346,6 +316,36 @@ table Dim_Client_Simple
 
 		changedProperty = IsHidden
 
+	measure Site_Status_Selected_Month =
+			VAR _IsSite = SELECTEDVALUE('Dim_Client_Simple'[ClientType]) = "Site"
+			VAR _ContextMaxDate = COALESCE(MAX('Dim_Date'[Date]), TODAY())
+			VAR _MonthStart = DATE(YEAR(_ContextMaxDate), MONTH(_ContextMaxDate), 1)
+			VAR _MonthEnd = EOMONTH(_MonthStart, 0)
+			VAR _ActivityThisMonth =
+				CALCULATE(
+					COUNTROWS('Fact_Order') + COUNTROWS('Fact_ProjectConversion'),
+					REMOVEFILTERS('Dim_Date'),
+					'Dim_Date'[Date] >= _MonthStart,
+					'Dim_Date'[Date] <= _MonthEnd
+				)
+			VAR _ActivityEver =
+				CALCULATE(
+					COUNTROWS('Fact_Order') + COUNTROWS('Fact_ProjectConversion'),
+					REMOVEFILTERS('Dim_Date')
+				)
+			RETURN
+				IF(
+					NOT _IsSite,
+					BLANK(),
+					IF(
+						_ActivityEver = 0,
+						"Potential",
+						IF(_ActivityThisMonth > 0, "Active", "Inactive")
+					)
+				)
+		displayFolder: Site Analysis\Status
+		lineageTag: 7c2b9f1d-4c8e-4c9a-9df6-02c5c3c6f7a1
+
 	column ClientKey
 		dataType: string
 		isKey
@@ -457,50 +457,6 @@ table Dim_Client_Simple
 
 		annotation SummarizationSetBy = Automatic
 
-	column site_status =
-			VAR _IsSite = [ClientType] = "Site"
-			VAR _HasEver =
-				COUNTROWS(RELATEDTABLE('Fact_Order'))
-					+ COUNTROWS(RELATEDTABLE('Fact_ProjectConversion'))
-			RETURN
-				IF(
-					NOT _IsSite,
-					BLANK(),
-					IF(_HasEver > 0, "Active", "Potential")
-				)
-		lineageTag: 1fd41b25-6b34-4ef6-a1d9-2a9c4b7f3d5e
-		summarizeBy: none
-
-		annotation SummarizationSetBy = Automatic
-
-	column 'Active Sites' =
-			VAR _IsSite = [ClientType] = "Site"
-			VAR _HasEver =
-				COUNTROWS(RELATEDTABLE('Fact_Order'))
-					+ COUNTROWS(RELATEDTABLE('Fact_ProjectConversion'))
-			RETURN
-				IF(_IsSite && _HasEver > 0, TRUE(), FALSE())
-		dataType: boolean
-		formatString: """TRUE"";""TRUE"";""FALSE"""
-		lineageTag: 5f0b5a7e-7fb9-4f2e-9c7f-7b5edb8cc1f4
-		summarizeBy: none
-
-		annotation SummarizationSetBy = Automatic
-
-	column 'Potential Site' =
-			VAR _IsSite = [ClientType] = "Site"
-			VAR _HasEver =
-				COUNTROWS(RELATEDTABLE('Fact_Order'))
-					+ COUNTROWS(RELATEDTABLE('Fact_ProjectConversion'))
-			RETURN
-				IF(_IsSite && _HasEver = 0, TRUE(), FALSE())
-		dataType: boolean
-		formatString: """TRUE"";""TRUE"";""FALSE"""
-		lineageTag: 3c5e4d29-1d6d-4bf6-9f9c-2e0b4a2b0c8a
-		summarizeBy: none
-
-		annotation SummarizationSetBy = Automatic
-
 	column bd_territory_id
 		dataType: int64
 		formatString: 0
@@ -532,6 +488,22 @@ table Dim_Client_Simple
 		lineageTag: 68787523-c45b-474f-8e02-b0e2b214652d
 		summarizeBy: none
 		sourceColumn: AreaName
+
+		annotation SummarizationSetBy = Automatic
+
+	column site_status =
+			VAR _IsSite = [ClientType] = "Site"
+			VAR _HasEver =
+				COUNTROWS(RELATEDTABLE('Fact_Order'))
+					+ COUNTROWS(RELATEDTABLE('Fact_ProjectConversion'))
+			RETURN
+				IF(
+					NOT _IsSite,
+					BLANK(),
+					IF(_HasEver > 0, "Active", "Potential")
+				)
+		lineageTag: 1fd41b25-6b34-4ef6-a1d9-2a9c4b7f3d5e
+		summarizeBy: none
 
 		annotation SummarizationSetBy = Automatic
 

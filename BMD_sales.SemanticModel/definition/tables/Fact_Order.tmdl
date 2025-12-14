@@ -606,7 +606,7 @@ table Fact_Order
 				                            isBag = if u = null then false else Text.Contains(u, "bag"),
 				                            q = [ItemQuantity]
 				                        in
-				                            if q = null then null else if isBag then q * 20 else q,
+				                            if q = null then null else if isBag then q / 20 else q,
 				                    type number
 				                ),
 				
@@ -769,3 +769,4 @@ table Fact_Order
 	changedProperty = IsHidden
 
 	annotation PBI_ResultType = Table
+

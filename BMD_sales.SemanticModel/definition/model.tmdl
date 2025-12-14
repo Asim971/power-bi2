@@ -23,7 +23,6 @@ ref table Dim_VisitPhase
 ref table Dim_VisitStage
 ref table Fact_ProjectConversion
 ref table Fact_Visit
-ref table Fact_Order
 ref table USER-ZONE
 ref table 'Time Intelligence'
 ref table Dim_BDTerritory
@@ -35,4 +34,5 @@ ref table DateFilterParam
 ref table Fact_Target
 ref table Dim_EntityGroup
 ref table 'Time Intelligence V3'
+ref table Fact_Order
 

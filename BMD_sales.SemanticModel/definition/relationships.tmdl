@@ -27,14 +27,6 @@ relationship 9f6d8aeb-4c79-c167-c7d9-7f8716100e93
 	fromColumn: Fact_Visit.DateKey
 	toColumn: Dim_Date.DateKey
 
-relationship 2d2d9a1f-4f3c-4d7e-b8b3-4e0b5a8f1b21
-	fromColumn: Fact_Visit.EmployeeID
-	toColumn: Dim_User.UserID
-
-relationship 6e7b6f2a-9c33-4b8a-93ff-1e9b8a9a6b4a
-	fromColumn: Fact_Visit.VisitStageID
-	toColumn: Dim_VisitStage.VisitStageID
-
 relationship d4e5f6a7-8901-2345-def0-123456789abc
 	isActive: false
 	crossFilteringBehavior: bothDirections
@@ -80,6 +72,14 @@ relationship a82988d2-2f94-c2a9-041d-0d9169e1b7bd
 	crossFilteringBehavior: bothDirections
 	fromColumn: Dim_Bazaar.territory_id
 	toColumn: Dim_Territory.territory_id
+
+relationship 2d2d9a1f-4f3c-4d7e-b8b3-4e0b5a8f1b21
+	fromColumn: Fact_Visit.EmployeeID
+	toColumn: Dim_User.UserID
+
+relationship 6e7b6f2a-9c33-4b8a-93ff-1e9b8a9a6b4a
+	fromColumn: Fact_Visit.VisitStageID
+	toColumn: Dim_VisitStage.VisitStageID
 
 relationship 0b8c0f55-4b62-4dc0-8fe6-6f0d77b7d8c3
 	fromColumn: Fact_Order.DateKey
