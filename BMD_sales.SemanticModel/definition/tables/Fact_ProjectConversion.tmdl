@@ -768,26 +768,117 @@ table Fact_ProjectConversion
 				        {"created_at", type datetime},
 				        {"updated_at", type datetime}
 				    }),
-				  #"Merged queries" = Table.NestedJoin(TypedTable, {"ConversionID"}, #"public project_conversion", {"id"}, "public project_conversion", JoinKind.LeftOuter),
-				  #"Expanded public project_conversion" = Table.ExpandTableColumn(#"Merged queries", "public project_conversion", {"total_quantity", "unit"}, {"total_quantity", "unit"}),
-				  #"Changed column type" = Table.TransformColumnTypes(#"Expanded public project_conversion", {{"total_quantity", type number}, {"unit", type text}}),
-				  #"Added qty_in_mt" = Table.AddColumn(
-				    #"Changed column type",
-				    "qty_in_mt",
-				    each
-				      let
-				        q = try Number.From([total_quantity]) otherwise null,
-				        u = try Text.Lower(Text.From([unit])) otherwise null,
-				        isBag = if u = null then false else Text.Contains(u, "bag")
-				      in
-				        if q = null then null else if isBag then q / 20 else q,
-				    type number
-				  ),
-				  #"Merged queries 1" = Table.NestedJoin(#"Added qty_in_mt", {"SiteID"}, #"public potential_site", {"id"}, "public potential_site", JoinKind.LeftOuter),
-				  #"Expanded public potential_site" = Table.ExpandTableColumn(#"Merged queries 1", "public potential_site", {"contractor_id"}, {"contractor_id"}),
-				  #"Merged queries 2" = Table.NestedJoin(#"Expanded public potential_site", {"contractor_id"}, #"public client", {"id"}, "public client", JoinKind.LeftOuter),
-				  #"Expanded public client" = Table.ExpandTableColumn(#"Merged queries 2", "public client", {"bkash_number", "name", "phone", "bank_account_id"}, {"bkash_number", "name", "phone", "bank_account_id"}),
-				  #"Renamed columns" = Table.RenameColumns(#"Expanded public client", {{"name", "contractor_name"}, {"phone", "contractor_phone"}})
+				
+				    // ============================================================
+				    // Quantities source of truth: public order_items
+				    // Aggregate order_items by project_conversion_id (ConversionID)
+				    // ============================================================
+				    ItemsSource = #"public order_items",
+				
+				    AsInt64Item = (v as any) as nullable number => try Int64.From(v) otherwise null,
+				    AsNumberItem = (v as any) as nullable number =>
+				        let
+				            n = try Number.From(v) otherwise null,
+				            s = if n <> null then null else try Text.From(v) otherwise null,
+				            cleaned = if s = null then null else Text.Select(s, {"0".."9", ".", "-"}),
+				            t = if n <> null then n else try Number.FromText(cleaned) otherwise null
+				        in
+				            t,
+				
+				    ItemsSelected = Table.SelectColumns(
+				        ItemsSource,
+				        {"project_conversion_id", "qty", "unit_type", "balance", "unit_price"},
+				        MissingField.UseNull
+				    ),
+				
+				    ItemsFiltered = Table.SelectRows(ItemsSelected, each [project_conversion_id] <> null),
+				
+				    ItemsWithConversionID = Table.AddColumn(
+				        ItemsFiltered,
+				        "ConversionID",
+				        each AsInt64Item([project_conversion_id]),
+				        Int64.Type
+				    ),
+				
+				    ItemsWithQty = Table.AddColumn(
+				        ItemsWithConversionID,
+				        "ItemQuantity",
+				        each AsNumberItem([qty]),
+				        type number
+				    ),
+				
+				    ItemsWithUnit = Table.AddColumn(
+				        ItemsWithQty,
+				        "ItemUnit",
+				        each if [unit_type] <> null then try Text.Lower(Text.From([unit_type])) otherwise null else null,
+				        type text
+				    ),
+				
+				    ItemsWithQtyInMT = Table.AddColumn(
+				        ItemsWithUnit,
+				        "ItemQtyInMT",
+				        each
+				            let
+				                u = [ItemUnit],
+				                isBag = if u = null then false else Text.Contains(u, "bag"),
+				                q = [ItemQuantity]
+				            in
+				                if q = null then null else if isBag then q / 20 else q,
+				        type number
+				    ),
+				
+				    ItemsWithAmount = Table.AddColumn(
+				        ItemsWithQtyInMT,
+				        "ItemAmount",
+				        each
+				            let
+				                b = AsNumberItem([balance]),
+				                up = AsNumberItem([unit_price]),
+				                q = [ItemQuantity]
+				            in
+				                if b <> null then b else if up <> null and q <> null then up * q else null,
+				        type number
+				    ),
+				
+				    ItemsForAgg = Table.SelectRows(ItemsWithAmount, each [ConversionID] <> null),
+				
+				    ItemsAgg = Table.Group(
+				        ItemsForAgg,
+				        {"ConversionID"},
+				        {
+				            {"total_quantity", each List.Sum(List.RemoveNulls([ItemQuantity])), type number},
+				            {"unit", each let u = List.RemoveNulls(List.Distinct([ItemUnit])) in if List.Count(u) = 1 then u{0} else if List.Count(u) = 0 then null else "mixed", type text},
+				            {"qty_in_mt", each List.Sum(List.RemoveNulls([ItemQtyInMT])), type number},
+				            {"total_amount_items", each List.Sum(List.RemoveNulls([ItemAmount])), type number}
+				        }
+				    ),
+				
+				    #"Merged items agg" = Table.NestedJoin(TypedTable, {"ConversionID"}, ItemsAgg, {"ConversionID"}, "ItemsAgg", JoinKind.LeftOuter),
+				    #"Expanded items agg" = Table.ExpandTableColumn(#"Merged items agg", "ItemsAgg", {"total_quantity", "unit", "qty_in_mt", "total_amount_items"}, {"total_quantity", "unit", "qty_in_mt", "total_amount_items"}),
+				
+				    #"Backfill total_amount from items" = Table.AddColumn(
+				        #"Expanded items agg",
+				        "total_amount_final",
+				        each if [total_amount] = null then [total_amount_items] else [total_amount],
+				        type number
+				    ),
+				
+				    #"Removed temp amount cols" = Table.RemoveColumns(#"Backfill total_amount from items", {"total_amount", "total_amount_items"}),
+				    #"Renamed total_amount" = Table.RenameColumns(#"Removed temp amount cols", {{"total_amount_final", "total_amount"}}),
+				
+				    #"Filled qty nulls" = Table.TransformColumns(
+				        #"Renamed total_amount",
+				        {
+				            {"total_quantity", each if _ = null then 0 else _, type number},
+				            {"qty_in_mt", each if _ = null then 0 else _, type number}
+				        }
+				    ),
+				
+				    #"Merged queries 1" = Table.NestedJoin(#"Filled qty nulls", {"SiteID"}, #"public potential_site", {"id"}, "public potential_site", JoinKind.LeftOuter),
+				    #"Expanded public potential_site" = Table.ExpandTableColumn(#"Merged queries 1", "public potential_site", {"contractor_id"}, {"contractor_id"}),
+				    #"Merged queries 2" = Table.NestedJoin(#"Expanded public potential_site", {"contractor_id"}, #"public client", {"id"}, "public client", JoinKind.LeftOuter),
+				    #"Expanded public client" = Table.ExpandTableColumn(#"Merged queries 2", "public client", {"bkash_number", "name", "phone", "bank_account_id"}, {"bkash_number", "name", "phone", "bank_account_id"}),
+				    #"Renamed columns" = Table.RenameColumns(#"Expanded public client", {{"name", "contractor_name"}, {"phone", "contractor_phone"}})
 				in
 				    #"Renamed columns"
 				```
