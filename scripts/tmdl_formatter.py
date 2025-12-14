@@ -170,6 +170,22 @@ class TmdlParser:
                 indent_level=indent_level,
                 raw_indent=raw_indent
             )
+
+        # Multi-line block opening on the same line as a property/expression, e.g.:
+        #   source = ```
+        #   expression = ```
+        # This is common in Power BI / TMDL exports.
+        if not self.in_multiline:
+            s = stripped.strip()
+            if s.endswith('```') and s != '```':
+                self.in_multiline = True
+                return TmdlToken(
+                    type=TmdlTokenType.MULTI_LINE_START,
+                    content=content,
+                    line_number=line_num,
+                    indent_level=indent_level,
+                    raw_indent=raw_indent
+                )
         
         # Inside multi-line block
         if self.in_multiline:

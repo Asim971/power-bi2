@@ -507,6 +507,34 @@ table Dim_Client_Simple
 
 		annotation SummarizationSetBy = Automatic
 
+	column 'Active Sites' =
+			VAR _IsSite = [ClientType] = "Site"
+			VAR _HasEver =
+				COUNTROWS(RELATEDTABLE('Fact_Order'))
+					+ COUNTROWS(RELATEDTABLE('Fact_ProjectConversion'))
+			RETURN
+				IF(_IsSite && _HasEver > 0, TRUE(), FALSE())
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 8b23a8d3-2bb8-4c6f-8b7b-8c2d1e3b4a5f
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Potential Site' =
+			VAR _IsSite = [ClientType] = "Site"
+			VAR _HasEver =
+				COUNTROWS(RELATEDTABLE('Fact_Order'))
+					+ COUNTROWS(RELATEDTABLE('Fact_ProjectConversion'))
+			RETURN
+				IF(_IsSite && _HasEver = 0, TRUE(), FALSE())
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 4c6d2c5b-9b39-4e5c-93d3-5d0a1b2c3d4e
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
 	partition Dim_Client_Simple = m
 		mode: import
 		source = ```
