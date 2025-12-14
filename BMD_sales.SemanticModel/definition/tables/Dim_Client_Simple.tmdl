@@ -56,9 +56,15 @@ table Dim_Client_Simple
 
 	measure Site_Status_Selected_Month =
 			VAR _IsSite = SELECTEDVALUE('Dim_Client_Simple'[ClientType]) = "Site"
+			VAR _ContextMaxDate = COALESCE(MAX('Dim_Date'[Date]), TODAY())
+			VAR _MonthStart = DATE(YEAR(_ContextMaxDate), MONTH(_ContextMaxDate), 1)
+			VAR _MonthEnd = EOMONTH(_MonthStart, 0)
 			VAR _ActivityThisMonth =
 				CALCULATE(
-					COUNTROWS('Fact_Order') + COUNTROWS('Fact_ProjectConversion')
+					COUNTROWS('Fact_Order') + COUNTROWS('Fact_ProjectConversion'),
+					REMOVEFILTERS('Dim_Date'),
+					'Dim_Date'[Date] >= _MonthStart,
+					'Dim_Date'[Date] <= _MonthEnd
 				)
 			VAR _ActivityEver =
 				CALCULATE(
