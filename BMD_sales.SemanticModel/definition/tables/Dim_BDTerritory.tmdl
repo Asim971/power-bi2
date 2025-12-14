@@ -62,6 +62,11 @@ table Dim_BDTerritory
 		summarizeBy: none
 		sourceColumn: created_at
 
+		variation Variation
+			isDefault
+			relationship: 2a1751b4-58bb-48d4-b8dd-915d70968847
+			defaultHierarchy: LocalDateTable_c151fe52-9817-4144-befd-f4995bcb41bc.'Date Hierarchy'
+
 		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
@@ -73,6 +78,11 @@ table Dim_BDTerritory
 		summarizeBy: none
 		sourceColumn: updated_at
 
+		variation Variation
+			isDefault
+			relationship: b532266d-a6e7-4e42-9231-37f499ad7dcf
+			defaultHierarchy: LocalDateTable_7e09d3f4-9df3-4230-9fd4-155e0e558850.'Date Hierarchy'
+
 		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
@@ -81,7 +91,7 @@ table Dim_BDTerritory
 		dataType: int64
 		formatString: 0
 		lineageTag: 798ffaa5-4cf3-4c73-b3b6-9c3b4f02523b
-		summarizeBy: none
+		summarizeBy: sum
 		sourceColumn: users_id
 
 		changedProperty = IsHidden

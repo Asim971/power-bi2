@@ -1219,7 +1219,7 @@ table Fact_Visit
 		dataType: int64
 		formatString: 0
 		lineageTag: ebe2fbff-df71-4ba9-8959-aacb4ae544f5
-		summarizeBy: count
+		summarizeBy: none
 		sourceColumn: EmployeeID
 
 		changedProperty = IsHidden
@@ -1313,7 +1313,7 @@ table Fact_Visit
 		dataType: int64
 		formatString: 0
 		lineageTag: 38120914-2534-4578-86bf-f60cc971db1d
-		summarizeBy: none
+		summarizeBy: count
 		sourceColumn: VisitPhaseID
 
 		changedProperty = IsHidden
@@ -1324,7 +1324,7 @@ table Fact_Visit
 		dataType: int64
 		formatString: 0
 		lineageTag: 130690e0-b967-48f9-b8f1-e1e58f4e42cb
-		summarizeBy: count
+		summarizeBy: none
 		sourceColumn: VisitStageID
 
 		changedProperty = IsHidden
@@ -1464,6 +1464,11 @@ table Fact_Visit
 		summarizeBy: none
 		sourceColumn: followup_date
 
+		variation Variation
+			isDefault
+			relationship: d322477c-f6bb-49f4-8ffd-65f4e8870f6e
+			defaultHierarchy: LocalDateTable_0c1b9b1e-09f6-47cf-9ce2-dfa4e70f444c.'Date Hierarchy'
+
 		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
@@ -1485,6 +1490,11 @@ table Fact_Visit
 		summarizeBy: none
 		sourceColumn: visit_date_time
 
+		variation Variation
+			isDefault
+			relationship: 8ef61087-ebdc-47de-ab2c-ccf5b5180fea
+			defaultHierarchy: LocalDateTable_38e5fb92-626c-4346-9bcf-ee3e387d6c94.'Date Hierarchy'
+
 		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
@@ -1496,6 +1506,11 @@ table Fact_Visit
 		summarizeBy: none
 		sourceColumn: created_at
 
+		variation Variation
+			isDefault
+			relationship: fc77fe3f-f42d-4492-b918-46154e773c3b
+			defaultHierarchy: LocalDateTable_c06d925f-c97e-4691-8afb-e389824b9822.'Date Hierarchy'
+
 		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
@@ -1506,6 +1521,11 @@ table Fact_Visit
 		lineageTag: 833797d2-9dee-4d6f-9dfc-ff14387a0820
 		summarizeBy: none
 		sourceColumn: updated_at
+
+		variation Variation
+			isDefault
+			relationship: e1b97801-32fc-4887-8efd-4248f38f0c89
+			defaultHierarchy: LocalDateTable_c0b96bb2-3e42-43ae-bb49-4ba396c907cb.'Date Hierarchy'
 
 		changedProperty = IsHidden
 

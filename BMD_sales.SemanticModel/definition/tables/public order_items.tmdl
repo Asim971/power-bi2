@@ -1,0 +1,122 @@
+table 'public order_items'
+	lineageTag: 56fcc30b-4b1a-44dd-b4d3-141fed3fbf15
+
+	column id
+		dataType: int64
+		formatString: 0
+		lineageTag: 6ce41465-1f50-4d21-9d74-e615e883ea86
+		summarizeBy: sum
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	column balance
+		dataType: double
+		lineageTag: cdebe414-e944-4c70-8f5d-b407d3e979bc
+		summarizeBy: sum
+		sourceColumn: balance
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column corteza_record_ref
+		dataType: int64
+		formatString: 0
+		lineageTag: 09627f64-871c-430a-ac6c-23c42eebe8dd
+		summarizeBy: sum
+		sourceColumn: corteza_record_ref
+
+		annotation SummarizationSetBy = Automatic
+
+	column points
+		dataType: double
+		lineageTag: 4a8957f5-a9cb-4320-afe7-19a8e446e673
+		summarizeBy: sum
+		sourceColumn: points
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column qty
+		dataType: double
+		lineageTag: 0adea445-2a08-40c3-bf35-626008ea622e
+		summarizeBy: sum
+		sourceColumn: qty
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column sku
+		dataType: int64
+		formatString: 0
+		lineageTag: 87bc76d9-f338-435c-89d8-4275b3b2a8ac
+		summarizeBy: sum
+		sourceColumn: sku
+
+		annotation SummarizationSetBy = Automatic
+
+	column sku_name
+		dataType: string
+		lineageTag: ab7899b9-e981-444a-8e9f-b3552923d47a
+		summarizeBy: none
+		sourceColumn: sku_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column unit_price
+		dataType: string
+		lineageTag: d74c8250-c9c8-4653-bac2-ee7c90cf359e
+		summarizeBy: none
+		sourceColumn: unit_price
+
+		annotation SummarizationSetBy = Automatic
+
+	column unit_type
+		dataType: string
+		lineageTag: 9d27431a-97c5-4a77-880f-5f8383a3cf84
+		summarizeBy: none
+		sourceColumn: unit_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column project_conversion_id
+		dataType: int64
+		formatString: 0
+		lineageTag: b36821fc-cf91-40e8-8608-b32883138b46
+		summarizeBy: sum
+		sourceColumn: project_conversion_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column sku_info_id
+		dataType: int64
+		formatString: 0
+		lineageTag: e49ccbab-d42d-4a4a-ad2b-3739ee0bda60
+		summarizeBy: sum
+		sourceColumn: sku_info_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column user_order_history_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 9401bbf2-79b9-4208-a653-72dd17c1c53c
+		summarizeBy: sum
+		sourceColumn: user_order_history_id
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'public order_items' = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("172.17.19.21", "bmdsalesdb"),
+				  #"Navigation 1" = Source{[Schema = "public", Item = "order_items"]}[Data]
+				in
+				  #"Navigation 1"
+
+	annotation PBI_ResultType = Table
+

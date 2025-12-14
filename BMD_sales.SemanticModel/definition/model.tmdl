@@ -35,4 +35,17 @@ ref table Fact_Target
 ref table Dim_EntityGroup
 ref table 'Time Intelligence V3'
 ref table Fact_Order
+ref table 'public order_items'
+ref table LocalDateTable_a6119db4-9a68-4b1c-af9e-301b27019e7b
+ref table LocalDateTable_2e0b8aee-3d51-46e9-925a-d6117f270941
+ref table LocalDateTable_d8aef53d-9160-44c2-af81-209ab35dc7be
+ref table LocalDateTable_f08a814b-5c48-49ce-8937-3d04454ff5ba
+ref table LocalDateTable_0c1b9b1e-09f6-47cf-9ce2-dfa4e70f444c
+ref table LocalDateTable_38e5fb92-626c-4346-9bcf-ee3e387d6c94
+ref table LocalDateTable_c06d925f-c97e-4691-8afb-e389824b9822
+ref table LocalDateTable_c0b96bb2-3e42-43ae-bb49-4ba396c907cb
+ref table LocalDateTable_c151fe52-9817-4144-befd-f4995bcb41bc
+ref table LocalDateTable_7e09d3f4-9df3-4230-9fd4-155e0e558850
+ref table LocalDateTable_245b3042-013f-4f31-8a34-c992d61a1092
+ref table LocalDateTable_71e7d8b1-5b94-483a-99f6-c8e4c3712267
 
