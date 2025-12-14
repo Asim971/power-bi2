@@ -473,6 +473,34 @@ table Dim_Client_Simple
 
 		annotation SummarizationSetBy = Automatic
 
+	column 'Active Sites' =
+			VAR _IsSite = [ClientType] = "Site"
+			VAR _HasEver =
+				COUNTROWS(RELATEDTABLE('Fact_Order'))
+					+ COUNTROWS(RELATEDTABLE('Fact_ProjectConversion'))
+			RETURN
+				IF(_IsSite && _HasEver > 0, TRUE(), FALSE())
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 5f0b5a7e-7fb9-4f2e-9c7f-7b5edb8cc1f4
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Potential Site' =
+			VAR _IsSite = [ClientType] = "Site"
+			VAR _HasEver =
+				COUNTROWS(RELATEDTABLE('Fact_Order'))
+					+ COUNTROWS(RELATEDTABLE('Fact_ProjectConversion'))
+			RETURN
+				IF(_IsSite && _HasEver = 0, TRUE(), FALSE())
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 3c5e4d29-1d6d-4bf6-9f9c-2e0b4a2b0c8a
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
 	column bd_territory_id
 		dataType: int64
 		formatString: 0
