@@ -245,41 +245,37 @@ table Fact_Order
 		source = ```
 				// ============================================================
 				// Fact_Order - Order Fact Table (Order Header Grain)
-				// 
-				// Sources:
-				// - public user_orders (authoritative order header)
-				// - public user_order_history_details (preferred order details)
-				//   (fallback: public order_items)
-				// 
-				// Outputs (one row per OrderID):
-				// - DateKey for Dim_Date join
-				// - ClientKey compatible with Dim_Client_Simple (ClientType-ClientID)
-				// - UserID compatible with Dim_User
-				// - Item aggregates: item count, qty, amount, distinct SKU count
+				//
+				// New rule:
+				// - public order_items is the source of truth for order line details
+				// - header attributes are sourced from public orders (fallback: public user_orders)
 				// ============================================================
 				
 				let
-				    // Reference shared expressions (connection-only) created in Phase 2
-				    OrdersRaw = #"public user_orders",
-				    ItemsRaw_Legacy = #"public order_items",
-				    DetailsRaw = try #"public user_order_history_details" otherwise ItemsRaw_Legacy,
+				    OrdersRaw = try #"public orders" otherwise #"public user_orders",
+				    ItemsRaw = #"public order_items",
 				
 				    OrdersCols = Table.ColumnNames(OrdersRaw),
-				    ItemsCols = Table.ColumnNames(ItemsRaw_Legacy),
-				    DetailsCols = Table.ColumnNames(DetailsRaw),
 				
 				    // Safe conversion helpers
 				    AsInt64 = (v as any) as nullable number => try Int64.From(v) otherwise null,
-				    AsNumber = (v as any) as nullable number => try Number.From(v) otherwise null,
 				    AsDateTime = (v as any) as nullable datetime => try DateTime.From(v) otherwise null,
+				    AsNumber = (v as any) as nullable number =>
+				        let
+				            n = try Number.From(v) otherwise null,
+				            s = if n <> null then null else try Text.From(v) otherwise null,
+				            cleaned = if s = null then null else Text.Select(s, {"0".."9", ".", "-"}),
+				            t = if n <> null then n else try Number.FromText(cleaned) otherwise null
+				        in
+				            t,
 				
 				    // -------------------------
-				    // USER_ORDERS (header)
+				    // ORDERS (header)
 				    // -------------------------
 				    OrdersSelected = Table.SelectColumns(
 				        OrdersRaw,
 				        {
-				            "id", "order_id",
+				            "id", "order_id", "corteza_record_ref", "user_order_history_id",
 				            "created_at", "updated_at",
 				            "dn_number",
 				            "delete_status",
@@ -288,10 +284,10 @@ table Fact_Order
 				            "order_category",
 				            "order_type",
 				            "stage",
-				            "organization_id",
+				            "organization_id", "organizations_id",
 				            "bazaar_id", "dealer_id", "site_id", "retailer_id",
 				            "project_conversion_id",
-				            "created_by", "updated_by", "user_id", "users_id",
+				            "created_by", "created_by_id", "updated_by", "updated_by_id", "user_id", "users_id",
 				            "total_amount", "total_quantity"
 				        },
 				        MissingField.UseNull
@@ -314,10 +310,12 @@ table Fact_Order
 				        "OrderID",
 				        each
 				            let
-				                uid = AsInt64([id]),
-				                oid = AsInt64([order_id])
+				                id = AsInt64(Record.FieldOrDefault(_, "id", null)),
+				                oid = AsInt64(Record.FieldOrDefault(_, "order_id", null)),
+				                uoh = AsInt64(Record.FieldOrDefault(_, "user_order_history_id", null)),
+				                cr = AsInt64(Record.FieldOrDefault(_, "corteza_record_ref", null))
 				            in
-				                if uid <> null then uid else oid,
+				                if id <> null then id else if oid <> null then oid else if uoh <> null then uoh else cr,
 				        Int64.Type
 				    ),
 				
@@ -342,31 +340,24 @@ table Fact_Order
 				        type date
 				    ),
 				
-				    WithProjectConversionID = Table.AddColumn(
-				        WithDateKey,
-				        "ProjectConversionID",
-				        each AsInt64([project_conversion_id]),
-				        Int64.Type
-				    ),
-				
-				    WithOrderJoinKey = Table.AddColumn(
-				        WithProjectConversionID,
-				        "OrderJoinKey",
-				        each if [ProjectConversionID] <> null then [ProjectConversionID] else [OrderID],
-				        Int64.Type
-				    ),
-				
 				    WithUserID = Table.AddColumn(
-				        WithOrderJoinKey,
+				        WithDateKey,
 				        "UserID",
 				        each
 				            let
-				                u1 = AsInt64([created_by]),
-				                u2 = AsInt64([updated_by]),
-				                u3 = AsInt64([user_id]),
-				                u4 = AsInt64([users_id])
+				                u1 = AsInt64(Record.FieldOrDefault(_, "created_by", null)),
+				                u1b = AsInt64(Record.FieldOrDefault(_, "created_by_id", null)),
+				                u2 = AsInt64(Record.FieldOrDefault(_, "updated_by", null)),
+				                u2b = AsInt64(Record.FieldOrDefault(_, "updated_by_id", null)),
+				                u3 = AsInt64(Record.FieldOrDefault(_, "user_id", null)),
+				                u4 = AsInt64(Record.FieldOrDefault(_, "users_id", null))
 				            in
-				                if u1 <> null then u1 else if u3 <> null then u3 else if u2 <> null then u2 else u4,
+				                if u1 <> null then u1
+				                else if u1b <> null then u1b
+				                else if u3 <> null then u3
+				                else if u2 <> null then u2
+				                else if u2b <> null then u2b
+				                else u4,
 				        Int64.Type
 				    ),
 				
@@ -378,14 +369,17 @@ table Fact_Order
 				                oc = if [order_category] <> null then Text.Upper(Text.From([order_category])) else null,
 				                hasSite = [site_id] <> null,
 				                hasRetailer = [retailer_id] <> null,
-				                hasDealer = [dealer_id] <> null
+				                hasDealer = [dealer_id] <> null,
+				                hasBazaar = [bazaar_id] <> null
 				            in
 				                if oc <> null and Text.Contains(oc, "SITE") and hasSite then "Site"
 				                else if oc = "RETAILER" and hasRetailer then "Retailer"
 				                else if oc = "DEALER" and hasDealer then "Dealer"
+				                else if oc = "BAZAAR" and hasBazaar then "Bazaar"
 				                else if hasSite then "Site"
 				                else if hasRetailer then "Retailer"
 				                else if hasDealer then "Dealer"
+				                else if hasBazaar then "Bazaar"
 				                else null,
 				        type text
 				    ),
@@ -398,14 +392,17 @@ table Fact_Order
 				                oc = if [order_category] <> null then Text.Upper(Text.From([order_category])) else null,
 				                hasSite = [site_id] <> null,
 				                hasRetailer = [retailer_id] <> null,
-				                hasDealer = [dealer_id] <> null
+				                hasDealer = [dealer_id] <> null,
+				                hasBazaar = [bazaar_id] <> null
 				            in
 				                if oc <> null and Text.Contains(oc, "SITE") and hasSite then AsInt64([site_id])
 				                else if oc = "RETAILER" and hasRetailer then AsInt64([retailer_id])
 				                else if oc = "DEALER" and hasDealer then AsInt64([dealer_id])
+				                else if oc = "BAZAAR" and hasBazaar then AsInt64([bazaar_id])
 				                else if hasSite then AsInt64([site_id])
 				                else if hasRetailer then AsInt64([retailer_id])
 				                else if hasDealer then AsInt64([dealer_id])
+				                else if hasBazaar then AsInt64([bazaar_id])
 				                else null,
 				        Int64.Type
 				    ),
@@ -423,8 +420,7 @@ table Fact_Order
 				        each
 				            let
 				                o1 = AsInt64([organization_id]),
-				                // some sources use pluralized naming
-				                o2 = if List.Contains(OrdersCols, "organizations_id") then AsInt64(Record.FieldOrDefault(_, "organizations_id", null)) else null
+				                o2 = AsInt64([organizations_id])
 				            in
 				                if o1 <> null then o1 else o2,
 				        Int64.Type
@@ -461,228 +457,103 @@ table Fact_Order
 				    ),
 				
 				    // -------------------------
-				    // ORDER DETAILS / ITEMS (aggregate to header)
+				    // ORDER ITEMS (aggregate to header)
 				    // -------------------------
-				    UseDetails = List.Contains(DetailsCols, "project_conversion_id") and List.Contains(DetailsCols, "qty"),
+				    ItemsSelected = Table.SelectColumns(
+				        ItemsRaw,
+				        {
+				            "id",
+				            "user_order_history_id",
+				            "corteza_record_ref",
+				            "qty",
+				            "unit_type",
+				            "balance",
+				            "unit_price",
+				            "sku",
+				            "sku_name",
+				            "sku_info_id"
+				        },
+				        MissingField.UseNull
+				    ),
 				
-				    LineAgg =
-				        if UseDetails
-				        then
+				    WithItemQuantity = Table.AddColumn(
+				        ItemsSelected,
+				        "ItemQuantity",
+				        each AsNumber([qty]),
+				        type number
+				    ),
+				
+				    WithItemUnit = Table.AddColumn(
+				        WithItemQuantity,
+				        "ItemUnit",
+				        each if [unit_type] <> null then try Text.Lower(Text.From([unit_type])) otherwise null else null,
+				        type text
+				    ),
+				
+				    WithItemQtyInMT = Table.AddColumn(
+				        WithItemUnit,
+				        "ItemQtyInMT",
+				        each
 				            let
-				                DetailsSelected = Table.SelectColumns(
-				                    DetailsRaw,
-				                    {
-				                        "id",
-				                        "project_conversion_id",
-				                        "qty",
-				                        "unit_type",
-				                        "unit_price", "price",
-				                        "amount", "total_amount", "total_price",
-				                        "sku_info_id", "sku", "sku_name",
-				                        "created_at", "updated_at"
-				                    },
-				                    MissingField.UseNull
-				                ),
-				
-				                WithDetailQuantity = Table.AddColumn(
-				                    DetailsSelected,
-				                    "ItemQuantity",
-				                    each AsNumber([qty]),
-				                    type number
-				                ),
-				
-				                WithDetailQtyInMT = Table.AddColumn(
-				                    WithDetailQuantity,
-				                    "ItemQtyInMT",
-				                    each
-				                        let
-				                            u = if [unit_type] <> null then try Text.Lower(Text.From([unit_type])) otherwise null else null,
-				                            isBag = if u = null then false else Text.Contains(u, "bag"),
-				                            q = [ItemQuantity]
-				                        in
-				                            if q = null then null else if isBag then q * 20 else q,
-				                    type number
-				                ),
-				
-				                WithDetailAmount = Table.AddColumn(
-				                    WithDetailQtyInMT,
-				                    "ItemAmount",
-				                    each
-				                        let
-				                            a1 = AsNumber([amount]),
-				                            a2 = AsNumber([total_amount]),
-				                            a3 = AsNumber([total_price]),
-				                            up = AsNumber([unit_price]),
-				                            p = AsNumber([price]),
-				                            q = [ItemQuantity]
-				                        in
-				                            if a1 <> null then a1
-				                            else if a2 <> null then a2
-				                            else if a3 <> null then a3
-				                            else if up <> null and q <> null then up * q
-				                            else if p <> null and q <> null then p * q
-				                            else null,
-				                    type number
-				                ),
-				
-				                WithOrderJoinKey_Details = Table.AddColumn(
-				                    WithDetailAmount,
-				                    "OrderJoinKey",
-				                    each AsInt64([project_conversion_id]),
-				                    Int64.Type
-				                ),
-				
-				                WithSKUKey_Details = Table.AddColumn(
-				                    WithOrderJoinKey_Details,
-				                    "SKUKey",
-				                    each
-				                        let
-				                            s1 = AsInt64([sku_info_id]),
-				                            s2 = if [sku] <> null then try Text.From([sku]) otherwise null else null,
-				                            s3 = if [sku_name] <> null then try Text.From([sku_name]) otherwise null else null
-				                        in
-				                            if s1 <> null then Text.From(s1) else if s2 <> null then s2 else s3,
-				                    type text
-				                ),
-				
-				                DetailsForAgg = Table.SelectRows(WithSKUKey_Details, each [OrderJoinKey] <> null),
-				
-				                Agg = Table.Group(
-				                    DetailsForAgg,
-				                    {"OrderJoinKey"},
-				                    {
-				                        {"OrderItemCount", each Table.RowCount(_), Int64.Type},
-				                        {"OrderQuantity_Items", each List.Sum(List.RemoveNulls([ItemQuantity])), type number},
-				                        {"OrderAmount_Items", each List.Sum(List.RemoveNulls([ItemAmount])), type number},
-				                        {"DistinctSKUCount", each List.NonNullCount(List.Distinct([SKUKey])), Int64.Type},
-				                        {"qty_in_mt_items", each List.Sum(List.RemoveNulls([ItemQtyInMT])), type number}
-				                    }
-				                )
+				                u = [ItemUnit],
+				                isBag = if u = null then false else Text.Contains(u, "bag"),
+				                q = [ItemQuantity]
 				            in
-				                Agg
-				        else
+				                if q = null then null else if isBag then q / 20 else q,
+				        type number
+				    ),
+				
+				    WithItemAmount = Table.AddColumn(
+				        WithItemQtyInMT,
+				        "ItemAmount",
+				        each
 				            let
-				                ItemsSelected = Table.SelectColumns(
-				                    ItemsRaw_Legacy,
-				                    {
-				                        "id",
-				                        "order_id", "orders_id", "user_orders_id", "user_order_id",
-				                        "sku_id", "sku_data_id",
-				                        "quantity", "qty", "order_qty",
-				                        "unit", "uom", "unit_name",
-				                        "unit_price", "price",
-				                        "amount", "total_amount", "total_price",
-				                        "delete_status",
-				                        "created_at", "updated_at"
-				                    },
-				                    MissingField.UseNull
-				                ),
-				
-				                ItemsFiltered = if List.Contains(ItemsCols, "delete_status")
-				                    then
-				                        Table.SelectRows(
-				                            ItemsSelected,
-				                            each
-				                                let
-				                                    ds = if [delete_status] = null then "NO" else try Text.Upper(Text.From([delete_status])) otherwise "NO"
-				                                in
-				                                    ds = "NO" or ds = "N" or ds = "0" or ds = "FALSE"
-				                        )
-				                    else ItemsSelected,
-				
-				                WithItemQuantity = Table.AddColumn(
-				                    ItemsFiltered,
-				                    "ItemQuantity",
-				                    each
-				                        let
-				                            q1 = AsNumber([quantity]),
-				                            q2 = AsNumber([qty]),
-				                            q3 = AsNumber([order_qty])
-				                        in
-				                            if q1 <> null then q1 else if q2 <> null then q2 else q3,
-				                    type number
-				                ),
-				
-				                WithItemQtyInMT = Table.AddColumn(
-				                    WithItemQuantity,
-				                    "ItemQtyInMT",
-				                    each
-				                        let
-				                            u =
-				                                if [unit] <> null then try Text.Lower(Text.From([unit])) otherwise null
-				                                else if [uom] <> null then try Text.Lower(Text.From([uom])) otherwise null
-				                                else if [unit_name] <> null then try Text.Lower(Text.From([unit_name])) otherwise null
-				                                else null,
-				                            isBag = if u = null then false else Text.Contains(u, "bag"),
-				                            q = [ItemQuantity]
-				                        in
-				                            if q = null then null else if isBag then q / 20 else q,
-				                    type number
-				                ),
-				
-				                WithItemAmount = Table.AddColumn(
-				                    WithItemQtyInMT,
-				                    "ItemAmount",
-				                    each
-				                        let
-				                            a1 = AsNumber([amount]),
-				                            a2 = AsNumber([total_amount]),
-				                            a3 = AsNumber([total_price]),
-				                            up = AsNumber([unit_price]),
-				                            p = AsNumber([price]),
-				                            q = [ItemQuantity]
-				                        in
-				                            if a1 <> null then a1
-				                            else if a2 <> null then a2
-				                            else if a3 <> null then a3
-				                            else if up <> null and q <> null then up * q
-				                            else if p <> null and q <> null then p * q
-				                            else null,
-				                    type number
-				                ),
-				
-				                WithOrderJoinKey_Items = Table.AddColumn(
-				                    WithItemAmount,
-				                    "OrderJoinKey",
-				                    each
-				                        let
-				                            a = AsInt64([order_id]),
-				                            b = AsInt64([orders_id]),
-				                            c = AsInt64([user_orders_id]),
-				                            d = AsInt64([user_order_id])
-				                        in
-				                            if a <> null then a else if b <> null then b else if c <> null then c else d,
-				                    Int64.Type
-				                ),
-				
-				                WithSKUKey = Table.AddColumn(
-				                    WithOrderJoinKey_Items,
-				                    "SKUKey",
-				                    each
-				                        let
-				                            s1 = AsInt64([sku_id]),
-				                            s2 = AsInt64([sku_data_id])
-				                        in
-				                            if s1 <> null then Text.From(s1) else if s2 <> null then Text.From(s2) else null,
-				                    type text
-				                ),
-				
-				                ItemsForAgg = Table.SelectRows(WithSKUKey, each [OrderJoinKey] <> null),
-				
-				                Agg = Table.Group(
-				                    ItemsForAgg,
-				                    {"OrderJoinKey"},
-				                    {
-				                        {"OrderItemCount", each Table.RowCount(_), Int64.Type},
-				                        {"OrderQuantity_Items", each List.Sum(List.RemoveNulls([ItemQuantity])), type number},
-				                        {"OrderAmount_Items", each List.Sum(List.RemoveNulls([ItemAmount])), type number},
-				                        {"DistinctSKUCount", each List.NonNullCount(List.Distinct([SKUKey])), Int64.Type},
-				                        {"qty_in_mt_items", each List.Sum(List.RemoveNulls([ItemQtyInMT])), type number}
-				                    }
-				                )
+				                b = AsNumber([balance]),
+				                up = AsNumber([unit_price]),
+				                q = [ItemQuantity]
 				            in
-				                Agg
-				        ,
+				                if b <> null then b else if up <> null and q <> null then up * q else null,
+				        type number
+				    ),
+				
+				    WithOrderJoinKey = Table.AddColumn(
+				        WithItemAmount,
+				        "OrderJoinKey",
+				        each
+				            let
+				                a = AsInt64([user_order_history_id]),
+				                b = AsInt64([corteza_record_ref])
+				            in
+				                if a <> null then a else b,
+				        Int64.Type
+				    ),
+				
+				    WithSKUKey = Table.AddColumn(
+				        WithOrderJoinKey,
+				        "SKUKey",
+				        each
+				            let
+				                s1 = AsInt64([sku_info_id]),
+				                s2 = AsInt64([sku]),
+				                s3 = if [sku_name] <> null then try Text.From([sku_name]) otherwise null else null
+				            in
+				                if s1 <> null then Text.From(s1) else if s2 <> null then Text.From(s2) else s3,
+				        type text
+				    ),
+				
+				    ItemsForAgg = Table.SelectRows(WithSKUKey, each [OrderJoinKey] <> null),
+				
+				    LineAgg = Table.Group(
+				        ItemsForAgg,
+				        {"OrderJoinKey"},
+				        {
+				            {"OrderItemCount", each Table.RowCount(_), Int64.Type},
+				            {"OrderQuantity_Items", each List.Sum(List.RemoveNulls([ItemQuantity])), type number},
+				            {"OrderAmount_Items", each List.Sum(List.RemoveNulls([ItemAmount])), type number},
+				            {"DistinctSKUCount", each List.NonNullCount(List.Distinct(List.RemoveNulls([SKUKey]))), Int64.Type},
+				            {"qty_in_mt_items", each List.Sum(List.RemoveNulls([ItemQtyInMT])), type number}
+				        }
+				    ),
 				
 				    // -------------------------
 				    // MERGE LINE AGG INTO ORDERS
@@ -690,7 +561,7 @@ table Fact_Order
 				    OrdersSorted = Table.Sort(WithDeliveryMethod, {{"OrderDateTime", Order.Descending}}),
 				    OrdersDeduped = Table.Distinct(OrdersSorted, {"OrderID"}),
 				
-				    Merged = Table.NestedJoin(OrdersDeduped, {"OrderJoinKey"}, LineAgg, {"OrderJoinKey"}, "ItemsAgg", JoinKind.LeftOuter),
+				    Merged = Table.NestedJoin(OrdersDeduped, {"OrderID"}, LineAgg, {"OrderJoinKey"}, "ItemsAgg", JoinKind.LeftOuter),
 				    Expanded = Table.ExpandTableColumn(Merged, "ItemsAgg", {"OrderItemCount", "OrderQuantity_Items", "OrderAmount_Items", "DistinctSKUCount", "qty_in_mt_items"}, {"OrderItemCount", "OrderQuantity_Items", "OrderAmount_Items", "DistinctSKUCount", "qty_in_mt_items"}),
 				
 				    WithTotalAmount = Table.AddColumn(
@@ -701,7 +572,7 @@ table Fact_Order
 				                a = AsNumber([total_amount]),
 				                ai = AsNumber([OrderAmount_Items])
 				            in
-				                if a <> null then a else if ai <> null then ai else 0,
+				                if ai <> null then ai else if a <> null then a else 0,
 				        type number
 				    ),
 				
@@ -713,7 +584,7 @@ table Fact_Order
 				                q = AsNumber([total_quantity]),
 				                qi = AsNumber([OrderQuantity_Items])
 				            in
-				                if q <> null then q else if qi <> null then qi else 0,
+				                if qi <> null then qi else if q <> null then q else 0,
 				        type number
 				    ),
 				
@@ -722,7 +593,6 @@ table Fact_Order
 				        "qty_in_mt",
 				        each
 				            let
-				                // Prefer item-derived MT (handles mixed units)
 				                qim = AsNumber([qty_in_mt_items]),
 				                tq = AsNumber([TotalQuantity])
 				            in
@@ -739,7 +609,6 @@ table Fact_Order
 				        }
 				    ),
 				
-				    // Project the final curated columns only
 				    FinalSelected = Table.SelectColumns(
 				        CountsFilled,
 				        {
@@ -773,7 +642,8 @@ table Fact_Order
 				            {"updated_at", type datetime}
 				        }
 				    )
-				in TypedTable
+				in
+				    TypedTable
 				```
 
 	changedProperty = IsHidden
