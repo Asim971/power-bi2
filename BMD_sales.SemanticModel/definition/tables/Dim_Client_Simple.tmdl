@@ -323,14 +323,14 @@ table Dim_Client_Simple
 			VAR _MonthEnd = EOMONTH(_MonthStart, 0)
 			VAR _ActivityThisMonth =
 				CALCULATE(
-					COUNTROWS('Fact_Order') + COUNTROWS('Fact_ProjectConversion'),
+					COUNTROWS('Fact_ProjectConversion'),
 					REMOVEFILTERS('Dim_Date'),
 					'Dim_Date'[Date] >= _MonthStart,
 					'Dim_Date'[Date] <= _MonthEnd
 				)
 			VAR _ActivityEver =
 				CALCULATE(
-					COUNTROWS('Fact_Order') + COUNTROWS('Fact_ProjectConversion'),
+					COUNTROWS('Fact_ProjectConversion'),
 					REMOVEFILTERS('Dim_Date')
 				)
 			RETURN
@@ -520,8 +520,7 @@ table Dim_Client_Simple
 	column site_status =
 			VAR _IsSite = [ClientType] = "Site"
 			VAR _HasEver =
-				COUNTROWS(RELATEDTABLE('Fact_Order'))
-					+ COUNTROWS(RELATEDTABLE('Fact_ProjectConversion'))
+				COUNTROWS(RELATEDTABLE('Fact_ProjectConversion'))
 			RETURN
 				IF(
 					NOT _IsSite,
@@ -536,8 +535,7 @@ table Dim_Client_Simple
 	column 'Active Sites' =
 			VAR _IsSite = [ClientType] = "Site"
 			VAR _HasEver =
-				COUNTROWS(RELATEDTABLE('Fact_Order'))
-					+ COUNTROWS(RELATEDTABLE('Fact_ProjectConversion'))
+				COUNTROWS(RELATEDTABLE('Fact_ProjectConversion'))
 			RETURN
 				IF(_IsSite && _HasEver > 0, TRUE(), FALSE())
 		dataType: boolean
@@ -550,8 +548,7 @@ table Dim_Client_Simple
 	column 'Potential Site' =
 			VAR _IsSite = [ClientType] = "Site"
 			VAR _HasEver =
-				COUNTROWS(RELATEDTABLE('Fact_Order'))
-					+ COUNTROWS(RELATEDTABLE('Fact_ProjectConversion'))
+				COUNTROWS(RELATEDTABLE('Fact_ProjectConversion'))
 			RETURN
 				IF(_IsSite && _HasEver = 0, TRUE(), FALSE())
 		dataType: boolean

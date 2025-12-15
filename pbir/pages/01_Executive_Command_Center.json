@@ -104,7 +104,7 @@
             "height": 150,
             "config": {
                 "title": "ORDERS",
-                "dataField": "Fact_Order[Total Orders]",
+                "dataField": "Fact_ProjectConversion[Total Orders]",
                 "trend": {
                     "enabled": true,
                     "calculation": "MoM%"
@@ -154,7 +154,7 @@
             "height": 150,
             "config": {
                 "title": "REVENUE YTD",
-                "dataField": "Fact_Order[Order Amount YTD]",
+                "dataField": "Fact_ProjectConversion[Order Amount YTD]",
                 "format": "৳#,##0",
                 "trend": {
                     "enabled": true,
@@ -186,7 +186,7 @@
                     },
                     {
                         "name": "Orders",
-                        "field": "Fact_Order[Total Orders]",
+                        "field": "Fact_ProjectConversion[Total Orders]",
                         "color": "#2ECC71"
                     },
                     {
@@ -223,7 +223,7 @@
                 "tooltips": [
                     "Dim_Territory[ZoneName]",
                     "Fact_Visit[Total Visits]",
-                    "Fact_Order[Total Orders]",
+                    "Fact_ProjectConversion[Total Orders]",
                     "Fact_Visit[Conversion Rate 60D %]"
                 ],
                 "drillThrough": {
@@ -320,7 +320,7 @@
                     },
                     {
                         "name": "Orders",
-                        "field": "Fact_Order[Total Orders]",
+                        "field": "Fact_ProjectConversion[Total Orders]",
                         "color": "#9B59B6"
                     },
                     {

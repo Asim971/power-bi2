@@ -46,7 +46,7 @@ TARGET_PREFIX = "sm_"
 OVERWRITE = True
 
 EXPORT_ALL = True
-TABLES_TO_EXPORT = ["public user_orders", "public project_conversion", "Fact_Order", "Fact_ProjectConversion"]
+TABLES_TO_EXPORT = ["public user_orders", "public project_conversion", "Fact_ProjectConversion"]
 
 # Optional: exclude typical PBIX helper tables
 EXCLUDE_PATTERNS = [

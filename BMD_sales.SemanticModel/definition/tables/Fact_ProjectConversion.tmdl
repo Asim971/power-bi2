@@ -150,6 +150,103 @@ table Fact_ProjectConversion
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+		annotation OrderMeasuresNotes = "Order measures were consolidated into this table during the model migration."
+	measure Total_Orders = COUNTROWS('Fact_ProjectConversion')
+		formatString: #,##0
+		displayFolder: Orders\Base
+		lineageTag: 0b1c2d3e-4f50-4a6b-9c7d-8e9f0a1b2c3d
+
+	measure 'Total Orders' = [Total_Orders]
+		formatString: #,##0
+		displayFolder: Orders\Base
+		lineageTag: 6f9c2b0d-6b57-4bcb-9b9c-2e7b3b9b2a19
+
+	measure Total_Order_Amount = SUM('Fact_ProjectConversion'[total_amount])
+		formatString: #,##0.00
+		displayFolder: Orders\Base
+		lineageTag: 1c2d3e4f-5061-4b72-8c93-0d1e2f3a4b5c
+
+	measure 'Order Amount YTD' =
+			TOTALYTD(
+				[Total_Order_Amount],
+				'Dim_Date'[Date]
+			)
+		formatString: #,##0.00
+		displayFolder: Orders\Time Intelligence
+		lineageTag: 9f3a9f64-4c1b-4b4a-8c0c-8c2f0e8b8a7e
+
+	measure Total_Order_Quantity = SUM('Fact_ProjectConversion'[total_quantity])
+		formatString: #,##0.00
+		displayFolder: Orders\Base
+		lineageTag: 2d3e4f50-6172-4c83-9d04-1e2f3a4b5c6d
+
+	measure Total_Order_Quantity_MT = SUM('Fact_ProjectConversion'[qty_in_mt])
+		formatString: #,##0.00
+		displayFolder: Orders\Base
+		lineageTag: 3e4f5061-7283-4d94-0e15-2f3a4b5c6d7e
+
+	measure Average_Order_Value = DIVIDE([Total_Order_Amount], [Total_Orders], 0)
+		formatString: #,##0.00
+		displayFolder: Orders\Rates
+		lineageTag: 4f506172-8394-4ea5-1f26-3a4b5c6d7e8f
+
+	measure Average_Items_Per_Order = DIVIDE(SUM('Fact_ProjectConversion'[OrderItemCount]), [Total_Orders], 0)
+		formatString: #,##0.00
+		displayFolder: Orders\Rates
+		lineageTag: 50617283-9495-4fb6-2a37-4b5c6d7e8f90
+
+	measure Completed_Orders =
+			CALCULATE(
+				[Total_Orders],
+				'Fact_ProjectConversion'[StatusGroup] = "Converted"
+			)
+		formatString: #,##0
+		displayFolder: Orders\By Status
+		lineageTag: 6b7c8d9e-0f1a-4b2c-9d8e-7f6a5b4c3d2e
+
+	measure Pending_Orders =
+			CALCULATE(
+				[Total_Orders],
+				'Fact_ProjectConversion'[StatusGroup] = "Pending"
+			)
+		formatString: #,##0
+		displayFolder: Orders\By Status
+		lineageTag: 7c8d9e0f-1a2b-4c3d-8e7f-6a5b4c3d2e1f
+
+	measure Factory_DN_Orders =
+			CALCULATE(
+				[Total_Orders],
+				'Fact_ProjectConversion'[DeliveryType] = "Factory DN"
+			)
+		formatString: #,##0
+		displayFolder: Orders\By Delivery
+		lineageTag: 8d9e0f1a-2b3c-4d5e-8f7a-6b5c4d3e2f1a
+
+	measure Completion_Rate = DIVIDE([Completed_Orders], [Total_Orders], 0)
+		formatString: 0.0%
+		displayFolder: Orders\Rates
+		lineageTag: 9e0f1a2b-3c4d-4e5f-8a7b-6c5d4e3f2a1b
+
+	measure Avg_Order_Amount = [Average_Order_Value]
+		formatString: #,##0.00
+		displayFolder: Orders\Rates
+		lineageTag: 0f1a2b3c-4d5e-4f60-8b7c-6d5e4f3a2b1c
+
+	measure Client_Lifetime_Value =
+			DIVIDE(
+				[Total_Order_Amount],
+				DISTINCTCOUNT('Fact_ProjectConversion'[ClientKey]),
+				0
+			)
+		formatString: #,##0.00
+		displayFolder: Orders\Customer
+		lineageTag: 1a2b3c4d-5e6f-4061-8c7d-6e5f4a3b2c1d
+
+	measure Conversion_Rate = DIVIDE([Total_Orders], Fact_Visit[Total_Visits], 0)
+		formatString: 0.0%
+		displayFolder: Orders\Rates
+		lineageTag: 2b3c4d5e-6f70-4162-8d7e-6f5a4b3c2d1e
+
 	measure Active_Contractors =
 			COALESCE(
 				CALCULATE(
@@ -424,6 +521,49 @@ table Fact_ProjectConversion
 
 		annotation SummarizationSetBy = Automatic
 
+	column OrderID
+		dataType: int64
+		formatString: 0
+		lineageTag: 45fd9d06-21a6-4e41-9c9a-e7190e5d5bb7
+		summarizeBy: none
+		sourceColumn: OrderID
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column UserID
+		dataType: int64
+		formatString: 0
+		lineageTag: 1c4c5e84-3e19-4f10-a535-f2d3ee5d16e9
+		summarizeBy: none
+		sourceColumn: UserID
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column ClientType
+		dataType: string
+		lineageTag: 44f3b4d8-a77e-4042-a77d-a5ae1affc96c
+		summarizeBy: none
+		sourceColumn: ClientType
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column ClientID
+		dataType: int64
+		formatString: 0
+		lineageTag: 7a2d400c-0af0-49a9-ad15-b346285ddc07
+		summarizeBy: none
+		sourceColumn: ClientID
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
 	column DeliveryType
 		dataType: string
 		lineageTag: d652d6b0-3b4c-4470-84bc-494657708fb3
@@ -508,11 +648,45 @@ table Fact_ProjectConversion
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	column TotalQuantity
+		dataType: double
+		lineageTag: 1c89cb5c-8b7c-4af7-9d77-3b81f58d2dc8
+		summarizeBy: sum
+		sourceColumn: TotalQuantity
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
 	column unit
 		dataType: string
 		lineageTag: fe3a178b-a30a-4e0b-abba-4e08ba84545d
 		summarizeBy: none
 		sourceColumn: unit
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrderItemCount
+		dataType: int64
+		formatString: 0
+		lineageTag: 2a0f2f3e-9b6f-4f5a-8b9a-9a8c5f1a2b3c
+		summarizeBy: sum
+		sourceColumn: OrderItemCount
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column DistinctSKUCount
+		dataType: int64
+		formatString: 0
+		lineageTag: 4c1d2e3f-7a8b-4c9d-8e0f-1a2b3c4d5e6f
+		summarizeBy: sum
+		sourceColumn: DistinctSKUCount
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -748,8 +922,8 @@ table Fact_ProjectConversion
 				        Int64.Type
 				    ),
 				    
-				    // ---- Set Data Types ----
-				    TypedTable = Table.TransformColumnTypes(WithContractorReward, {
+					// ---- Set Data Types ----
+					TypedConversionBase = Table.TransformColumnTypes(WithContractorReward, {
 				        {"ConversionID", Int64.Type},
 				        {"OrderStatus", type text},
 				        {"DeliveryMethod", type text},
@@ -768,6 +942,199 @@ table Fact_ProjectConversion
 				        {"created_at", type datetime},
 				        {"updated_at", type datetime}
 				    }),
+
+					// ============================================================
+					// Order header enrichment (for Dim_User linkage & client keys)
+					// Join: public orders (fallback: public user_orders)
+					// ============================================================
+					OrdersRaw = try #"public orders" otherwise #"public user_orders",
+					OrdersCols = Table.ColumnNames(OrdersRaw),
+					AsInt64Hdr = (v as any) as nullable number => try Int64.From(v) otherwise null,
+					AsDateTimeHdr = (v as any) as nullable datetime => try DateTime.From(v) otherwise null,
+				
+					OrdersSelected = Table.SelectColumns(
+					    OrdersRaw,
+					    {
+					        "id", "order_id", "corteza_record_ref", "user_order_history_id",
+					        "project_conversion_id",
+					        "created_at", "updated_at",
+					        "delete_status",
+					        "order_category",
+					        "bazaar_id", "dealer_id", "site_id", "retailer_id",
+					        "created_by", "created_by_id", "updated_by", "updated_by_id", "user_id", "users_id"
+					    },
+					    MissingField.UseNull
+					),
+				
+					OrdersFiltered = if List.Contains(OrdersCols, "delete_status")
+					    then
+					        Table.SelectRows(
+					            OrdersSelected,
+					            each
+					                let
+					                    ds = if [delete_status] = null then "NO" else try Text.Upper(Text.From([delete_status])) otherwise "NO"
+					                in
+					                    ds = "NO" or ds = "N" or ds = "0" or ds = "FALSE"
+					        )
+					    else OrdersSelected,
+				
+					OrdersWithConversionID = Table.AddColumn(
+					    OrdersFiltered,
+					    "ConversionID",
+					    each AsInt64Hdr(Record.FieldOrDefault(_, "project_conversion_id", null)),
+					    Int64.Type
+					),
+					OrdersNonNullConv = Table.SelectRows(OrdersWithConversionID, each [ConversionID] <> null),
+				
+					OrdersWithOrderDateTime = Table.AddColumn(
+					    OrdersNonNullConv,
+					    "OrderDateTime",
+					    each
+					        let
+					            d1 = AsDateTimeHdr([created_at]),
+					            d2 = AsDateTimeHdr([updated_at])
+					        in
+					            if d1 <> null then d1 else d2,
+					    type datetime
+					),
+				
+					OrdersWithOrderID = Table.AddColumn(
+					    OrdersWithOrderDateTime,
+					    "OrderID",
+					    each
+					        let
+					            id = AsInt64Hdr(Record.FieldOrDefault(_, "id", null)),
+					            oid = AsInt64Hdr(Record.FieldOrDefault(_, "order_id", null)),
+					            uoh = AsInt64Hdr(Record.FieldOrDefault(_, "user_order_history_id", null)),
+					            cr = AsInt64Hdr(Record.FieldOrDefault(_, "corteza_record_ref", null))
+					        in
+					            if id <> null then id else if oid <> null then oid else if uoh <> null then uoh else cr,
+					    Int64.Type
+					),
+				
+					OrdersWithUserID = Table.AddColumn(
+					    OrdersWithOrderID,
+					    "UserID",
+					    each
+					        let
+					            u1 = AsInt64Hdr(Record.FieldOrDefault(_, "created_by", null)),
+					            u1b = AsInt64Hdr(Record.FieldOrDefault(_, "created_by_id", null)),
+					            u2 = AsInt64Hdr(Record.FieldOrDefault(_, "updated_by", null)),
+					            u2b = AsInt64Hdr(Record.FieldOrDefault(_, "updated_by_id", null)),
+					            u3 = AsInt64Hdr(Record.FieldOrDefault(_, "user_id", null)),
+					            u4 = AsInt64Hdr(Record.FieldOrDefault(_, "users_id", null))
+					        in
+					            if u1 <> null then u1
+					            else if u1b <> null then u1b
+					            else if u3 <> null then u3
+					            else if u2 <> null then u2
+					            else if u2b <> null then u2b
+					            else u4,
+					    Int64.Type
+					),
+				
+					OrdersWithClientType = Table.AddColumn(
+					    OrdersWithUserID,
+					    "ClientType",
+					    each
+					        let
+					            oc = if [order_category] <> null then Text.Upper(Text.From([order_category])) else null,
+					            hasSite = [site_id] <> null,
+					            hasRetailer = [retailer_id] <> null,
+					            hasDealer = [dealer_id] <> null,
+					            hasBazaar = [bazaar_id] <> null
+					        in
+					            if oc <> null and Text.Contains(oc, "SITE") and hasSite then "Site"
+					            else if oc = "RETAILER" and hasRetailer then "Retailer"
+					            else if oc = "DEALER" and hasDealer then "Dealer"
+					            else if oc = "BAZAAR" and hasBazaar then "Bazaar"
+					            else if hasSite then "Site"
+					            else if hasRetailer then "Retailer"
+					            else if hasDealer then "Dealer"
+					            else if hasBazaar then "Bazaar"
+					            else null,
+					    type text
+					),
+				
+					OrdersWithClientID = Table.AddColumn(
+					    OrdersWithClientType,
+					    "ClientID",
+					    each
+					        let
+					            oc = if [order_category] <> null then Text.Upper(Text.From([order_category])) else null,
+					            hasSite = [site_id] <> null,
+					            hasRetailer = [retailer_id] <> null,
+					            hasDealer = [dealer_id] <> null,
+					            hasBazaar = [bazaar_id] <> null
+					        in
+					            if oc <> null and Text.Contains(oc, "SITE") and hasSite then AsInt64Hdr([site_id])
+					            else if oc = "RETAILER" and hasRetailer then AsInt64Hdr([retailer_id])
+					            else if oc = "DEALER" and hasDealer then AsInt64Hdr([dealer_id])
+					            else if oc = "BAZAAR" and hasBazaar then AsInt64Hdr([bazaar_id])
+					            else if hasSite then AsInt64Hdr([site_id])
+					            else if hasRetailer then AsInt64Hdr([retailer_id])
+					            else if hasDealer then AsInt64Hdr([dealer_id])
+					            else if hasBazaar then AsInt64Hdr([bazaar_id])
+					            else null,
+					    Int64.Type
+					),
+				
+					OrdersWithClientKey = Table.AddColumn(
+					    OrdersWithClientID,
+					    "ClientKey_from_order",
+					    each if [ClientType] <> null and [ClientID] <> null then [ClientType] & "-" & Text.From([ClientID]) else null,
+					    type text
+					),
+				
+					OrdersSorted = Table.Sort(OrdersWithClientKey, {{"OrderDateTime", Order.Descending}}),
+					OrdersByConversion = Table.Distinct(OrdersSorted, {"ConversionID"}),
+					OrdersForJoin = Table.SelectColumns(
+					    OrdersByConversion,
+					    {"ConversionID", "OrderID", "UserID", "ClientType", "ClientID", "ClientKey_from_order"},
+					    MissingField.UseNull
+					),
+				
+					MergedOrders = Table.NestedJoin(
+					    TypedConversionBase,
+					    {"ConversionID"},
+					    OrdersForJoin,
+					    {"ConversionID"},
+					    "Orders",
+					    JoinKind.LeftOuter
+					),
+					ExpandedOrders = Table.ExpandTableColumn(
+					    MergedOrders,
+					    "Orders",
+					    {"OrderID", "UserID", "ClientType", "ClientID", "ClientKey_from_order"},
+					    {"OrderID", "UserID", "ClientType", "ClientID", "ClientKey_from_order"}
+					),
+				
+					WithClientTypeFallback = Table.AddColumn(
+					    ExpandedOrders,
+					    "ClientType_final",
+					    each if [ClientType] <> null then [ClientType] else if [SiteID] <> null then "Site" else null,
+					    type text
+					),
+					WithClientIDFallback = Table.AddColumn(
+					    WithClientTypeFallback,
+					    "ClientID_final",
+					    each if [ClientID] <> null then [ClientID] else if [SiteID] <> null then [SiteID] else null,
+					    Int64.Type
+					),
+					WithClientKeyFinal = Table.AddColumn(
+					    WithClientIDFallback,
+					    "ClientKey_final",
+					    each
+					        if [ClientKey_from_order] <> null then [ClientKey_from_order]
+					        else if [ClientType_final] <> null and [ClientID_final] <> null then [ClientType_final] & "-" & Text.From([ClientID_final])
+					        else [ClientKey],
+					    type text
+					),
+				
+					RemovedTempClientCols = Table.RemoveColumns(WithClientKeyFinal, {"ClientType", "ClientID", "ClientKey", "ClientType_final", "ClientID_final", "ClientKey_from_order"}),
+					RenamedClientCols = Table.RenameColumns(RemovedTempClientCols, {{"ClientKey_final", "ClientKey"}}),
+				
+					TypedTable = RenamedClientCols,
 				
 				    // ============================================================
 				    // Quantities source of truth: public order_items
@@ -787,7 +1154,7 @@ table Fact_ProjectConversion
 				
 				    ItemsSelected = Table.SelectColumns(
 				        ItemsSource,
-				        {"project_conversion_id", "qty", "unit_type", "balance", "unit_price"},
+				        {"id", "project_conversion_id", "qty", "unit_type", "balance", "unit_price", "sku", "sku_name", "sku_info_id"},
 				        MissingField.UseNull
 				    ),
 				
@@ -814,16 +1181,48 @@ table Fact_ProjectConversion
 				        type text
 				    ),
 				
-				    ItemsWithQtyInMT = Table.AddColumn(
+				    ConvCompany = Table.Distinct(Table.SelectColumns(TypedTable, {"ConversionID", "CompanyCode"})),
+				    ConvCompanyBuffered = Table.Buffer(ConvCompany),
+				
+				    ItemsWithCompanyJoin = Table.NestedJoin(
 				        ItemsWithUnit,
+				        {"ConversionID"},
+				        ConvCompanyBuffered,
+				        {"ConversionID"},
+				        "ConvCompany",
+				        JoinKind.LeftOuter
+				    ),
+				    ItemsWithCompany = Table.ExpandTableColumn(ItemsWithCompanyJoin, "ConvCompany", {"CompanyCode"}, {"CompanyCode"}),
+				
+				    ItemsWithSKUKey = Table.AddColumn(
+				        ItemsWithCompany,
+				        "SKUKey",
+				        each
+				            let
+				                s1 = AsInt64Item([sku_info_id]),
+				                s2 = AsInt64Item([sku]),
+				                s3 = if [sku_name] <> null then try Text.From([sku_name]) otherwise null else null
+				            in
+				                if s1 <> null then Text.From(s1) else if s2 <> null then Text.From(s2) else s3,
+				        type text
+				    ),
+				
+				    ItemsWithQtyInMT = Table.AddColumn(
+				        ItemsWithSKUKey,
 				        "ItemQtyInMT",
 				        each
 				            let
 				                u = [ItemUnit],
-				                isBag = if u = null then false else Text.Contains(u, "bag"),
+				                cc = if [CompanyCode] <> null then Text.Upper(Text.From([CompanyCode])) else null,
+				                isBag = if u = null then false else (Text.Contains(u, "bag") or Text.Contains(u, "sack")),
+				                isMT = if u = null then false else (Text.Contains(u, "mt") or Text.Contains(u, "ton") or Text.Contains(u, "tonne") or Text.Contains(u, "metric")),
 				                q = [ItemQuantity]
 				            in
-				                if q = null then null else if isBag then q / 20 else q,
+				                if q = null then null
+				                else if isMT then q
+				                else if isBag then q / 20
+				                else if cc = "ACL" then q / 20
+				                else q,
 				        type number
 				    ),
 				
@@ -846,6 +1245,8 @@ table Fact_ProjectConversion
 				        ItemsForAgg,
 				        {"ConversionID"},
 				        {
+				            {"OrderItemCount", each Table.RowCount(_), Int64.Type},
+				            {"DistinctSKUCount", each List.NonNullCount(List.Distinct(List.RemoveNulls([SKUKey]))), Int64.Type},
 				            {"total_quantity", each List.Sum(List.RemoveNulls([ItemQuantity])), type number},
 				            {"unit", each let u = List.RemoveNulls(List.Distinct([ItemUnit])) in if List.Count(u) = 1 then u{0} else if List.Count(u) = 0 then null else "mixed", type text},
 				            {"qty_in_mt", each List.Sum(List.RemoveNulls([ItemQtyInMT])), type number},
@@ -854,7 +1255,7 @@ table Fact_ProjectConversion
 				    ),
 				
 				    #"Merged items agg" = Table.NestedJoin(TypedTable, {"ConversionID"}, ItemsAgg, {"ConversionID"}, "ItemsAgg", JoinKind.LeftOuter),
-				    #"Expanded items agg" = Table.ExpandTableColumn(#"Merged items agg", "ItemsAgg", {"total_quantity", "unit", "qty_in_mt", "total_amount_items"}, {"total_quantity", "unit", "qty_in_mt", "total_amount_items"}),
+				    #"Expanded items agg" = Table.ExpandTableColumn(#"Merged items agg", "ItemsAgg", {"OrderItemCount", "DistinctSKUCount", "total_quantity", "unit", "qty_in_mt", "total_amount_items"}, {"OrderItemCount", "DistinctSKUCount", "total_quantity", "unit", "qty_in_mt", "total_amount_items"}),
 				
 				    #"Backfill total_amount from items" = Table.AddColumn(
 				        #"Expanded items agg",
@@ -869,12 +1270,16 @@ table Fact_ProjectConversion
 				    #"Filled qty nulls" = Table.TransformColumns(
 				        #"Renamed total_amount",
 				        {
+				            {"OrderItemCount", each if _ = null then 0 else _, Int64.Type},
+				            {"DistinctSKUCount", each if _ = null then 0 else _, Int64.Type},
 				            {"total_quantity", each if _ = null then 0 else _, type number},
 				            {"qty_in_mt", each if _ = null then 0 else _, type number}
 				        }
 				    ),
 				
-				    #"Merged queries 1" = Table.NestedJoin(#"Filled qty nulls", {"SiteID"}, #"public potential_site", {"id"}, "public potential_site", JoinKind.LeftOuter),
+					#"Added TotalQuantity" = Table.AddColumn(#"Filled qty nulls", "TotalQuantity", each [total_quantity], type number),
+				
+					#"Merged queries 1" = Table.NestedJoin(#"Added TotalQuantity", {"SiteID"}, #"public potential_site", {"id"}, "public potential_site", JoinKind.LeftOuter),
 				    #"Expanded public potential_site" = Table.ExpandTableColumn(#"Merged queries 1", "public potential_site", {"contractor_id"}, {"contractor_id"}),
 				    #"Merged queries 2" = Table.NestedJoin(#"Expanded public potential_site", {"contractor_id"}, #"public client", {"id"}, "public client", JoinKind.LeftOuter),
 				    #"Expanded public client" = Table.ExpandTableColumn(#"Merged queries 2", "public client", {"bkash_number", "name", "phone", "bank_account_id"}, {"bkash_number", "name", "phone", "bank_account_id"}),

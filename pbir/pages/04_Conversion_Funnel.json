@@ -76,7 +76,7 @@
             "height": 120,
             "config": {
                 "title": "ORDERS",
-                "dataField": "Fact_Order[Total Orders]",
+                "dataField": "Fact_ProjectConversion[Total Orders]",
                 "icon": "📦"
             }
         },
@@ -160,7 +160,7 @@
                     },
                     {
                         "name": "Orders Placed",
-                        "field": "Fact_Order[Total Orders]",
+                        "field": "Fact_ProjectConversion[Total Orders]",
                         "color": "#9B59B6",
                         "showDropoff": true
                     },
@@ -234,7 +234,7 @@
                 "series": [
                     {
                         "name": "Orders",
-                        "field": "Fact_Order[Total Orders]",
+                        "field": "Fact_ProjectConversion[Total Orders]",
                         "color": "#0066CC"
                     }
                 ],
@@ -332,7 +332,7 @@
                     },
                     {
                         "name": "Orders",
-                        "field": "Fact_Order[Total Orders]",
+                        "field": "Fact_ProjectConversion[Total Orders]",
                         "color": "#9B59B6",
                         "axis": "left"
                     },
@@ -372,7 +372,7 @@
                     },
                     {
                         "title": "📦 Delivery Method",
-                        "field": "Fact_Order[DeliveryMethod]",
+                        "field": "Fact_ProjectConversion[DeliveryMethod]",
                         "type": "dropdown"
                     },
                     {
@@ -382,7 +382,7 @@
                     },
                     {
                         "title": "📊 Order Status",
-                        "field": "Fact_Order[OrderStatus]",
+                        "field": "Fact_ProjectConversion[OrderStatus]",
                         "type": "dropdown"
                     }
                 ]
@@ -391,7 +391,7 @@
     ],
     "drillThrough": {
         "fields": [
-            "Fact_Order[OrderID]",
+            "Fact_ProjectConversion[OrderID]",
             "Dim_Client[ClientKey]",
             "Dim_Territory[ZoneName]"
         ],
