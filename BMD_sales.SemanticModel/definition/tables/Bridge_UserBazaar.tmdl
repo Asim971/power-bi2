@@ -1,0 +1,99 @@
+table Bridge_UserBazaar
+	isHidden
+	lineageTag: 1d2f8d1b-0f0f-4a93-9b07-77d0c35d6f0a
+
+	column UserID
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 3b3e6f46-5c7b-4b45-9f1c-7a56d9ddae32
+		summarizeBy: none
+		sourceColumn: UserID
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column BazaarID
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 6a9f0bb4-1d63-4f7f-9b39-76b9e3a0a50f
+		summarizeBy: none
+		sourceColumn: BazaarID
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Bridge_UserBazaar = m
+		mode: import
+		source = ```
+				// ============================================================
+				// Bridge_UserBazaar
+				// Purpose: map users to *multiple* bazaars (BMD track)
+				// Source: public users_bd_territory + public bd_territory_bazaars
+				// Output: distinct (UserID, BazaarID)
+				// ============================================================
+				let
+				    UsersBD = #"public users_bd_territory",
+				    UsersBDSelected = Table.SelectColumns(
+				        UsersBD,
+				        {"users_id", "bd_territory_id"},
+				        MissingField.UseNull
+				    ),
+				    UsersBDFiltered = Table.SelectRows(
+				        UsersBDSelected,
+				        each [users_id] <> null and [bd_territory_id] <> null
+				    ),
+				
+				    BDTerritoryBazaars = #"public bd_territory_bazaars",
+				    BDTerritoryBazaarsSelected = Table.SelectColumns(
+				        BDTerritoryBazaars,
+				        {"bd_territory_id", "bazaar_id"},
+				        MissingField.UseNull
+				    ),
+				    BDTerritoryBazaarsFiltered = Table.SelectRows(
+				        BDTerritoryBazaarsSelected,
+				        each [bd_territory_id] <> null and [bazaar_id] <> null
+				    ),
+				
+				    Joined = Table.NestedJoin(
+				        UsersBDFiltered,
+				        {"bd_territory_id"},
+				        BDTerritoryBazaarsFiltered,
+				        {"bd_territory_id"},
+				        "BazaarMap",
+				        JoinKind.Inner
+				    ),
+				    Expanded = Table.ExpandTableColumn(
+				        Joined,
+				        "BazaarMap",
+				        {"bazaar_id"},
+				        {"BazaarID"}
+				    ),
+				    Renamed = Table.RenameColumns(
+				        Expanded,
+				        {{"users_id", "UserID"}},
+				        MissingField.Ignore
+				    ),
+				    Selected = Table.SelectColumns(
+				        Renamed,
+				        {"UserID", "BazaarID"},
+				        MissingField.UseNull
+				    ),
+				    Typed = Table.TransformColumnTypes(
+				        Selected,
+				        {
+				            {"UserID", Int64.Type},
+				            {"BazaarID", Int64.Type}
+				        }
+				    ),
+				    DistinctRows = Table.Distinct(Typed, {"UserID", "BazaarID"})
+				in
+				    DistinctRows
+		```
+
+	changedProperty = IsHidden
+
+	annotation PBI_ResultType = Table

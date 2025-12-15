@@ -31,11 +31,23 @@ relationship 9f6d8aeb-4c79-c167-c7d9-7f8716100e93
 	fromColumn: Fact_Visit.DateKey
 	toColumn: Dim_Date.DateKey
 
-relationship d4e5f6a7-8901-2345-def0-123456789abc
-	isActive: false
+relationship 9b1f2c3d-4e5f-6789-abcd-ef0123456789
+	fromColumn: Bridge_UserBazaar.UserID
+	toColumn: Dim_User.UserID
+
+relationship 8a7b6c5d-4e3f-2109-8fed-cba987654321
 	crossFilteringBehavior: bothDirections
-	fromColumn: Dim_User.BazaarID
+	fromColumn: Bridge_UserBazaar.BazaarID
 	toColumn: Dim_Bazaar.BazaarID
+
+relationship 2c3d4e5f-6071-8293-a4b5-c6d7e8f90123
+	fromColumn: Bridge_UserTerritory.UserID
+	toColumn: Dim_User.UserID
+
+relationship 3d4e5f60-7182-93a4-b5c6-d7e8f9012345
+	crossFilteringBehavior: bothDirections
+	fromColumn: Bridge_UserTerritory.territory_id
+	toColumn: Dim_Territory.territory_id
 
 relationship e5f6a7b8-9012-3456-ef01-23456789abcd
 	fromColumn: Dim_Client_Simple.BazaarID
@@ -82,13 +94,6 @@ relationship 6e7b6f2a-9c33-4b8a-93ff-1e9b8a9a6b4a
 relationship 22adf3ba-2927-72fe-6dd4-8cb5fc102c9a
 	fromColumn: Fact_Visit.EmployeeID
 	toColumn: Dim_User.EmployeeID
-
-relationship 0edc89c4-a420-d6c9-e283-340fb3547d07
-	isActive: false
-	crossFilteringBehavior: bothDirections
-	toCardinality: many
-	fromColumn: Dim_User.BazaarID
-	toColumn: Fact_ProjectConversion.BazaarID
 
 relationship 03854878-157c-4b10-8570-9d62d22c2c98
 	joinOnDateBehavior: datePartOnly

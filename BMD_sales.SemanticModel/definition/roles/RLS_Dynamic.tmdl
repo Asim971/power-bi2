@@ -1,0 +1,104 @@
+role RLS_Dynamic
+	modelPermission: read
+
+	tablePermission Dim_Bazaar =
+			VAR __upn = LOWER(TRIM(USERPRINCIPALNAME()))
+			VAR __uid =
+				MAXX(
+					FILTER(
+						ALL(Dim_User),
+						LOWER(TRIM(Dim_User[EmployeeEmail])) = __upn
+					),
+					Dim_User[UserID]
+				)
+			VAR __bazaars =
+				CALCULATETABLE(
+					VALUES(Bridge_UserBazaar[BazaarID]),
+					Bridge_UserBazaar[UserID] = __uid
+				)
+			VAR __territories =
+				CALCULATETABLE(
+					VALUES(Bridge_UserTerritory[territory_id]),
+					Bridge_UserTerritory[UserID] = __uid
+				)
+			RETURN
+				NOT ISBLANK(__uid)
+					&& (
+						Dim_Bazaar[BazaarID] IN __bazaars
+							|| Dim_Bazaar[territory_id] IN __territories
+					)
+
+	tablePermission Dim_Territory =
+			VAR __upn = LOWER(TRIM(USERPRINCIPALNAME()))
+			VAR __uid =
+				MAXX(
+					FILTER(
+						ALL(Dim_User),
+						LOWER(TRIM(Dim_User[EmployeeEmail])) = __upn
+					),
+					Dim_User[UserID]
+				)
+			VAR __territories =
+				CALCULATETABLE(
+					VALUES(Bridge_UserTerritory[territory_id]),
+					Bridge_UserTerritory[UserID] = __uid
+				)
+			VAR __bazaars =
+				CALCULATETABLE(
+					VALUES(Bridge_UserBazaar[BazaarID]),
+					Bridge_UserBazaar[UserID] = __uid
+				)
+			VAR __territoriesFromBazaars =
+				CALCULATETABLE(
+					VALUES(Dim_Bazaar[territory_id]),
+					FILTER(
+						ALL(Dim_Bazaar),
+						Dim_Bazaar[BazaarID] IN __bazaars
+					)
+				)
+			VAR __allTerritories = DISTINCT(UNION(__territories, __territoriesFromBazaars))
+			RETURN
+				NOT ISBLANK(__uid)
+					&& Dim_Territory[territory_id] IN __allTerritories
+
+	tablePermission Fact_Target =
+			VAR __upn = LOWER(TRIM(USERPRINCIPALNAME()))
+			VAR __uid =
+				MAXX(
+					FILTER(
+						ALL(Dim_User),
+						LOWER(TRIM(Dim_User[EmployeeEmail])) = __upn
+					),
+					Dim_User[UserID]
+				)
+			VAR __bazaars =
+				CALCULATETABLE(
+					VALUES(Bridge_UserBazaar[BazaarID]),
+					Bridge_UserBazaar[UserID] = __uid
+				)
+			VAR __territories =
+				CALCULATETABLE(
+					VALUES(Bridge_UserTerritory[territory_id]),
+					Bridge_UserTerritory[UserID] = __uid
+				)
+			VAR __usersFromBazaars =
+				CALCULATETABLE(
+					VALUES(Bridge_UserBazaar[UserID]),
+					TREATAS(__bazaars, Bridge_UserBazaar[BazaarID])
+				)
+			VAR __usersFromTerritories =
+				CALCULATETABLE(
+					VALUES(Bridge_UserTerritory[UserID]),
+					TREATAS(__territories, Bridge_UserTerritory[territory_id])
+				)
+			VAR __allowedUsers =
+				DISTINCT(
+					UNION(
+						SELECTCOLUMNS(__usersFromBazaars, "UserID", [UserID]),
+						SELECTCOLUMNS(__usersFromTerritories, "UserID", [UserID]),
+						ROW("UserID", __uid)
+					)
+				)
+			RETURN
+				NOT ISBLANK(__uid)
+					&& Fact_Target[UserID] IN __allowedUsers
