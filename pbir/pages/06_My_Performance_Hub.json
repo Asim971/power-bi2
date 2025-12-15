@@ -497,7 +497,7 @@
                     "config": {
                         "title": "Channel Health Matrix",
                         "rows": {
-                            "field": "Dim_Client[ClientType]"
+                            "field": "Dim_Client_Simple[ClientType]"
                         },
                         "columns": {
                             "field": "Dim_Date[WeekOfYear]"
@@ -752,15 +752,15 @@
         "expressions": [
             {
                 "role": "BDO",
-                "filter": "Dim_Client[ResponsibleRoleRLS] IN {'BDO', 'CRO,BDO'}"
+                "filter": "Dim_Client_Simple[ResponsibleRoleRLS] IN {'BDO', 'CRO,BDO'}"
             },
             {
                 "role": "CRO",
-                "filter": "Dim_Client[ResponsibleRoleRLS] IN {'CRO', 'CRO,BDO'}"
+                "filter": "Dim_Client_Simple[ResponsibleRoleRLS] IN {'CRO', 'CRO,BDO'}"
             },
             {
                 "role": "SR",
-                "filter": "Dim_Client[ResponsibleRoleRLS] = 'SR'"
+                "filter": "Dim_Client_Simple[ResponsibleRoleRLS] = 'SR'"
             }
         ]
     }

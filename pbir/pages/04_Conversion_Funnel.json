@@ -392,7 +392,7 @@
     "drillThrough": {
         "fields": [
             "Fact_ProjectConversion[OrderID]",
-            "Dim_Client[ClientKey]",
+            "Dim_Client_Simple[ClientKey]",
             "Dim_Territory[ZoneName]"
         ],
         "keepAllFilters": true

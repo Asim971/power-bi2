@@ -242,7 +242,7 @@
             "config": {
                 "title": "🍩 CLIENT MIX",
                 "legend": {
-                    "field": "Dim_Client[ClientType]"
+                    "field": "Dim_Client_Simple[ClientType]"
                 },
                 "values": {
                     "field": "Fact_Visit[Total Visits]"
@@ -365,7 +365,7 @@
                     },
                     {
                         "title": "🏢 Client Type",
-                        "field": "Dim_Client[ClientType]",
+                        "field": "Dim_Client_Simple[ClientType]",
                         "type": "dropdown",
                         "default": "All"
                     }

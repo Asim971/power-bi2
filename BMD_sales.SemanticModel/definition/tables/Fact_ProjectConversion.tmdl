@@ -1130,9 +1130,22 @@ table Fact_ProjectConversion
 					        else [ClientKey],
 					    type text
 					),
-				
-					RemovedTempClientCols = Table.RemoveColumns(WithClientKeyFinal, {"ClientType", "ClientID", "ClientKey", "ClientType_final", "ClientID_final", "ClientKey_from_order"}),
-					RenamedClientCols = Table.RenameColumns(RemovedTempClientCols, {{"ClientKey_final", "ClientKey"}}),
+			
+					// Keep ClientType/ClientID in the final output (model schema depends on them)
+					RemovedTempClientCols = Table.RemoveColumns(
+					    WithClientKeyFinal,
+					    {"ClientType", "ClientID", "ClientKey", "ClientKey_from_order"},
+					    MissingField.Ignore
+					),
+					RenamedClientCols = Table.RenameColumns(
+					    RemovedTempClientCols,
+					    {
+					        {"ClientType_final", "ClientType"},
+					        {"ClientID_final", "ClientID"},
+					        {"ClientKey_final", "ClientKey"}
+					    },
+					    MissingField.Ignore
+					),
 				
 					TypedTable = RenamedClientCols,
 				
