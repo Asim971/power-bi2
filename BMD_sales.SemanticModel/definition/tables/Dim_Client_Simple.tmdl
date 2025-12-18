@@ -22,12 +22,10 @@ table Dim_Client_Simple
 		changedProperty = IsHidden
 
 	measure Total_Dealers =
-			// Total distinct Dealers - ignores fact table filter context
+			// Total distinct Dealers - filters with fact tables
 			CALCULATE(
 				DISTINCTCOUNT('Dim_Client_Simple'[ClientKey]),
-				'Dim_Client_Simple'[ClientType] = "Dealer",
-				REMOVEFILTERS('Fact_Visit'),
-				REMOVEFILTERS('Fact_ProjectConversion')
+				'Dim_Client_Simple'[ClientType] = "Dealer"
 			)
 		formatString: #,##0
 		displayFolder: Client Counts
@@ -36,12 +34,10 @@ table Dim_Client_Simple
 		changedProperty = IsHidden
 
 	measure Total_Retailers =
-			// Total distinct Retailers - ignores fact table filter context
+			// Total distinct Retailers - filters with fact tables
 			CALCULATE(
 				DISTINCTCOUNT('Dim_Client_Simple'[ClientKey]),
-				'Dim_Client_Simple'[ClientType] = "Retailer",
-				REMOVEFILTERS('Fact_Visit'),
-				REMOVEFILTERS('Fact_ProjectConversion')
+				'Dim_Client_Simple'[ClientType] = "Retailer"
 			)
 		formatString: #,##0
 		displayFolder: Client Counts
@@ -50,12 +46,10 @@ table Dim_Client_Simple
 		changedProperty = IsHidden
 
 	measure Total_Sites =
-			// Total distinct Sites - ignores fact table filter context
+			// Total distinct Sites - filters with fact tables
 			CALCULATE(
 				DISTINCTCOUNT('Dim_Client_Simple'[ClientKey]),
-				'Dim_Client_Simple'[ClientType] = "Site",
-				REMOVEFILTERS('Fact_Visit'),
-				REMOVEFILTERS('Fact_ProjectConversion')
+				'Dim_Client_Simple'[ClientType] = "Site"
 			)
 		formatString: #,##0
 		displayFolder: Client Counts
@@ -64,12 +58,10 @@ table Dim_Client_Simple
 		changedProperty = IsHidden
 
 	measure Total_Engineers =
-			// Total distinct Engineers - ignores fact table filter context
+			// Total distinct Engineers - filters with fact tables
 			CALCULATE(
 				DISTINCTCOUNT('Dim_Client_Simple'[ClientKey]),
-				'Dim_Client_Simple'[ClientType] = "Engineer",
-				REMOVEFILTERS('Fact_Visit'),
-				REMOVEFILTERS('Fact_ProjectConversion')
+				'Dim_Client_Simple'[ClientType] = "Engineer"
 			)
 		formatString: #,##0
 		displayFolder: Client Counts
@@ -78,12 +70,10 @@ table Dim_Client_Simple
 		changedProperty = IsHidden
 
 	measure Total_Contractors =
-			// Total distinct Contractors - ignores fact table filter context
+			// Total distinct Contractors - filters with fact tables
 			CALCULATE(
 				DISTINCTCOUNT('Dim_Client_Simple'[ClientKey]),
-				'Dim_Client_Simple'[ClientType] = "Contractor",
-				REMOVEFILTERS('Fact_Visit'),
-				REMOVEFILTERS('Fact_ProjectConversion')
+				'Dim_Client_Simple'[ClientType] = "Contractor"
 			)
 		formatString: #,##0
 		displayFolder: Client Counts
@@ -92,12 +82,10 @@ table Dim_Client_Simple
 		changedProperty = IsHidden
 
 	measure Total_IHBs =
-			// Total distinct IHBs - ignores fact table filter context
+			// Total distinct IHBs - filters with fact tables
 			CALCULATE(
 				DISTINCTCOUNT('Dim_Client_Simple'[ClientKey]),
-				'Dim_Client_Simple'[ClientType] = "IHB",
-				REMOVEFILTERS('Fact_Visit'),
-				REMOVEFILTERS('Fact_ProjectConversion')
+				'Dim_Client_Simple'[ClientType] = "IHB"
 			)
 		formatString: #,##0
 		displayFolder: Client Counts
@@ -106,12 +94,10 @@ table Dim_Client_Simple
 		changedProperty = IsHidden
 
 	measure Total_Influencers =
-			// Total distinct Influencers (Engineers + Contractors) - ignores fact table filter context
+			// Total distinct Influencers (Engineers + Contractors) - filters with fact tables
 			CALCULATE(
 				DISTINCTCOUNT('Dim_Client_Simple'[ClientKey]),
-				'Dim_Client_Simple'[ClientType] IN {"Engineer", "Contractor"},
-				REMOVEFILTERS('Fact_Visit'),
-				REMOVEFILTERS('Fact_ProjectConversion')
+				'Dim_Client_Simple'[ClientType] IN {"Engineer", "Contractor"}
 			)
 		formatString: #,##0
 		displayFolder: Client Counts
@@ -120,12 +106,8 @@ table Dim_Client_Simple
 		changedProperty = IsHidden
 
 	measure UniqueRoleCount =
-			// Unique clients count - ignores fact table filter context
-			CALCULATE(
-				DISTINCTCOUNT('Dim_Client_Simple'[ClientKey]),
-				REMOVEFILTERS('Fact_Visit'),
-				REMOVEFILTERS('Fact_ProjectConversion')
-			)
+			// Unique clients count - filters with fact tables
+			DISTINCTCOUNT('Dim_Client_Simple'[ClientKey])
 		formatString: #,##0
 		displayFolder: Client Counts
 		lineageTag: 1b8c9d0e-1f2a-3456-7123-456789012345
