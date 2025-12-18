@@ -23,21 +23,15 @@ table Dim_Client_Simple
 
 	measure Total_Dealers =
 			// Total distinct Dealers - respects filters from Fact_Visit (e.g., location filters)
-			VAR ClientsWithVisits = VALUES('Fact_Visit'[ClientKey])
-			VAR HasVisitFilter = NOT ISEMPTY('Fact_Visit')
+			VAR ClientsWithVisits = DISTINCT('Fact_Visit'[ClientKey])
+			VAR DealerClients = CALCULATETABLE(
+				DISTINCT('Dim_Client_Simple'[ClientKey]),
+				'Dim_Client_Simple'[ClientType] = "Dealer",
+				REMOVEFILTERS('Fact_Visit')
+			)
 			RETURN
-			IF(
-				HasVisitFilter,
-				COUNTROWS(
-					INTERSECT(
-						CALCULATE(VALUES('Dim_Client_Simple'[ClientKey]), 'Dim_Client_Simple'[ClientType] = "Dealer"),
-						ClientsWithVisits
-					)
-				),
-				CALCULATE(
-					DISTINCTCOUNT('Dim_Client_Simple'[ClientKey]),
-					'Dim_Client_Simple'[ClientType] = "Dealer"
-				)
+			COUNTROWS(
+				INTERSECT(DealerClients, ClientsWithVisits)
 			)
 		formatString: #,##0
 		displayFolder: Client Counts
@@ -47,21 +41,15 @@ table Dim_Client_Simple
 
 	measure Total_Retailers =
 			// Total distinct Retailers - respects filters from Fact_Visit (e.g., location filters)
-			VAR ClientsWithVisits = VALUES('Fact_Visit'[ClientKey])
-			VAR HasVisitFilter = NOT ISEMPTY('Fact_Visit')
+			VAR ClientsWithVisits = DISTINCT('Fact_Visit'[ClientKey])
+			VAR RetailerClients = CALCULATETABLE(
+				DISTINCT('Dim_Client_Simple'[ClientKey]),
+				'Dim_Client_Simple'[ClientType] = "Retailer",
+				REMOVEFILTERS('Fact_Visit')
+			)
 			RETURN
-			IF(
-				HasVisitFilter,
-				COUNTROWS(
-					INTERSECT(
-						CALCULATE(VALUES('Dim_Client_Simple'[ClientKey]), 'Dim_Client_Simple'[ClientType] = "Retailer"),
-						ClientsWithVisits
-					)
-				),
-				CALCULATE(
-					DISTINCTCOUNT('Dim_Client_Simple'[ClientKey]),
-					'Dim_Client_Simple'[ClientType] = "Retailer"
-				)
+			COUNTROWS(
+				INTERSECT(RetailerClients, ClientsWithVisits)
 			)
 		formatString: #,##0
 		displayFolder: Client Counts
@@ -71,21 +59,15 @@ table Dim_Client_Simple
 
 	measure Total_Sites =
 			// Total distinct Sites - respects filters from Fact_Visit (e.g., location filters)
-			VAR ClientsWithVisits = VALUES('Fact_Visit'[ClientKey])
-			VAR HasVisitFilter = NOT ISEMPTY('Fact_Visit')
+			VAR ClientsWithVisits = DISTINCT('Fact_Visit'[ClientKey])
+			VAR SiteClients = CALCULATETABLE(
+				DISTINCT('Dim_Client_Simple'[ClientKey]),
+				'Dim_Client_Simple'[ClientType] = "Site",
+				REMOVEFILTERS('Fact_Visit')
+			)
 			RETURN
-			IF(
-				HasVisitFilter,
-				COUNTROWS(
-					INTERSECT(
-						CALCULATE(VALUES('Dim_Client_Simple'[ClientKey]), 'Dim_Client_Simple'[ClientType] = "Site"),
-						ClientsWithVisits
-					)
-				),
-				CALCULATE(
-					DISTINCTCOUNT('Dim_Client_Simple'[ClientKey]),
-					'Dim_Client_Simple'[ClientType] = "Site"
-				)
+			COUNTROWS(
+				INTERSECT(SiteClients, ClientsWithVisits)
 			)
 		formatString: #,##0
 		displayFolder: Client Counts
@@ -95,21 +77,15 @@ table Dim_Client_Simple
 
 	measure Total_Engineers =
 			// Total distinct Engineers - respects filters from Fact_Visit (e.g., location filters)
-			VAR ClientsWithVisits = VALUES('Fact_Visit'[ClientKey])
-			VAR HasVisitFilter = NOT ISEMPTY('Fact_Visit')
+			VAR ClientsWithVisits = DISTINCT('Fact_Visit'[ClientKey])
+			VAR EngineerClients = CALCULATETABLE(
+				DISTINCT('Dim_Client_Simple'[ClientKey]),
+				'Dim_Client_Simple'[ClientType] = "Engineer",
+				REMOVEFILTERS('Fact_Visit')
+			)
 			RETURN
-			IF(
-				HasVisitFilter,
-				COUNTROWS(
-					INTERSECT(
-						CALCULATE(VALUES('Dim_Client_Simple'[ClientKey]), 'Dim_Client_Simple'[ClientType] = "Engineer"),
-						ClientsWithVisits
-					)
-				),
-				CALCULATE(
-					DISTINCTCOUNT('Dim_Client_Simple'[ClientKey]),
-					'Dim_Client_Simple'[ClientType] = "Engineer"
-				)
+			COUNTROWS(
+				INTERSECT(EngineerClients, ClientsWithVisits)
 			)
 		formatString: #,##0
 		displayFolder: Client Counts
@@ -119,21 +95,15 @@ table Dim_Client_Simple
 
 	measure Total_Contractors =
 			// Total distinct Contractors - respects filters from Fact_Visit (e.g., location filters)
-			VAR ClientsWithVisits = VALUES('Fact_Visit'[ClientKey])
-			VAR HasVisitFilter = NOT ISEMPTY('Fact_Visit')
+			VAR ClientsWithVisits = DISTINCT('Fact_Visit'[ClientKey])
+			VAR ContractorClients = CALCULATETABLE(
+				DISTINCT('Dim_Client_Simple'[ClientKey]),
+				'Dim_Client_Simple'[ClientType] = "Contractor",
+				REMOVEFILTERS('Fact_Visit')
+			)
 			RETURN
-			IF(
-				HasVisitFilter,
-				COUNTROWS(
-					INTERSECT(
-						CALCULATE(VALUES('Dim_Client_Simple'[ClientKey]), 'Dim_Client_Simple'[ClientType] = "Contractor"),
-						ClientsWithVisits
-					)
-				),
-				CALCULATE(
-					DISTINCTCOUNT('Dim_Client_Simple'[ClientKey]),
-					'Dim_Client_Simple'[ClientType] = "Contractor"
-				)
+			COUNTROWS(
+				INTERSECT(ContractorClients, ClientsWithVisits)
 			)
 		formatString: #,##0
 		displayFolder: Client Counts
@@ -143,21 +113,15 @@ table Dim_Client_Simple
 
 	measure Total_IHBs =
 			// Total distinct IHBs - respects filters from Fact_Visit (e.g., location filters)
-			VAR ClientsWithVisits = VALUES('Fact_Visit'[ClientKey])
-			VAR HasVisitFilter = NOT ISEMPTY('Fact_Visit')
+			VAR ClientsWithVisits = DISTINCT('Fact_Visit'[ClientKey])
+			VAR IHBClients = CALCULATETABLE(
+				DISTINCT('Dim_Client_Simple'[ClientKey]),
+				'Dim_Client_Simple'[ClientType] = "IHB",
+				REMOVEFILTERS('Fact_Visit')
+			)
 			RETURN
-			IF(
-				HasVisitFilter,
-				COUNTROWS(
-					INTERSECT(
-						CALCULATE(VALUES('Dim_Client_Simple'[ClientKey]), 'Dim_Client_Simple'[ClientType] = "IHB"),
-						ClientsWithVisits
-					)
-				),
-				CALCULATE(
-					DISTINCTCOUNT('Dim_Client_Simple'[ClientKey]),
-					'Dim_Client_Simple'[ClientType] = "IHB"
-				)
+			COUNTROWS(
+				INTERSECT(IHBClients, ClientsWithVisits)
 			)
 		formatString: #,##0
 		displayFolder: Client Counts
@@ -167,21 +131,15 @@ table Dim_Client_Simple
 
 	measure Total_Influencers =
 			// Total distinct Influencers (Engineers + Contractors) - respects filters from Fact_Visit
-			VAR ClientsWithVisits = VALUES('Fact_Visit'[ClientKey])
-			VAR HasVisitFilter = NOT ISEMPTY('Fact_Visit')
+			VAR ClientsWithVisits = DISTINCT('Fact_Visit'[ClientKey])
+			VAR InfluencerClients = CALCULATETABLE(
+				DISTINCT('Dim_Client_Simple'[ClientKey]),
+				'Dim_Client_Simple'[ClientType] IN {"Engineer", "Contractor"},
+				REMOVEFILTERS('Fact_Visit')
+			)
 			RETURN
-			IF(
-				HasVisitFilter,
-				COUNTROWS(
-					INTERSECT(
-						CALCULATE(VALUES('Dim_Client_Simple'[ClientKey]), 'Dim_Client_Simple'[ClientType] IN {"Engineer", "Contractor"}),
-						ClientsWithVisits
-					)
-				),
-				CALCULATE(
-					DISTINCTCOUNT('Dim_Client_Simple'[ClientKey]),
-					'Dim_Client_Simple'[ClientType] IN {"Engineer", "Contractor"}
-				)
+			COUNTROWS(
+				INTERSECT(InfluencerClients, ClientsWithVisits)
 			)
 		formatString: #,##0
 		displayFolder: Client Counts
@@ -191,20 +149,7 @@ table Dim_Client_Simple
 
 	measure UniqueRoleCount =
 			// Unique clients count - respects filters from Fact_Visit (e.g., location filters)
-			// Uses VALUES to get clients that exist in the filtered Fact_Visit context
-			VAR ClientsWithVisits = VALUES('Fact_Visit'[ClientKey])
-			VAR HasVisitFilter = NOT ISEMPTY('Fact_Visit')
-			RETURN
-			IF(
-				HasVisitFilter,
-				COUNTROWS(
-					INTERSECT(
-						VALUES('Dim_Client_Simple'[ClientKey]),
-						ClientsWithVisits
-					)
-				),
-				DISTINCTCOUNT('Dim_Client_Simple'[ClientKey])
-			)
+			DISTINCTCOUNT('Fact_Visit'[ClientKey])
 		formatString: #,##0
 		displayFolder: Client Counts
 		lineageTag: 1b8c9d0e-1f2a-3456-7123-456789012345
