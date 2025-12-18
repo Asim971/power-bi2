@@ -885,8 +885,8 @@ table Fact_ProjectConversion
 				    // The ClientKey will be generated after joining with potential_site
 				    // to get the actual client references
 				    // ============================================================
-				    // Initial ClientKey placeholder - will be overwritten after potential_site join
-				    WithClientKey = Table.AddColumn(WithDateKey, "ClientKey_Initial", each 
+				    // Initial ClientKey placeholder - will be replaced after potential_site join
+				    WithClientKey = Table.AddColumn(WithDateKey, "ClientKey", each 
 				        "Site-" & Text.From([SiteID]),
 				        type text
 				    ),
@@ -1389,7 +1389,7 @@ table Fact_ProjectConversion
 				// Remove old ClientKey columns and rename new ones
 				#"Removed Old ClientKey" = Table.RemoveColumns(
 				    #"Added ClientKey_Final", 
-				    {"ClientKey_Initial", "ClientKey", "ClientType", "ClientID", "ClientKey_from_order"}, 
+				    {"ClientKey", "ClientType", "ClientID", "ClientKey_from_order"}, 
 				    MissingField.Ignore
 				),
 				#"Renamed ClientKey Cols" = Table.RenameColumns(
