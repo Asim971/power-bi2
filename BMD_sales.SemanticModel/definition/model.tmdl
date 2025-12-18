@@ -13,8 +13,6 @@ annotation __PBI_TimeIntelligenceEnabled = 1
 
 annotation PBI_ProTooling = ["WebModelingEdit","CalcGroup","DaxQueryView_Desktop","TMDL-Extension"]
 
-ref role RLS_Dynamic
-
 ref table DateTableTemplate_7437c060-ed56-488f-8ed3-630a4622a4c8
 ref table Dim_Territory
 ref table Dim_Date
@@ -32,8 +30,6 @@ ref table 'Time Intelligence_2'
 ref table switch
 ref table Parameter
 ref table Dim_Bazaar
-ref table Bridge_UserBazaar
-ref table Bridge_UserTerritory
 ref table DateFilterParam
 ref table Fact_Target
 ref table Dim_EntityGroup
@@ -49,4 +45,6 @@ ref table LocalDateTable_c06d925f-c97e-4691-8afb-e389824b9822
 ref table LocalDateTable_c0b96bb2-3e42-43ae-bb49-4ba396c907cb
 ref table LocalDateTable_c151fe52-9817-4144-befd-f4995bcb41bc
 ref table LocalDateTable_7e09d3f4-9df3-4230-9fd4-155e0e558850
+ref table Bridge_UserBazaar
+ref table Bridge_UserTerritory
 

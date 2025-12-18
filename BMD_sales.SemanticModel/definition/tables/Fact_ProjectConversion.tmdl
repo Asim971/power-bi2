@@ -151,6 +151,46 @@ table Fact_ProjectConversion
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 		annotation OrderMeasuresNotes = "Order measures were consolidated into this table during the model migration."
+
+	measure Active_Contractors =
+			COALESCE(
+				CALCULATE(
+					DISTINCTCOUNT('Fact_ProjectConversion'[contractor_id]),
+					NOT ISBLANK('Fact_ProjectConversion'[contractor_id]),
+					UPPER('Fact_ProjectConversion'[OrderStatus]) = "APPROVED"
+				),
+				0
+			)
+		formatString: 0
+		displayFolder: Conversion Counts\By Status
+		lineageTag: 7f05a2a2-0e1b-4d4f-a65e-1a8fbaea8799
+
+	measure Total_Orders_By_Contractor =
+			COALESCE(
+				CALCULATE(
+					COUNTROWS('Fact_ProjectConversion'),
+					NOT ISBLANK('Fact_ProjectConversion'[contractor_id])
+				),
+				0
+			)
+		formatString: 0
+		displayFolder: Analytics\Engagement
+		lineageTag: 8c1c1ee6-e53a-4b95-bb40-7fe0b8dd86a9
+
+	measure Total_MT_By_Contractor =
+			COALESCE(
+				CALCULATE(
+					SUM('Fact_ProjectConversion'[qty_in_mt]),
+					NOT ISBLANK('Fact_ProjectConversion'[contractor_id])
+				),
+				0
+			)
+		formatString: 0.00
+		displayFolder: Analytics\Engagement
+		lineageTag: 5a8a7c2a-f5da-4c0b-8fb8-64b207fd9d20
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
 	measure Total_Orders = COUNTROWS('Fact_ProjectConversion')
 		formatString: #,##0
 		displayFolder: Orders\Base
@@ -246,45 +286,6 @@ table Fact_ProjectConversion
 		formatString: 0.0%
 		displayFolder: Orders\Rates
 		lineageTag: 2b3c4d5e-6f70-4162-8d7e-6f5a4b3c2d1e
-
-	measure Active_Contractors =
-			COALESCE(
-				CALCULATE(
-					DISTINCTCOUNT('Fact_ProjectConversion'[contractor_id]),
-					NOT ISBLANK('Fact_ProjectConversion'[contractor_id]),
-					UPPER('Fact_ProjectConversion'[OrderStatus]) = "APPROVED"
-				),
-				0
-			)
-		formatString: 0
-		displayFolder: Conversion Counts\By Status
-		lineageTag: 7f05a2a2-0e1b-4d4f-a65e-1a8fbaea8799
-
-	measure Total_Orders_By_Contractor =
-			COALESCE(
-				CALCULATE(
-					COUNTROWS('Fact_ProjectConversion'),
-					NOT ISBLANK('Fact_ProjectConversion'[contractor_id])
-				),
-				0
-			)
-		formatString: 0
-		displayFolder: Analytics\Engagement
-		lineageTag: 8c1c1ee6-e53a-4b95-bb40-7fe0b8dd86a9
-
-	measure Total_MT_By_Contractor =
-			COALESCE(
-				CALCULATE(
-					SUM('Fact_ProjectConversion'[qty_in_mt]),
-					NOT ISBLANK('Fact_ProjectConversion'[contractor_id])
-				),
-				0
-			)
-		formatString: 0.00
-		displayFolder: Analytics\Engagement
-		lineageTag: 5a8a7c2a-f5da-4c0b-8fb8-64b207fd9d20
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	column ConversionID
 		dataType: int64
@@ -521,49 +522,6 @@ table Fact_ProjectConversion
 
 		annotation SummarizationSetBy = Automatic
 
-	column OrderID
-		dataType: int64
-		formatString: 0
-		lineageTag: 45fd9d06-21a6-4e41-9c9a-e7190e5d5bb7
-		summarizeBy: none
-		sourceColumn: OrderID
-
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
-
-	column UserID
-		dataType: int64
-		formatString: 0
-		lineageTag: 1c4c5e84-3e19-4f10-a535-f2d3ee5d16e9
-		summarizeBy: none
-		sourceColumn: UserID
-
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
-
-	column ClientType
-		dataType: string
-		lineageTag: 44f3b4d8-a77e-4042-a77d-a5ae1affc96c
-		summarizeBy: none
-		sourceColumn: ClientType
-
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
-
-	column ClientID
-		dataType: int64
-		formatString: 0
-		lineageTag: 7a2d400c-0af0-49a9-ad15-b346285ddc07
-		summarizeBy: none
-		sourceColumn: ClientID
-
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
-
 	column DeliveryType
 		dataType: string
 		lineageTag: d652d6b0-3b4c-4470-84bc-494657708fb3
@@ -648,45 +606,11 @@ table Fact_ProjectConversion
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	column TotalQuantity
-		dataType: double
-		lineageTag: 1c89cb5c-8b7c-4af7-9d77-3b81f58d2dc8
-		summarizeBy: sum
-		sourceColumn: TotalQuantity
-
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
 	column unit
 		dataType: string
 		lineageTag: fe3a178b-a30a-4e0b-abba-4e08ba84545d
 		summarizeBy: none
 		sourceColumn: unit
-
-		annotation SummarizationSetBy = Automatic
-
-	column OrderItemCount
-		dataType: int64
-		formatString: 0
-		lineageTag: 2a0f2f3e-9b6f-4f5a-8b9a-9a8c5f1a2b3c
-		summarizeBy: sum
-		sourceColumn: OrderItemCount
-
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
-
-	column DistinctSKUCount
-		dataType: int64
-		formatString: 0
-		lineageTag: 4c1d2e3f-7a8b-4c9d-8e0f-1a2b3c4d5e6f
-		summarizeBy: sum
-		sourceColumn: DistinctSKUCount
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -741,6 +665,83 @@ table Fact_ProjectConversion
 		annotation SummarizationSetBy = Automatic
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column OrderID
+		dataType: int64
+		formatString: 0
+		lineageTag: 45fd9d06-21a6-4e41-9c9a-e7190e5d5bb7
+		summarizeBy: none
+		sourceColumn: OrderID
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column UserID
+		dataType: int64
+		formatString: 0
+		lineageTag: 1c4c5e84-3e19-4f10-a535-f2d3ee5d16e9
+		summarizeBy: none
+		sourceColumn: UserID
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column ClientType
+		dataType: string
+		lineageTag: 44f3b4d8-a77e-4042-a77d-a5ae1affc96c
+		summarizeBy: none
+		sourceColumn: ClientType
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column ClientID
+		dataType: int64
+		formatString: 0
+		lineageTag: 7a2d400c-0af0-49a9-ad15-b346285ddc07
+		summarizeBy: none
+		sourceColumn: ClientID
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column TotalQuantity
+		dataType: double
+		lineageTag: 1c89cb5c-8b7c-4af7-9d77-3b81f58d2dc8
+		summarizeBy: sum
+		sourceColumn: TotalQuantity
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column OrderItemCount
+		dataType: int64
+		formatString: 0
+		lineageTag: 2a0f2f3e-9b6f-4f5a-8b9a-9a8c5f1a2b3c
+		summarizeBy: sum
+		sourceColumn: OrderItemCount
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column DistinctSKUCount
+		dataType: int64
+		formatString: 0
+		lineageTag: 4c1d2e3f-7a8b-4c9d-8e0f-1a2b3c4d5e6f
+		summarizeBy: sum
+		sourceColumn: DistinctSKUCount
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
 
 	partition Fact_ProjectConversion = m
 		mode: import
@@ -942,7 +943,7 @@ table Fact_ProjectConversion
 				        {"created_at", type datetime},
 				        {"updated_at", type datetime}
 				    }),
-
+				
 					// ============================================================
 					// Order header enrichment (for Dim_User linkage & client keys)
 					// Join: public orders (fallback: public user_orders)
@@ -1130,7 +1131,7 @@ table Fact_ProjectConversion
 					        else [ClientKey],
 					    type text
 					),
-			
+				
 					// Keep ClientType/ClientID in the final output (model schema depends on them)
 					RemovedTempClientCols = Table.RemoveColumns(
 					    WithClientKeyFinal,

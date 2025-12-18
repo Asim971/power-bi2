@@ -29,40 +29,41 @@ table Bridge_UserTerritory
 	partition Bridge_UserTerritory = m
 		mode: import
 		source = ```
-				// ============================================================
-				// Bridge_UserTerritory
-				// Purpose: map users to *multiple* territories (ORG track)
-				// Source: public users_territory
-				// Output: distinct (UserID, territory_id)
-				// ============================================================
-				let
-				    UsersTerritory = #"public users_territory",
-				    Selected = Table.SelectColumns(
-				        UsersTerritory,
-				        {"users_id", "territory_id"},
-				        MissingField.UseNull
-				    ),
-				    Filtered = Table.SelectRows(
-				        Selected,
-				        each [users_id] <> null and [territory_id] <> null
-				    ),
-				    Renamed = Table.RenameColumns(
-				        Filtered,
-				        {{"users_id", "UserID"}},
-				        MissingField.Ignore
-				    ),
-				    Typed = Table.TransformColumnTypes(
-				        Renamed,
-				        {
-				            {"UserID", Int64.Type},
-				            {"territory_id", Int64.Type}
-				        }
-				    ),
-				    DistinctRows = Table.Distinct(Typed, {"UserID", "territory_id"})
-				in
-				    DistinctRows
-		```
+						// ============================================================
+						// Bridge_UserTerritory
+						// Purpose: map users to *multiple* territories (ORG track)
+						// Source: public users_territory
+						// Output: distinct (UserID, territory_id)
+						// ============================================================
+						let
+						    UsersTerritory = #"public users_territory",
+						    Selected = Table.SelectColumns(
+						        UsersTerritory,
+						        {"users_id", "territory_id"},
+						        MissingField.UseNull
+						    ),
+						    Filtered = Table.SelectRows(
+						        Selected,
+						        each [users_id] <> null and [territory_id] <> null
+						    ),
+						    Renamed = Table.RenameColumns(
+						        Filtered,
+						        {{"users_id", "UserID"}},
+						        MissingField.Ignore
+						    ),
+						    Typed = Table.TransformColumnTypes(
+						        Renamed,
+						        {
+						            {"UserID", Int64.Type},
+						            {"territory_id", Int64.Type}
+						        }
+						    ),
+						    DistinctRows = Table.Distinct(Typed, {"UserID", "territory_id"})
+						in
+						    DistinctRows
+				```
 
 	changedProperty = IsHidden
 
 	annotation PBI_ResultType = Table
+

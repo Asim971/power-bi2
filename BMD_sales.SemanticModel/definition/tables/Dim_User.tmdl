@@ -355,7 +355,7 @@ table Dim_User
 
 	partition Dim_User = m
 		mode: import
-		source = ```
+		source =
 				// ============================================================
 								// Dim_User - Employee Dimension
 								// Based on actual 'public users' table schema
@@ -704,7 +704,6 @@ table Dim_User
 								    CleanedTable = Table.RemoveColumns(TypedTable, {"delete_status"})
 								in
 								    CleanedTable
-					```
 
 	changedProperty = IsHidden
 
