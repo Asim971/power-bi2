@@ -878,8 +878,15 @@ table Fact_ProjectConversion
 				        type date
 				    ),
 				    
-				    // ---- Create Client Key (Site is primary for conversions) ----
-				    WithClientKey = Table.AddColumn(WithDateKey, "ClientKey", each 
+				    // ============================================================
+				    // FIX (Dec 2025): Dynamic ClientKey supporting multiple client types
+				    // Client types: CONTRACTOR, ENGINEER, HEAD_MASON, IHB_REGISTRATION, 
+				    // SITE_MANAGER, UNCOVERED_RETAILER, Site (default)
+				    // The ClientKey will be generated after joining with potential_site
+				    // to get the actual client references
+				    // ============================================================
+				    // Initial ClientKey placeholder - will be overwritten after potential_site join
+				    WithClientKey = Table.AddColumn(WithDateKey, "ClientKey_Initial", each 
 				        "Site-" & Text.From([SiteID]),
 				        type text
 				    ),
@@ -1149,158 +1156,265 @@ table Fact_ProjectConversion
 					),
 				
 					TypedTable = RenamedClientCols,
+
+				// ============================================================
+				// Quantities source of truth: public order_items
+				// Aggregate order_items by project_conversion_id (ConversionID)
+				// FIX (Dec 2025): Organization comes from sku_data.org_id via sku_info_id
+				// NOT from project_conversion (IDs don't match between systems)
+				// ============================================================
+				ItemsSource = #"public order_items",
 				
-				    // ============================================================
-				    // Quantities source of truth: public order_items
-				    // Aggregate order_items by project_conversion_id (ConversionID)
-				    // ============================================================
-				    ItemsSource = #"public order_items",
+				// Load SKU data for organization lookup
+				SKUSource = #"public sku_data",
+				SKUWithOrg = Table.SelectColumns(SKUSource, {"id", "org_id"}, MissingField.UseNull),
+
+				AsInt64Item = (v as any) as nullable number => try Int64.From(v) otherwise null,
+				AsNumberItem = (v as any) as nullable number =>
+				    let
+				        n = try Number.From(v) otherwise null,
+				        s = if n <> null then null else try Text.From(v) otherwise null,
+				        cleaned = if s = null then null else Text.Select(s, {"0".."9", ".", "-"}),
+				        t = if n <> null then n else try Number.FromText(cleaned) otherwise null
+				    in
+				        t,
+
+				ItemsSelected = Table.SelectColumns(
+				    ItemsSource,
+				    {"id", "project_conversion_id", "qty", "unit_type", "balance", "unit_price", "sku", "sku_name", "sku_info_id", "user_order_history_id"},
+				    MissingField.UseNull
+				),
+
+				ItemsFiltered = Table.SelectRows(ItemsSelected, each [project_conversion_id] <> null or [user_order_history_id] <> null),
+
+				ItemsWithConversionID = Table.AddColumn(
+				    ItemsFiltered,
+				    "ConversionID",
+				    each AsInt64Item([project_conversion_id]),
+				    Int64.Type
+				),
+
+				ItemsWithQty = Table.AddColumn(
+				    ItemsWithConversionID,
+				    "ItemQuantity",
+				    each AsNumberItem([qty]),
+				    type number
+				),
+
+				ItemsWithUnit = Table.AddColumn(
+				    ItemsWithQty,
+				    "ItemUnit",
+				    each if [unit_type] <> null then try Text.Lower(Text.From([unit_type])) otherwise null else null,
+				    type text
+				),
+
+				// FIX (Dec 2025): Get organization from SKU data, not project_conversion
+				// This fixes site 1797 issue where project_conversion IDs don't match
+				ItemsWithSKUJoin = Table.NestedJoin(
+				    ItemsWithUnit,
+				    {"sku_info_id"},
+				    SKUWithOrg,
+				    {"id"},
+				    "SKU",
+				    JoinKind.LeftOuter
+				),
+				ItemsWithSKUOrg = Table.ExpandTableColumn(ItemsWithSKUJoin, "SKU", {"org_id"}, {"sku_org_id"}),
 				
-				    AsInt64Item = (v as any) as nullable number => try Int64.From(v) otherwise null,
-				    AsNumberItem = (v as any) as nullable number =>
+				// Derive CompanyCode from SKU org_id (1=ACL, 2=AIL)
+				ItemsWithCompanyCode = Table.AddColumn(
+				    ItemsWithSKUOrg,
+				    "CompanyCode",
+				    each 
+				        if [sku_org_id] = 1 then "ACL"
+				        else if [sku_org_id] = 2 then "AIL"
+				        else null,
+				    type text
+				),
+
+				ItemsWithSKUKey = Table.AddColumn(
+				    ItemsWithCompanyCode,
+				    "SKUKey",
+				    each
 				        let
-				            n = try Number.From(v) otherwise null,
-				            s = if n <> null then null else try Text.From(v) otherwise null,
-				            cleaned = if s = null then null else Text.Select(s, {"0".."9", ".", "-"}),
-				            t = if n <> null then n else try Number.FromText(cleaned) otherwise null
+				            s1 = AsInt64Item([sku_info_id]),
+				            s2 = AsInt64Item([sku]),
+				            s3 = if [sku_name] <> null then try Text.From([sku_name]) otherwise null else null
 				        in
-				            t,
+				            if s1 <> null then Text.From(s1) else if s2 <> null then Text.From(s2) else s3,
+				    type text
+				),
+
+				// ============================================================
+				// FIX (Dec 2025): Simplified MT conversion logic per business rule:
+				// - ACL: ALWAYS divide by 20 (quantities are in bags)
+				// - AIL: NEVER divide (quantities are already in MT)
+				// Previous logic was checking unit_type first, which caused ACL items
+				// with unit_type="MT" to skip division (e.g., site_id 1797 showed 500 instead of 25)
+				// ============================================================
+				ItemsWithQtyInMT = Table.AddColumn(
+				    ItemsWithSKUKey,
+				    "ItemQtyInMT",
+				    each
+				        let
+				            cc = if [CompanyCode] <> null then Text.Upper(Text.From([CompanyCode])) else null,
+				            q = [ItemQuantity]
+				        in
+				            if q = null then null
+				            else if cc = "ACL" then q / 20  // ACL: always bags → MT
+				            else q,  // AIL and others: already in MT
+				    type number
+				),
+
+				ItemsWithAmount = Table.AddColumn(
+				    ItemsWithQtyInMT,
+				    "ItemAmount",
+				    each
+				        let
+				            b = AsNumberItem([balance]),
+				            up = AsNumberItem([unit_price]),
+				            q = [ItemQuantity]
+				        in
+				            if b <> null then b else if up <> null and q <> null then up * q else null,
+				    type number
+				),
+
+				ItemsForAgg = Table.SelectRows(ItemsWithAmount, each [ConversionID] <> null),
+
+				ItemsAgg = Table.Group(
+				    ItemsForAgg,
+				    {"ConversionID"},
+				    {
+				        {"OrderItemCount", each Table.RowCount(_), Int64.Type},
+				        {"DistinctSKUCount", each List.NonNullCount(List.Distinct(List.RemoveNulls([SKUKey]))), Int64.Type},
+				        {"total_quantity", each List.Sum(List.RemoveNulls([ItemQuantity])), type number},
+				        {"unit", each let u = List.RemoveNulls(List.Distinct([ItemUnit])) in if List.Count(u) = 1 then u{0} else if List.Count(u) = 0 then null else "mixed", type text},
+				        {"qty_in_mt", each List.Sum(List.RemoveNulls([ItemQtyInMT])), type number},
+				        {"total_amount_items", each List.Sum(List.RemoveNulls([ItemAmount])), type number}
+				    }
+				),
+
+				#"Merged items agg" = Table.NestedJoin(TypedTable, {"ConversionID"}, ItemsAgg, {"ConversionID"}, "ItemsAgg", JoinKind.LeftOuter),
+				#"Expanded items agg" = Table.ExpandTableColumn(#"Merged items agg", "ItemsAgg", {"OrderItemCount", "DistinctSKUCount", "total_quantity", "unit", "qty_in_mt", "total_amount_items"}, {"OrderItemCount", "DistinctSKUCount", "total_quantity", "unit", "qty_in_mt", "total_amount_items"}),
+
+				#"Backfill total_amount from items" = Table.AddColumn(
+				    #"Expanded items agg",
+				    "total_amount_final",
+				    each if [total_amount] = null then [total_amount_items] else [total_amount],
+				    type number
+				),
+
+				#"Removed temp amount cols" = Table.RemoveColumns(#"Backfill total_amount from items", {"total_amount", "total_amount_items"}),
+				#"Renamed total_amount" = Table.RenameColumns(#"Removed temp amount cols", {{"total_amount_final", "total_amount"}}),
+
+				#"Filled qty nulls" = Table.TransformColumns(
+				    #"Renamed total_amount",
+				    {
+				        {"OrderItemCount", each if _ = null then 0 else _, Int64.Type},
+				        {"DistinctSKUCount", each if _ = null then 0 else _, Int64.Type},
+				        {"total_quantity", each if _ = null then 0 else _, type number},
+				        {"qty_in_mt", each if _ = null then 0 else _, type number}
+				    }
+				),
+
+				#"Added TotalQuantity" = Table.AddColumn(#"Filled qty nulls", "TotalQuantity", each [total_quantity], type number),
+
+				// ============================================================
+				// FIX (Dec 2025): Join with potential_site to get all client type IDs
+				// and generate proper ClientType and ClientKey for each conversion
+				// Supported: CONTRACTOR, ENGINEER, HEAD_MASON, IHB_REGISTRATION, 
+				// SITE_MANAGER, UNCOVERED_RETAILER, Site (default)
+				// Also fetch created_by_id as fallback for UserID
+				// ============================================================
+				#"Merged queries 1" = Table.NestedJoin(#"Added TotalQuantity", {"SiteID"}, #"public potential_site", {"id"}, "public potential_site", JoinKind.LeftOuter),
 				
-				    ItemsSelected = Table.SelectColumns(
-				        ItemsSource,
-				        {"id", "project_conversion_id", "qty", "unit_type", "balance", "unit_price", "sku", "sku_name", "sku_info_id"},
-				        MissingField.UseNull
-				    ),
+				// Expand all client reference columns from potential_site + created_by for UserID fallback
+				// NOTE: Column names verified from Database.xlsx analysis (Dec 2025):
+				// - ihb_id (NOT ihb_registration_id)
+				// - uncovered_retailer_id DOES NOT EXIST in source
+				// - created_by (NOT created_by_id)
+				#"Expanded public potential_site" = Table.ExpandTableColumn(
+				    #"Merged queries 1", 
+				    "public potential_site", 
+				    {"contractor_id", "engineer_id", "head_mason_id", "site_manager_id", "ihb_id", "created_by"}, 
+				    {"ps_contractor_id", "ps_engineer_id", "ps_head_mason_id", "ps_site_manager_id", "ps_ihb_id", "ps_created_by"}
+				),
 				
-				    ItemsFiltered = Table.SelectRows(ItemsSelected, each [project_conversion_id] <> null),
+				// FIX (Dec 2025): Fallback UserID from potential_site.created_by when orders UserID is NULL
+				#"Added UserID Fallback" = Table.AddColumn(
+				    #"Expanded public potential_site",
+				    "UserID_Final",
+				    each if [UserID] <> null then [UserID] else [ps_created_by],
+				    Int64.Type
+				),
+				#"Replaced UserID" = Table.RemoveColumns(#"Added UserID Fallback", {"UserID"}, MissingField.Ignore),
+				#"Renamed UserID" = Table.RenameColumns(#"Replaced UserID", {{"UserID_Final", "UserID"}}, MissingField.Ignore),
 				
-				    ItemsWithConversionID = Table.AddColumn(
-				        ItemsFiltered,
-				        "ConversionID",
-				        each AsInt64Item([project_conversion_id]),
-				        Int64.Type
-				    ),
+				// Generate ClientType based on which ID is populated (priority order)
+				// NOTE: uncovered_retailer_id removed - column doesn't exist in source
+				#"Added ClientType" = Table.AddColumn(
+				    #"Renamed UserID",
+				    "ClientType_Final",
+				    each
+				        if [ps_contractor_id] <> null then "Contractor"
+				        else if [ps_engineer_id] <> null then "Engineer"
+				        else if [ps_head_mason_id] <> null then "HeadMason"
+				        else if [ps_site_manager_id] <> null then "SiteManager"
+				        else if [ps_ihb_id] <> null then "IHB"
+				        else "Site",
+				    type text
+				),
 				
-				    ItemsWithQty = Table.AddColumn(
-				        ItemsWithConversionID,
-				        "ItemQuantity",
-				        each AsNumberItem([qty]),
-				        type number
-				    ),
+				// Generate ClientID based on ClientType
+				#"Added ClientID_Final" = Table.AddColumn(
+				    #"Added ClientType",
+				    "ClientID_Final",
+				    each
+				        if [ps_contractor_id] <> null then [ps_contractor_id]
+				        else if [ps_engineer_id] <> null then [ps_engineer_id]
+				        else if [ps_head_mason_id] <> null then [ps_head_mason_id]
+				        else if [ps_site_manager_id] <> null then [ps_site_manager_id]
+				        else if [ps_ihb_id] <> null then [ps_ihb_id]
+				        else [SiteID],
+				    Int64.Type
+				),
 				
-				    ItemsWithUnit = Table.AddColumn(
-				        ItemsWithQty,
-				        "ItemUnit",
-				        each if [unit_type] <> null then try Text.Lower(Text.From([unit_type])) otherwise null else null,
-				        type text
-				    ),
+				// Generate ClientKey in format matching Dim_Client_Simple (e.g., "Contractor-123", "Site-456")
+				#"Added ClientKey_Final" = Table.AddColumn(
+				    #"Added ClientID_Final",
+				    "ClientKey_New",
+				    each [ClientType_Final] & "-" & Text.From([ClientID_Final]),
+				    type text
+				),
 				
-				    ConvCompany = Table.Distinct(Table.SelectColumns(TypedTable, {"ConversionID", "CompanyCode"})),
-				    ConvCompanyBuffered = Table.Buffer(ConvCompany),
+				// Remove old ClientKey columns and rename new ones
+				#"Removed Old ClientKey" = Table.RemoveColumns(
+				    #"Added ClientKey_Final", 
+				    {"ClientKey_Initial", "ClientKey", "ClientType", "ClientID", "ClientKey_from_order"}, 
+				    MissingField.Ignore
+				),
+				#"Renamed ClientKey Cols" = Table.RenameColumns(
+				    #"Removed Old ClientKey",
+				    {
+				        {"ClientType_Final", "ClientType"},
+				        {"ClientID_Final", "ClientID"},
+				        {"ClientKey_New", "ClientKey"}
+				    },
+				    MissingField.Ignore
+				),
 				
-				    ItemsWithCompanyJoin = Table.NestedJoin(
-				        ItemsWithUnit,
-				        {"ConversionID"},
-				        ConvCompanyBuffered,
-				        {"ConversionID"},
-				        "ConvCompany",
-				        JoinKind.LeftOuter
-				    ),
-				    ItemsWithCompany = Table.ExpandTableColumn(ItemsWithCompanyJoin, "ConvCompany", {"CompanyCode"}, {"CompanyCode"}),
+				// Join with public client to get contractor details (bkash, name, phone, bank)
+				#"Merged queries 2" = Table.NestedJoin(#"Renamed ClientKey Cols", {"ps_contractor_id"}, #"public client", {"id"}, "public client", JoinKind.LeftOuter),
+				#"Expanded public client" = Table.ExpandTableColumn(#"Merged queries 2", "public client", {"bkash_number", "name", "phone", "bank_account_id"}, {"bkash_number", "contractor_name", "contractor_phone", "bank_account_id"}),
 				
-				    ItemsWithSKUKey = Table.AddColumn(
-				        ItemsWithCompany,
-				        "SKUKey",
-				        each
-				            let
-				                s1 = AsInt64Item([sku_info_id]),
-				                s2 = AsInt64Item([sku]),
-				                s3 = if [sku_name] <> null then try Text.From([sku_name]) otherwise null else null
-				            in
-				                if s1 <> null then Text.From(s1) else if s2 <> null then Text.From(s2) else s3,
-				        type text
-				    ),
-				
-				    ItemsWithQtyInMT = Table.AddColumn(
-				        ItemsWithSKUKey,
-				        "ItemQtyInMT",
-				        each
-				            let
-				                u = [ItemUnit],
-				                cc = if [CompanyCode] <> null then Text.Upper(Text.From([CompanyCode])) else null,
-				                isBag = if u = null then false else (Text.Contains(u, "bag") or Text.Contains(u, "sack")),
-				                isMT = if u = null then false else (Text.Contains(u, "mt") or Text.Contains(u, "ton") or Text.Contains(u, "tonne") or Text.Contains(u, "metric")),
-				                q = [ItemQuantity]
-				            in
-				                if q = null then null
-				                else if isMT then q
-				                else if isBag then q / 20
-				                else if cc = "ACL" then q / 20
-				                else q,
-				        type number
-				    ),
-				
-				    ItemsWithAmount = Table.AddColumn(
-				        ItemsWithQtyInMT,
-				        "ItemAmount",
-				        each
-				            let
-				                b = AsNumberItem([balance]),
-				                up = AsNumberItem([unit_price]),
-				                q = [ItemQuantity]
-				            in
-				                if b <> null then b else if up <> null and q <> null then up * q else null,
-				        type number
-				    ),
-				
-				    ItemsForAgg = Table.SelectRows(ItemsWithAmount, each [ConversionID] <> null),
-				
-				    ItemsAgg = Table.Group(
-				        ItemsForAgg,
-				        {"ConversionID"},
-				        {
-				            {"OrderItemCount", each Table.RowCount(_), Int64.Type},
-				            {"DistinctSKUCount", each List.NonNullCount(List.Distinct(List.RemoveNulls([SKUKey]))), Int64.Type},
-				            {"total_quantity", each List.Sum(List.RemoveNulls([ItemQuantity])), type number},
-				            {"unit", each let u = List.RemoveNulls(List.Distinct([ItemUnit])) in if List.Count(u) = 1 then u{0} else if List.Count(u) = 0 then null else "mixed", type text},
-				            {"qty_in_mt", each List.Sum(List.RemoveNulls([ItemQtyInMT])), type number},
-				            {"total_amount_items", each List.Sum(List.RemoveNulls([ItemAmount])), type number}
-				        }
-				    ),
-				
-				    #"Merged items agg" = Table.NestedJoin(TypedTable, {"ConversionID"}, ItemsAgg, {"ConversionID"}, "ItemsAgg", JoinKind.LeftOuter),
-				    #"Expanded items agg" = Table.ExpandTableColumn(#"Merged items agg", "ItemsAgg", {"OrderItemCount", "DistinctSKUCount", "total_quantity", "unit", "qty_in_mt", "total_amount_items"}, {"OrderItemCount", "DistinctSKUCount", "total_quantity", "unit", "qty_in_mt", "total_amount_items"}),
-				
-				    #"Backfill total_amount from items" = Table.AddColumn(
-				        #"Expanded items agg",
-				        "total_amount_final",
-				        each if [total_amount] = null then [total_amount_items] else [total_amount],
-				        type number
-				    ),
-				
-				    #"Removed temp amount cols" = Table.RemoveColumns(#"Backfill total_amount from items", {"total_amount", "total_amount_items"}),
-				    #"Renamed total_amount" = Table.RenameColumns(#"Removed temp amount cols", {{"total_amount_final", "total_amount"}}),
-				
-				    #"Filled qty nulls" = Table.TransformColumns(
-				        #"Renamed total_amount",
-				        {
-				            {"OrderItemCount", each if _ = null then 0 else _, Int64.Type},
-				            {"DistinctSKUCount", each if _ = null then 0 else _, Int64.Type},
-				            {"total_quantity", each if _ = null then 0 else _, type number},
-				            {"qty_in_mt", each if _ = null then 0 else _, type number}
-				        }
-				    ),
-				
-					#"Added TotalQuantity" = Table.AddColumn(#"Filled qty nulls", "TotalQuantity", each [total_quantity], type number),
-				
-					#"Merged queries 1" = Table.NestedJoin(#"Added TotalQuantity", {"SiteID"}, #"public potential_site", {"id"}, "public potential_site", JoinKind.LeftOuter),
-				    #"Expanded public potential_site" = Table.ExpandTableColumn(#"Merged queries 1", "public potential_site", {"contractor_id"}, {"contractor_id"}),
-				    #"Merged queries 2" = Table.NestedJoin(#"Expanded public potential_site", {"contractor_id"}, #"public client", {"id"}, "public client", JoinKind.LeftOuter),
-				    #"Expanded public client" = Table.ExpandTableColumn(#"Merged queries 2", "public client", {"bkash_number", "name", "phone", "bank_account_id"}, {"bkash_number", "name", "phone", "bank_account_id"}),
-				    #"Renamed columns" = Table.RenameColumns(#"Expanded public client", {{"name", "contractor_name"}, {"phone", "contractor_phone"}})
-				in
-				    #"Renamed columns"
-				```
+				// Cleanup: Remove temporary ps_ columns
+				#"Final Cleanup" = Table.RemoveColumns(
+				    #"Expanded public client",
+				    {"ps_contractor_id", "ps_engineer_id", "ps_head_mason_id", "ps_site_manager_id", "ps_ihb_id", "ps_created_by"},
+				    MissingField.Ignore
+				)
+			in
+				#"Final Cleanup"
+			```
 
 	changedProperty = IsHidden
 

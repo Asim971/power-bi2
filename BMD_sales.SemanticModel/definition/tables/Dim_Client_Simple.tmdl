@@ -849,9 +849,60 @@ table Dim_Client_Simple
 				    ContractorClean = Table.SelectColumns(ContractorRenamed, {
 				        "ClientID", "ClientName", "ClientType", "SubType", "ResponsibleRole", "BazaarID", "TerritoryName", "AreaName"
 				    }),
-				
+
 				    // ============================================================
-				    // COMBINE ALL CLIENT TYPES
+				    // 7. HEAD MASONS (Dec 2025) - For project conversion client types
+				    // ============================================================
+				    HeadMasonsSource = #"public head_masons",
+				    HeadMasonsBase = Table.SelectColumns(HeadMasonsSource, {"id"}, MissingField.UseNull),
+				    HeadMasonsFinal = Table.AddColumn(HeadMasonsBase, "ClientType", each "HeadMason", type text),
+				    HeadMasonsFinal2 = Table.AddColumn(HeadMasonsFinal, "ClientName", each "HeadMason-" & Text.From([id]), type text),
+				    HeadMasonsFinal3 = Table.AddColumn(HeadMasonsFinal2, "SubType", each null, type text),
+				    HeadMasonsFinal4 = Table.AddColumn(HeadMasonsFinal3, "ResponsibleRole", each "BDO", type text),
+				    HeadMasonsFinal5 = Table.AddColumn(HeadMasonsFinal4, "BazaarID", each -1, Int64.Type),
+				    HeadMasonsFinal6 = Table.AddColumn(HeadMasonsFinal5, "TerritoryName", each null, type text),
+				    HeadMasonsFinal7 = Table.AddColumn(HeadMasonsFinal6, "AreaName", each null, type text),
+				    HeadMasonsRenamed = Table.RenameColumns(HeadMasonsFinal7, {{"id", "ClientID"}}),
+				    HeadMasonsClean = Table.SelectColumns(HeadMasonsRenamed, {
+				        "ClientID", "ClientName", "ClientType", "SubType", "ResponsibleRole", "BazaarID", "TerritoryName", "AreaName"
+				    }),
+
+				    // ============================================================
+				    // 8. SITE MANAGERS (Dec 2025) - For project conversion client types
+				    // ============================================================
+				    SiteManagersSource = #"public site_managers",
+				    SiteManagersBase = Table.SelectColumns(SiteManagersSource, {"id"}, MissingField.UseNull),
+				    SiteManagersFinal = Table.AddColumn(SiteManagersBase, "ClientType", each "SiteManager", type text),
+				    SiteManagersFinal2 = Table.AddColumn(SiteManagersFinal, "ClientName", each "SiteManager-" & Text.From([id]), type text),
+				    SiteManagersFinal3 = Table.AddColumn(SiteManagersFinal2, "SubType", each null, type text),
+				    SiteManagersFinal4 = Table.AddColumn(SiteManagersFinal3, "ResponsibleRole", each "BDO", type text),
+				    SiteManagersFinal5 = Table.AddColumn(SiteManagersFinal4, "BazaarID", each -1, Int64.Type),
+				    SiteManagersFinal6 = Table.AddColumn(SiteManagersFinal5, "TerritoryName", each null, type text),
+				    SiteManagersFinal7 = Table.AddColumn(SiteManagersFinal6, "AreaName", each null, type text),
+				    SiteManagersRenamed = Table.RenameColumns(SiteManagersFinal7, {{"id", "ClientID"}}),
+				    SiteManagersClean = Table.SelectColumns(SiteManagersRenamed, {
+				        "ClientID", "ClientName", "ClientType", "SubType", "ResponsibleRole", "BazaarID", "TerritoryName", "AreaName"
+				    }),
+
+				    // ============================================================
+				    // 9. UNCOVERED RETAILERS (Dec 2025) - For project conversion client types
+				    // ============================================================
+				    UncoveredRetailerSource = #"public uncovered_retailer",
+				    UncoveredRetailerBase = Table.SelectColumns(UncoveredRetailerSource, {"id"}, MissingField.UseNull),
+				    UncoveredRetailerFinal = Table.AddColumn(UncoveredRetailerBase, "ClientType", each "UncoveredRetailer", type text),
+				    UncoveredRetailerFinal2 = Table.AddColumn(UncoveredRetailerFinal, "ClientName", each "UncoveredRetailer-" & Text.From([id]), type text),
+				    UncoveredRetailerFinal3 = Table.AddColumn(UncoveredRetailerFinal2, "SubType", each null, type text),
+				    UncoveredRetailerFinal4 = Table.AddColumn(UncoveredRetailerFinal3, "ResponsibleRole", each "SR", type text),
+				    UncoveredRetailerFinal5 = Table.AddColumn(UncoveredRetailerFinal4, "BazaarID", each -1, Int64.Type),
+				    UncoveredRetailerFinal6 = Table.AddColumn(UncoveredRetailerFinal5, "TerritoryName", each null, type text),
+				    UncoveredRetailerFinal7 = Table.AddColumn(UncoveredRetailerFinal6, "AreaName", each null, type text),
+				    UncoveredRetailerRenamed = Table.RenameColumns(UncoveredRetailerFinal7, {{"id", "ClientID"}}),
+				    UncoveredRetailerClean = Table.SelectColumns(UncoveredRetailerRenamed, {
+				        "ClientID", "ClientName", "ClientType", "SubType", "ResponsibleRole", "BazaarID", "TerritoryName", "AreaName"
+				    }),
+
+				    // ============================================================
+				    // COMBINE ALL CLIENT TYPES (Dec 2025: Added HeadMason, SiteManager, UncoveredRetailer)
 				    // ============================================================
 				    AllClients = Table.Combine({
 				        SitesClean, 
@@ -859,7 +910,10 @@ table Dim_Client_Simple
 				        IHBClean,
 				        DealersClean, 
 				        EngineersClean,
-				        ContractorClean
+				        ContractorClean,
+				        HeadMasonsClean,
+				        SiteManagersClean,
+				        UncoveredRetailerClean
 				    }),
 				
 				    // ============================================================
@@ -870,18 +924,19 @@ table Dim_Client_Simple
 				    WithCompositeKey = Table.AddColumn(AllClients, "ClientKey", 
 				        each [ClientType] & "-" & Text.From([ClientID]), type text),
 				    
-				    // Add Client Category
+				    // Add Client Category (Dec 2025: Added HeadMason, SiteManager, UncoveredRetailer)
 				    WithCategory = Table.AddColumn(WithCompositeKey, "ClientCategory", each 
 				        if [ClientType] = "Site" then "Prospect"
-				        else if [ClientType] = "Dealer" or [ClientType] = "Retailer" then "Channel Partner"
+				        else if [ClientType] = "Dealer" or [ClientType] = "Retailer" or [ClientType] = "UncoveredRetailer" then "Channel Partner"
 				        else if [ClientType] = "Engineer" then "Influencer-Technical"
-				        else if [ClientType] = "Contractor" then "Influencer-Partner"
+				        else if [ClientType] = "Contractor" or [ClientType] = "HeadMason" then "Influencer-Partner"
 				        else if [ClientType] = "IHB" then "End Customer"
+				        else if [ClientType] = "SiteManager" then "Site Staff"
 				        else "Other",
 				        type text
 				    ),
 				    
-				    // Add RLS Role
+				    // Add RLS Role (Dec 2025: Added HeadMason, SiteManager, UncoveredRetailer)
 				    WithResponsibleRoleRLS = Table.AddColumn(WithCategory, "ResponsibleRoleRLS", each 
 				        if [ClientType] = "Site" then "BDO"
 				        else if [ClientType] = "Engineer" then "BDO"
@@ -889,6 +944,9 @@ table Dim_Client_Simple
 				        else if [ClientType] = "Retailer" then "SR"
 				        else if [ClientType] = "Dealer" then "CRO"
 				        else if [ClientType] = "IHB" then "CRO,BDO"
+				        else if [ClientType] = "HeadMason" then "BDO"
+				        else if [ClientType] = "SiteManager" then "BDO"
+				        else if [ClientType] = "UncoveredRetailer" then "SR"
 				        else "All",
 				        type text
 				    ),

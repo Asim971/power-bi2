@@ -69,24 +69,52 @@ table Dim_Territory
 				// Dim_Territory - Geographic Hierarchy Dimension
 				// Source: public territory table
 				// Full Hierarchy: Zone → Region → Area → Territory
+				// 
+				// FIX (Dec 2025): mainOrganizationName now derived from public.organization
+				// table via organization_id, not from Dim_User. This ensures the territory's
+				// actual organization is shown, not the user's organization.
+				// NULL organization_id defaults to "AGI Group" (for BD employees)
 				// ============================================================
 				
 				let
 				    // Reference the existing 'public territory' table in Power BI
 				    Source = #"public territory",
+				    OrgSource = #"public organization",
 				    
 				    // ---- Select Core Columns from territory table ----
 				    SelectedColumns = Table.SelectColumns(Source, {"id", "area_name", "assigned_agm", "assigned_asm", "assigned_bdo", "assigned_cro", "assigned_gm", "assigned_sr", "assigned_zsm", "delete_status", "name", "nation_name", "region_name", "zone_name", "area_id", "nation_id", "organization_id", "region_id", "zone_id"}),
 				    
 				    // ---- Filter Active Territories ----
 				    ActiveTerritories = Table.SelectRows(SelectedColumns, each [delete_status] = "NO"),
+				    
+				    // ---- Join with Organization table to get organization name ----
+				    WithOrgJoin = Table.NestedJoin(
+				        ActiveTerritories, {"organization_id"},
+				        OrgSource, {"id"},
+				        "OrgData", JoinKind.LeftOuter
+				    ),
+				    WithOrgExpanded = Table.ExpandTableColumn(
+				        WithOrgJoin, "OrgData",
+				        {"organization_name"},
+				        {"OrganizationNameRaw"}
+				    ),
+				    
+				    // ---- Default OrganizationName to "AGI Group" for NULL (BD employees) ----
+				    WithOrgNameDefault = Table.AddColumn(WithOrgExpanded, "mainOrganizationName", each
+				        if [OrganizationNameRaw] = null or [OrganizationNameRaw] = "" then "AGI Group"
+				        else [OrganizationNameRaw],
+				        type text
+				    ),
+				    WithOrgCleaned = Table.RemoveColumns(WithOrgNameDefault, {"OrganizationNameRaw"}),
+				    
 				    // Buffer to prevent gateway/PostgreSQL folding issues during join
 				    UsersTerritoryBridgeBuffered = Table.Buffer(#"public users_territory"),
-				  #"Merged queries 1" = Table.NestedJoin(UsersTerritoryBridgeBuffered, {"users_id"}, Dim_User, {"UserID"}, "Dim_User", JoinKind.LeftOuter),
-				  #"Expanded Dim_User 1" = Table.ExpandTableColumn(#"Merged queries 1", "Dim_User", {"OrganizationName", "ZoneName", "RegionName", "TerritoryName", "AreaName"}, {"OrganizationName", "ZoneName", "RegionName", "TerritoryName", "AreaName"}),
-				  #"Renamed columns" = Table.RenameColumns(#"Expanded Dim_User 1", {{"OrganizationName", "mainOrganizationName"}, {"ZoneName", "mainZoneName"}, {"RegionName", "mainRegionName"}, {"TerritoryName", "mainTerritoryName"}})
+				    
+				    // ---- Join with users_territory to get territory assignments ----
+				    #"Merged queries 1" = Table.NestedJoin(UsersTerritoryBridgeBuffered, {"territory_id"}, WithOrgCleaned, {"id"}, "TerritoryData", JoinKind.LeftOuter),
+				    #"Expanded Territory" = Table.ExpandTableColumn(#"Merged queries 1", "TerritoryData", {"mainOrganizationName", "zone_name", "region_name", "name", "area_name"}, {"mainOrganizationName", "mainZoneName", "mainRegionName", "mainTerritoryName", "AreaName"})
 				in
-				    #"Renamed columns"
+				    #"Expanded Territory"
 				```
 
 	changedProperty = IsHidden
