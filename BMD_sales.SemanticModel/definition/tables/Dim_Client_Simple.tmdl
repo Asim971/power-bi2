@@ -148,11 +148,26 @@ table Dim_Client_Simple
 		changedProperty = IsHidden
 
 	measure UniqueRoleCount =
-			// Unique clients count - respects filters from Fact_Visit (e.g., location filters)
-			DISTINCTCOUNT('Fact_Visit'[ClientKey])
+			// FIXED: Now shows Total Visits (row count) to differentiate from Unique_Clients_Visited
+			// Previously was DISTINCTCOUNT which was identical to Unique_Clients_Visited
+			COUNTROWS('Fact_Visit')
 		formatString: #,##0
 		displayFolder: Client Counts
 		lineageTag: 1b8c9d0e-1f2a-3456-7123-456789012345
+
+		changedProperty = IsHidden
+
+	measure Total_Clients_In_Filter =
+			// Total clients in dimension that match current filter context
+			// Ignores Fact_Visit filters - shows ALL clients in dimension for current ClientType/Location filters
+			CALCULATE(
+				DISTINCTCOUNT('Dim_Client_Simple'[ClientKey]),
+				REMOVEFILTERS('Fact_Visit'),
+				REMOVEFILTERS('Fact_ProjectConversion')
+			)
+		formatString: #,##0
+		displayFolder: Client Counts
+		lineageTag: 2a9c0d1e-2f3a-4567-8234-567890123456
 
 		changedProperty = IsHidden
 

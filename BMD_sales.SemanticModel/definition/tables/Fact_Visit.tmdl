@@ -93,6 +93,30 @@ table Fact_Visit
 
 		changedProperty = IsHidden
 
+	measure Visit_to_Client_Ratio =
+			// Ratio of visits to unique clients - should be > 1 if repeat visits exist
+			VAR _Visits = COUNTROWS('Fact_Visit')
+			VAR _Clients = DISTINCTCOUNTNOBLANK('Fact_Visit'[ClientKey])
+			RETURN DIVIDE(_Visits, _Clients, BLANK())
+		formatString: 0.00
+		displayFolder: Ratios\Productivity
+		lineageTag: 41ff7a28-79bc-42ed-ac44-9978b0547bba
+
+		changedProperty = IsHidden
+
+	measure _DEBUG_Visit_vs_Client =
+			// Debug: Shows visit count vs client count side by side
+			VAR _Visits = COUNTROWS('Fact_Visit')
+			VAR _Clients = DISTINCTCOUNTNOBLANK('Fact_Visit'[ClientKey])
+			RETURN
+				"Visits: " & FORMAT(_Visits, "#,##0") &
+				" | Clients: " & FORMAT(_Clients, "#,##0") &
+				" | Ratio: " & FORMAT(DIVIDE(_Visits, _Clients), "0.00")
+		displayFolder: _Debug
+		lineageTag: 52aa8b39-8acd-53fe-bd55-aa89c1658ccb
+
+		changedProperty = IsHidden
+
 	measure Active_Employees = DISTINCTCOUNT('Fact_Visit'[EmployeeID])
 		formatString: #,##0
 		displayFolder: Visit Counts\Base
