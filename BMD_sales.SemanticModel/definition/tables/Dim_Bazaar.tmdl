@@ -62,6 +62,8 @@ table Dim_Bazaar
 		summarizeBy: sum
 		sourceColumn: district_id
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column upazilla_id
@@ -70,6 +72,8 @@ table Dim_Bazaar
 		lineageTag: da82ef6d-983c-4782-92e0-2661583cb1fb
 		summarizeBy: sum
 		sourceColumn: upazilla_id
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 

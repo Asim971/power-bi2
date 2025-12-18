@@ -20,6 +20,8 @@ table Dim_Territory
 		summarizeBy: none
 		sourceColumn: territory_id
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column mainOrganizationName
@@ -27,6 +29,8 @@ table Dim_Territory
 		lineageTag: 7838605c-0969-4d3a-a212-509f26e98286
 		summarizeBy: none
 		sourceColumn: mainOrganizationName
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -36,6 +40,8 @@ table Dim_Territory
 		summarizeBy: none
 		sourceColumn: mainZoneName
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column mainRegionName
@@ -43,6 +49,8 @@ table Dim_Territory
 		lineageTag: 256a9515-8ad9-44cf-9f65-be9af2ea6532
 		summarizeBy: none
 		sourceColumn: mainRegionName
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -52,6 +60,8 @@ table Dim_Territory
 		summarizeBy: none
 		sourceColumn: mainTerritoryName
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column AreaName
@@ -59,6 +69,8 @@ table Dim_Territory
 		lineageTag: f883ff80-8aaa-4e87-a1ef-4fc841abfe73
 		summarizeBy: none
 		sourceColumn: AreaName
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 

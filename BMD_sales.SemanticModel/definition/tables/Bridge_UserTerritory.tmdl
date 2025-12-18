@@ -1,10 +1,8 @@
 table Bridge_UserTerritory
-	isHidden
 	lineageTag: 4f4a8b23-7a8c-4b7d-9c51-4a6e8b9a1f2c
 
 	column UserID
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 2d0d7b16-8a4c-4e39-a1c5-3a2c928b5c10
 		summarizeBy: none
@@ -16,7 +14,6 @@ table Bridge_UserTerritory
 
 	column territory_id
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 7f4c1d7a-0b4e-4a71-8f8d-3d3c0b2a81a5
 		summarizeBy: none

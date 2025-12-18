@@ -8,6 +8,8 @@ table 'public order_items'
 		summarizeBy: sum
 		sourceColumn: id
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column balance
@@ -15,6 +17,8 @@ table 'public order_items'
 		lineageTag: cdebe414-e944-4c70-8f5d-b407d3e979bc
 		summarizeBy: sum
 		sourceColumn: balance
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -27,6 +31,8 @@ table 'public order_items'
 		summarizeBy: sum
 		sourceColumn: corteza_record_ref
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column points
@@ -34,6 +40,8 @@ table 'public order_items'
 		lineageTag: 4a8957f5-a9cb-4320-afe7-19a8e446e673
 		summarizeBy: sum
 		sourceColumn: points
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -44,6 +52,8 @@ table 'public order_items'
 		lineageTag: 0adea445-2a08-40c3-bf35-626008ea622e
 		summarizeBy: sum
 		sourceColumn: qty
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -56,6 +66,8 @@ table 'public order_items'
 		summarizeBy: sum
 		sourceColumn: sku
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column sku_name
@@ -63,6 +75,8 @@ table 'public order_items'
 		lineageTag: ab7899b9-e981-444a-8e9f-b3552923d47a
 		summarizeBy: none
 		sourceColumn: sku_name
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -72,6 +86,8 @@ table 'public order_items'
 		summarizeBy: none
 		sourceColumn: unit_price
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column unit_type
@@ -79,6 +95,8 @@ table 'public order_items'
 		lineageTag: 9d27431a-97c5-4a77-880f-5f8383a3cf84
 		summarizeBy: none
 		sourceColumn: unit_type
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -89,6 +107,8 @@ table 'public order_items'
 		summarizeBy: sum
 		sourceColumn: project_conversion_id
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column sku_info_id
@@ -98,6 +118,8 @@ table 'public order_items'
 		summarizeBy: sum
 		sourceColumn: sku_info_id
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column user_order_history_id
@@ -106,6 +128,8 @@ table 'public order_items'
 		lineageTag: 9401bbf2-79b9-4208-a653-72dd17c1c53c
 		summarizeBy: sum
 		sourceColumn: user_order_history_id
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 

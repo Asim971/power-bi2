@@ -7,6 +7,8 @@ table Dim_User
 		formatString: 0
 		lineageTag: f522ff70-593c-4462-b632-92b44bacbb74
 
+		changedProperty = IsHidden
+
 	column UserID
 		dataType: int64
 		isKey

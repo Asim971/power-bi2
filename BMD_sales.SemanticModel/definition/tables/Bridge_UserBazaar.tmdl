@@ -1,10 +1,8 @@
 table Bridge_UserBazaar
-	isHidden
 	lineageTag: 1d2f8d1b-0f0f-4a93-9b07-77d0c35d6f0a
 
 	column UserID
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 3b3e6f46-5c7b-4b45-9f1c-7a56d9ddae32
 		summarizeBy: none
@@ -16,7 +14,6 @@ table Bridge_UserBazaar
 
 	column BazaarID
 		dataType: int64
-		isHidden
 		formatString: 0
 		lineageTag: 6a9f0bb4-1d63-4f7f-9b39-76b9e3a0a50f
 		summarizeBy: none
