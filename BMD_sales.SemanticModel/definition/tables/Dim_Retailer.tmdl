@@ -1,0 +1,158 @@
+table Dim_Retailer
+	lineageTag: ret-1a2b-3c4d-5e6f-7890abcdef03
+
+	measure Total_Retailer_Count = COUNTROWS('Dim_Retailer')
+		formatString: #,##0
+		displayFolder: Counts
+		lineageTag: ret-m001-count-total
+
+	measure Converted_Retailers = CALCULATE(COUNTROWS('Dim_Retailer'), 'Dim_Retailer'[IsConverted] = "YES")
+		formatString: #,##0
+		displayFolder: Counts\By Conversion
+		lineageTag: ret-m002-converted
+
+	measure Unconverted_Retailers = CALCULATE(COUNTROWS('Dim_Retailer'), 'Dim_Retailer'[IsConverted] <> "YES")
+		formatString: #,##0
+		displayFolder: Counts\By Conversion
+		lineageTag: ret-m003-unconverted
+
+	column RetailerID
+		dataType: int64
+		isKey
+		formatString: 0
+		lineageTag: ret-c001-id
+		summarizeBy: none
+		sourceColumn: RetailerID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ClientID
+		dataType: int64
+		formatString: 0
+		lineageTag: ret-c002-clientid
+		summarizeBy: none
+		sourceColumn: ClientID
+
+		annotation SummarizationSetBy = Automatic
+
+	column RetailerName
+		dataType: string
+		lineageTag: ret-c003-name
+		summarizeBy: none
+		sourceColumn: RetailerName
+
+		annotation SummarizationSetBy = Automatic
+
+	column RetailerPhone
+		dataType: string
+		lineageTag: ret-c004-phone
+		summarizeBy: none
+		sourceColumn: RetailerPhone
+
+		annotation SummarizationSetBy = Automatic
+
+	column ShopAddress
+		dataType: string
+		lineageTag: ret-c005-shopaddress
+		summarizeBy: none
+		sourceColumn: ShopAddress
+
+		annotation SummarizationSetBy = Automatic
+
+	column ShopPhoto
+		dataType: string
+		lineageTag: ret-c006-shopphoto
+		summarizeBy: none
+		sourceColumn: ShopPhoto
+
+		annotation SummarizationSetBy = Automatic
+
+	column BazaarID
+		dataType: int64
+		formatString: 0
+		lineageTag: ret-c007-bazaarid
+		summarizeBy: none
+		sourceColumn: BazaarID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductTypes
+		dataType: string
+		lineageTag: ret-c008-producttypes
+		summarizeBy: none
+		sourceColumn: ProductTypes
+
+		annotation SummarizationSetBy = Automatic
+
+	column CompetitorNames
+		dataType: string
+		lineageTag: ret-c009-competitornames
+		summarizeBy: none
+		sourceColumn: CompetitorNames
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsConverted
+		dataType: string
+		lineageTag: ret-c010-isconverted
+		summarizeBy: none
+		sourceColumn: IsConverted
+
+		annotation SummarizationSetBy = Automatic
+
+	column Status
+		dataType: string
+		lineageTag: ret-c011-status
+		summarizeBy: none
+		sourceColumn: Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedAt
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: ret-c012-createdat
+		summarizeBy: none
+		sourceColumn: CreatedAt
+
+		annotation SummarizationSetBy = Automatic
+
+	column UpdatedAt
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: ret-c013-updatedat
+		summarizeBy: none
+		sourceColumn: UpdatedAt
+
+		annotation SummarizationSetBy = Automatic
+
+	column RetailerKey
+		dataType: string
+		lineageTag: ret-c014-retailerkey
+		summarizeBy: none
+		sourceColumn: RetailerKey
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_Retailer = m
+		mode: import
+		source =
+			let
+			    RetailerSource = #"public uncovered_retailer",
+			    RetailerSelected = Table.SelectColumns(RetailerSource, {"id", "bazaar_id", "shop_address", "shop_photo", "product_types", "competitor_names", "is_converted_to_retailer"}, MissingField.UseNull),
+			    RetailerRenamed = Table.RenameColumns(RetailerSelected, {{"id", "RetailerID"}, {"bazaar_id", "BazaarID"}, {"shop_address", "ShopAddress"}, {"shop_photo", "ShopPhoto"}, {"product_types", "ProductTypes"}, {"competitor_names", "CompetitorNames"}, {"is_converted_to_retailer", "IsConverted"}}),
+			    ClientSource = #"public client",
+			    ClientSelected = Table.SelectColumns(ClientSource, {"id", "client_type", "name", "phone", "status", "created_at", "updated_at", "is_deleted"}, MissingField.UseNull),
+			    ClientRetailers = Table.SelectRows(ClientSelected, each Text.Upper(Text.From([client_type])) = "UNCOVERED_RETAILER"),
+			    ClientActive = Table.SelectRows(ClientRetailers, each let del = if [is_deleted] = null then "NO" else try Text.Upper(Text.From([is_deleted])) otherwise "NO" in del = "NO" or del = "N" or del = "0" or del = "FALSE"),
+			    ClientRenamed = Table.RenameColumns(ClientActive, {{"id", "ClientID"}, {"name", "RetailerName"}, {"phone", "RetailerPhone"}, {"status", "Status"}, {"created_at", "CreatedAt"}, {"updated_at", "UpdatedAt"}}, MissingField.Ignore),
+			    ClientClean = Table.RemoveColumns(ClientRenamed, {"client_type", "is_deleted"}, MissingField.Ignore),
+			    JoinedRetailers = Table.NestedJoin(RetailerRenamed, {"RetailerID"}, ClientClean, {"ClientID"}, "ClientDetails", JoinKind.LeftOuter),
+			    ExpandedRetailers = Table.ExpandTableColumn(JoinedRetailers, "ClientDetails", {"ClientID", "RetailerName", "RetailerPhone", "Status", "CreatedAt", "UpdatedAt"}, {"ClientID", "RetailerName", "RetailerPhone", "Status", "CreatedAt", "UpdatedAt"}),
+			    WithRetailerKey = Table.AddColumn(ExpandedRetailers, "RetailerKey", each "Retailer-" & Text.From([RetailerID]), type text),
+			    TypedTable = Table.TransformColumnTypes(WithRetailerKey, {{"RetailerID", Int64.Type}, {"ClientID", Int64.Type}, {"BazaarID", Int64.Type}, {"RetailerName", type text}, {"RetailerPhone", type text}, {"ShopAddress", type text}, {"ShopPhoto", type text}, {"ProductTypes", type text}, {"CompetitorNames", type text}, {"IsConverted", type text}, {"Status", type text}, {"CreatedAt", type datetime}, {"UpdatedAt", type datetime}, {"RetailerKey", type text}})
+			in
+			    TypedTable
+
+	annotation PBI_ResultType = Table
+

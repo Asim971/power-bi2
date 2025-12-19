@@ -143,4 +143,18 @@ relationship 9d0e1f2a-3b4c-5d6e-7f8a-9b0c1d2e3f4a
 	fromColumn: Dim_Site.BazaarID
 	toColumn: Dim_Bazaar.BazaarID
 
+relationship ihb-bazaar-001-a1b2c3d4e5f6
+	fromColumn: Dim_IHB.BazaarID
+	toColumn: Dim_Bazaar.BazaarID
+
+relationship retailer-bazaar-002-b2c3d4e5f6a7
+	fromColumn: Dim_Retailer.BazaarID
+	toColumn: Dim_Bazaar.BazaarID
+
+relationship fv-terr-003-c3d4e5f6a7b8
+	fromColumn: Fact_Visit.territory_id
+	toColumn: Dim_Territory.territory_id
+
+
+
 

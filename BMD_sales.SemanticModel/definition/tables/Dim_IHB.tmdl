@@ -1,0 +1,222 @@
+table Dim_IHB
+	lineageTag: ihb-1a2b-3c4d-5e6f-7890abcdef01
+
+	measure Total_IHB_Count = COUNTROWS('Dim_IHB')
+		formatString: #,##0
+		displayFolder: Counts
+		lineageTag: ihb-m001-count-total
+
+	measure Approved_IHB = CALCULATE(COUNTROWS('Dim_IHB'), 'Dim_IHB'[Status] = "APPROVED")
+		formatString: #,##0
+		displayFolder: Counts\By Status
+		lineageTag: ihb-m002-approved
+
+	measure Pending_IHB = CALCULATE(COUNTROWS('Dim_IHB'), 'Dim_IHB'[Status] = "PENDING")
+		formatString: #,##0
+		displayFolder: Counts\By Status
+		lineageTag: ihb-m003-pending
+
+	column IHBID
+		dataType: int64
+		isKey
+		formatString: 0
+		lineageTag: ihb-c001-id
+		summarizeBy: none
+		sourceColumn: IHBID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ClientID
+		dataType: int64
+		formatString: 0
+		lineageTag: ihb-c002-clientid
+		summarizeBy: none
+		sourceColumn: ClientID
+
+		annotation SummarizationSetBy = Automatic
+
+	column IHBName
+		dataType: string
+		lineageTag: ihb-c003-name
+		summarizeBy: none
+		sourceColumn: IHBName
+
+		annotation SummarizationSetBy = Automatic
+
+	column IHBPhone
+		dataType: string
+		lineageTag: ihb-c004-phone
+		summarizeBy: none
+		sourceColumn: IHBPhone
+
+		annotation SummarizationSetBy = Automatic
+
+	column Address
+		dataType: string
+		lineageTag: ihb-c005-address
+		summarizeBy: none
+		sourceColumn: Address
+
+		annotation SummarizationSetBy = Automatic
+
+	column BazaarID
+		dataType: int64
+		formatString: 0
+		lineageTag: ihb-c006-bazaarid
+		summarizeBy: none
+		sourceColumn: BazaarID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Status
+		dataType: string
+		lineageTag: ihb-c007-status
+		summarizeBy: none
+		sourceColumn: Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column EndUser
+		dataType: string
+		lineageTag: ihb-c008-enduser
+		summarizeBy: none
+		sourceColumn: EndUser
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedAt
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: ihb-c009-createdat
+		summarizeBy: none
+		sourceColumn: CreatedAt
+
+		annotation SummarizationSetBy = Automatic
+
+	column UpdatedAt
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: ihb-c010-updatedat
+		summarizeBy: none
+		sourceColumn: UpdatedAt
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedByID
+		dataType: int64
+		formatString: 0
+		lineageTag: ihb-c011-createdbyid
+		summarizeBy: none
+		sourceColumn: CreatedByID
+
+		annotation SummarizationSetBy = Automatic
+
+	column IHBKey
+		dataType: string
+		lineageTag: ihb-c012-ihbkey
+		summarizeBy: none
+		sourceColumn: IHBKey
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_IHB = m
+		mode: import
+		source = ```
+				// ============================================================
+				// Dim_IHB - Individual House Builder Dimension Table
+				// ============================================================
+				
+				let
+				    // Load IHB IDs and bazaar from public.ihb_registration
+				    IHBSource = #"public ihb_registration",
+				    IHBSelected = Table.SelectColumns(IHBSource, {
+				        "id", "bazaar_id", "end_user"
+				    }, MissingField.UseNull),
+				    IHBRenamed = Table.RenameColumns(IHBSelected, {
+				        {"id", "IHBID"},
+				        {"bazaar_id", "BazaarID"},
+				        {"end_user", "EndUser"}
+				    }),
+				    
+				    // Load client details from public.client
+				    ClientSource = #"public client",
+				    ClientSelected = Table.SelectColumns(ClientSource, {
+				        "id", "client_type", "name", "phone", 
+				        "address", "status",
+				        "created_at", "updated_at", "created_by_id", "is_deleted"
+				    }, MissingField.UseNull),
+				    
+				    // Filter to IHB_REGISTRATION type only
+				    ClientIHB = Table.SelectRows(ClientSelected, each 
+				        Text.Upper(Text.From([client_type])) = "IHB_REGISTRATION"
+				    ),
+				    
+				    // Filter out deleted records
+				    ClientActive = Table.SelectRows(ClientIHB, each
+				        let
+				            del = if [is_deleted] = null then "NO" else try Text.Upper(Text.From([is_deleted])) otherwise "NO"
+				        in
+				            del = "NO" or del = "N" or del = "0" or del = "FALSE"
+				    ),
+				    
+				    // Rename client columns
+				    ClientRenamed = Table.RenameColumns(ClientActive, {
+				        {"id", "ClientID"},
+				        {"name", "IHBName"},
+				        {"phone", "IHBPhone"},
+				        {"address", "Address"},
+				        {"status", "Status"},
+				        {"created_at", "CreatedAt"},
+				        {"updated_at", "UpdatedAt"},
+				        {"created_by_id", "CreatedByID"}
+				    }, MissingField.Ignore),
+				    
+				    // Remove temporary columns
+				    ClientClean = Table.RemoveColumns(ClientRenamed, {"client_type", "is_deleted"}, MissingField.Ignore),
+				    
+				    // Join IHB IDs with client details
+				    JoinedIHB = Table.NestedJoin(
+				        IHBRenamed,
+				        {"IHBID"},
+				        ClientClean,
+				        {"ClientID"},
+				        "ClientDetails",
+				        JoinKind.LeftOuter
+				    ),
+				    
+				    ExpandedIHB = Table.ExpandTableColumn(
+				        JoinedIHB,
+				        "ClientDetails",
+				        {"ClientID", "IHBName", "IHBPhone", "Address", "Status", 
+				         "CreatedAt", "UpdatedAt", "CreatedByID"},
+				        {"ClientID", "IHBName", "IHBPhone", "Address", "Status", 
+				         "CreatedAt", "UpdatedAt", "CreatedByID"}
+				    ),
+				    
+				    // Add IHBKey for Fact_Visit linkage
+				    WithIHBKey = Table.AddColumn(ExpandedIHB, "IHBKey", each 
+				        "IHB-" & Text.From([IHBID]),
+				        type text
+				    ),
+				    
+				    // Set data types
+				    TypedTable = Table.TransformColumnTypes(WithIHBKey, {
+				        {"IHBID", Int64.Type},
+				        {"ClientID", Int64.Type},
+				        {"BazaarID", Int64.Type},
+				        {"IHBName", type text},
+				        {"IHBPhone", type text},
+				        {"Address", type text},
+				        {"Status", type text},
+				        {"EndUser", type text},
+				        {"CreatedAt", type datetime},
+				        {"UpdatedAt", type datetime},
+				        {"CreatedByID", Int64.Type},
+				        {"IHBKey", type text}
+				    })
+				in
+				    TypedTable
+				```
+
+	annotation PBI_ResultType = Table
+

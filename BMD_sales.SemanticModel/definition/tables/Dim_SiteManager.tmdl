@@ -1,0 +1,245 @@
+table Dim_SiteManager
+	lineageTag: sm-1a2b-3c4d-5e6f-7890abcdef04
+
+	/// Total count of site managers
+	measure Total_SiteManager_Count = COUNTROWS('Dim_SiteManager')
+		formatString: #,##0
+		displayFolder: Counts
+		lineageTag: sm-m001-count-total
+
+	/// Site managers with approved status
+	measure Approved_SiteManagers = 
+			CALCULATE(
+				COUNTROWS('Dim_SiteManager'),
+				'Dim_SiteManager'[Status] = "APPROVED"
+			)
+		formatString: #,##0
+		displayFolder: Counts\By Status
+		lineageTag: sm-m002-approved
+
+	/// Site managers with pending status
+	measure Pending_SiteManagers = 
+			CALCULATE(
+				COUNTROWS('Dim_SiteManager'),
+				'Dim_SiteManager'[Status] = "PENDING"
+			)
+		formatString: #,##0
+		displayFolder: Counts\By Status
+		lineageTag: sm-m003-pending
+
+	/// Site managers rejected
+	measure Rejected_SiteManagers = 
+			CALCULATE(
+				COUNTROWS('Dim_SiteManager'),
+				'Dim_SiteManager'[Status] = "REJECTED"
+			)
+		formatString: #,##0
+		displayFolder: Counts\By Status
+		lineageTag: sm-m004-rejected
+
+	column SiteManagerID
+		dataType: int64
+		isKey
+		formatString: 0
+		lineageTag: sm-c001-id
+		summarizeBy: none
+		sourceColumn: SiteManagerID
+
+		annotation SummarizationSetBy = Automatic
+
+	column SiteManagerName
+		dataType: string
+		lineageTag: sm-c002-name
+		summarizeBy: none
+		sourceColumn: SiteManagerName
+
+		annotation SummarizationSetBy = Automatic
+
+	column SiteManagerPhone
+		dataType: string
+		lineageTag: sm-c003-phone
+		summarizeBy: none
+		sourceColumn: SiteManagerPhone
+
+		annotation SummarizationSetBy = Automatic
+
+	column Address
+		dataType: string
+		lineageTag: sm-c004-address
+		summarizeBy: none
+		sourceColumn: Address
+
+		annotation SummarizationSetBy = Automatic
+
+	column SecondaryAddress
+		dataType: string
+		lineageTag: sm-c005-secondaryaddress
+		summarizeBy: none
+		sourceColumn: SecondaryAddress
+
+		annotation SummarizationSetBy = Automatic
+
+	column UpazillaID
+		dataType: int64
+		formatString: 0
+		lineageTag: sm-c006-upazillaid
+		summarizeBy: none
+		sourceColumn: UpazillaID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Status
+		dataType: string
+		lineageTag: sm-c007-status
+		summarizeBy: none
+		sourceColumn: Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column Notes
+		dataType: string
+		lineageTag: sm-c008-notes
+		summarizeBy: none
+		sourceColumn: Notes
+
+		annotation SummarizationSetBy = Automatic
+
+	column Photo
+		dataType: string
+		lineageTag: sm-c009-photo
+		summarizeBy: none
+		sourceColumn: Photo
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedAt
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: sm-c010-createdat
+		summarizeBy: none
+		sourceColumn: CreatedAt
+
+		annotation SummarizationSetBy = Automatic
+
+	column UpdatedAt
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: sm-c011-updatedat
+		summarizeBy: none
+		sourceColumn: UpdatedAt
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedByID
+		dataType: int64
+		formatString: 0
+		lineageTag: sm-c012-createdbyid
+		summarizeBy: none
+		sourceColumn: CreatedByID
+
+		annotation SummarizationSetBy = Automatic
+
+	column SiteManagerKey
+		dataType: string
+		lineageTag: sm-c013-sitemanagerkey
+		summarizeBy: none
+		sourceColumn: SiteManagerKey
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_SiteManager = m
+		mode: import
+		source = ```
+				// ============================================================
+				// Dim_SiteManager - Site Manager Dimension Table
+				// 
+				// PURPOSE:
+				// Provides Site Manager dimension with details from public.client
+				// Site Managers oversee construction sites
+				// 
+				// DATA SOURCES:
+				// - public.client: Client details (where client_type = 'SITE_MANAGER')
+				// 
+				// RECORDS: 379 site managers
+				// Status: APPROVED (250), PENDING (73), REJECTED (56)
+				// ============================================================
+				
+				let
+				    // ============================================================
+				    // STEP 1: Load client details from public.client
+				    // Filter to only SITE_MANAGER type clients
+				    // ============================================================
+				    ClientSource = #"public client",
+				    
+				    // Select relevant columns from public.client
+				    ClientSelected = Table.SelectColumns(ClientSource, {
+				        "id", "client_type", "name", "phone", 
+				        "address", "secondary_address", "upazilla_id",
+				        "status", "notes", "photo",
+				        "created_at", "updated_at", "created_by_id", "is_deleted"
+				    }, MissingField.UseNull),
+				    
+				    // Filter to SITE_MANAGER type only
+				    ClientSiteManager = Table.SelectRows(ClientSelected, each 
+				        Text.Upper(Text.From([client_type])) = "SITE_MANAGER"
+				    ),
+				    
+				    // Filter out deleted records
+				    ClientActive = Table.SelectRows(ClientSiteManager, each
+				        let
+				            del = if [is_deleted] = null then "NO" else try Text.Upper(Text.From([is_deleted])) otherwise "NO"
+				        in
+				            del = "NO" or del = "N" or del = "0" or del = "FALSE"
+				    ),
+				    
+				    // Rename client columns
+				    ClientRenamed = Table.RenameColumns(ClientActive, {
+				        {"id", "SiteManagerID"},
+				        {"name", "SiteManagerName"},
+				        {"phone", "SiteManagerPhone"},
+				        {"address", "Address"},
+				        {"secondary_address", "SecondaryAddress"},
+				        {"upazilla_id", "UpazillaID"},
+				        {"status", "Status"},
+				        {"notes", "Notes"},
+				        {"photo", "Photo"},
+				        {"created_at", "CreatedAt"},
+				        {"updated_at", "UpdatedAt"},
+				        {"created_by_id", "CreatedByID"}
+				    }, MissingField.Ignore),
+				    
+				    // Remove temporary columns
+				    ClientClean = Table.RemoveColumns(ClientRenamed, {"client_type", "is_deleted"}, MissingField.Ignore),
+				    
+				    // ============================================================
+				    // STEP 2: Add SiteManagerKey for potential Fact_Visit linkage
+				    // ============================================================
+				    WithSiteManagerKey = Table.AddColumn(ClientClean, "SiteManagerKey", each 
+				        "SiteManager-" & Text.From([SiteManagerID]),
+				        type text
+				    ),
+				    
+				    // ============================================================
+				    // STEP 3: Set data types
+				    // ============================================================
+				    TypedTable = Table.TransformColumnTypes(WithSiteManagerKey, {
+				        {"SiteManagerID", Int64.Type},
+				        {"SiteManagerName", type text},
+				        {"SiteManagerPhone", type text},
+				        {"Address", type text},
+				        {"SecondaryAddress", type text},
+				        {"UpazillaID", Int64.Type},
+				        {"Status", type text},
+				        {"Notes", type text},
+				        {"Photo", type text},
+				        {"CreatedAt", type datetime},
+				        {"UpdatedAt", type datetime},
+				        {"CreatedByID", Int64.Type},
+				        {"SiteManagerKey", type text}
+				    })
+				in
+				    TypedTable
+				```
+
+	annotation PBI_ResultType = Table
+

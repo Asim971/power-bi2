@@ -1,0 +1,237 @@
+table Dim_HeadMason
+	lineageTag: hm-1a2b-3c4d-5e6f-7890abcdef02
+
+	/// Total count of head masons
+	measure Total_HeadMason_Count = COUNTROWS('Dim_HeadMason')
+		formatString: #,##0
+		displayFolder: Counts
+		lineageTag: hm-m001-count-total
+
+	/// Head masons with approved status
+	measure Approved_HeadMason = 
+			CALCULATE(
+				COUNTROWS('Dim_HeadMason'),
+				'Dim_HeadMason'[Status] = "APPROVED"
+			)
+		formatString: #,##0
+		displayFolder: Counts\By Status
+		lineageTag: hm-m002-approved
+
+	/// Head masons with pending status
+	measure Pending_HeadMason = 
+			CALCULATE(
+				COUNTROWS('Dim_HeadMason'),
+				'Dim_HeadMason'[Status] = "PENDING"
+			)
+		formatString: #,##0
+		displayFolder: Counts\By Status
+		lineageTag: hm-m003-pending
+
+	column HeadMasonID
+		dataType: int64
+		isKey
+		formatString: 0
+		lineageTag: hm-c001-id
+		summarizeBy: none
+		sourceColumn: HeadMasonID
+
+		annotation SummarizationSetBy = Automatic
+
+	column HeadMasonName
+		dataType: string
+		lineageTag: hm-c002-name
+		summarizeBy: none
+		sourceColumn: HeadMasonName
+
+		annotation SummarizationSetBy = Automatic
+
+	column HeadMasonPhone
+		dataType: string
+		lineageTag: hm-c003-phone
+		summarizeBy: none
+		sourceColumn: HeadMasonPhone
+
+		annotation SummarizationSetBy = Automatic
+
+	column Address
+		dataType: string
+		lineageTag: hm-c004-address
+		summarizeBy: none
+		sourceColumn: Address
+
+		annotation SummarizationSetBy = Automatic
+
+	column SecondaryAddress
+		dataType: string
+		lineageTag: hm-c005-secondaryaddress
+		summarizeBy: none
+		sourceColumn: SecondaryAddress
+
+		annotation SummarizationSetBy = Automatic
+
+	column UpazillaID
+		dataType: int64
+		formatString: 0
+		lineageTag: hm-c006-upazillaid
+		summarizeBy: none
+		sourceColumn: UpazillaID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Status
+		dataType: string
+		lineageTag: hm-c007-status
+		summarizeBy: none
+		sourceColumn: Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column Notes
+		dataType: string
+		lineageTag: hm-c008-notes
+		summarizeBy: none
+		sourceColumn: Notes
+
+		annotation SummarizationSetBy = Automatic
+
+	column Photo
+		dataType: string
+		lineageTag: hm-c009-photo
+		summarizeBy: none
+		sourceColumn: Photo
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedAt
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: hm-c010-createdat
+		summarizeBy: none
+		sourceColumn: CreatedAt
+
+		annotation SummarizationSetBy = Automatic
+
+	column UpdatedAt
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: hm-c011-updatedat
+		summarizeBy: none
+		sourceColumn: UpdatedAt
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedByID
+		dataType: int64
+		formatString: 0
+		lineageTag: hm-c012-createdbyid
+		summarizeBy: none
+		sourceColumn: CreatedByID
+
+		annotation SummarizationSetBy = Automatic
+
+	column HeadMasonKey
+		dataType: string
+		lineageTag: hm-c013-headmasonkey
+		summarizeBy: none
+		sourceColumn: HeadMasonKey
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_HeadMason = m
+		mode: import
+		source = ```
+				// ============================================================
+				// Dim_HeadMason - Head Mason Dimension Table
+				// 
+				// PURPOSE:
+				// Provides Head Mason dimension with details from public.client
+				// Head Masons are influencers in the construction process
+				// 
+				// DATA SOURCES:
+				// - public.client: Client details (where client_type = 'HEAD_MASON')
+				// 
+				// RECORDS: 1,239 head masons
+				// Status: PENDING (1191), REJECTED (30), APPROVED (18)
+				// Note: Most head masons are still pending approval
+				// ============================================================
+				
+				let
+				    // ============================================================
+				    // STEP 1: Load client details from public.client
+				    // Filter to only HEAD_MASON type clients
+				    // ============================================================
+				    ClientSource = #"public client",
+				    
+				    // Select relevant columns from public.client
+				    ClientSelected = Table.SelectColumns(ClientSource, {
+				        "id", "client_type", "name", "phone", 
+				        "address", "secondary_address", "upazilla_id",
+				        "status", "notes", "photo",
+				        "created_at", "updated_at", "created_by_id", "is_deleted"
+				    }, MissingField.UseNull),
+				    
+				    // Filter to HEAD_MASON type only
+				    ClientHeadMason = Table.SelectRows(ClientSelected, each 
+				        Text.Upper(Text.From([client_type])) = "HEAD_MASON"
+				    ),
+				    
+				    // Filter out deleted records
+				    ClientActive = Table.SelectRows(ClientHeadMason, each
+				        let
+				            del = if [is_deleted] = null then "NO" else try Text.Upper(Text.From([is_deleted])) otherwise "NO"
+				        in
+				            del = "NO" or del = "N" or del = "0" or del = "FALSE"
+				    ),
+				    
+				    // Rename client columns
+				    ClientRenamed = Table.RenameColumns(ClientActive, {
+				        {"id", "HeadMasonID"},
+				        {"name", "HeadMasonName"},
+				        {"phone", "HeadMasonPhone"},
+				        {"address", "Address"},
+				        {"secondary_address", "SecondaryAddress"},
+				        {"upazilla_id", "UpazillaID"},
+				        {"status", "Status"},
+				        {"notes", "Notes"},
+				        {"photo", "Photo"},
+				        {"created_at", "CreatedAt"},
+				        {"updated_at", "UpdatedAt"},
+				        {"created_by_id", "CreatedByID"}
+				    }, MissingField.Ignore),
+				    
+				    // Remove temporary columns
+				    ClientClean = Table.RemoveColumns(ClientRenamed, {"client_type", "is_deleted"}, MissingField.Ignore),
+				    
+				    // ============================================================
+				    // STEP 2: Add HeadMasonKey for Fact_Visit linkage
+				    // Format matches Dim_Client_Simple pattern
+				    // ============================================================
+				    WithHeadMasonKey = Table.AddColumn(ClientClean, "HeadMasonKey", each 
+				        "HeadMason-" & Text.From([HeadMasonID]),
+				        type text
+				    ),
+				    
+				    // ============================================================
+				    // STEP 3: Set data types
+				    // ============================================================
+				    TypedTable = Table.TransformColumnTypes(WithHeadMasonKey, {
+				        {"HeadMasonID", Int64.Type},
+				        {"HeadMasonName", type text},
+				        {"HeadMasonPhone", type text},
+				        {"Address", type text},
+				        {"SecondaryAddress", type text},
+				        {"UpazillaID", Int64.Type},
+				        {"Status", type text},
+				        {"Notes", type text},
+				        {"Photo", type text},
+				        {"CreatedAt", type datetime},
+				        {"UpdatedAt", type datetime},
+				        {"CreatedByID", Int64.Type},
+				        {"HeadMasonKey", type text}
+				    })
+				in
+				    TypedTable
+				```
+
+	annotation PBI_ResultType = Table
+

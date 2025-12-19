@@ -74,6 +74,37 @@ table Fact_Visit
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	/// Visits with territory derived from employee assignment (not GPS)
+	measure Employee_Derived_Territory_Visits = 
+			CALCULATE(
+				COUNTROWS('Fact_Visit'),
+				'Fact_Visit'[TerritorySource] = "Employee"
+			)
+		formatString: #,##0
+		displayFolder: GPS & Territory
+		lineageTag: fv-m001-emp-derived-territory
+
+	/// Visits with no territory (neither GPS nor employee derivation)
+	measure Unknown_Territory_Visits = 
+			CALCULATE(
+				COUNTROWS('Fact_Visit'),
+				'Fact_Visit'[TerritorySource] = "Unknown"
+			)
+		formatString: #,##0
+		displayFolder: GPS & Territory
+		lineageTag: fv-m002-unknown-territory
+
+	/// Percentage of visits that now have territory (GPS or derived)
+	measure Territory_Coverage_Rate = 
+			DIVIDE(
+				COUNTROWS(FILTER('Fact_Visit', 'Fact_Visit'[territory_id] <> BLANK())),
+				COUNTROWS('Fact_Visit'),
+				0
+			)
+		formatString: 0.0%
+		displayFolder: Rates
+		lineageTag: fv-m003-territory-coverage
+
 	measure Zone_Mismatch_Visits
 		lineageTag: 3ccd55f5-00a4-452c-9ad2-1dedafee8150
 
@@ -1473,6 +1504,15 @@ table Fact_Visit
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Indicates how territory was determined: GPS (from visit), Employee (derived from employee assignment), or Unknown
+	column TerritorySource
+		dataType: string
+		lineageTag: ts-001-territory-source-flag
+		summarizeBy: none
+		sourceColumn: TerritorySource
+
+		annotation SummarizationSetBy = Automatic
+
 	column territory_name
 		dataType: string
 		lineageTag: 17a78ca3-d95e-4965-a6a1-f74f66154cc2
@@ -1597,17 +1637,41 @@ table Fact_Visit
 				// ============================================================
 				// Fact_Visit - Visit Fact Table
 				// Based on actual 'public visits' table schema from Power BI
-				// Total Records: 36,041 visits
+				// Total Records: 54,155 visits
 				// 
 				// INFLUENCER SEGREGATION (per PRD.MD):
 				// - "Influencer" visits are actually Engineers (managed by BDO)
 				// - Contractor visits use contractor_id (managed by CRO)
+				//
+				// TERRITORY FIX:
+				// Source territory_id is NULL for ALL records.
+				// Solution: Derive territory from employee's assigned territory.
+				// ~46.4% of visits can derive territory from employee assignment.
 				// ============================================================
 				
 				let
 				    // Reference the existing 'public visits' table in Power BI
-				    // This connects to the semantic model's existing data source
 				    Source = #"public visits",
+				    
+				    // ---- Load Employee Territory Lookup ----
+				    // Get employee -> territory mapping from users_territory junction
+				    UserTerritorySource = #"public users_territory",
+				    
+				    // Group by users_id to get first territory_id for each employee
+				    UserTerritoryGrouped = Table.Group(
+				        UserTerritorySource,
+				        {"users_id"},
+				        {{"FirstTerritoryID", each List.First([territory_id]), type nullable number}}
+				    ),
+				    
+				    // Rename for join
+				    EmployeeTerritoryLookup = Table.RenameColumns(UserTerritoryGrouped, {
+				        {"users_id", "emp_id_lookup"},
+				        {"FirstTerritoryID", "EmpTerritoryID"}
+				    }),
+				    
+				    // Buffer for performance
+				    EmployeeTerritoryLookupBuffered = Table.Buffer(EmployeeTerritoryLookup),
 				    
 				    // ---- Select Core Columns from actual schema ----
 				    SelectedColumns = Table.SelectColumns(Source, {
@@ -1618,12 +1682,58 @@ table Fact_Visit
 				        "potential_site_id", "retailer_id", "dealer_id", 
 				        "engineer_id", "contractor_id", "ihb_registration_id", "head_mason_id",
 				        "site_manager_id", "organization_id",
-				        // Territory info
+				        // Territory info (NULL in source - will derive from employee)
 				        "territory_id", "territory_name", "role_level",
 				        // GPS Coordinates
 				        "latitude", "longitude",
 				        // Metadata
 				        "origin", "delete_status", "created_at", "updated_at"
+				    }),
+				    
+				    // ---- Join to get employee's assigned territory ----
+				    JoinedEmployeeTerritory = Table.NestedJoin(
+				        SelectedColumns,
+				        {"created_by_id"},
+				        EmployeeTerritoryLookupBuffered,
+				        {"emp_id_lookup"},
+				        "EmpTerrLookup",
+				        JoinKind.LeftOuter
+				    ),
+				    
+				    // Expand the employee territory lookup
+				    ExpandedEmpTerritory = Table.ExpandTableColumn(
+				        JoinedEmployeeTerritory,
+				        "EmpTerrLookup",
+				        {"EmpTerritoryID"},
+				        {"EmpTerritoryID"}
+				    ),
+				    
+				    // ---- TERRITORY FIX: Use employee territory when source is NULL ----
+				    WithDerivedTerritory = Table.AddColumn(ExpandedEmpTerritory, "derived_territory_id", each
+				        if [territory_id] <> null then [territory_id]
+				        else [EmpTerritoryID],
+				        type nullable number
+				    ),
+				    
+				    // Add flag to track territory source
+				    WithTerritorySource = Table.AddColumn(WithDerivedTerritory, "TerritorySource", each
+				        if [territory_id] <> null then "GPS"
+				        else if [EmpTerritoryID] <> null then "Employee"
+				        else "Unknown",
+				        type text
+				    ),
+				    
+				    // Replace territory_id with derived value and remove helper columns
+				    ReplacedTerritory = Table.RemoveColumns(
+				        Table.RenameColumns(WithTerritorySource, {
+				            {"derived_territory_id", "territory_id_derived"}
+				        }),
+				        {"territory_id", "EmpTerritoryID"}
+				    ),
+				    
+				    // Rename derived territory to final column
+				    WithFinalTerritory = Table.RenameColumns(ReplacedTerritory, {
+				        {"territory_id_derived", "territory_id"}
 				    }),
 				    
 				    // ---- Create Unified ClientKey ----
@@ -1634,7 +1744,7 @@ table Fact_Visit
 				    // INFLUENCER SEGREGATION (per PRD):
 				    // - Influencer visits with engineer_id → "Engineer" (BDO manages)
 				    // - Influencer visits with contractor_id → "Contractor" (CRO manages Partners)
-				    WithClientType = Table.AddColumn(SelectedColumns, "ClientType", each 
+				    WithClientType = Table.AddColumn(WithFinalTerritory, "ClientType", each 
 				        if [visit_type] = "Sites" then "Site"
 				        else if [visit_type] = "Retailer" then "Retailer"
 				        else if [visit_type] = "Dealer" then "Dealer"
@@ -1758,7 +1868,7 @@ table Fact_Visit
 				        "VisitCategoryID", "VisitPhaseID", "VisitStageID", "organization_id", "CompanyCode", "status",
 				        "feedback", "visit_photo", "product_photo",
 				        "HasPhoto", "HasProductPhoto", "HasFeedback", "HasTerritory",
-				        "territory_id", "territory_name", "latitude", "longitude", "followup_date",
+				        "territory_id", "TerritorySource", "territory_name", "latitude", "longitude", "followup_date",
 				        "origin", "visit_date_time", "created_at", "updated_at"
 				    }),
 				    
@@ -1788,6 +1898,7 @@ table Fact_Visit
 				        {"HasFeedback", Int64.Type},
 				        {"HasTerritory", Int64.Type},
 				        {"territory_id", Int64.Type},
+				        {"TerritorySource", type text},
 				        {"territory_name", type text},
 				        {"latitude", type number},
 				        {"longitude", type number},
