@@ -149,3 +149,33 @@ relationship 4e5f6071-8293-a4b5-c6d7-e8f901234567
 	fromColumn: Fact_ProjectConversion.contractor_id
 	toColumn: Dim_Contractor.ContractorID
 
+// ============================================================
+// NEW RELATIONSHIPS: Dim_Site, Fact_UserOrders, Dim_Engineer
+// ============================================================
+
+// Fact_UserOrders -> Dim_Site (via site_id)
+relationship 5f6a7b8c-9d0e-1f2a-3b4c-5d6e7f8a9b0c
+	fromColumn: Fact_UserOrders.SiteID
+	toColumn: Dim_Site.SiteID
+
+// Fact_UserOrders -> Dim_Date (via OrderDateKey)
+relationship 6a7b8c9d-0e1f-2a3b-4c5d-6e7f8a9b0c1d
+	fromColumn: Fact_UserOrders.OrderDateKey
+	toColumn: Dim_Date.DateKey
+
+// Dim_Site -> Dim_Contractor (via contractor_id)
+relationship 7b8c9d0e-1f2a-3b4c-5d6e-7f8a9b0c1d2e
+	fromColumn: Dim_Site.ContractorID
+	toColumn: Dim_Contractor.ContractorID
+
+// Dim_Site -> Dim_Engineer (via engineer_id)
+relationship 8c9d0e1f-2a3b-4c5d-6e7f-8a9b0c1d2e3f
+	fromColumn: Dim_Site.EngineerID
+	toColumn: Dim_Engineer.EngineerID
+
+// Dim_Site -> Dim_Bazaar (via bazaar_id)
+relationship 9d0e1f2a-3b4c-5d6e-7f8a-9b0c1d2e3f4a
+	fromColumn: Dim_Site.BazaarID
+	toColumn: Dim_Bazaar.BazaarID
+
+

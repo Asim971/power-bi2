@@ -1,0 +1,429 @@
+table Fact_UserOrders
+	lineageTag: f1a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c
+
+	/// Total count of user orders
+	measure Total_UserOrders = COUNTROWS('Fact_UserOrders')
+		formatString: #,##0
+		displayFolder: Orders\Base
+		lineageTag: 1a2b3c4d-5e6f-4a7b-8c9d-0e1f2a3b4c5d
+
+	/// Total order amount in BDT
+	measure Total_Order_Amount = SUM('Fact_UserOrders'[TotalAmount])
+		formatString: #,##0.00
+		displayFolder: Orders\Base
+		lineageTag: 2b3c4d5e-6f7a-4b8c-9d0e-1f2a3b4c5d6e
+
+	/// Orders pending disbursement (PENDING or PENDING_SR_VERIFICATION)
+	measure Pending_Disbursement_Orders = 
+		CALCULATE(
+			COUNTROWS('Fact_UserOrders'),
+			'Fact_UserOrders'[DisbursementStatus] = "Pending"
+		)
+		formatString: #,##0
+		displayFolder: Disbursement\Orders
+		lineageTag: 3c4d5e6f-7a8b-4c9d-0e1f-2a3b4c5d6e7f
+
+	/// Amount pending disbursement
+	measure Pending_Disbursement_Amount = 
+		CALCULATE(
+			SUM('Fact_UserOrders'[TotalAmount]),
+			'Fact_UserOrders'[DisbursementStatus] = "Pending"
+		)
+		formatString: #,##0.00
+		displayFolder: Disbursement\Amount
+		lineageTag: 4d5e6f7a-8b9c-4d0e-1f2a-3b4c5d6e7f8a
+
+	/// Orders ready for disbursement (APPROVED)
+	measure Ready_Disbursement_Orders = 
+		CALCULATE(
+			COUNTROWS('Fact_UserOrders'),
+			'Fact_UserOrders'[DisbursementStatus] = "Ready"
+		)
+		formatString: #,##0
+		displayFolder: Disbursement\Orders
+		lineageTag: 5e6f7a8b-9c0d-4e1f-2a3b-4c5d6e7f8a9b
+
+	/// Amount ready for disbursement
+	measure Ready_Disbursement_Amount = 
+		CALCULATE(
+			SUM('Fact_UserOrders'[TotalAmount]),
+			'Fact_UserOrders'[DisbursementStatus] = "Ready"
+		)
+		formatString: #,##0.00
+		displayFolder: Disbursement\Amount
+		lineageTag: 6f7a8b9c-0d1e-4f2a-3b4c-5d6e7f8a9b0c
+
+	/// Engineer-eligible orders count
+	measure Engineer_Eligible_Orders = 
+		CALCULATE(
+			COUNTROWS('Fact_UserOrders'),
+			'Fact_UserOrders'[IsEngineerEligible] = TRUE()
+		)
+		formatString: #,##0
+		displayFolder: Eligibility\Engineer
+		lineageTag: 7a8b9c0d-1e2f-4a3b-4c5d-6e7f8a9b0c1d
+
+	/// Partner/Contractor-eligible orders count
+	measure Partner_Eligible_Orders = 
+		CALCULATE(
+			COUNTROWS('Fact_UserOrders'),
+			'Fact_UserOrders'[IsPartnerEligible] = TRUE()
+		)
+		formatString: #,##0
+		displayFolder: Eligibility\Partner
+		lineageTag: 8b9c0d1e-2f3a-4b4c-5d6e-7f8a9b0c1d2e
+
+	/// Engineer pending disbursement amount
+	measure Engineer_Pending_Amount = 
+		CALCULATE(
+			SUM('Fact_UserOrders'[TotalAmount]),
+			'Fact_UserOrders'[IsEngineerEligible] = TRUE(),
+			'Fact_UserOrders'[DisbursementStatus] = "Pending"
+		)
+		formatString: #,##0.00
+		displayFolder: Disbursement\Engineer
+		lineageTag: 9c0d1e2f-3a4b-4c5d-6e7f-8a9b0c1d2e3f
+
+	/// Engineer ready disbursement amount
+	measure Engineer_Ready_Amount = 
+		CALCULATE(
+			SUM('Fact_UserOrders'[TotalAmount]),
+			'Fact_UserOrders'[IsEngineerEligible] = TRUE(),
+			'Fact_UserOrders'[DisbursementStatus] = "Ready"
+		)
+		formatString: #,##0.00
+		displayFolder: Disbursement\Engineer
+		lineageTag: 0d1e2f3a-4b5c-4d6e-7f8a-9b0c1d2e3f4a
+
+	/// Partner/Contractor pending disbursement amount
+	measure Partner_Pending_Amount = 
+		CALCULATE(
+			SUM('Fact_UserOrders'[TotalAmount]),
+			'Fact_UserOrders'[IsPartnerEligible] = TRUE(),
+			'Fact_UserOrders'[DisbursementStatus] = "Pending"
+		)
+		formatString: #,##0.00
+		displayFolder: Disbursement\Partner
+		lineageTag: 1e2f3a4b-5c6d-4e7f-8a9b-0c1d2e3f4a5b
+
+	/// Partner/Contractor ready disbursement amount
+	measure Partner_Ready_Amount = 
+		CALCULATE(
+			SUM('Fact_UserOrders'[TotalAmount]),
+			'Fact_UserOrders'[IsPartnerEligible] = TRUE(),
+			'Fact_UserOrders'[DisbursementStatus] = "Ready"
+		)
+		formatString: #,##0.00
+		displayFolder: Disbursement\Partner
+		lineageTag: 2f3a4b5c-6d7e-4f8a-9b0c-1d2e3f4a5b6c
+
+	column UserOrderID
+		dataType: int64
+		formatString: 0
+		lineageTag: 3a4b5c6d-7e8f-4a9b-0c1d-2e3f4a5b6c7d
+		summarizeBy: none
+		sourceColumn: UserOrderID
+
+		annotation SummarizationSetBy = Automatic
+
+	column SiteID
+		dataType: int64
+		formatString: 0
+		lineageTag: 4b5c6d7e-8f9a-4b0c-1d2e-3f4a5b6c7d8e
+		summarizeBy: none
+		sourceColumn: SiteID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProjectConversionID
+		dataType: int64
+		formatString: 0
+		lineageTag: 5c6d7e8f-9a0b-4c1d-2e3f-4a5b6c7d8e9f
+		summarizeBy: none
+		sourceColumn: ProjectConversionID
+
+		annotation SummarizationSetBy = Automatic
+
+	column BazaarID
+		dataType: int64
+		formatString: 0
+		lineageTag: 6d7e8f9a-0b1c-4d2e-3f4a-5b6c7d8e9f0a
+		summarizeBy: none
+		sourceColumn: BazaarID
+
+		annotation SummarizationSetBy = Automatic
+
+	column DealerID
+		dataType: int64
+		formatString: 0
+		lineageTag: 7e8f9a0b-1c2d-4e3f-4a5b-6c7d8e9f0a1b
+		summarizeBy: none
+		sourceColumn: DealerID
+
+		annotation SummarizationSetBy = Automatic
+
+	column RetailerID
+		dataType: int64
+		formatString: 0
+		lineageTag: 8f9a0b1c-2d3e-4f4a-5b6c-7d8e9f0a1b2c
+		summarizeBy: none
+		sourceColumn: RetailerID
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrderStatus
+		dataType: string
+		lineageTag: 9a0b1c2d-3e4f-4a5b-6c7d-8e9f0a1b2c3d
+		summarizeBy: none
+		sourceColumn: OrderStatus
+
+		annotation SummarizationSetBy = Automatic
+
+	column DisbursementStatus
+		dataType: string
+		lineageTag: 0b1c2d3e-4f5a-4b6c-7d8e-9f0a1b2c3d4e
+		summarizeBy: none
+		sourceColumn: DisbursementStatus
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrderCategory
+		dataType: string
+		lineageTag: 1c2d3e4f-5a6b-4c7d-8e9f-0a1b2c3d4e5f
+		summarizeBy: none
+		sourceColumn: OrderCategory
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrderType
+		dataType: string
+		lineageTag: 2d3e4f5a-6b7c-4d8e-9f0a-1b2c3d4e5f6a
+		summarizeBy: none
+		sourceColumn: OrderType
+
+		annotation SummarizationSetBy = Automatic
+
+	column DeliveryMethod
+		dataType: string
+		lineageTag: 3e4f5a6b-7c8d-4e9f-0a1b-2c3d4e5f6a7b
+		summarizeBy: none
+		sourceColumn: DeliveryMethod
+
+		annotation SummarizationSetBy = Automatic
+
+	column Stage
+		dataType: string
+		lineageTag: 4f5a6b7c-8d9e-4f0a-1b2c-3d4e5f6a7b8c
+		summarizeBy: none
+		sourceColumn: Stage
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsEngineerEligible
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 5a6b7c8d-9e0f-4a1b-2c3d-4e5f6a7b8c9d
+		summarizeBy: none
+		sourceColumn: IsEngineerEligible
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsPartnerEligible
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 6b7c8d9e-0f1a-4b2c-3d4e-5f6a7b8c9d0e
+		summarizeBy: none
+		sourceColumn: IsPartnerEligible
+
+		annotation SummarizationSetBy = Automatic
+
+	column TotalAmount
+		dataType: double
+		formatString: #,##0.00
+		lineageTag: 7c8d9e0f-1a2b-4c3d-4e5f-6a7b8c9d0e1f
+		summarizeBy: sum
+		sourceColumn: TotalAmount
+
+		annotation SummarizationSetBy = Automatic
+
+	column DNNumber
+		dataType: string
+		lineageTag: 8d9e0f1a-2b3c-4d4e-5f6a-7b8c9d0e1f2a
+		summarizeBy: none
+		sourceColumn: DNNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column DeliveryAddress
+		dataType: string
+		lineageTag: 9e0f1a2b-3c4d-4e5f-6a7b-8c9d0e1f2a3b
+		summarizeBy: none
+		sourceColumn: DeliveryAddress
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedAt
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 0f1a2b3c-4d5e-4f6a-7b8c-9d0e1f2a3b4c
+		summarizeBy: none
+		sourceColumn: CreatedAt
+
+		annotation SummarizationSetBy = Automatic
+
+	column UpdatedAt
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 1a2b3c4d-5e6f-4a7b-8c9d-0e1f2a3b4c5d
+		summarizeBy: none
+		sourceColumn: UpdatedAt
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrderDateKey
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: 2b3c4d5e-6f7a-4b8c-9d0e-1f2a3b4c5d6e
+		summarizeBy: none
+		sourceColumn: OrderDateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedByID
+		dataType: int64
+		formatString: 0
+		lineageTag: 3c4d5e6f-7a8b-4c9d-0e1f-2a3b4c5d6e7f
+		summarizeBy: none
+		sourceColumn: CreatedByID
+
+		annotation SummarizationSetBy = Automatic
+
+	column UpdatedByID
+		dataType: int64
+		formatString: 0
+		lineageTag: 4d5e6f7a-8b9c-4d0e-1f2a-3b4c5d6e7f8a
+		summarizeBy: none
+		sourceColumn: UpdatedByID
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Fact_UserOrders = m
+		mode: import
+		source = ```
+				// ============================================================
+				// Fact_UserOrders - User Orders Fact Table
+				// Source: public user_orders (1,407 records)
+				// 
+				// PURPOSE:
+				// Tracks all user orders and their disbursement status
+				// Primary fact table for disbursement calculations
+				// Links to Dim_Site (via site_id) for engineer/contractor info
+				// 
+				// KEY FIELDS:
+				// - order_status: PENDING, PENDING_SR_VERIFICATION, APPROVED, REJECTED
+				// - is_engineer_eligible: Boolean flag for engineer disbursement
+				// - is_partner_eligible: Boolean flag for contractor/partner disbursement
+				// - site_id: Links to Dim_Site (potential_site)
+				// ============================================================
+				
+				let
+				    // Reference the existing 'public user_orders' table
+				    Source = #"public user_orders",
+				    
+				    // Get all column names
+				    AllColumns = Table.ColumnNames(Source),
+				    
+				    // Select columns
+				    SelectedColumns = Table.SelectColumns(Source, {
+				        "id",
+				        "site_id", "project_conversion_id", "bazaar_id", "dealer_id", "retailer_id",
+				        "order_status", "order_category", "order_type", "delivery_method", "stage",
+				        "is_engineer_eligible", "is_partner_eligible",
+				        "total_amount", "dn_number", "delivery_address",
+				        "created_at", "updated_at", "created_by", "updated_by"
+				    }, MissingField.UseNull),
+				    
+				    // Rename columns to PascalCase
+				    RenamedColumns = Table.RenameColumns(SelectedColumns, {
+				        {"id", "UserOrderID"},
+				        {"site_id", "SiteID"},
+				        {"project_conversion_id", "ProjectConversionID"},
+				        {"bazaar_id", "BazaarID"},
+				        {"dealer_id", "DealerID"},
+				        {"retailer_id", "RetailerID"},
+				        {"order_status", "OrderStatus"},
+				        {"order_category", "OrderCategory"},
+				        {"order_type", "OrderType"},
+				        {"delivery_method", "DeliveryMethod"},
+				        {"stage", "Stage"},
+				        {"is_engineer_eligible", "IsEngineerEligible"},
+				        {"is_partner_eligible", "IsPartnerEligible"},
+				        {"total_amount", "TotalAmount_Text"},
+				        {"dn_number", "DNNumber"},
+				        {"delivery_address", "DeliveryAddress"},
+				        {"created_at", "CreatedAt"},
+				        {"updated_at", "UpdatedAt"},
+				        {"created_by", "CreatedByID"},
+				        {"updated_by", "UpdatedByID"}
+				    }, MissingField.Ignore),
+				    
+				    // Convert total_amount from text to number
+				    WithTotalAmount = Table.AddColumn(RenamedColumns, "TotalAmount", each 
+				        try Number.From([TotalAmount_Text]) otherwise 0,
+				        type number
+				    ),
+				    
+				    // Remove the text version
+				    RemovedTextAmount = Table.RemoveColumns(WithTotalAmount, {"TotalAmount_Text"}, MissingField.Ignore),
+				    
+				    // Add DisbursementStatus derived column
+				    // PENDING, PENDING_SR_VERIFICATION = "Pending"
+				    // APPROVED = "Ready"
+				    // REJECTED = "Rejected"
+				    WithDisbursementStatus = Table.AddColumn(RemovedTextAmount, "DisbursementStatus", each
+				        if [OrderStatus] = "PENDING" or [OrderStatus] = "PENDING_SR_VERIFICATION" then "Pending"
+				        else if [OrderStatus] = "APPROVED" then "Ready"
+				        else if [OrderStatus] = "REJECTED" then "Rejected"
+				        else "Other",
+				        type text
+				    ),
+				    
+				    // Add OrderDateKey for date dimension linking
+				    WithOrderDateKey = Table.AddColumn(WithDisbursementStatus, "OrderDateKey", each
+				        Date.From([CreatedAt]),
+				        type date
+				    ),
+				    
+				    // Set data types
+				    TypedColumns = Table.TransformColumnTypes(WithOrderDateKey, {
+				        {"UserOrderID", Int64.Type},
+				        {"SiteID", Int64.Type},
+				        {"ProjectConversionID", Int64.Type},
+				        {"BazaarID", Int64.Type},
+				        {"DealerID", Int64.Type},
+				        {"RetailerID", Int64.Type},
+				        {"OrderStatus", type text},
+				        {"DisbursementStatus", type text},
+				        {"OrderCategory", type text},
+				        {"OrderType", type text},
+				        {"DeliveryMethod", type text},
+				        {"Stage", type text},
+				        {"IsEngineerEligible", type logical},
+				        {"IsPartnerEligible", type logical},
+				        {"TotalAmount", type number},
+				        {"DNNumber", type text},
+				        {"DeliveryAddress", type text},
+				        {"CreatedAt", type datetime},
+				        {"UpdatedAt", type datetime},
+				        {"OrderDateKey", type date},
+				        {"CreatedByID", Int64.Type},
+				        {"UpdatedByID", Int64.Type}
+				    })
+				in
+				    TypedColumns
+				```
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

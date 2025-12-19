@@ -1,93 +1,93 @@
-table Dim_Contractor
-	lineageTag: 3c4d5e6f-7a8b-4c9d-0e1f-2a3b4c5d6e7f
+table Dim_Engineer
+	lineageTag: e1f2a3b4-c5d6-4e7f-8a9b-0c1d2e3f4a5b
 
-	/// Total count of contractors in the dimension
-	measure Total_Contractors_Count = COUNTROWS('Dim_Contractor')
+	/// Total count of engineers in the dimension
+	measure Total_Engineers_Count = COUNTROWS('Dim_Engineer')
 		formatString: #,##0
 		displayFolder: Counts
-		lineageTag: 4d5e6f7a-8b9c-4d0e-1f2a-3b4c5d6e7f8a
+		lineageTag: f2a3b4c5-d6e7-4f8a-9b0c-1d2e3f4a5b6c
 
-	/// Total pending disbursement amount across all contractors
-	measure Total_Pending_Disbursement = SUM('Dim_Contractor'[Pending_Disbursement])
+	/// Total pending disbursement amount across all engineers
+	measure Total_Engineer_Pending_Disbursement = SUM('Dim_Engineer'[Pending_Disbursement])
 		formatString: #,##0.00
 		displayFolder: Disbursement
-		lineageTag: 5e6f7a8b-9c0d-4e1f-2a3b-4c5d6e7f8a9b
+		lineageTag: a3b4c5d6-e7f8-4a9b-0c1d-2e3f4a5b6c7d
 
-	/// Total ready for disbursement amount across all contractors
-	measure Total_Ready_For_Disbursement = SUM('Dim_Contractor'[Ready_For_Disbursement])
+	/// Total ready for disbursement amount across all engineers
+	measure Total_Engineer_Ready_For_Disbursement = SUM('Dim_Engineer'[Ready_For_Disbursement])
 		formatString: #,##0.00
 		displayFolder: Disbursement
-		lineageTag: 6f7a8b9c-0d1e-4f2a-3b4c-5d6e7f8a9b0c
+		lineageTag: b4c5d6e7-f8a9-4b0c-1d2e-3f4a5b6c7d8e
 
-	/// Pending disbursement MT across all contractors
-	measure Total_Pending_MT = SUM('Dim_Contractor'[Pending_Disbursement_MT])
+	/// Pending disbursement MT across all engineers
+	measure Total_Engineer_Pending_MT = SUM('Dim_Engineer'[Pending_Disbursement_MT])
 		formatString: #,##0.00
 		displayFolder: Disbursement
-		lineageTag: 7a8b9c0d-1e2f-4a3b-4c5d-6e7f8a9b0c1d
+		lineageTag: c5d6e7f8-a9b0-4c1d-2e3f-4a5b6c7d8e9f
 
-	/// Ready for disbursement MT across all contractors
-	measure Total_Ready_MT = SUM('Dim_Contractor'[Ready_For_Disbursement_MT])
+	/// Ready for disbursement MT across all engineers
+	measure Total_Engineer_Ready_MT = SUM('Dim_Engineer'[Ready_For_Disbursement_MT])
 		formatString: #,##0.00
 		displayFolder: Disbursement
-		lineageTag: 8b9c0d1e-2f3a-4b4c-5d6e-7f8a9b0c1d2e
+		lineageTag: d6e7f8a9-b0c1-4d2e-3f4a-5b6c7d8e9f0a
 
-	/// Contractors with pending orders
-	measure Contractors_With_Pending = 
+	/// Engineers with pending orders
+	measure Engineers_With_Pending = 
 			CALCULATE(
-				COUNTROWS('Dim_Contractor'),
-				FILTER('Dim_Contractor', 'Dim_Contractor'[Pending_Order_Count] > 0)
+				COUNTROWS('Dim_Engineer'),
+				FILTER('Dim_Engineer', 'Dim_Engineer'[Pending_Order_Count] > 0)
 			)
 		formatString: #,##0
 		displayFolder: Counts
-		lineageTag: 9c0d1e2f-3a4b-4c5d-6e7f-8a9b0c1d2e3f
+		lineageTag: e7f8a9b0-c1d2-4e3f-4a5b-6c7d8e9f0a1b
 
-	/// Contractors with ready orders
-	measure Contractors_With_Ready = 
+	/// Engineers with ready orders
+	measure Engineers_With_Ready = 
 			CALCULATE(
-				COUNTROWS('Dim_Contractor'),
-				FILTER('Dim_Contractor', 'Dim_Contractor'[Ready_Order_Count] > 0)
+				COUNTROWS('Dim_Engineer'),
+				FILTER('Dim_Engineer', 'Dim_Engineer'[Ready_Order_Count] > 0)
 			)
 		formatString: #,##0
 		displayFolder: Counts
-		lineageTag: 0d1e2f3a-4b5c-4d6e-7f8a-9b0c1d2e3f4a
+		lineageTag: f8a9b0c1-d2e3-4f4a-5b6c-7d8e9f0a1b2c
 
-	column ContractorID
+	column EngineerID
 		dataType: int64
 		formatString: 0
-		lineageTag: 1e2f3a4b-5c6d-4e7f-8a9b-0c1d2e3f4a5b
+		lineageTag: a9b0c1d2-e3f4-4a5b-6c7d-8e9f0a1b2c3d
 		summarizeBy: none
-		sourceColumn: ContractorID
+		sourceColumn: EngineerID
 
 		annotation SummarizationSetBy = Automatic
 
 	column ClientID
 		dataType: int64
 		formatString: 0
-		lineageTag: 2f3a4b5c-6d7e-4f8a-9b0c-1d2e3f4a5b6c
+		lineageTag: b0c1d2e3-f4a5-4b6c-7d8e-9f0a1b2c3d4e
 		summarizeBy: none
 		sourceColumn: ClientID
 
 		annotation SummarizationSetBy = Automatic
 
-	column ContractorName
+	column EngineerName
 		dataType: string
-		lineageTag: 3a4b5c6d-7e8f-4a9b-0c1d-2e3f4a5b6c7d
+		lineageTag: c1d2e3f4-a5b6-4c7d-8e9f-0a1b2c3d4e5f
 		summarizeBy: none
-		sourceColumn: ContractorName
+		sourceColumn: EngineerName
 
 		annotation SummarizationSetBy = Automatic
 
-	column ContractorPhone
+	column EngineerPhone
 		dataType: string
-		lineageTag: 4b5c6d7e-8f9a-4b0c-1d2e-3f4a5b6c7d8e
+		lineageTag: d2e3f4a5-b6c7-4d8e-9f0a-1b2c3d4e5f6a
 		summarizeBy: none
-		sourceColumn: ContractorPhone
+		sourceColumn: EngineerPhone
 
 		annotation SummarizationSetBy = Automatic
 
 	column BkashNumber
 		dataType: string
-		lineageTag: 5c6d7e8f-9a0b-4c1d-2e3f-4a5b6c7d8e9f
+		lineageTag: e3f4a5b6-c7d8-4e9f-0a1b-2c3d4e5f6a7b
 		summarizeBy: none
 		sourceColumn: BkashNumber
 
@@ -96,7 +96,7 @@ table Dim_Contractor
 	column BankAccountID
 		dataType: int64
 		formatString: 0
-		lineageTag: 6d7e8f9a-0b1c-4d2e-3f4a-5b6c7d8e9f0a
+		lineageTag: f4a5b6c7-d8e9-4f0a-1b2c-3d4e5f6a7b8c
 		summarizeBy: none
 		sourceColumn: BankAccountID
 
@@ -104,7 +104,7 @@ table Dim_Contractor
 
 	column BankName
 		dataType: string
-		lineageTag: 7e8f9a0b-1c2d-4e3f-4a5b-6c7d8e9f0a1b
+		lineageTag: a5b6c7d8-e9f0-4a1b-2c3d-4e5f6a7b8c9d
 		summarizeBy: none
 		sourceColumn: BankName
 
@@ -112,7 +112,7 @@ table Dim_Contractor
 
 	column RoutingNumber
 		dataType: string
-		lineageTag: 8f9a0b1c-2d3e-4f4a-5b6c-7d8e9f0a1b2c
+		lineageTag: b6c7d8e9-f0a1-4b2c-3d4e-5f6a7b8c9d0e
 		summarizeBy: none
 		sourceColumn: RoutingNumber
 
@@ -120,7 +120,7 @@ table Dim_Contractor
 
 	column ACNumber
 		dataType: string
-		lineageTag: 9a0b1c2d-3e4f-4a5b-6c7d-8e9f0a1b2c3d
+		lineageTag: c7d8e9f0-a1b2-4c3d-4e5f-6a7b8c9d0e1f
 		summarizeBy: none
 		sourceColumn: ACNumber
 
@@ -128,7 +128,7 @@ table Dim_Contractor
 
 	column Address
 		dataType: string
-		lineageTag: 0b1c2d3e-4f5a-4b6c-7d8e-9f0a1b2c3d4e
+		lineageTag: d8e9f0a1-b2c3-4d4e-5f6a-7b8c9d0e1f2a
 		summarizeBy: none
 		sourceColumn: Address
 
@@ -136,7 +136,7 @@ table Dim_Contractor
 
 	column SecondaryAddress
 		dataType: string
-		lineageTag: 1c2d3e4f-5a6b-4c7d-8e9f-0a1b2c3d4e5f
+		lineageTag: e9f0a1b2-c3d4-4e5f-6a7b-8c9d0e1f2a3b
 		summarizeBy: none
 		sourceColumn: SecondaryAddress
 
@@ -145,15 +145,31 @@ table Dim_Contractor
 	column UpazillaID
 		dataType: int64
 		formatString: 0
-		lineageTag: 2d3e4f5a-6b7c-4d8e-9f0a-1b2c3d4e5f6a
+		lineageTag: f0a1b2c3-d4e5-4f6a-7b8c-9d0e1f2a3b4c
 		summarizeBy: none
 		sourceColumn: UpazillaID
 
 		annotation SummarizationSetBy = Automatic
 
+	column EngineerType
+		dataType: string
+		lineageTag: a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d
+		summarizeBy: none
+		sourceColumn: EngineerType
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConsultancyFirm
+		dataType: string
+		lineageTag: b2c3d4e5-f6a7-4b8c-9d0e-1f2a3b4c5d6e
+		summarizeBy: none
+		sourceColumn: ConsultancyFirm
+
+		annotation SummarizationSetBy = Automatic
+
 	column Status
 		dataType: string
-		lineageTag: 3e4f5a6b-7c8d-4e9f-0a1b-2c3d4e5f6a7b
+		lineageTag: c3d4e5f6-a7b8-4c9d-0e1f-2a3b4c5d6e7f
 		summarizeBy: none
 		sourceColumn: Status
 
@@ -161,7 +177,7 @@ table Dim_Contractor
 
 	column Notes
 		dataType: string
-		lineageTag: 4f5a6b7c-8d9e-4f0a-1b2c-3d4e5f6a7b8c
+		lineageTag: d4e5f6a7-b8c9-4d0e-1f2a-3b4c5d6e7f8a
 		summarizeBy: none
 		sourceColumn: Notes
 
@@ -169,7 +185,7 @@ table Dim_Contractor
 
 	column Photo
 		dataType: string
-		lineageTag: 5a6b7c8d-9e0f-4a1b-2c3d-4e5f6a7b8c9d
+		lineageTag: e5f6a7b8-c9d0-4e1f-2a3b-4c5d6e7f8a9b
 		summarizeBy: none
 		sourceColumn: Photo
 
@@ -178,7 +194,7 @@ table Dim_Contractor
 	column CreatedAt
 		dataType: dateTime
 		formatString: General Date
-		lineageTag: 6b7c8d9e-0f1a-4b2c-3d4e-5f6a7b8c9d0e
+		lineageTag: f6a7b8c9-d0e1-4f2a-3b4c-5d6e7f8a9b0c
 		summarizeBy: none
 		sourceColumn: CreatedAt
 
@@ -187,7 +203,7 @@ table Dim_Contractor
 	column UpdatedAt
 		dataType: dateTime
 		formatString: General Date
-		lineageTag: 7c8d9e0f-1a2b-4c3d-4e5f-6a7b8c9d0e1f
+		lineageTag: a7b8c9d0-e1f2-4a3b-4c5d-6e7f8a9b0c1d
 		summarizeBy: none
 		sourceColumn: UpdatedAt
 
@@ -196,7 +212,7 @@ table Dim_Contractor
 	column CreatedByID
 		dataType: int64
 		formatString: 0
-		lineageTag: 8d9e0f1a-2b3c-4d4e-5f6a-7b8c9d0e1f2a
+		lineageTag: b8c9d0e1-f2a3-4b4c-5d6e-7f8a9b0c1d2e
 		summarizeBy: none
 		sourceColumn: CreatedByID
 
@@ -204,7 +220,7 @@ table Dim_Contractor
 
 	column Pending_Disbursement
 		dataType: double
-		lineageTag: 9e0f1a2b-3c4d-4e5f-6a7b-8c9d0e1f2a3b
+		lineageTag: c9d0e1f2-a3b4-4c5d-6e7f-8a9b0c1d2e3f
 		summarizeBy: sum
 		sourceColumn: Pending_Disbursement
 
@@ -214,7 +230,7 @@ table Dim_Contractor
 
 	column Ready_For_Disbursement
 		dataType: double
-		lineageTag: 0f1a2b3c-4d5e-4f6a-7b8c-9d0e1f2a3b4c
+		lineageTag: d0e1f2a3-b4c5-4d6e-7f8a-9b0c1d2e3f4a
 		summarizeBy: sum
 		sourceColumn: Ready_For_Disbursement
 
@@ -224,7 +240,7 @@ table Dim_Contractor
 
 	column Pending_Disbursement_MT
 		dataType: double
-		lineageTag: 1a2b3c4d-5e6f-4a7b-8c9d-0e1f2a3b4c5d
+		lineageTag: e1f2a3b4-c5d6-4e7f-8a9b-0c1d2e3f4a5b
 		summarizeBy: sum
 		sourceColumn: Pending_Disbursement_MT
 
@@ -234,7 +250,7 @@ table Dim_Contractor
 
 	column Ready_For_Disbursement_MT
 		dataType: double
-		lineageTag: 2b3c4d5e-6f7a-4b8c-9d0e-1f2a3b4c5d6e
+		lineageTag: f2a3b4c5-d6e7-4f8a-9b0c-1d2e3f4a5b6c
 		summarizeBy: sum
 		sourceColumn: Ready_For_Disbursement_MT
 
@@ -245,7 +261,7 @@ table Dim_Contractor
 	column Pending_Order_Count
 		dataType: int64
 		formatString: 0
-		lineageTag: 3c4d5e6f-7a8b-4c9d-0e1f-2a3b4c5d6e7f
+		lineageTag: a3b4c5d6-e7f8-4a9b-0c1d-2e3f4a5b6c7d
 		summarizeBy: sum
 		sourceColumn: Pending_Order_Count
 
@@ -254,59 +270,66 @@ table Dim_Contractor
 	column Ready_Order_Count
 		dataType: int64
 		formatString: 0
-		lineageTag: 4d5e6f7a-8b9c-4d0e-1f2a-3b4c5d6e7f8a
+		lineageTag: b4c5d6e7-f8a9-4b0c-1d2e-3f4a5b6c7d8e
 		summarizeBy: sum
 		sourceColumn: Ready_Order_Count
 
 		annotation SummarizationSetBy = Automatic
 
-	column ContractorKey
+	column EngineerKey
 		dataType: string
-		lineageTag: 5e6f7a8b-9c0d-4e1f-2a3b-4c5d6e7f8a9b
+		lineageTag: c5d6e7f8-a9b0-4c1d-2e3f-4a5b6c7d8e9f
 		summarizeBy: none
-		sourceColumn: ContractorKey
+		sourceColumn: EngineerKey
 
 		annotation SummarizationSetBy = Automatic
 
-	partition Dim_Contractor = m
+	partition Dim_Engineer = m
 		mode: import
-		source = ```
+		source =
+				```
 				// ============================================================
-				// Dim_Contractor - Contractor Dimension Table
+				// Dim_Engineer - Engineer Dimension Table
 				// 
 				// PURPOSE:
-				// Provides contractor dimension with details from public.client
+				// Provides engineer dimension with details from public.client
 				// and aggregated order disbursement metrics from user_orders.
 				// 
 				// DATA SOURCES:
-				// - public.contractor: Contractor IDs
-				// - public.client: Client details (where client_type = 'CONTRACTOR')
-				// - public.user_orders: Disbursement status (is_partner_eligible, order_status)
-				// - public.potential_site: Links site_id to contractor_id
+				// - public.engineers: Engineer IDs and type
+				// - public.client: Client details (where client_type = 'ENGINEER')
+				// - public.user_orders: Disbursement status (is_engineer_eligible, order_status)
+				// - public.potential_site: Links site_id to engineer_id
 				// 
 				// KEY COLUMNS:
-				// - ContractorID: ID from public.contractor table
+				// - EngineerID: ID from public.engineers table
 				// - ClientID: ID from public.client table (for lookup)
 				// - Pending_Disbursement: Amount for PENDING/PENDING_SR_VERIFICATION orders
 				// - Ready_For_Disbursement: Amount for APPROVED orders
 				// 
 				// DISBURSEMENT LOGIC (from user_orders):
-				// - is_partner_eligible = TRUE → Contractor is eligible for disbursement
+				// - is_engineer_eligible = TRUE → Engineer is eligible for disbursement
 				// - order_status = PENDING/PENDING_SR_VERIFICATION → Pending Disbursement
 				// - order_status = APPROVED → Ready for Disbursement
 				// ============================================================
 				
 				let
 				    // ============================================================
-				    // STEP 1: Load contractor IDs from public.contractor
+				    // STEP 1: Load engineer IDs and details from public.engineers
 				    // ============================================================
-				    ContractorSource = #"public contractor",
-				    ContractorIDs = Table.SelectColumns(ContractorSource, {"id"}, MissingField.UseNull),
-				    ContractorRenamed = Table.RenameColumns(ContractorIDs, {{"id", "ContractorID"}}),
+				    EngineerSource = #"public engineers",
+				    EngineerSelected = Table.SelectColumns(EngineerSource, {
+				        "id", "engineer_type", "consultancy_firm"
+				    }, MissingField.UseNull),
+				    EngineerRenamed = Table.RenameColumns(EngineerSelected, {
+				        {"id", "EngineerID"},
+				        {"engineer_type", "EngineerType"},
+				        {"consultancy_firm", "ConsultancyFirm"}
+				    }),
 				    
 				    // ============================================================
 				    // STEP 2: Load client details from public.client
-				    // Filter to only CONTRACTOR type clients
+				    // Filter to only ENGINEER type clients
 				    // ============================================================
 				    ClientSource = #"public client",
 				    
@@ -319,13 +342,13 @@ table Dim_Contractor
 				        "created_at", "updated_at", "created_by_id", "is_deleted"
 				    }, MissingField.UseNull),
 				    
-				    // Filter to CONTRACTOR type only
-				    ClientContractors = Table.SelectRows(ClientSelected, each 
-				        Text.Upper(Text.From([client_type])) = "CONTRACTOR"
+				    // Filter to ENGINEER type only
+				    ClientEngineers = Table.SelectRows(ClientSelected, each 
+				        Text.Upper(Text.From([client_type])) = "ENGINEER"
 				    ),
 				    
 				    // Filter out deleted records
-				    ClientActive = Table.SelectRows(ClientContractors, each
+				    ClientActive = Table.SelectRows(ClientEngineers, each
 				        let
 				            del = if [is_deleted] = null then "NO" else try Text.Upper(Text.From([is_deleted])) otherwise "NO"
 				        in
@@ -335,8 +358,8 @@ table Dim_Contractor
 				    // Rename client columns
 				    ClientRenamed = Table.RenameColumns(ClientActive, {
 				        {"id", "ClientID"},
-				        {"name", "ContractorName"},
-				        {"phone", "ContractorPhone"},
+				        {"name", "EngineerName"},
+				        {"phone", "EngineerPhone"},
 				        {"bkash_number", "BkashNumber"},
 				        {"bank_account_id", "BankAccountID"},
 				        {"bank_name", "BankName"},
@@ -357,25 +380,25 @@ table Dim_Contractor
 				    ClientClean = Table.RemoveColumns(ClientRenamed, {"client_type", "is_deleted"}, MissingField.Ignore),
 				    
 				    // ============================================================
-				    // STEP 3: Join contractor IDs with client details
+				    // STEP 3: Join engineer IDs with client details
 				    // ============================================================
-				    JoinedContractors = Table.NestedJoin(
-				        ContractorRenamed,
-				        {"ContractorID"},
+				    JoinedEngineers = Table.NestedJoin(
+				        EngineerRenamed,
+				        {"EngineerID"},
 				        ClientClean,
 				        {"ClientID"},
 				        "ClientDetails",
 				        JoinKind.LeftOuter
 				    ),
 				    
-				    ExpandedContractors = Table.ExpandTableColumn(
-				        JoinedContractors,
+				    ExpandedEngineers = Table.ExpandTableColumn(
+				        JoinedEngineers,
 				        "ClientDetails",
-				        {"ClientID", "ContractorName", "ContractorPhone", "BkashNumber", 
+				        {"ClientID", "EngineerName", "EngineerPhone", "BkashNumber", 
 				         "BankAccountID", "BankName", "RoutingNumber", "ACNumber",
 				         "Address", "SecondaryAddress", "UpazillaID",
 				         "Status", "Notes", "Photo", "CreatedAt", "UpdatedAt", "CreatedByID"},
-				        {"ClientID", "ContractorName", "ContractorPhone", "BkashNumber", 
+				        {"ClientID", "EngineerName", "EngineerPhone", "BkashNumber", 
 				         "BankAccountID", "BankName", "RoutingNumber", "ACNumber",
 				         "Address", "SecondaryAddress", "UpazillaID",
 				         "Status", "Notes", "Photo", "CreatedAt", "UpdatedAt", "CreatedByID"}
@@ -387,34 +410,34 @@ table Dim_Contractor
 				    // ============================================================
 				    UserOrdersSource = #"public user_orders",
 				    
-				    // Get potential_site to find contractor_id linkage via site_id
+				    // Get potential_site to find engineer_id linkage via site_id
 				    PotentialSiteSource = #"public potential_site",
 				    PotentialSiteCols = Table.ColumnNames(PotentialSiteSource),
 				    
-				    // Select site_id and contractor_id from potential_site
-				    PotentialSiteSelected = if List.Contains(PotentialSiteCols, "contractor_id") then
-				        Table.SelectColumns(PotentialSiteSource, {"id", "contractor_id"}, MissingField.UseNull)
+				    // Select site_id and engineer_id from potential_site
+				    PotentialSiteSelected = if List.Contains(PotentialSiteCols, "engineer_id") then
+				        Table.SelectColumns(PotentialSiteSource, {"id", "engineer_id"}, MissingField.UseNull)
 				    else
-				        Table.AddColumn(Table.SelectColumns(PotentialSiteSource, {"id"}), "contractor_id", each null, Int64.Type),
+				        Table.AddColumn(Table.SelectColumns(PotentialSiteSource, {"id"}), "engineer_id", each null, Int64.Type),
 				    
 				    PotentialSiteRenamed = Table.RenameColumns(PotentialSiteSelected, {
 				        {"id", "site_id"},
-				        {"contractor_id", "ps_contractor_id"}
+				        {"engineer_id", "ps_engineer_id"}
 				    }),
 				    
 				    // Select relevant columns from user_orders
 				    UserOrdersSelected = Table.SelectColumns(UserOrdersSource, {
-				        "id", "order_status", "site_id", "total_amount", "is_partner_eligible"
+				        "id", "order_status", "site_id", "total_amount", "is_engineer_eligible"
 				    }, MissingField.UseNull),
 				    
-				    // Filter to partner-eligible orders only (is_partner_eligible = TRUE)
-				    UserOrdersPartnerEligible = Table.SelectRows(UserOrdersSelected, each
-				        [is_partner_eligible] = true or [is_partner_eligible] = 1
+				    // Filter to engineer-eligible orders only (is_engineer_eligible = TRUE)
+				    UserOrdersEngineerEligible = Table.SelectRows(UserOrdersSelected, each
+				        [is_engineer_eligible] = true or [is_engineer_eligible] = 1
 				    ),
 				    
-				    // Join with potential_site to get contractor_id
-				    UserOrdersWithContractor = Table.NestedJoin(
-				        UserOrdersPartnerEligible,
+				    // Join with potential_site to get engineer_id
+				    UserOrdersWithEngineer = Table.NestedJoin(
+				        UserOrdersEngineerEligible,
 				        {"site_id"},
 				        PotentialSiteRenamed,
 				        {"site_id"},
@@ -423,19 +446,19 @@ table Dim_Contractor
 				    ),
 				    
 				    UserOrdersExpanded = Table.ExpandTableColumn(
-				        UserOrdersWithContractor,
+				        UserOrdersWithEngineer,
 				        "PotentialSite",
-				        {"ps_contractor_id"},
-				        {"contractor_id"}
+				        {"ps_engineer_id"},
+				        {"engineer_id"}
 				    ),
 				    
-				    // Filter to orders with a contractor linked via site
-				    UserOrdersWithContractorOnly = Table.SelectRows(UserOrdersExpanded, each [contractor_id] <> null),
+				    // Filter to orders with an engineer linked via site
+				    UserOrdersWithEngineerOnly = Table.SelectRows(UserOrdersExpanded, each [engineer_id] <> null),
 				    
 				    // Add disbursement status classification based on user_orders.order_status
 				    // PENDING, PENDING_SR_VERIFICATION = "Pending"
 				    // APPROVED = "Ready"
-				    UserOrdersWithStatus = Table.AddColumn(UserOrdersWithContractorOnly, "DisbursementGroup", each
+				    UserOrdersWithStatus = Table.AddColumn(UserOrdersWithEngineerOnly, "DisbursementGroup", each
 				        let
 				            status = if [order_status] = null then "" else Text.Upper(Text.From([order_status]))
 				        in
@@ -510,45 +533,45 @@ table Dim_Contractor
 				    UserOrdersFilled = Table.ReplaceValue(UserOrdersExpandedMT, null, 0, Replacer.ReplaceValue, {"qty_in_mt", "amount"}),
 				    
 				    // ============================================================
-				    // STEP 6: Aggregate disbursement by contractor
+				    // STEP 6: Aggregate disbursement by engineer
 				    // ============================================================
 				    
 				    // Pending disbursement (PENDING or PENDING_SR_VERIFICATION)
 				    PendingOrders = Table.SelectRows(UserOrdersFilled, each [DisbursementGroup] = "Pending"),
 				    PendingAgg = Table.Group(
 				        PendingOrders,
-				        {"contractor_id"},
+				        {"engineer_id"},
 				        {
 				            {"Pending_Disbursement", each List.Sum([amount]), type number},
 				            {"Pending_Disbursement_MT", each List.Sum([qty_in_mt]), type number},
 				            {"Pending_Order_Count", each Table.RowCount(_), Int64.Type}
 				        }
 				    ),
-				    PendingRenamed = Table.RenameColumns(PendingAgg, {{"contractor_id", "ContractorID_Pending"}}),
+				    PendingRenamed = Table.RenameColumns(PendingAgg, {{"engineer_id", "EngineerID_Pending"}}),
 				    
 				    // Ready for disbursement (APPROVED)
 				    ReadyOrders = Table.SelectRows(UserOrdersFilled, each [DisbursementGroup] = "Ready"),
 				    ReadyAgg = Table.Group(
 				        ReadyOrders,
-				        {"contractor_id"},
+				        {"engineer_id"},
 				        {
 				            {"Ready_For_Disbursement", each List.Sum([amount]), type number},
 				            {"Ready_For_Disbursement_MT", each List.Sum([qty_in_mt]), type number},
 				            {"Ready_Order_Count", each Table.RowCount(_), Int64.Type}
 				        }
 				    ),
-				    ReadyRenamed = Table.RenameColumns(ReadyAgg, {{"contractor_id", "ContractorID_Ready"}}),
+				    ReadyRenamed = Table.RenameColumns(ReadyAgg, {{"engineer_id", "EngineerID_Ready"}}),
 				    
 				    // ============================================================
-				    // STEP 7: Join disbursement aggregates with contractor dimension
+				    // STEP 7: Join disbursement aggregates with engineer dimension
 				    // ============================================================
 				    
 				    // Join pending disbursement
 				    WithPending = Table.NestedJoin(
-				        ExpandedContractors,
-				        {"ContractorID"},
+				        ExpandedEngineers,
+				        {"EngineerID"},
 				        PendingRenamed,
-				        {"ContractorID_Pending"},
+				        {"EngineerID_Pending"},
 				        "PendingData",
 				        JoinKind.LeftOuter
 				    ),
@@ -563,9 +586,9 @@ table Dim_Contractor
 				    // Join ready for disbursement
 				    WithReady = Table.NestedJoin(
 				        ExpandedPending,
-				        {"ContractorID"},
+				        {"EngineerID"},
 				        ReadyRenamed,
-				        {"ContractorID_Ready"},
+				        {"EngineerID_Ready"},
 				        "ReadyData",
 				        JoinKind.LeftOuter
 				    ),
@@ -578,7 +601,7 @@ table Dim_Contractor
 				    ),
 				    
 				    // ============================================================
-				    // STEP 8: Fill nulls and add ContractorKey
+				    // STEP 8: Fill nulls and add EngineerKey
 				    // ============================================================
 				    FilledNulls = Table.ReplaceValue(
 				        ExpandedReady, 
@@ -589,20 +612,20 @@ table Dim_Contractor
 				         "Ready_For_Disbursement", "Ready_For_Disbursement_MT", "Ready_Order_Count"}
 				    ),
 				    
-				    // Add ContractorKey for joining with Fact tables
-				    WithContractorKey = Table.AddColumn(FilledNulls, "ContractorKey", each 
-				        "Contractor-" & Text.From([ContractorID]),
+				    // Add EngineerKey for joining with Fact tables
+				    WithEngineerKey = Table.AddColumn(FilledNulls, "EngineerKey", each 
+				        "Engineer-" & Text.From([EngineerID]),
 				        type text
 				    ),
 				    
 				    // ============================================================
 				    // STEP 9: Set data types
 				    // ============================================================
-				    TypedTable = Table.TransformColumnTypes(WithContractorKey, {
-				        {"ContractorID", Int64.Type},
+				    TypedTable = Table.TransformColumnTypes(WithEngineerKey, {
+				        {"EngineerID", Int64.Type},
 				        {"ClientID", Int64.Type},
-				        {"ContractorName", type text},
-				        {"ContractorPhone", type text},
+				        {"EngineerName", type text},
+				        {"EngineerPhone", type text},
 				        {"BkashNumber", type text},
 				        {"BankAccountID", Int64.Type},
 				        {"BankName", type text},
@@ -611,6 +634,8 @@ table Dim_Contractor
 				        {"Address", type text},
 				        {"SecondaryAddress", type text},
 				        {"UpazillaID", Int64.Type},
+				        {"EngineerType", type text},
+				        {"ConsultancyFirm", type text},
 				        {"Status", type text},
 				        {"Notes", type text},
 				        {"Photo", type text},
@@ -623,7 +648,7 @@ table Dim_Contractor
 				        {"Ready_For_Disbursement_MT", type number},
 				        {"Pending_Order_Count", Int64.Type},
 				        {"Ready_Order_Count", Int64.Type},
-				        {"ContractorKey", type text}
+				        {"EngineerKey", type text}
 				    })
 				in
 				    TypedTable

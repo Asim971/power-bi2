@@ -1,0 +1,299 @@
+table Dim_Site
+	lineageTag: d1e2f3a4-b5c6-4d7e-8f9a-0b1c2d3e4f5a
+
+	column SiteID
+		dataType: int64
+		formatString: 0
+		lineageTag: a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d
+		summarizeBy: none
+		sourceColumn: SiteID
+
+		annotation SummarizationSetBy = Automatic
+
+	column SiteName
+		dataType: string
+		lineageTag: b2c3d4e5-f6a7-4b8c-9d0e-1f2a3b4c5d6e
+		summarizeBy: none
+		sourceColumn: SiteName
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProjectName
+		dataType: string
+		lineageTag: c3d4e5f6-a7b8-4c9d-0e1f-2a3b4c5d6e7f
+		summarizeBy: none
+		sourceColumn: ProjectName
+
+		annotation SummarizationSetBy = Automatic
+
+	column SiteType
+		dataType: string
+		lineageTag: d4e5f6a7-b8c9-4d0e-1f2a-3b4c5d6e7f8a
+		summarizeBy: none
+		sourceColumn: SiteType
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProjectSize
+		dataType: string
+		lineageTag: e5f6a7b8-c9d0-4e1f-2a3b-4c5d6e7f8a9b
+		summarizeBy: none
+		sourceColumn: ProjectSize
+
+		annotation SummarizationSetBy = Automatic
+
+	column Address
+		dataType: string
+		lineageTag: f6a7b8c9-d0e1-4f2a-3b4c-5d6e7f8a9b0c
+		summarizeBy: none
+		sourceColumn: Address
+
+		annotation SummarizationSetBy = Automatic
+
+	column AreaName
+		dataType: string
+		lineageTag: a7b8c9d0-e1f2-4a3b-4c5d-6e7f8a9b0c1d
+		summarizeBy: none
+		sourceColumn: AreaName
+
+		annotation SummarizationSetBy = Automatic
+
+	column TerritoryName
+		dataType: string
+		lineageTag: b8c9d0e1-f2a3-4b4c-5d6e-7f8a9b0c1d2e
+		summarizeBy: none
+		sourceColumn: TerritoryName
+
+		annotation SummarizationSetBy = Automatic
+
+	column EngineerID
+		dataType: int64
+		formatString: 0
+		lineageTag: c9d0e1f2-a3b4-4c5d-6e7f-8a9b0c1d2e3f
+		summarizeBy: none
+		sourceColumn: EngineerID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ContractorID
+		dataType: int64
+		formatString: 0
+		lineageTag: d0e1f2a3-b4c5-4d6e-7f8a-9b0c1d2e3f4a
+		summarizeBy: none
+		sourceColumn: ContractorID
+
+		annotation SummarizationSetBy = Automatic
+
+	column BazaarID
+		dataType: int64
+		formatString: 0
+		lineageTag: e1f2a3b4-c5d6-4e7f-8a9b-0c1d2e3f4a5b
+		summarizeBy: none
+		sourceColumn: BazaarID
+
+		annotation SummarizationSetBy = Automatic
+
+	column HeadMasonID
+		dataType: int64
+		formatString: 0
+		lineageTag: f2a3b4c5-d6e7-4f8a-9b0c-1d2e3f4a5b6c
+		summarizeBy: none
+		sourceColumn: HeadMasonID
+
+		annotation SummarizationSetBy = Automatic
+
+	column SiteManagerID
+		dataType: int64
+		formatString: 0
+		lineageTag: a3b4c5d6-e7f8-4a9b-0c1d-2e3f4a5b6c7d
+		summarizeBy: none
+		sourceColumn: SiteManagerID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Status
+		dataType: string
+		lineageTag: b4c5d6e7-f8a9-4b0c-1d2e-3f4a5b6c7d8e
+		summarizeBy: none
+		sourceColumn: Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConvertedSiteStatus
+		dataType: string
+		lineageTag: c5d6e7f8-a9b0-4c1d-2e3f-4a5b6c7d8e9f
+		summarizeBy: none
+		sourceColumn: ConvertedSiteStatus
+
+		annotation SummarizationSetBy = Automatic
+
+	column HasOrderApproved
+		dataType: string
+		lineageTag: d6e7f8a9-b0c1-4d2e-3f4a-5b6c7d8e9f0a
+		summarizeBy: none
+		sourceColumn: HasOrderApproved
+
+		annotation SummarizationSetBy = Automatic
+
+	column EstVolCement
+		dataType: int64
+		formatString: 0
+		lineageTag: e7f8a9b0-c1d2-4e3f-4a5b-6c7d8e9f0a1b
+		summarizeBy: sum
+		sourceColumn: EstVolCement
+
+		annotation SummarizationSetBy = Automatic
+
+	column EstVolIspat
+		dataType: double
+		formatString: 0.00
+		lineageTag: f8a9b0c1-d2e3-4f4a-5b6c-7d8e9f0a1b2c
+		summarizeBy: sum
+		sourceColumn: EstVolIspat
+
+		annotation SummarizationSetBy = Automatic
+
+	column AssignedSR
+		dataType: string
+		lineageTag: a9b0c1d2-e3f4-4a5b-6c7d-8e9f0a1b2c3d
+		summarizeBy: none
+		sourceColumn: AssignedSR
+
+		annotation SummarizationSetBy = Automatic
+
+	column AssignedASM
+		dataType: string
+		lineageTag: b0c1d2e3-f4a5-4b6c-7d8e-9f0a1b2c3d4e
+		summarizeBy: none
+		sourceColumn: AssignedASM
+
+		annotation SummarizationSetBy = Automatic
+
+	column AssignedZSM
+		dataType: string
+		lineageTag: c1d2e3f4-a5b6-4c7d-8e9f-0a1b2c3d4e5f
+		summarizeBy: none
+		sourceColumn: AssignedZSM
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedAt
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: d2e3f4a5-b6c7-4d8e-9f0a-1b2c3d4e5f6a
+		summarizeBy: none
+		sourceColumn: CreatedAt
+
+		annotation SummarizationSetBy = Automatic
+
+	column UpdatedAt
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: e3f4a5b6-c7d8-4e9f-0a1b-2c3d4e5f6a7b
+		summarizeBy: none
+		sourceColumn: UpdatedAt
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_Site = m
+		mode: import
+		source =
+				```
+				// ============================================================
+				// Dim_Site - Site Dimension Table
+				// Source: public potential_site (11,558 records)
+				// 
+				// PURPOSE:
+				// Master dimension for all sites (potential projects)
+				// Links to Engineer (engineer_id), Contractor (contractor_id)
+				// Central hub for Fact_UserOrders disbursement calculations
+				// ============================================================
+				
+				let
+				    // Reference the existing 'public potential_site' table
+				    Source = #"public potential_site",
+				    
+				    // Get all column names
+				    AllColumns = Table.ColumnNames(Source),
+				    
+				    // Filter out deleted records
+				    ActiveRecords = if List.Contains(AllColumns, "delete_status") then
+				        Table.SelectRows(Source, each 
+				            let ds = try Text.Upper(Text.From([delete_status])) otherwise null
+				            in ds = null or ds = "NO" or ds = "N" or ds = "0" or ds = "FALSE"
+				        )
+				    else Source,
+				    
+				    // Select and rename columns
+				    SelectedColumns = Table.SelectColumns(ActiveRecords, {
+				        "id",
+				        "potential_site", "project_name", "site_type", "project_size",
+				        "address", "area_name", "territory_name",
+				        "engineer_id", "contractor_id", "bazaar_id", "head_mason_id", "site_manager_id",
+				        "status", "converted_site_status", "has_order_approved",
+				        "est_vol_cmt", "est_vol_ispat",
+				        "assigned_sr", "assigned_asm", "assigned_zsm",
+				        "created_at", "updated_at"
+				    }, MissingField.UseNull),
+				    
+				    // Rename columns to PascalCase
+				    RenamedColumns = Table.RenameColumns(SelectedColumns, {
+				        {"id", "SiteID"},
+				        {"potential_site", "SiteName"},
+				        {"project_name", "ProjectName"},
+				        {"site_type", "SiteType"},
+				        {"project_size", "ProjectSize"},
+				        {"address", "Address"},
+				        {"area_name", "AreaName"},
+				        {"territory_name", "TerritoryName"},
+				        {"engineer_id", "EngineerID"},
+				        {"contractor_id", "ContractorID"},
+				        {"bazaar_id", "BazaarID"},
+				        {"head_mason_id", "HeadMasonID"},
+				        {"site_manager_id", "SiteManagerID"},
+				        {"status", "Status"},
+				        {"converted_site_status", "ConvertedSiteStatus"},
+				        {"has_order_approved", "HasOrderApproved"},
+				        {"est_vol_cmt", "EstVolCement"},
+				        {"est_vol_ispat", "EstVolIspat"},
+				        {"assigned_sr", "AssignedSR"},
+				        {"assigned_asm", "AssignedASM"},
+				        {"assigned_zsm", "AssignedZSM"},
+				        {"created_at", "CreatedAt"},
+				        {"updated_at", "UpdatedAt"}
+				    }, MissingField.Ignore),
+				    
+				    // Set data types
+				    TypedColumns = Table.TransformColumnTypes(RenamedColumns, {
+				        {"SiteID", Int64.Type},
+				        {"SiteName", type text},
+				        {"ProjectName", type text},
+				        {"SiteType", type text},
+				        {"ProjectSize", type text},
+				        {"Address", type text},
+				        {"AreaName", type text},
+				        {"TerritoryName", type text},
+				        {"EngineerID", Int64.Type},
+				        {"ContractorID", Int64.Type},
+				        {"BazaarID", Int64.Type},
+				        {"HeadMasonID", Int64.Type},
+				        {"SiteManagerID", Int64.Type},
+				        {"Status", type text},
+				        {"ConvertedSiteStatus", type text},
+				        {"HasOrderApproved", type text},
+				        {"EstVolCement", Int64.Type},
+				        {"EstVolIspat", type number},
+				        {"AssignedSR", type text},
+				        {"AssignedASM", type text},
+				        {"AssignedZSM", type text},
+				        {"CreatedAt", type datetime},
+				        {"UpdatedAt", type datetime}
+				    })
+				in
+				    TypedColumns
+				```
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
