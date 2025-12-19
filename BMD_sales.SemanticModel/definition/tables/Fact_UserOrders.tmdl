@@ -117,6 +117,64 @@ table Fact_UserOrders
 		displayFolder: Disbursement\Partner
 		lineageTag: 2f3a4b5c-6d7e-4f8a-9b0c-1d2e3f4a5b6c
 
+	/// Alias for Total_UserOrders (for backward compatibility)
+	measure Total_Orders = [Total_UserOrders]
+		formatString: #,##0
+		displayFolder: Orders\Base
+		lineageTag: 3f4a5b6c-7d8e-4f9a-0b1c-2d3e4f5a6b7c
+
+	/// Approved orders count
+	measure Approved_Orders =
+			CALCULATE(
+			    COUNTROWS('Fact_UserOrders'),
+			    'Fact_UserOrders'[OrderStatus] = "APPROVED"
+			)
+		formatString: #,##0
+		displayFolder: Orders\By Status
+		lineageTag: 4a5b6c7d-8e9f-4a0b-1c2d-3e4f5a6b7c8d
+
+	/// Rejected orders count
+	measure Rejected_Orders =
+			CALCULATE(
+			    COUNTROWS('Fact_UserOrders'),
+			    'Fact_UserOrders'[OrderStatus] = "REJECTED"
+			)
+		formatString: #,##0
+		displayFolder: Orders\By Status
+		lineageTag: 5b6c7d8e-9f0a-4b1c-2d3e-4f5a6b7c8d9e
+
+	/// Pending orders count (PENDING + PENDING_SR_VERIFICATION)
+	measure Pending_Orders =
+			CALCULATE(
+			    COUNTROWS('Fact_UserOrders'),
+			    'Fact_UserOrders'[DisbursementStatus] = "Pending"
+			)
+		formatString: #,##0
+		displayFolder: Orders\By Status
+		lineageTag: 6c7d8e9f-0a1b-4c2d-3e4f-5a6b7c8d9e0f
+
+	/// Order amount year-to-date
+	measure Order_Amount_YTD =
+			TOTALYTD(
+			    [Total_UserOrder_Amount],
+			    'Dim_Date'[Date]
+			)
+		formatString: #,##0.00
+		displayFolder: Orders\Time Intelligence
+		lineageTag: 7d8e9f0a-1b2c-4d3e-4f5a-6b7c8d9e0f1a
+
+	/// Average order value
+	measure Average_Order_Value = DIVIDE([Total_UserOrder_Amount], [Total_UserOrders], 0)
+		formatString: #,##0.00
+		displayFolder: Orders\Rates
+		lineageTag: 8e9f0a1b-2c3d-4e4f-5a6b-7c8d9e0f1a2b
+
+	/// Approval rate
+	measure Order_Approval_Rate = DIVIDE([Approved_Orders], [Total_UserOrders], 0)
+		formatString: 0.0%
+		displayFolder: Orders\Rates
+		lineageTag: 9f0a1b2c-3d4e-4f5a-6b7c-8d9e0f1a2b3c
+
 	column UserOrderID
 		dataType: int64
 		formatString: 0
