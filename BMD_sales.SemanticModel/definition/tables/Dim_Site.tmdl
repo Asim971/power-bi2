@@ -197,8 +197,7 @@ table Dim_Site
 
 	partition Dim_Site = m
 		mode: import
-		source =
-				```
+		source = ```
 				// ============================================================
 				// Dim_Site - Site Dimension Table
 				// Source: public potential_site (11,558 records)
@@ -288,12 +287,10 @@ table Dim_Site
 				        {"AssignedZSM", type text},
 				        {"CreatedAt", type datetime},
 				        {"UpdatedAt", type datetime}
-				    })
-				in
-				    TypedColumns
+			    })
+			in
+			    TypedColumns
 				```
 
-	annotation PBI_NavigationStepName = Navigation
-
-	annotation PBI_ResultType = Table
+	annotation PBI_NavigationStepName = Navigation	annotation PBI_ResultType = Table
 

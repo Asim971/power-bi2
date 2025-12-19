@@ -286,8 +286,7 @@ table Dim_Engineer
 
 	partition Dim_Engineer = m
 		mode: import
-		source =
-				```
+		source = ```
 				// ============================================================
 				// Dim_Engineer - Engineer Dimension Table
 				// 
@@ -649,10 +648,9 @@ table Dim_Engineer
 				        {"Pending_Order_Count", Int64.Type},
 				        {"Ready_Order_Count", Int64.Type},
 				        {"EngineerKey", type text}
-				    })
-				in
-				    TypedTable
+			    })
+			in
+			    TypedTable
 				```
 
 	annotation PBI_ResultType = Table
-

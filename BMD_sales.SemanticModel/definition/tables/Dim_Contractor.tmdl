@@ -270,8 +270,7 @@ table Dim_Contractor
 
 	partition Dim_Contractor = m
 		mode: import
-		source =
-				```
+		source = ```
 				// ============================================================
 				// Dim_Contractor - Contractor Dimension Table
 				// 
@@ -625,10 +624,9 @@ table Dim_Contractor
 				        {"Pending_Order_Count", Int64.Type},
 				        {"Ready_Order_Count", Int64.Type},
 				        {"ContractorKey", type text}
-				    })
-				in
-				    TypedTable
+			    })
+			in
+			    TypedTable
 				```
 
 	annotation PBI_ResultType = Table
-

@@ -309,8 +309,7 @@ table Fact_UserOrders
 
 	partition Fact_UserOrders = m
 		mode: import
-		source =
-				```
+		source = ```
 				// ============================================================
 				// Fact_UserOrders - User Orders Fact Table
 				// Source: public user_orders (1,407 records)
@@ -419,12 +418,10 @@ table Fact_UserOrders
 				        {"OrderDateKey", type date},
 				        {"CreatedByID", Int64.Type},
 				        {"UpdatedByID", Int64.Type}
-				    })
-				in
-				    TypedColumns
+			    })
+			in
+			    TypedColumns
 				```
 
-	annotation PBI_NavigationStepName = Navigation
-
-	annotation PBI_ResultType = Table
+	annotation PBI_NavigationStepName = Navigation	annotation PBI_ResultType = Table
 
