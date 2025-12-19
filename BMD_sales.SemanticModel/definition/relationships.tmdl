@@ -148,6 +148,7 @@ relationship ihb-bazaar-001-a1b2c3d4e5f6
 	toColumn: Dim_Bazaar.BazaarID
 
 relationship retailer-bazaar-002-b2c3d4e5f6a7
+	isActive: false
 	fromColumn: Dim_Retailer.BazaarID
 	toColumn: Dim_Bazaar.BazaarID
 
