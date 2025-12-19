@@ -270,7 +270,8 @@ table Dim_Contractor
 
 	partition Dim_Contractor = m
 		mode: import
-		source = ```
+		source =
+				```
 				// ============================================================
 				// Dim_Contractor - Contractor Dimension Table
 				// 

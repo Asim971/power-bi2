@@ -14,105 +14,105 @@ table Fact_UserOrders
 		lineageTag: 2b3c4d5e-6f7a-4b8c-9d0e-1f2a3b4c5d6e
 
 	/// Orders pending disbursement (PENDING or PENDING_SR_VERIFICATION)
-	measure Pending_Disbursement_Orders = 
-		CALCULATE(
-			COUNTROWS('Fact_UserOrders'),
-			'Fact_UserOrders'[DisbursementStatus] = "Pending"
-		)
+	measure Pending_Disbursement_Orders =
+			CALCULATE(
+			    COUNTROWS('Fact_UserOrders'),
+			    'Fact_UserOrders'[DisbursementStatus] = "Pending"
+			)
 		formatString: #,##0
 		displayFolder: Disbursement\Orders
 		lineageTag: 3c4d5e6f-7a8b-4c9d-0e1f-2a3b4c5d6e7f
 
 	/// Amount pending disbursement
-	measure Pending_Disbursement_Amount = 
-		CALCULATE(
-			SUM('Fact_UserOrders'[TotalAmount]),
-			'Fact_UserOrders'[DisbursementStatus] = "Pending"
-		)
+	measure Pending_Disbursement_Amount =
+			CALCULATE(
+			    SUM('Fact_UserOrders'[TotalAmount]),
+			    'Fact_UserOrders'[DisbursementStatus] = "Pending"
+			)
 		formatString: #,##0.00
 		displayFolder: Disbursement\Amount
 		lineageTag: 4d5e6f7a-8b9c-4d0e-1f2a-3b4c5d6e7f8a
 
 	/// Orders ready for disbursement (APPROVED)
-	measure Ready_Disbursement_Orders = 
-		CALCULATE(
-			COUNTROWS('Fact_UserOrders'),
-			'Fact_UserOrders'[DisbursementStatus] = "Ready"
-		)
+	measure Ready_Disbursement_Orders =
+			CALCULATE(
+			    COUNTROWS('Fact_UserOrders'),
+			    'Fact_UserOrders'[DisbursementStatus] = "Ready"
+			)
 		formatString: #,##0
 		displayFolder: Disbursement\Orders
 		lineageTag: 5e6f7a8b-9c0d-4e1f-2a3b-4c5d6e7f8a9b
 
 	/// Amount ready for disbursement
-	measure Ready_Disbursement_Amount = 
-		CALCULATE(
-			SUM('Fact_UserOrders'[TotalAmount]),
-			'Fact_UserOrders'[DisbursementStatus] = "Ready"
-		)
+	measure Ready_Disbursement_Amount =
+			CALCULATE(
+			    SUM('Fact_UserOrders'[TotalAmount]),
+			    'Fact_UserOrders'[DisbursementStatus] = "Ready"
+			)
 		formatString: #,##0.00
 		displayFolder: Disbursement\Amount
 		lineageTag: 6f7a8b9c-0d1e-4f2a-3b4c-5d6e7f8a9b0c
 
 	/// Engineer-eligible orders count
-	measure Engineer_Eligible_Orders = 
-		CALCULATE(
-			COUNTROWS('Fact_UserOrders'),
-			'Fact_UserOrders'[IsEngineerEligible] = TRUE()
-		)
+	measure Engineer_Eligible_Orders =
+			CALCULATE(
+			    COUNTROWS('Fact_UserOrders'),
+			    'Fact_UserOrders'[IsEngineerEligible] = TRUE()
+			)
 		formatString: #,##0
 		displayFolder: Eligibility\Engineer
 		lineageTag: 7a8b9c0d-1e2f-4a3b-4c5d-6e7f8a9b0c1d
 
 	/// Partner/Contractor-eligible orders count
-	measure Partner_Eligible_Orders = 
-		CALCULATE(
-			COUNTROWS('Fact_UserOrders'),
-			'Fact_UserOrders'[IsPartnerEligible] = TRUE()
-		)
+	measure Partner_Eligible_Orders =
+			CALCULATE(
+			    COUNTROWS('Fact_UserOrders'),
+			    'Fact_UserOrders'[IsPartnerEligible] = TRUE()
+			)
 		formatString: #,##0
 		displayFolder: Eligibility\Partner
 		lineageTag: 8b9c0d1e-2f3a-4b4c-5d6e-7f8a9b0c1d2e
 
 	/// Engineer pending disbursement amount
-	measure Engineer_Pending_Amount = 
-		CALCULATE(
-			SUM('Fact_UserOrders'[TotalAmount]),
-			'Fact_UserOrders'[IsEngineerEligible] = TRUE(),
-			'Fact_UserOrders'[DisbursementStatus] = "Pending"
-		)
+	measure Engineer_Pending_Amount =
+			CALCULATE(
+			    SUM('Fact_UserOrders'[TotalAmount]),
+			    'Fact_UserOrders'[IsEngineerEligible] = TRUE(),
+			    'Fact_UserOrders'[DisbursementStatus] = "Pending"
+			)
 		formatString: #,##0.00
 		displayFolder: Disbursement\Engineer
 		lineageTag: 9c0d1e2f-3a4b-4c5d-6e7f-8a9b0c1d2e3f
 
 	/// Engineer ready disbursement amount
-	measure Engineer_Ready_Amount = 
-		CALCULATE(
-			SUM('Fact_UserOrders'[TotalAmount]),
-			'Fact_UserOrders'[IsEngineerEligible] = TRUE(),
-			'Fact_UserOrders'[DisbursementStatus] = "Ready"
-		)
+	measure Engineer_Ready_Amount =
+			CALCULATE(
+			    SUM('Fact_UserOrders'[TotalAmount]),
+			    'Fact_UserOrders'[IsEngineerEligible] = TRUE(),
+			    'Fact_UserOrders'[DisbursementStatus] = "Ready"
+			)
 		formatString: #,##0.00
 		displayFolder: Disbursement\Engineer
 		lineageTag: 0d1e2f3a-4b5c-4d6e-7f8a-9b0c1d2e3f4a
 
 	/// Partner/Contractor pending disbursement amount
-	measure Partner_Pending_Amount = 
-		CALCULATE(
-			SUM('Fact_UserOrders'[TotalAmount]),
-			'Fact_UserOrders'[IsPartnerEligible] = TRUE(),
-			'Fact_UserOrders'[DisbursementStatus] = "Pending"
-		)
+	measure Partner_Pending_Amount =
+			CALCULATE(
+			    SUM('Fact_UserOrders'[TotalAmount]),
+			    'Fact_UserOrders'[IsPartnerEligible] = TRUE(),
+			    'Fact_UserOrders'[DisbursementStatus] = "Pending"
+			)
 		formatString: #,##0.00
 		displayFolder: Disbursement\Partner
 		lineageTag: 1e2f3a4b-5c6d-4e7f-8a9b-0c1d2e3f4a5b
 
 	/// Partner/Contractor ready disbursement amount
-	measure Partner_Ready_Amount = 
-		CALCULATE(
-			SUM('Fact_UserOrders'[TotalAmount]),
-			'Fact_UserOrders'[IsPartnerEligible] = TRUE(),
-			'Fact_UserOrders'[DisbursementStatus] = "Ready"
-		)
+	measure Partner_Ready_Amount =
+			CALCULATE(
+			    SUM('Fact_UserOrders'[TotalAmount]),
+			    'Fact_UserOrders'[IsPartnerEligible] = TRUE(),
+			    'Fact_UserOrders'[DisbursementStatus] = "Ready"
+			)
 		formatString: #,##0.00
 		displayFolder: Disbursement\Partner
 		lineageTag: 2f3a4b5c-6d7e-4f8a-9b0c-1d2e3f4a5b6c
@@ -309,7 +309,8 @@ table Fact_UserOrders
 
 	partition Fact_UserOrders = m
 		mode: import
-		source = ```
+		source =
+				```
 				// ============================================================
 				// Fact_UserOrders - User Orders Fact Table
 				// Source: public user_orders (1,407 records)
