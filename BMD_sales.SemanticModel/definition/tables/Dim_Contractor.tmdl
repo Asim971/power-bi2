@@ -1,0 +1,626 @@
+table Dim_Contractor
+	lineageTag: 3c4d5e6f-7a8b-4c9d-0e1f-2a3b4c5d6e7f
+
+	/// Total count of contractors in the dimension
+	measure Total_Contractors_Count = COUNTROWS('Dim_Contractor')
+		formatString: #,##0
+		displayFolder: Counts
+		lineageTag: 4d5e6f7a-8b9c-4d0e-1f2a-3b4c5d6e7f8a
+
+	/// Total pending disbursement amount across all contractors
+	measure Total_Pending_Disbursement = SUM('Dim_Contractor'[Pending_Disbursement])
+		formatString: #,##0.00
+		displayFolder: Disbursement
+		lineageTag: 5e6f7a8b-9c0d-4e1f-2a3b-4c5d6e7f8a9b
+
+	/// Total ready for disbursement amount across all contractors
+	measure Total_Ready_For_Disbursement = SUM('Dim_Contractor'[Ready_For_Disbursement])
+		formatString: #,##0.00
+		displayFolder: Disbursement
+		lineageTag: 6f7a8b9c-0d1e-4f2a-3b4c-5d6e7f8a9b0c
+
+	/// Pending disbursement MT across all contractors
+	measure Total_Pending_MT = SUM('Dim_Contractor'[Pending_Disbursement_MT])
+		formatString: #,##0.00
+		displayFolder: Disbursement
+		lineageTag: 7a8b9c0d-1e2f-4a3b-4c5d-6e7f8a9b0c1d
+
+	/// Ready for disbursement MT across all contractors
+	measure Total_Ready_MT = SUM('Dim_Contractor'[Ready_For_Disbursement_MT])
+		formatString: #,##0.00
+		displayFolder: Disbursement
+		lineageTag: 8b9c0d1e-2f3a-4b4c-5d6e-7f8a9b0c1d2e
+
+	/// Contractors with pending orders
+	measure Contractors_With_Pending = 
+			CALCULATE(
+				COUNTROWS('Dim_Contractor'),
+				FILTER('Dim_Contractor', 'Dim_Contractor'[Pending_Order_Count] > 0)
+			)
+		formatString: #,##0
+		displayFolder: Counts
+		lineageTag: 9c0d1e2f-3a4b-4c5d-6e7f-8a9b0c1d2e3f
+
+	/// Contractors with ready orders
+	measure Contractors_With_Ready = 
+			CALCULATE(
+				COUNTROWS('Dim_Contractor'),
+				FILTER('Dim_Contractor', 'Dim_Contractor'[Ready_Order_Count] > 0)
+			)
+		formatString: #,##0
+		displayFolder: Counts
+		lineageTag: 0d1e2f3a-4b5c-4d6e-7f8a-9b0c1d2e3f4a
+
+	column ContractorID
+		dataType: int64
+		formatString: 0
+		lineageTag: 1e2f3a4b-5c6d-4e7f-8a9b-0c1d2e3f4a5b
+		summarizeBy: none
+		sourceColumn: ContractorID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ClientID
+		dataType: int64
+		formatString: 0
+		lineageTag: 2f3a4b5c-6d7e-4f8a-9b0c-1d2e3f4a5b6c
+		summarizeBy: none
+		sourceColumn: ClientID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ContractorName
+		dataType: string
+		lineageTag: 3a4b5c6d-7e8f-4a9b-0c1d-2e3f4a5b6c7d
+		summarizeBy: none
+		sourceColumn: ContractorName
+
+		annotation SummarizationSetBy = Automatic
+
+	column ContractorPhone
+		dataType: string
+		lineageTag: 4b5c6d7e-8f9a-4b0c-1d2e-3f4a5b6c7d8e
+		summarizeBy: none
+		sourceColumn: ContractorPhone
+
+		annotation SummarizationSetBy = Automatic
+
+	column BkashNumber
+		dataType: string
+		lineageTag: 5c6d7e8f-9a0b-4c1d-2e3f-4a5b6c7d8e9f
+		summarizeBy: none
+		sourceColumn: BkashNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column BankAccountID
+		dataType: int64
+		formatString: 0
+		lineageTag: 6d7e8f9a-0b1c-4d2e-3f4a-5b6c7d8e9f0a
+		summarizeBy: none
+		sourceColumn: BankAccountID
+
+		annotation SummarizationSetBy = Automatic
+
+	column BankName
+		dataType: string
+		lineageTag: 7e8f9a0b-1c2d-4e3f-4a5b-6c7d8e9f0a1b
+		summarizeBy: none
+		sourceColumn: BankName
+
+		annotation SummarizationSetBy = Automatic
+
+	column RoutingNumber
+		dataType: string
+		lineageTag: 8f9a0b1c-2d3e-4f4a-5b6c-7d8e9f0a1b2c
+		summarizeBy: none
+		sourceColumn: RoutingNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column ACNumber
+		dataType: string
+		lineageTag: 9a0b1c2d-3e4f-4a5b-6c7d-8e9f0a1b2c3d
+		summarizeBy: none
+		sourceColumn: ACNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column Address
+		dataType: string
+		lineageTag: 0b1c2d3e-4f5a-4b6c-7d8e-9f0a1b2c3d4e
+		summarizeBy: none
+		sourceColumn: Address
+
+		annotation SummarizationSetBy = Automatic
+
+	column SecondaryAddress
+		dataType: string
+		lineageTag: 1c2d3e4f-5a6b-4c7d-8e9f-0a1b2c3d4e5f
+		summarizeBy: none
+		sourceColumn: SecondaryAddress
+
+		annotation SummarizationSetBy = Automatic
+
+	column UpazillaID
+		dataType: int64
+		formatString: 0
+		lineageTag: 2d3e4f5a-6b7c-4d8e-9f0a-1b2c3d4e5f6a
+		summarizeBy: none
+		sourceColumn: UpazillaID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Status
+		dataType: string
+		lineageTag: 3e4f5a6b-7c8d-4e9f-0a1b-2c3d4e5f6a7b
+		summarizeBy: none
+		sourceColumn: Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column Notes
+		dataType: string
+		lineageTag: 4f5a6b7c-8d9e-4f0a-1b2c-3d4e5f6a7b8c
+		summarizeBy: none
+		sourceColumn: Notes
+
+		annotation SummarizationSetBy = Automatic
+
+	column Photo
+		dataType: string
+		lineageTag: 5a6b7c8d-9e0f-4a1b-2c3d-4e5f6a7b8c9d
+		summarizeBy: none
+		sourceColumn: Photo
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedAt
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 6b7c8d9e-0f1a-4b2c-3d4e-5f6a7b8c9d0e
+		summarizeBy: none
+		sourceColumn: CreatedAt
+
+		annotation SummarizationSetBy = Automatic
+
+	column UpdatedAt
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 7c8d9e0f-1a2b-4c3d-4e5f-6a7b8c9d0e1f
+		summarizeBy: none
+		sourceColumn: UpdatedAt
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedByID
+		dataType: int64
+		formatString: 0
+		lineageTag: 8d9e0f1a-2b3c-4d4e-5f6a-7b8c9d0e1f2a
+		summarizeBy: none
+		sourceColumn: CreatedByID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Pending_Disbursement
+		dataType: double
+		lineageTag: 9e0f1a2b-3c4d-4e5f-6a7b-8c9d0e1f2a3b
+		summarizeBy: sum
+		sourceColumn: Pending_Disbursement
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Ready_For_Disbursement
+		dataType: double
+		lineageTag: 0f1a2b3c-4d5e-4f6a-7b8c-9d0e1f2a3b4c
+		summarizeBy: sum
+		sourceColumn: Ready_For_Disbursement
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Pending_Disbursement_MT
+		dataType: double
+		lineageTag: 1a2b3c4d-5e6f-4a7b-8c9d-0e1f2a3b4c5d
+		summarizeBy: sum
+		sourceColumn: Pending_Disbursement_MT
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Ready_For_Disbursement_MT
+		dataType: double
+		lineageTag: 2b3c4d5e-6f7a-4b8c-9d0e-1f2a3b4c5d6e
+		summarizeBy: sum
+		sourceColumn: Ready_For_Disbursement_MT
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Pending_Order_Count
+		dataType: int64
+		formatString: 0
+		lineageTag: 3c4d5e6f-7a8b-4c9d-0e1f-2a3b4c5d6e7f
+		summarizeBy: sum
+		sourceColumn: Pending_Order_Count
+
+		annotation SummarizationSetBy = Automatic
+
+	column Ready_Order_Count
+		dataType: int64
+		formatString: 0
+		lineageTag: 4d5e6f7a-8b9c-4d0e-1f2a-3b4c5d6e7f8a
+		summarizeBy: sum
+		sourceColumn: Ready_Order_Count
+
+		annotation SummarizationSetBy = Automatic
+
+	column ContractorKey
+		dataType: string
+		lineageTag: 5e6f7a8b-9c0d-4e1f-2a3b-4c5d6e7f8a9b
+		summarizeBy: none
+		sourceColumn: ContractorKey
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_Contractor = m
+		mode: import
+		source = ```
+				// ============================================================
+				// Dim_Contractor - Contractor Dimension Table
+				// 
+				// PURPOSE:
+				// Provides contractor dimension with details from public.client
+				// and aggregated order disbursement metrics.
+				// 
+				// DATA SOURCES:
+				// - public.contractor: Contractor IDs
+				// - public.client: Client details (where client_type = 'CONTRACTOR')
+				// - Fact_ProjectConversion: Order status and amounts for disbursement
+				// 
+				// KEY COLUMNS:
+				// - ContractorID: ID from public.contractor table
+				// - ClientID: ID from public.client table (for lookup)
+				// - Pending_Disbursement: Total amount for PENDING orders tagged with contractor
+				// - Ready_For_Disbursement: Total amount for APPROVED orders tagged with contractor
+				// ============================================================
+				
+				let
+				    // ============================================================
+				    // STEP 1: Load contractor IDs from public.contractor
+				    // ============================================================
+				    ContractorSource = #"public contractor",
+				    ContractorIDs = Table.SelectColumns(ContractorSource, {"id"}, MissingField.UseNull),
+				    ContractorRenamed = Table.RenameColumns(ContractorIDs, {{"id", "ContractorID"}}),
+				    
+				    // ============================================================
+				    // STEP 2: Load client details from public.client
+				    // Filter to only CONTRACTOR type clients
+				    // ============================================================
+				    ClientSource = #"public client",
+				    
+				    // Select relevant columns from public.client
+				    ClientSelected = Table.SelectColumns(ClientSource, {
+				        "id", "client_type", "name", "phone", "bkash_number", 
+				        "bank_account_id", "bank_name", "routing_number", "ac_number",
+				        "address", "secondary_address", "upazilla_id",
+				        "status", "notes", "photo",
+				        "created_at", "updated_at", "created_by_id", "is_deleted"
+				    }, MissingField.UseNull),
+				    
+				    // Filter to CONTRACTOR type only
+				    ClientContractors = Table.SelectRows(ClientSelected, each 
+				        Text.Upper(Text.From([client_type])) = "CONTRACTOR"
+				    ),
+				    
+				    // Filter out deleted records
+				    ClientActive = Table.SelectRows(ClientContractors, each
+				        let
+				            del = if [is_deleted] = null then "NO" else try Text.Upper(Text.From([is_deleted])) otherwise "NO"
+				        in
+				            del = "NO" or del = "N" or del = "0" or del = "FALSE"
+				    ),
+				    
+				    // Rename client columns
+				    ClientRenamed = Table.RenameColumns(ClientActive, {
+				        {"id", "ClientID"},
+				        {"name", "ContractorName"},
+				        {"phone", "ContractorPhone"},
+				        {"bkash_number", "BkashNumber"},
+				        {"bank_account_id", "BankAccountID"},
+				        {"bank_name", "BankName"},
+				        {"routing_number", "RoutingNumber"},
+				        {"ac_number", "ACNumber"},
+				        {"address", "Address"},
+				        {"secondary_address", "SecondaryAddress"},
+				        {"upazilla_id", "UpazillaID"},
+				        {"status", "Status"},
+				        {"notes", "Notes"},
+				        {"photo", "Photo"},
+				        {"created_at", "CreatedAt"},
+				        {"updated_at", "UpdatedAt"},
+				        {"created_by_id", "CreatedByID"}
+				    }, MissingField.Ignore),
+				    
+				    // Remove temporary columns
+				    ClientClean = Table.RemoveColumns(ClientRenamed, {"client_type", "is_deleted"}, MissingField.Ignore),
+				    
+				    // ============================================================
+				    // STEP 3: Join contractor IDs with client details
+				    // The ContractorID from public.contractor should match the ClientID
+				    // from public.client where client_type = 'CONTRACTOR'
+				    // ============================================================
+				    JoinedContractors = Table.NestedJoin(
+				        ContractorRenamed,
+				        {"ContractorID"},
+				        ClientClean,
+				        {"ClientID"},
+				        "ClientDetails",
+				        JoinKind.LeftOuter
+				    ),
+				    
+				    ExpandedContractors = Table.ExpandTableColumn(
+				        JoinedContractors,
+				        "ClientDetails",
+				        {"ClientID", "ContractorName", "ContractorPhone", "BkashNumber", 
+				         "BankAccountID", "BankName", "RoutingNumber", "ACNumber",
+				         "Address", "SecondaryAddress", "UpazillaID",
+				         "Status", "Notes", "Photo", "CreatedAt", "UpdatedAt", "CreatedByID"},
+				        {"ClientID", "ContractorName", "ContractorPhone", "BkashNumber", 
+				         "BankAccountID", "BankName", "RoutingNumber", "ACNumber",
+				         "Address", "SecondaryAddress", "UpazillaID",
+				         "Status", "Notes", "Photo", "CreatedAt", "UpdatedAt", "CreatedByID"}
+				    ),
+				    
+				    // ============================================================
+				    // STEP 4: Load order data from Fact_ProjectConversion
+				    // for disbursement calculations
+				    // ============================================================
+				    OrdersSource = #"public project_conversion",
+				    
+				    // Get potential_site to find contractor_id linkage
+				    PotentialSiteSource = #"public potential_site",
+				    PotentialSiteCols = Table.ColumnNames(PotentialSiteSource),
+				    
+				    // Select site_id and contractor_id from potential_site
+				    PotentialSiteSelected = if List.Contains(PotentialSiteCols, "contractor_id") then
+				        Table.SelectColumns(PotentialSiteSource, {"id", "contractor_id"}, MissingField.UseNull)
+				    else
+				        Table.AddColumn(Table.SelectColumns(PotentialSiteSource, {"id"}), "contractor_id", each null, Int64.Type),
+				    
+				    PotentialSiteRenamed = Table.RenameColumns(PotentialSiteSelected, {
+				        {"id", "site_id"},
+				        {"contractor_id", "ps_contractor_id"}
+				    }),
+				    
+				    // Join orders with potential_site to get contractor linkage
+				    OrdersCols = Table.ColumnNames(OrdersSource),
+				    
+				    OrdersSelected = Table.SelectColumns(OrdersSource, {
+				        "id", "order_status", "site_id", "total_amount", "delete_status"
+				    }, MissingField.UseNull),
+				    
+				    // Filter out deleted orders
+				    OrdersActive = Table.SelectRows(OrdersSelected, each
+				        let
+				            del = if [delete_status] = null then "NO" else try Text.Upper(Text.From([delete_status])) otherwise "NO"
+				        in
+				            del = "NO" or del = "N" or del = "0" or del = "FALSE"
+				    ),
+				    
+				    // Join with potential_site to get contractor_id
+				    OrdersWithContractor = Table.NestedJoin(
+				        OrdersActive,
+				        {"site_id"},
+				        PotentialSiteRenamed,
+				        {"site_id"},
+				        "PotentialSite",
+				        JoinKind.LeftOuter
+				    ),
+				    
+				    OrdersExpanded = Table.ExpandTableColumn(
+				        OrdersWithContractor,
+				        "PotentialSite",
+				        {"ps_contractor_id"},
+				        {"contractor_id"}
+				    ),
+				    
+				    // Filter to orders tagged with a contractor
+				    OrdersWithContractorOnly = Table.SelectRows(OrdersExpanded, each [contractor_id] <> null),
+				    
+				    // Add status classification
+				    OrdersWithStatus = Table.AddColumn(OrdersWithContractorOnly, "StatusGroup", each
+				        let
+				            status = if [order_status] = null then "" else Text.Upper(Text.From([order_status]))
+				        in
+				            if status = "PENDING" then "Pending"
+				            else if status = "APPROVED" or status = "COMPLETED" then "Approved"
+				            else "Other",
+				        type text
+				    ),
+				    
+				    // ============================================================
+				    // STEP 5: Get order_items for MT calculation
+				    // ============================================================
+				    OrderItemsSource = #"public order_items",
+				    SKUSource = #"public sku_data",
+				    
+				    // Get org_id from SKU for MT conversion
+				    SKUWithOrg = Table.SelectColumns(SKUSource, {"id", "org_id"}, MissingField.UseNull),
+				    
+				    OrderItemsSelected = Table.SelectColumns(OrderItemsSource, {
+				        "project_conversion_id", "qty", "sku_info_id"
+				    }, MissingField.UseNull),
+				    
+				    // Join with SKU to get org_id
+				    OrderItemsWithSKU = Table.NestedJoin(
+				        OrderItemsSelected,
+				        {"sku_info_id"},
+				        SKUWithOrg,
+				        {"id"},
+				        "SKU",
+				        JoinKind.LeftOuter
+				    ),
+				    
+				    OrderItemsExpanded = Table.ExpandTableColumn(OrderItemsWithSKU, "SKU", {"org_id"}, {"org_id"}),
+				    
+				    // Calculate MT (ACL = qty/20, others = qty as-is)
+				    OrderItemsWithMT = Table.AddColumn(OrderItemsExpanded, "qty_in_mt", each
+				        let
+				            q = if [qty] = null then 0 else try Number.From([qty]) otherwise 0
+				        in
+				            if [org_id] = 1 then q / 20 else q,
+				        type number
+				    ),
+				    
+				    // Aggregate by project_conversion_id
+				    OrderItemsAgg = Table.Group(
+				        OrderItemsWithMT,
+				        {"project_conversion_id"},
+				        {
+				            {"total_qty_mt", each List.Sum([qty_in_mt]), type number}
+				        }
+				    ),
+				    
+				    // Join MT with orders
+				    OrdersWithMT = Table.NestedJoin(
+				        OrdersWithStatus,
+				        {"id"},
+				        OrderItemsAgg,
+				        {"project_conversion_id"},
+				        "ItemsAgg",
+				        JoinKind.LeftOuter
+				    ),
+				    
+				    OrdersExpandedMT = Table.ExpandTableColumn(OrdersWithMT, "ItemsAgg", {"total_qty_mt"}, {"qty_in_mt"}),
+				    
+				    // Fill nulls
+				    OrdersFilled = Table.ReplaceValue(OrdersExpandedMT, null, 0, Replacer.ReplaceValue, {"qty_in_mt", "total_amount"}),
+				    
+				    // ============================================================
+				    // STEP 6: Aggregate disbursement by contractor
+				    // ============================================================
+				    
+				    // Pending disbursement (PENDING orders)
+				    PendingOrders = Table.SelectRows(OrdersFilled, each [StatusGroup] = "Pending"),
+				    PendingAgg = Table.Group(
+				        PendingOrders,
+				        {"contractor_id"},
+				        {
+				            {"Pending_Disbursement", each List.Sum([total_amount]), type number},
+				            {"Pending_Disbursement_MT", each List.Sum([qty_in_mt]), type number},
+				            {"Pending_Order_Count", each Table.RowCount(_), Int64.Type}
+				        }
+				    ),
+				    PendingRenamed = Table.RenameColumns(PendingAgg, {{"contractor_id", "ContractorID_Pending"}}),
+				    
+				    // Ready for disbursement (APPROVED orders)
+				    ReadyOrders = Table.SelectRows(OrdersFilled, each [StatusGroup] = "Approved"),
+				    ReadyAgg = Table.Group(
+				        ReadyOrders,
+				        {"contractor_id"},
+				        {
+				            {"Ready_For_Disbursement", each List.Sum([total_amount]), type number},
+				            {"Ready_For_Disbursement_MT", each List.Sum([qty_in_mt]), type number},
+				            {"Ready_Order_Count", each Table.RowCount(_), Int64.Type}
+				        }
+				    ),
+				    ReadyRenamed = Table.RenameColumns(ReadyAgg, {{"contractor_id", "ContractorID_Ready"}}),
+				    
+				    // ============================================================
+				    // STEP 7: Join disbursement aggregates with contractor dimension
+				    // ============================================================
+				    
+				    // Join pending disbursement
+				    WithPending = Table.NestedJoin(
+				        ExpandedContractors,
+				        {"ContractorID"},
+				        PendingRenamed,
+				        {"ContractorID_Pending"},
+				        "PendingData",
+				        JoinKind.LeftOuter
+				    ),
+				    
+				    ExpandedPending = Table.ExpandTableColumn(
+				        WithPending,
+				        "PendingData",
+				        {"Pending_Disbursement", "Pending_Disbursement_MT", "Pending_Order_Count"},
+				        {"Pending_Disbursement", "Pending_Disbursement_MT", "Pending_Order_Count"}
+				    ),
+				    
+				    // Join ready for disbursement
+				    WithReady = Table.NestedJoin(
+				        ExpandedPending,
+				        {"ContractorID"},
+				        ReadyRenamed,
+				        {"ContractorID_Ready"},
+				        "ReadyData",
+				        JoinKind.LeftOuter
+				    ),
+				    
+				    ExpandedReady = Table.ExpandTableColumn(
+				        WithReady,
+				        "ReadyData",
+				        {"Ready_For_Disbursement", "Ready_For_Disbursement_MT", "Ready_Order_Count"},
+				        {"Ready_For_Disbursement", "Ready_For_Disbursement_MT", "Ready_Order_Count"}
+				    ),
+				    
+				    // ============================================================
+				    // STEP 8: Fill nulls and add ContractorKey
+				    // ============================================================
+				    FilledNulls = Table.ReplaceValue(
+				        ExpandedReady, 
+				        null, 
+				        0, 
+				        Replacer.ReplaceValue, 
+				        {"Pending_Disbursement", "Pending_Disbursement_MT", "Pending_Order_Count",
+				         "Ready_For_Disbursement", "Ready_For_Disbursement_MT", "Ready_Order_Count"}
+				    ),
+				    
+				    // Add ContractorKey for joining with Fact tables
+				    WithContractorKey = Table.AddColumn(FilledNulls, "ContractorKey", each 
+				        "Contractor-" & Text.From([ContractorID]),
+				        type text
+				    ),
+				    
+				    // ============================================================
+				    // STEP 9: Set data types
+				    // ============================================================
+				    TypedTable = Table.TransformColumnTypes(WithContractorKey, {
+				        {"ContractorID", Int64.Type},
+				        {"ClientID", Int64.Type},
+				        {"ContractorName", type text},
+				        {"ContractorPhone", type text},
+				        {"BkashNumber", type text},
+				        {"BankAccountID", Int64.Type},
+				        {"BankName", type text},
+				        {"RoutingNumber", type text},
+				        {"ACNumber", type text},
+				        {"Address", type text},
+				        {"SecondaryAddress", type text},
+				        {"UpazillaID", Int64.Type},
+				        {"Status", type text},
+				        {"Notes", type text},
+				        {"Photo", type text},
+				        {"CreatedAt", type datetime},
+				        {"UpdatedAt", type datetime},
+				        {"CreatedByID", Int64.Type},
+				        {"Pending_Disbursement", type number},
+				        {"Ready_For_Disbursement", type number},
+				        {"Pending_Disbursement_MT", type number},
+				        {"Ready_For_Disbursement_MT", type number},
+				        {"Pending_Order_Count", Int64.Type},
+				        {"Ready_Order_Count", Int64.Type},
+				        {"ContractorKey", type text}
+				    })
+				in
+				    TypedTable
+				```
+
+	annotation PBI_ResultType = Table
+

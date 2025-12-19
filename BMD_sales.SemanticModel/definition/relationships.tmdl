@@ -145,3 +145,7 @@ relationship 3d4e5f60-7182-93a4-b5c6-d7e8f9012345
 	fromColumn: Bridge_UserTerritory.territory_id
 	toColumn: Dim_Territory.territory_id
 
+relationship 4e5f6071-8293-a4b5-c6d7-e8f901234567
+	fromColumn: Fact_ProjectConversion.contractor_id
+	toColumn: Dim_Contractor.ContractorID
+
