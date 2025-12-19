@@ -22,16 +22,10 @@ table Dim_Client_Simple
 		changedProperty = IsHidden
 
 	measure Total_Dealers =
-			// Total distinct Dealers - respects filters from Fact_Visit (e.g., location filters)
-			VAR ClientsWithVisits = DISTINCT('Fact_Visit'[ClientKey])
-			VAR DealerClients = CALCULATETABLE(
-				DISTINCT('Dim_Client_Simple'[ClientKey]),
-				'Dim_Client_Simple'[ClientType] = "Dealer",
-				REMOVEFILTERS('Fact_Visit')
-			)
-			RETURN
-			COUNTROWS(
-				INTERSECT(DealerClients, ClientsWithVisits)
+			// Total Dealers from Dim_Client_Simple (no dedicated Dim_Dealer table)
+			CALCULATE(
+				DISTINCTCOUNT('Dim_Client_Simple'[ClientKey]),
+				'Dim_Client_Simple'[ClientType] = "Dealer"
 			)
 		formatString: #,##0
 		displayFolder: Client Counts
@@ -40,17 +34,8 @@ table Dim_Client_Simple
 		changedProperty = IsHidden
 
 	measure Total_Retailers =
-			// Total distinct Retailers - respects filters from Fact_Visit (e.g., location filters)
-			VAR ClientsWithVisits = DISTINCT('Fact_Visit'[ClientKey])
-			VAR RetailerClients = CALCULATETABLE(
-				DISTINCT('Dim_Client_Simple'[ClientKey]),
-				'Dim_Client_Simple'[ClientType] = "Retailer",
-				REMOVEFILTERS('Fact_Visit')
-			)
-			RETURN
-			COUNTROWS(
-				INTERSECT(RetailerClients, ClientsWithVisits)
-			)
+			// Total Retailers from dedicated dimension table
+			COUNTROWS('Dim_Retailer')
 		formatString: #,##0
 		displayFolder: Client Counts
 		lineageTag: bb2c3d4e-5f6a-7890-1bcd-ef0123456789
@@ -58,17 +43,8 @@ table Dim_Client_Simple
 		changedProperty = IsHidden
 
 	measure Total_Sites =
-			// Total distinct Sites - respects filters from Fact_Visit (e.g., location filters)
-			VAR ClientsWithVisits = DISTINCT('Fact_Visit'[ClientKey])
-			VAR SiteClients = CALCULATETABLE(
-				DISTINCT('Dim_Client_Simple'[ClientKey]),
-				'Dim_Client_Simple'[ClientType] = "Site",
-				REMOVEFILTERS('Fact_Visit')
-			)
-			RETURN
-			COUNTROWS(
-				INTERSECT(SiteClients, ClientsWithVisits)
-			)
+			// Total Sites from dedicated dimension table
+			COUNTROWS('Dim_Site')
 		formatString: #,##0
 		displayFolder: Client Counts
 		lineageTag: cc3d4e5f-6a7b-8901-2cde-f01234567890
@@ -76,17 +52,8 @@ table Dim_Client_Simple
 		changedProperty = IsHidden
 
 	measure Total_Engineers =
-			// Total distinct Engineers - respects filters from Fact_Visit (e.g., location filters)
-			VAR ClientsWithVisits = DISTINCT('Fact_Visit'[ClientKey])
-			VAR EngineerClients = CALCULATETABLE(
-				DISTINCT('Dim_Client_Simple'[ClientKey]),
-				'Dim_Client_Simple'[ClientType] = "Engineer",
-				REMOVEFILTERS('Fact_Visit')
-			)
-			RETURN
-			COUNTROWS(
-				INTERSECT(EngineerClients, ClientsWithVisits)
-			)
+			// Total Engineers from dedicated dimension table
+			COUNTROWS('Dim_Engineer')
 		formatString: #,##0
 		displayFolder: Client Counts
 		lineageTag: dd4e5f6a-7b8c-9012-3def-012345678901
@@ -94,17 +61,8 @@ table Dim_Client_Simple
 		changedProperty = IsHidden
 
 	measure Total_Contractors =
-			// Total distinct Contractors - respects filters from Fact_Visit (e.g., location filters)
-			VAR ClientsWithVisits = DISTINCT('Fact_Visit'[ClientKey])
-			VAR ContractorClients = CALCULATETABLE(
-				DISTINCT('Dim_Client_Simple'[ClientKey]),
-				'Dim_Client_Simple'[ClientType] = "Contractor",
-				REMOVEFILTERS('Fact_Visit')
-			)
-			RETURN
-			COUNTROWS(
-				INTERSECT(ContractorClients, ClientsWithVisits)
-			)
+			// Total Contractors from dedicated dimension table
+			COUNTROWS('Dim_Contractor')
 		formatString: #,##0
 		displayFolder: Client Counts
 		lineageTag: ee5f6a7b-8c9d-0123-4ef0-123456789012
@@ -112,17 +70,8 @@ table Dim_Client_Simple
 		changedProperty = IsHidden
 
 	measure Total_IHBs =
-			// Total distinct IHBs - respects filters from Fact_Visit (e.g., location filters)
-			VAR ClientsWithVisits = DISTINCT('Fact_Visit'[ClientKey])
-			VAR IHBClients = CALCULATETABLE(
-				DISTINCT('Dim_Client_Simple'[ClientKey]),
-				'Dim_Client_Simple'[ClientType] = "IHB",
-				REMOVEFILTERS('Fact_Visit')
-			)
-			RETURN
-			COUNTROWS(
-				INTERSECT(IHBClients, ClientsWithVisits)
-			)
+			// Total IHBs from dedicated dimension table
+			COUNTROWS('Dim_IHB')
 		formatString: #,##0
 		displayFolder: Client Counts
 		lineageTag: ff6a7b8c-9d0e-1234-5f01-234567890123
@@ -130,17 +79,8 @@ table Dim_Client_Simple
 		changedProperty = IsHidden
 
 	measure Total_Influencers =
-			// Total distinct Influencers (Engineers + Contractors) - respects filters from Fact_Visit
-			VAR ClientsWithVisits = DISTINCT('Fact_Visit'[ClientKey])
-			VAR InfluencerClients = CALCULATETABLE(
-				DISTINCT('Dim_Client_Simple'[ClientKey]),
-				'Dim_Client_Simple'[ClientType] IN {"Engineer", "Contractor"},
-				REMOVEFILTERS('Fact_Visit')
-			)
-			RETURN
-			COUNTROWS(
-				INTERSECT(InfluencerClients, ClientsWithVisits)
-			)
+			// Total Influencers (Engineers + Contractors) from dedicated dimension tables
+			COUNTROWS('Dim_Engineer') + COUNTROWS('Dim_Contractor')
 		formatString: #,##0
 		displayFolder: Client Counts
 		lineageTag: 0a7b8c9d-0e1f-2345-6012-345678901234
@@ -237,15 +177,13 @@ table Dim_Client_Simple
 					USERELATIONSHIP(Dim_User[BazaarID], Dim_Bazaar[BazaarID]),
 					USERELATIONSHIP('Dim_Client_Simple'[BazaarID], Dim_Bazaar[BazaarID]),
 					'Dim_Client_Simple'[BazaarID] <> -1,
-					REMOVEFILTERS('Fact_Visit'),
-					REMOVEFILTERS('Fact_ProjectConversion')
+					REMOVEFILTERS('Fact_Visit')
 				)
 			VAR NationalClients =
 				CALCULATE(
 					DISTINCTCOUNT('Dim_Client_Simple'[ClientKey]),
 					'Dim_Client_Simple'[BazaarID] = -1,
-					REMOVEFILTERS('Fact_Visit'),
-					REMOVEFILTERS('Fact_ProjectConversion')
+					REMOVEFILTERS('Fact_Visit')
 				)
 			RETURN
 				IF(ISBLANK(UserBazaar), BLANK(), LocalClients + NationalClients)
@@ -257,12 +195,9 @@ table Dim_Client_Simple
 
 	measure Retailers_in_User_Bazaar =
 			CALCULATE(
-				DISTINCTCOUNT('Dim_Client_Simple'[ClientKey]),
+				DISTINCTCOUNT('Dim_Retailer'[RetailerID]),
 				USERELATIONSHIP(Dim_User[BazaarID], Dim_Bazaar[BazaarID]),
-				USERELATIONSHIP('Dim_Client_Simple'[BazaarID], Dim_Bazaar[BazaarID]),
-				'Dim_Client_Simple'[ClientType] = "Retailer",
-				REMOVEFILTERS('Fact_Visit'),
-				REMOVEFILTERS('Fact_ProjectConversion')
+				USERELATIONSHIP('Dim_Retailer'[BazaarID], Dim_Bazaar[BazaarID])
 			)
 		formatString: #,##0
 		displayFolder: User-Bazaar Analysis
@@ -272,12 +207,9 @@ table Dim_Client_Simple
 
 	measure Sites_in_User_Bazaar =
 			CALCULATE(
-				DISTINCTCOUNT('Dim_Client_Simple'[ClientKey]),
+				DISTINCTCOUNT('Dim_Site'[SiteID]),
 				USERELATIONSHIP(Dim_User[BazaarID], Dim_Bazaar[BazaarID]),
-				USERELATIONSHIP('Dim_Client_Simple'[BazaarID], Dim_Bazaar[BazaarID]),
-				'Dim_Client_Simple'[ClientType] = "Site",
-				REMOVEFILTERS('Fact_Visit'),
-				REMOVEFILTERS('Fact_ProjectConversion')
+				USERELATIONSHIP('Dim_Site'[BazaarID], Dim_Bazaar[BazaarID])
 			)
 		formatString: #,##0
 		displayFolder: User-Bazaar Analysis
@@ -287,12 +219,9 @@ table Dim_Client_Simple
 
 	measure IHBs_in_User_Bazaar =
 			CALCULATE(
-				DISTINCTCOUNT('Dim_Client_Simple'[ClientKey]),
+				DISTINCTCOUNT('Dim_IHB'[IHBID]),
 				USERELATIONSHIP(Dim_User[BazaarID], Dim_Bazaar[BazaarID]),
-				USERELATIONSHIP('Dim_Client_Simple'[BazaarID], Dim_Bazaar[BazaarID]),
-				'Dim_Client_Simple'[ClientType] = "IHB",
-				REMOVEFILTERS('Fact_Visit'),
-				REMOVEFILTERS('Fact_ProjectConversion')
+				USERELATIONSHIP('Dim_IHB'[BazaarID], Dim_Bazaar[BazaarID])
 			)
 		formatString: #,##0
 		displayFolder: User-Bazaar Analysis
@@ -301,12 +230,10 @@ table Dim_Client_Simple
 		changedProperty = IsHidden
 
 	measure Dealers_National =
+			// Dealers are national-level entities (BazaarID = -1 in Dim_Client_Simple)
 			CALCULATE(
 				DISTINCTCOUNT('Dim_Client_Simple'[ClientKey]),
-				'Dim_Client_Simple'[ClientType] = "Dealer",
-				'Dim_Client_Simple'[BazaarID] = -1,
-				REMOVEFILTERS('Fact_Visit'),
-				REMOVEFILTERS('Fact_ProjectConversion')
+				'Dim_Client_Simple'[ClientType] = "Dealer"
 			)
 		formatString: #,##0
 		displayFolder: User-Bazaar Analysis
@@ -315,13 +242,8 @@ table Dim_Client_Simple
 		changedProperty = IsHidden
 
 	measure Engineers_National =
-			CALCULATE(
-				DISTINCTCOUNT('Dim_Client_Simple'[ClientKey]),
-				'Dim_Client_Simple'[ClientType] = "Engineer",
-				'Dim_Client_Simple'[BazaarID] = -1,
-				REMOVEFILTERS('Fact_Visit'),
-				REMOVEFILTERS('Fact_ProjectConversion')
-			)
+			// Engineers are national-level entities
+			COUNTROWS('Dim_Engineer')
 		formatString: #,##0
 		displayFolder: User-Bazaar Analysis
 		lineageTag: 3b0c1d2e-3f4a-5678-9345-678901234567
@@ -329,13 +251,8 @@ table Dim_Client_Simple
 		changedProperty = IsHidden
 
 	measure Contractors_National =
-			CALCULATE(
-				DISTINCTCOUNT('Dim_Client_Simple'[ClientKey]),
-				'Dim_Client_Simple'[ClientType] = "Contractor",
-				'Dim_Client_Simple'[BazaarID] = -1,
-				REMOVEFILTERS('Fact_Visit'),
-				REMOVEFILTERS('Fact_ProjectConversion')
-			)
+			// Contractors are national-level entities
+			COUNTROWS('Dim_Contractor')
 		formatString: #,##0
 		displayFolder: User-Bazaar Analysis
 		lineageTag: 4c1d2e3f-4a5b-6789-0456-789012345678
@@ -357,15 +274,13 @@ table Dim_Client_Simple
 					USERELATIONSHIP(Dim_User[BazaarID], Dim_Bazaar[BazaarID]),
 					USERELATIONSHIP('Dim_Client_Simple'[BazaarID], Dim_Bazaar[BazaarID]),
 					'Dim_Client_Simple'[BazaarID] <> -1,
-					REMOVEFILTERS('Fact_Visit'),
-					REMOVEFILTERS('Fact_ProjectConversion')
+					REMOVEFILTERS('Fact_Visit')
 				)
 			VAR NationalCount =
 				CALCULATE(
 					DISTINCTCOUNT('Dim_Client_Simple'[ClientKey]),
 					'Dim_Client_Simple'[BazaarID] = -1,
-					REMOVEFILTERS('Fact_Visit'),
-					REMOVEFILTERS('Fact_ProjectConversion')
+					REMOVEFILTERS('Fact_Visit')
 				)
 			RETURN
 				IF(ISBLANK(UserBazaar),
@@ -378,13 +293,8 @@ table Dim_Client_Simple
 		changedProperty = IsHidden
 
 	measure 'Total Site + IHB' =
-			// Total distinct Sites + IHBs - ignores fact table filter context
-			CALCULATE(
-				DISTINCTCOUNT('Dim_Client_Simple'[ClientKey]),
-				'Dim_Client_Simple'[ClientType] IN {"Site", "IHB"},
-				REMOVEFILTERS('Fact_Visit'),
-				REMOVEFILTERS('Fact_ProjectConversion')
-			)
+			// Total Sites + IHBs from dedicated dimension tables
+			COUNTROWS('Dim_Site') + COUNTROWS('Dim_IHB')
 		formatString: #,##0
 		displayFolder: Client Counts
 		lineageTag: 3278bbb7-5350-46ee-b37b-8d99ebedb46f
@@ -398,22 +308,22 @@ table Dim_Client_Simple
 			VAR _MonthEnd = EOMONTH(_MonthStart, 0)
 			VAR _ActivityThisMonth =
 				CALCULATE(
-					COUNTROWS('Fact_ProjectConversion'),
+					COUNTROWS('Fact_UserOrders'),
 					REMOVEFILTERS('Dim_Date'),
 					'Dim_Date'[Date] >= _MonthStart,
 					'Dim_Date'[Date] <= _MonthEnd
 				)
-			VAR _ActivityEver =
+			VAR _HasApprovedOrder =
 				CALCULATE(
-					COUNTROWS('Fact_ProjectConversion'),
-					REMOVEFILTERS('Dim_Date')
+					COUNTROWS('Dim_Site'),
+					'Dim_Site'[HasOrderApproved] = "Y"
 				)
 			RETURN
 				IF(
 					NOT _IsSite,
 					BLANK(),
 					IF(
-						_ActivityEver = 0,
+						_HasApprovedOrder = 0,
 						"Potential",
 						IF(_ActivityThisMonth > 0, "Active", "Inactive")
 					)
@@ -424,16 +334,10 @@ table Dim_Client_Simple
 		changedProperty = IsHidden
 
 	measure Total_Active_Sites =
-			// Active Sites = Sites with at least one conversion ever
-			COALESCE(
-				CALCULATE(
-					DISTINCTCOUNT('Dim_Client_Simple'[ClientKey]),
-					'Dim_Client_Simple'[ClientType] = "Site",
-					'Dim_Client_Simple'[Active Sites] = TRUE(),
-					REMOVEFILTERS('Fact_Visit'),
-					REMOVEFILTERS('Fact_ProjectConversion')
-				),
-				0
+			// Active Sites = Sites with approved orders (from Dim_Site)
+			CALCULATE(
+				DISTINCTCOUNT('Dim_Site'[SiteID]),
+				'Dim_Site'[HasOrderApproved] = "Y"
 			)
 		formatString: #,##0
 		displayFolder: Site Analysis\Counts
@@ -442,16 +346,10 @@ table Dim_Client_Simple
 		changedProperty = IsHidden
 
 	measure Total_Potential_Sites =
-			// Potential Sites = Sites with no conversions ever
-			COALESCE(
-				CALCULATE(
-					DISTINCTCOUNT('Dim_Client_Simple'[ClientKey]),
-					'Dim_Client_Simple'[ClientType] = "Site",
-					'Dim_Client_Simple'[Potential Site] = TRUE(),
-					REMOVEFILTERS('Fact_Visit'),
-					REMOVEFILTERS('Fact_ProjectConversion')
-				),
-				0
+			// Potential Sites = Sites without approved orders (from Dim_Site)
+			CALCULATE(
+				DISTINCTCOUNT('Dim_Site'[SiteID]),
+				'Dim_Site'[HasOrderApproved] <> "Y" || ISBLANK('Dim_Site'[HasOrderApproved])
 			)
 		formatString: #,##0
 		displayFolder: Site Analysis\Counts
@@ -464,7 +362,7 @@ table Dim_Client_Simple
 			CALCULATE(
 				DISTINCTCOUNT('Dim_Client_Simple'[ClientKey]),
 				REMOVEFILTERS('Fact_Visit'),
-				REMOVEFILTERS('Fact_ProjectConversion')
+				REMOVEFILTERS('Fact_UserOrders')
 			)
 		formatString: #,##0
 		lineageTag: 043a2bb6-bf84-4bef-b672-bc13005a5654
@@ -476,7 +374,7 @@ table Dim_Client_Simple
 			CALCULATE(
 				DISTINCTCOUNT('Dim_Client_Simple'[ClientKey]),
 				REMOVEFILTERS('Fact_Visit'),
-				REMOVEFILTERS('Fact_ProjectConversion')
+				REMOVEFILTERS('Fact_UserOrders')
 			)
 		formatString: #,##0
 		displayFolder: Client Counts
@@ -494,8 +392,11 @@ table Dim_Client_Simple
 		changedProperty = IsHidden
 
 	measure Clients_With_Conversions =
-			// Clients that have at least one conversion/order - respects current filter context
-			DISTINCTCOUNT('Fact_ProjectConversion'[ClientKey])
+			// Sites that have approved orders (from Dim_Site)
+			CALCULATE(
+				DISTINCTCOUNT('Dim_Site'[SiteID]),
+				'Dim_Site'[HasOrderApproved] = "Y"
+			)
 		formatString: #,##0
 		displayFolder: Client Activity
 		lineageTag: 243c2dd8-df86-5def-d894-dd25007c7867
@@ -503,10 +404,17 @@ table Dim_Client_Simple
 		changedProperty = IsHidden
 
 	measure Clients_With_Any_Activity =
-			// Clients with either visits or conversions - union of both fact tables
+			// Clients with either visits or approved orders
 			VAR _VisitClients = VALUES('Fact_Visit'[ClientKey])
-			VAR _ConversionClients = VALUES('Fact_ProjectConversion'[ClientKey])
-			VAR _AllActiveClients = DISTINCT(UNION(_VisitClients, _ConversionClients))
+			VAR _ActiveSites = 
+				CALCULATETABLE(
+					SELECTCOLUMNS(
+						'Dim_Site',
+						"ClientKey", "Site-" & FORMAT('Dim_Site'[SiteID], "0")
+					),
+					'Dim_Site'[HasOrderApproved] = "Y"
+				)
+			VAR _AllActiveClients = DISTINCT(UNION(_VisitClients, _ActiveSites))
 			RETURN COUNTROWS(_AllActiveClients)
 		formatString: #,##0
 		displayFolder: Client Activity
@@ -542,7 +450,7 @@ table Dim_Client_Simple
 			CALCULATE(
 				DISTINCTCOUNT('Dim_Client_Simple'[ClientKey]),
 				REMOVEFILTERS('Fact_Visit'),
-				REMOVEFILTERS('Fact_ProjectConversion')
+				REMOVEFILTERS('Fact_UserOrders')
 			)
 		formatString: #,##0
 		displayFolder: Client Counts
@@ -705,13 +613,21 @@ table Dim_Client_Simple
 
 	column site_status =
 			VAR _IsSite = [ClientType] = "Site"
-			VAR _HasEver =
-				COUNTROWS(RELATEDTABLE('Fact_ProjectConversion'))
+			VAR _SiteID = 
+				IF(_IsSite, 
+					VALUE(MID([ClientKey], 6, LEN([ClientKey]) - 5)),
+					BLANK()
+				)
+			VAR _SiteStatus =
+				CALCULATE(
+					MAX('Dim_Site'[HasOrderApproved]),
+					'Dim_Site'[SiteID] = _SiteID
+				)
 			RETURN
 				IF(
 					NOT _IsSite,
 					BLANK(),
-					IF(_HasEver > 0, "Active", "Potential")
+					IF(_SiteStatus = "Y", "Active", "Potential")
 				)
 		lineageTag: 1fd41b25-6b34-4ef6-a1d9-2a9c4b7f3d5e
 		summarizeBy: none
@@ -722,10 +638,18 @@ table Dim_Client_Simple
 
 	column 'Active Sites' =
 			VAR _IsSite = [ClientType] = "Site"
-			VAR _HasEver =
-				COUNTROWS(RELATEDTABLE('Fact_ProjectConversion'))
+			VAR _SiteID = 
+				IF(_IsSite, 
+					VALUE(MID([ClientKey], 6, LEN([ClientKey]) - 5)),
+					BLANK()
+				)
+			VAR _SiteStatus =
+				CALCULATE(
+					MAX('Dim_Site'[HasOrderApproved]),
+					'Dim_Site'[SiteID] = _SiteID
+				)
 			RETURN
-				IF(_IsSite && _HasEver > 0, TRUE(), FALSE())
+				IF(_IsSite && _SiteStatus = "Y", TRUE(), FALSE())
 		dataType: boolean
 		formatString: """TRUE"";""TRUE"";""FALSE"""
 		lineageTag: 8b23a8d3-2bb8-4c6f-8b7b-8c2d1e3b4a5f
@@ -737,10 +661,18 @@ table Dim_Client_Simple
 
 	column 'Potential Site' =
 			VAR _IsSite = [ClientType] = "Site"
-			VAR _HasEver =
-				COUNTROWS(RELATEDTABLE('Fact_ProjectConversion'))
+			VAR _SiteID = 
+				IF(_IsSite, 
+					VALUE(MID([ClientKey], 6, LEN([ClientKey]) - 5)),
+					BLANK()
+				)
+			VAR _SiteStatus =
+				CALCULATE(
+					MAX('Dim_Site'[HasOrderApproved]),
+					'Dim_Site'[SiteID] = _SiteID
+				)
 			RETURN
-				IF(_IsSite && _HasEver = 0, TRUE(), FALSE())
+				IF(_IsSite && (_SiteStatus <> "Y" || ISBLANK(_SiteStatus)), TRUE(), FALSE())
 		dataType: boolean
 		formatString: """TRUE"";""TRUE"";""FALSE"""
 		lineageTag: 4c6d2c5b-9b39-4e5c-93d3-5d0a1b2c3d4e

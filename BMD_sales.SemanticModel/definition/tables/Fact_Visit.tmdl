@@ -105,7 +105,19 @@ table Fact_Visit
 		displayFolder: Rates
 		lineageTag: fv-m003-territory-coverage
 
-	measure Zone_Mismatch_Visits
+	/// Visits where the employee's zone doesn't match the client's zone
+	measure Zone_Mismatch_Visits =
+			CALCULATE(
+				COUNTROWS('Fact_Visit'),
+				FILTER(
+					'Fact_Visit',
+					VAR _EmpZone = RELATED('Dim_User'[ZoneName])
+					VAR _ClientZone = RELATED('Dim_Client_Simple'[ZoneName])
+					RETURN _EmpZone <> BLANK() && _ClientZone <> BLANK() && _EmpZone <> _ClientZone
+				)
+			)
+		formatString: #,##0
+		displayFolder: GPS & Territory
 		lineageTag: 3ccd55f5-00a4-452c-9ad2-1dedafee8150
 
 		changedProperty = IsHidden
