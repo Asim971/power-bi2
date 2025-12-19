@@ -36,7 +36,6 @@ ref table 'Time Intelligence V3'
 ref table 'public order_items'
 ref table LocalDateTable_a6119db4-9a68-4b1c-af9e-301b27019e7b
 ref table LocalDateTable_2e0b8aee-3d51-46e9-925a-d6117f270941
-ref table LocalDateTable_f08a814b-5c48-49ce-8937-3d04454ff5ba
 ref table LocalDateTable_0c1b9b1e-09f6-47cf-9ce2-dfa4e70f444c
 ref table LocalDateTable_38e5fb92-626c-4346-9bcf-ee3e387d6c94
 ref table LocalDateTable_c06d925f-c97e-4691-8afb-e389824b9822
