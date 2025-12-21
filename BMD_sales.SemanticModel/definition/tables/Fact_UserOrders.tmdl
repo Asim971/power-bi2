@@ -391,25 +391,36 @@ table Fact_UserOrders
 				// - is_engineer_eligible: Boolean flag for engineer disbursement
 				// - is_partner_eligible: Boolean flag for contractor/partner disbursement
 				// - site_id: Links to Dim_Site (potential_site)
+				// - qty_in_mt: Quantity from project_conversion.total_quantity
 				// ============================================================
 				
 				let
 				    // Reference the existing 'public user_orders' table
 				    Source = #"public user_orders",
 				    
-				    // Get all column names
-				    AllColumns = Table.ColumnNames(Source),
+				    // Reference project_conversion for qty_in_mt
+				    ProjectConversion = #"public project_conversion",
 				    
-    // Select columns
-	    SelectedColumns = Table.SelectColumns(Source, {
-	        "id",
-	        "site_id", "project_conversion_id", "bazaar_id", "dealer_id", "retailer_id",
-	        "order_status", "order_category", "order_type", "delivery_method", "stage",
-	        "is_engineer_eligible", "is_partner_eligible",
-	        "total_amount", "qty_in_mt", "dn_number", "delivery_address",
-	        "created_at", "updated_at", "created_by", "updated_by"
-	    }, MissingField.UseNull),				    // Rename columns to PascalCase
-				    RenamedColumns = Table.RenameColumns(SelectedColumns, {
+				    // Select qty columns from project_conversion
+				    PC_Qty = Table.SelectColumns(ProjectConversion, {"id", "total_quantity"}, MissingField.UseNull),
+				    PC_Renamed = Table.RenameColumns(PC_Qty, {{"id", "pc_id"}, {"total_quantity", "qty_in_mt_text"}}),
+				    
+				    // Select columns from user_orders
+				    SelectedColumns = Table.SelectColumns(Source, {
+				        "id",
+				        "site_id", "project_conversion_id", "bazaar_id", "dealer_id", "retailer_id",
+				        "order_status", "order_category", "order_type", "delivery_method", "stage",
+				        "is_engineer_eligible", "is_partner_eligible",
+				        "total_amount", "dn_number", "delivery_address",
+				        "created_at", "updated_at", "created_by", "updated_by"
+				    }, MissingField.UseNull),
+				    
+				    // Join with project_conversion to get qty_in_mt
+				    JoinedWithPC = Table.NestedJoin(SelectedColumns, {"project_conversion_id"}, PC_Renamed, {"pc_id"}, "PC", JoinKind.LeftOuter),
+				    ExpandedPC = Table.ExpandTableColumn(JoinedWithPC, "PC", {"qty_in_mt_text"}, {"qty_in_mt_text"}),
+				    
+				    // Rename columns to PascalCase
+				    RenamedColumns = Table.RenameColumns(ExpandedPC, {
 				        {"id", "UserOrderID"},
 				        {"site_id", "SiteID"},
 				        {"project_conversion_id", "ProjectConversionID"},
@@ -432,20 +443,26 @@ table Fact_UserOrders
 				        {"updated_by", "UpdatedByID"}
 				    }, MissingField.Ignore),
 				    
-				    // Convert total_amount from text to number
+                    // Convert total_amount from text to number
 				    WithTotalAmount = Table.AddColumn(RenamedColumns, "TotalAmount", each 
 				        try Number.From([TotalAmount_Text]) otherwise 0,
 				        type number
 				    ),
 				    
-				    // Remove the text version
-				    RemovedTextAmount = Table.RemoveColumns(WithTotalAmount, {"TotalAmount_Text"}, MissingField.Ignore),
+				    // Convert qty_in_mt from text to number
+				    WithQtyInMT = Table.AddColumn(WithTotalAmount, "qty_in_mt", each 
+				        try Number.From([qty_in_mt_text]) otherwise 0,
+				        type number
+				    ),
+				    
+                    // Remove the text versions
+				    RemovedTextColumns = Table.RemoveColumns(WithQtyInMT, {"TotalAmount_Text", "qty_in_mt_text"}, MissingField.Ignore),
 				    
 				    // Add DisbursementStatus derived column
 				    // PENDING, PENDING_SR_VERIFICATION = "Pending"
 				    // APPROVED = "Ready"
 				    // REJECTED = "Rejected"
-				    WithDisbursementStatus = Table.AddColumn(RemovedTextAmount, "DisbursementStatus", each
+				    WithDisbursementStatus = Table.AddColumn(RemovedTextColumns, "DisbursementStatus", each
 				        if [OrderStatus] = "PENDING" or [OrderStatus] = "PENDING_SR_VERIFICATION" then "Pending"
 				        else if [OrderStatus] = "APPROVED" then "Ready"
 				        else if [OrderStatus] = "REJECTED" then "Rejected"
