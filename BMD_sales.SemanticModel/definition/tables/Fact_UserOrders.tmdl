@@ -304,6 +304,15 @@ table Fact_UserOrders
 
 		annotation SummarizationSetBy = Automatic
 
+	column qty_in_mt
+		dataType: double
+		formatString: #,##0.00
+		lineageTag: a1b2c3d4-e5f6-7890-abcd-ef1234567891
+		summarizeBy: sum
+		sourceColumn: qty_in_mt
+
+		annotation SummarizationSetBy = Automatic
+
 	column DNNumber
 		dataType: string
 		lineageTag: 8d9e0f1a-2b3c-4d4e-5f6a-7b8c9d0e1f2a
@@ -391,17 +400,15 @@ table Fact_UserOrders
 				    // Get all column names
 				    AllColumns = Table.ColumnNames(Source),
 				    
-				    // Select columns
-				    SelectedColumns = Table.SelectColumns(Source, {
-				        "id",
-				        "site_id", "project_conversion_id", "bazaar_id", "dealer_id", "retailer_id",
-				        "order_status", "order_category", "order_type", "delivery_method", "stage",
-				        "is_engineer_eligible", "is_partner_eligible",
-				        "total_amount", "dn_number", "delivery_address",
-				        "created_at", "updated_at", "created_by", "updated_by"
-				    }, MissingField.UseNull),
-				    
-				    // Rename columns to PascalCase
+    // Select columns
+	    SelectedColumns = Table.SelectColumns(Source, {
+	        "id",
+	        "site_id", "project_conversion_id", "bazaar_id", "dealer_id", "retailer_id",
+	        "order_status", "order_category", "order_type", "delivery_method", "stage",
+	        "is_engineer_eligible", "is_partner_eligible",
+	        "total_amount", "qty_in_mt", "dn_number", "delivery_address",
+	        "created_at", "updated_at", "created_by", "updated_by"
+	    }, MissingField.UseNull),				    // Rename columns to PascalCase
 				    RenamedColumns = Table.RenameColumns(SelectedColumns, {
 				        {"id", "UserOrderID"},
 				        {"site_id", "SiteID"},
@@ -466,9 +473,10 @@ table Fact_UserOrders
 				        {"OrderType", type text},
 				        {"DeliveryMethod", type text},
 				        {"Stage", type text},
-				        {"IsEngineerEligible", type logical},
+                {"IsEngineerEligible", type logical},
 				        {"IsPartnerEligible", type logical},
 				        {"TotalAmount", type number},
+				        {"qty_in_mt", type number},
 				        {"DNNumber", type text},
 				        {"DeliveryAddress", type text},
 				        {"CreatedAt", type datetime},
