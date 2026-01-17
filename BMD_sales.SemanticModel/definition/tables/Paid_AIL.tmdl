@@ -1,0 +1,52 @@
+table Paid_AIL
+	lineageTag: a7d97f83-596e-410c-be06-63b7a7e8b411
+
+	column id
+		dataType: int64
+		formatString: 0
+		lineageTag: c23424b3-c038-4ff7-a4e8-7f4465014f76
+		summarizeBy: sum
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	column Name
+		dataType: string
+		lineageTag: 0c1ce071-e3bd-4fec-a7b9-6e62677c612b
+		summarizeBy: none
+		sourceColumn: Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Phone
+		dataType: int64
+		formatString: 0
+		lineageTag: 96e1b760-ed9d-4084-ab41-55bbbba0c021
+		summarizeBy: sum
+		sourceColumn: Phone
+
+		annotation SummarizationSetBy = Automatic
+
+	column Amount
+		dataType: int64
+		formatString: 0
+		lineageTag: 7f257a2c-e17b-4e56-817d-47b95b72b828
+		summarizeBy: sum
+		sourceColumn: Amount
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Paid_AIL = m
+		mode: import
+		source =
+				let
+				  Source = GoogleSheets.Contents("https://docs.google.com/spreadsheets/d/1NK0mf5nqW_6aByBHkPBx20wHAfT_yejPqyJ1N3TaqJ0/edit?gid=0#gid=0"),
+				  #"Navigation 1" = Source{[name = "Paid_AIL", ItemKind = "Table"]}[Data],
+				  #"Promoted headers" = Table.PromoteHeaders(#"Navigation 1", [PromoteAllScalars = true]),
+				  #"Removed columns" = Table.RemoveColumns(#"Promoted headers", {"Date", "Status"}),
+				  #"Changed column type" = Table.TransformColumnTypes(#"Removed columns", {{"id", Int64.Type}, {"Name", type text}, {"Phone", Int64.Type}, {"Amount", Int64.Type}})
+				in
+				  #"Changed column type"
+
+	annotation PBI_ResultType = Table
+

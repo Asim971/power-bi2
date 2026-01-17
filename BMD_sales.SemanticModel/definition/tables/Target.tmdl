@@ -1,0 +1,104 @@
+table Target
+	lineageTag: 20991c9d-1af5-4c0c-aee2-b406259aa833
+
+	measure Total_Target_New =
+			
+			VAR WorkingDays =
+			    CALCULATE (
+			        COUNTROWS ( Dim_Date ),
+			        Dim_Date[IsWeekend] = 0
+			    )
+			RETURN
+			WorkingDays *
+			SUMX (
+			    VALUES ( Target[EntityGroup] ),
+			    CALCULATE ( MAX ( Target[DailyTarget] ) )
+			)
+		formatString: 0
+		lineageTag: b87e0d00-00cc-40ad-aef5-d6a5160e55d3
+
+	measure Target_Volume = 5
+		formatString: 0
+		lineageTag: 01beb6e9-8c38-4762-94ba-9e5226358526
+
+	column EntityGroup
+		dataType: string
+		lineageTag: da4a9f60-ab85-4b21-9792-56eb42af9e40
+		summarizeBy: none
+		sourceColumn: EntityGroup
+
+		annotation SummarizationSetBy = Automatic
+
+	column UserID
+		dataType: int64
+		formatString: 0
+		lineageTag: aaef6645-3897-4ede-8fd1-579fed817f79
+		summarizeBy: none
+		sourceColumn: UserID
+
+		annotation SummarizationSetBy = Automatic
+
+	column RoleID
+		dataType: int64
+		formatString: 0
+		lineageTag: b165e510-aa04-43d8-8d28-e1c9256c31ab
+		summarizeBy: count
+		sourceColumn: RoleID
+
+		annotation SummarizationSetBy = Automatic
+
+	column RoleName
+		dataType: string
+		lineageTag: 85b38fdc-7412-454d-a6bd-151e8f495ef9
+		summarizeBy: none
+		sourceColumn: RoleName
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrganizationID
+		dataType: int64
+		formatString: 0
+		lineageTag: 131f8ec7-045d-4e10-9229-a5a918458756
+		summarizeBy: count
+		sourceColumn: OrganizationID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Organization
+		dataType: string
+		lineageTag: 767ab491-f4af-4718-aa98-be53acb49b7a
+		summarizeBy: none
+		sourceColumn: Organization
+
+		annotation SummarizationSetBy = Automatic
+
+	column DailyTarget
+		dataType: int64
+		formatString: 0
+		lineageTag: 9bfea882-aca7-4171-a058-90a7d7584d6f
+		summarizeBy: sum
+		sourceColumn: DailyTarget
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Volume Target'
+		dataType: string
+		lineageTag: 701ec71b-74df-42c5-8d72-82d707106bfc
+		summarizeBy: none
+		sourceColumn: Volume Target
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Target = m
+		mode: import
+		source =
+				let
+				  Source = GoogleSheets.Contents("https://docs.google.com/spreadsheets/d/1FvRIxyWdfCVuGGF6JJxoFJiZko5RcjeDKMxFlNEjomY/edit?gid=0#gid=0"),
+				  #"Navigation 1" = Source{[name = "Target", ItemKind = "Table"]}[Data],
+				  #"Promoted headers" = Table.PromoteHeaders(#"Navigation 1", [PromoteAllScalars = true]),
+				  #"Changed column type" = Table.TransformColumnTypes(#"Promoted headers", {{"EntityGroup", type text}, {"UserID", Int64.Type}, {"RoleID", Int64.Type}, {"RoleName", type text}, {"OrganizationID", Int64.Type}, {"Organization", type text}, {"DailyTarget", Int64.Type}})
+				in
+				  #"Changed column type"
+
+	annotation PBI_ResultType = Table
+

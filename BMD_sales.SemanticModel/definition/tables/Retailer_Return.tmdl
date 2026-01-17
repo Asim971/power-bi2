@@ -1,0 +1,76 @@
+table Retailer_Return
+	lineageTag: 8ac248c2-6d1a-4cb5-bc3b-3aab0572b58f
+
+	measure Total_Retailer_Return =
+			
+			COALESCE (
+			    SUM ( Retailer_Return[Amount] ),
+			    0
+			)
+		formatString: 0
+		lineageTag: 5e7a8a75-1dfb-4446-9136-d712118ea5f3
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 6f5c04c6-2b3d-4d14-a055-e3d8b6a1ad36
+		summarizeBy: none
+		sourceColumn: Date
+
+		variation Variation
+			isDefault
+			relationship: 04a9bb9f-49f8-44d0-8463-fad95e67cf24
+			defaultHierarchy: LocalDateTable_0eb5cc15-495a-416f-8007-3598fa527a32.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column id
+		dataType: int64
+		formatString: 0
+		lineageTag: af43c5e9-3f82-40eb-b6cb-bf2e918f1828
+		summarizeBy: none
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	column Name
+		dataType: string
+		lineageTag: 5e7ac394-cbc3-4f6a-91fa-4ddc6db3d04c
+		summarizeBy: none
+		sourceColumn: Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Phone
+		dataType: int64
+		formatString: 0
+		lineageTag: 23e06d73-b237-4fc5-85f8-82fbd988b1e6
+		summarizeBy: sum
+		sourceColumn: Phone
+
+		annotation SummarizationSetBy = Automatic
+
+	column Amount
+		dataType: int64
+		formatString: 0
+		lineageTag: fff4b062-bc94-41e5-9b09-f06b5e28a41c
+		summarizeBy: sum
+		sourceColumn: Amount
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Retailer_Return = m
+		mode: import
+		source =
+				let
+				  Source = GoogleSheets.Contents("https://docs.google.com/spreadsheets/d/1hiLLoNXL2bpirwveTvYTeTwZaSmcfVpB-a8j0rg00Aw/edit?gid=1482171367#gid=1482171367"),
+				  #"Navigation 1" = Source{[name = "Return", ItemKind = "Table"]}[Data],
+				  #"Promoted headers" = Table.PromoteHeaders(#"Navigation 1", [PromoteAllScalars = true]),
+				  #"Changed column type" = Table.TransformColumnTypes(#"Promoted headers", {{"Date", type date}, {"id", Int64.Type}, {"Name", type text}, {"Phone", Int64.Type}, {"Amount", Int64.Type}})
+				in
+				  #"Changed column type"
+
+	annotation PBI_ResultType = Table
+

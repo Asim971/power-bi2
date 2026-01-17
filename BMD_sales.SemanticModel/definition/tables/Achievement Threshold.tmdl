@@ -1,0 +1,28 @@
+table 'Achievement Threshold'
+	lineageTag: 57e7bf74-7631-49dc-964c-e3aac5c2ee3e
+
+	measure 'Achievement Threshold Value' = SELECTEDVALUE('Achievement Threshold'[Achievement Threshold], 0.7)
+		lineageTag: 4922ea2a-59b8-4be0-a274-8fa70d274629
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Achievement Threshold'
+		lineageTag: 985397eb-67b1-4f6d-9d92-57764dbf5e8b
+		summarizeBy: none
+		sourceColumn: [Value]
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 0
+				}
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition 'Achievement Threshold' = calculated
+		mode: import
+		source = GENERATESERIES(0.1, 0.7, 0.4)
+
+	annotation PBI_Id = 4e4cbf56a53c4f228f23cdfea411451f
+

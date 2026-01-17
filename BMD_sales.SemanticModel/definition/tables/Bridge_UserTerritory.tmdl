@@ -25,8 +25,8 @@ table Bridge_UserTerritory
 
 	partition Bridge_UserTerritory = m
 		mode: import
-		source = ```
-						// ============================================================
+		source =
+				// ============================================================
 						// Bridge_UserTerritory
 						// Purpose: map users to *multiple* territories (ORG track)
 						// Source: public users_territory
@@ -58,7 +58,6 @@ table Bridge_UserTerritory
 						    DistinctRows = Table.Distinct(Typed, {"UserID", "territory_id"})
 						in
 						    DistinctRows
-				```
 
 	changedProperty = IsHidden
 

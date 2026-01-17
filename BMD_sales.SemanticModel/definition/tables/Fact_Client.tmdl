@@ -1,0 +1,98 @@
+table Fact_Client
+	lineageTag: 64fd0361-5323-45a9-9f8d-5f2910e18d3f
+
+	measure Total_Client = COUNTROWS(Fact_Client)
+		formatString: 0
+		lineageTag: 445cc772-3d80-4d41-ba91-0dc37cf4b399
+
+	column client_type
+		dataType: string
+		lineageTag: e01301e2-15be-480d-868a-c63465dd21fb
+		summarizeBy: none
+		sourceColumn: client_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column id
+		dataType: int64
+		formatString: 0
+		lineageTag: f6776252-a9e5-4058-824e-b33588874a79
+		summarizeBy: sum
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	column bkash_number
+		dataType: string
+		lineageTag: b6724d15-c191-49e6-945e-7ac6929a5c7e
+		summarizeBy: none
+		sourceColumn: bkash_number
+
+		annotation SummarizationSetBy = Automatic
+
+	column created_at
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: e0df4aaf-c36a-446e-8c87-ca676218bd1c
+		summarizeBy: none
+		sourceColumn: created_at
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column name
+		dataType: string
+		lineageTag: 372c790b-2272-46f6-a32a-8f7763e72d39
+		summarizeBy: none
+		sourceColumn: name
+
+		annotation SummarizationSetBy = Automatic
+
+	column phone
+		dataType: string
+		lineageTag: 031eeb3f-a302-44fb-a8a6-a6aff844a27b
+		summarizeBy: none
+		sourceColumn: phone
+
+		annotation SummarizationSetBy = Automatic
+
+	column status
+		dataType: string
+		lineageTag: 2cb86a9d-65ca-49b2-8323-8c4f9b97978a
+		summarizeBy: none
+		sourceColumn: status
+
+		annotation SummarizationSetBy = Automatic
+
+	column created_by_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 78c177b8-2ac7-42ce-a62b-5ac2392ac1be
+		summarizeBy: sum
+		sourceColumn: created_by_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column upazilla_id
+		dataType: int64
+		formatString: 0
+		lineageTag: af0f60df-9d29-4776-9630-24c4c8057349
+		summarizeBy: sum
+		sourceColumn: upazilla_id
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Fact_Client = m
+		mode: import
+		source =
+				let
+				  Source = #"public client",
+				  #"Removed columns" = Table.RemoveColumns(Source, {"ac_number", "address", "bank_name", "corteza_record_ref", "is_deleted", "notes", "module_code_id", "code", "branch_name", "ac_name", "secondary_address", "updated_by_user", "deleted_by", "bank_account_id", "updated_at", "routing_number"}),
+				  #"Changed column type" = Table.TransformColumnTypes(#"Removed columns", {{"created_at", type date}}),
+				  #"Removed columns 1" = Table.RemoveColumns(#"Changed column type", {"photo", "rejection_comment"})
+				in
+				  #"Removed columns 1"
+
+	annotation PBI_ResultType = Table
+

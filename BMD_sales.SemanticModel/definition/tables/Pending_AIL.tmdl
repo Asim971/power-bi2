@@ -1,0 +1,42 @@
+table Pending_AIL
+	lineageTag: de16bf63-6f3e-4b56-aee8-5f64365bc7d1
+
+	column id
+		dataType: int64
+		formatString: 0
+		lineageTag: c36a7d07-c896-4966-af9b-e0c868a3585c
+		summarizeBy: sum
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	column Name
+		dataType: string
+		lineageTag: accab8b4-a6ee-40f8-b08b-29050c448d57
+		summarizeBy: none
+		sourceColumn: Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Phone
+		dataType: int64
+		formatString: 0
+		lineageTag: 0a02b0a0-5d26-4bc7-90ff-2bfc1385b4c2
+		summarizeBy: sum
+		sourceColumn: Phone
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Pending_AIL = m
+		mode: import
+		source =
+				let
+				  Source = GoogleSheets.Contents("https://docs.google.com/spreadsheets/d/1NK0mf5nqW_6aByBHkPBx20wHAfT_yejPqyJ1N3TaqJ0/edit?gid=0#gid=0"),
+				  #"Navigation 1" = Source{[name = "Pending_AIL", ItemKind = "Table"]}[Data],
+				  #"Promoted headers" = Table.PromoteHeaders(#"Navigation 1", [PromoteAllScalars = true]),
+				  #"Changed column type" = Table.TransformColumnTypes(#"Promoted headers", {{"id", Int64.Type}, {"Name", type text}, {"Phone", Int64.Type}})
+				in
+				  #"Changed column type"
+
+	annotation PBI_ResultType = Table
+

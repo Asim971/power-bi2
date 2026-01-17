@@ -1,6 +1,69 @@
 table Dim_Site
 	lineageTag: d1e2f3a4-b5c6-4d7e-8f9a-0b1c2d3e4f5a
 
+	measure 'Total Sites' =
+			
+			DISTINCTCOUNT ( Dim_Site[SiteID] )
+		formatString: 0
+		lineageTag: 4e985b62-f2ea-4e05-9cd2-fd7e55ed0704
+
+	measure 'Total Contractors' =
+			
+			CALCULATE (
+			    COUNTROWS ( Dim_Site ),
+			    Dim_Site[HasContractor] = "Yes"
+			)
+		formatString: 0
+		lineageTag: 0f349930-7d81-460c-9f1e-6dd7c9441f74
+
+	measure 'Total Engineer' =
+			
+			CALCULATE (
+			    DISTINCTCOUNT ( Dim_Site[EngineerID] ),
+			    NOT ISBLANK ( Dim_Site[EngineerID] )
+			)
+		formatString: 0
+		lineageTag: c2afdd67-838c-47b3-862c-5b238423d970
+
+	measure 'Total Active Sites (ACL)' =
+			
+			CALCULATE (
+			    DISTINCTCOUNT ( Fact_UserOrders[SiteID] ),
+			    TREATAS (
+			        VALUES ( Fact_UserOrders[SiteID] ),
+			        Dim_Site[SiteID]
+			    ),
+			    YEAR ( Fact_UserOrders[CreatedAt] ) = YEAR ( TODAY() ),
+			    MONTH ( Fact_UserOrders[CreatedAt] ) = MONTH ( TODAY() )
+			)
+		formatString: 0
+		lineageTag: 6a8bc552-4cde-4545-8ebe-6ea68de93da0
+
+	measure Total_Potential_Order_Sites = ```
+			
+			CALCULATE (
+			    DISTINCTCOUNT ( Dim_Site[SiteID] ),
+			    TREATAS (
+			        CALCULATETABLE (
+			            VALUES ( Fact_UserOrders[SiteID] ),
+			            Fact_UserOrders[OrderStatus] <> "REJECTED"
+			        ),
+			        Dim_Site[SiteID]
+			    )
+			)
+			
+			```
+		formatString: 0
+		lineageTag: 07fd5312-c1ff-47de-8606-b17091e6e703
+
+	measure contractor_total = DISTINCTCOUNT ( Dim_Site[ContractorID] )
+		formatString: 0
+		lineageTag: 620a2d0a-f4e3-4822-a95c-31d4e0be8ca0
+
+	measure Total_Order_Quantity_Site = SUM ( Fact_UserOrders[qty_in_mt] )
+		formatString: 0
+		lineageTag: 14797e09-c4f7-450e-bda9-217cf3cacddc
+
 	column SiteID
 		dataType: int64
 		formatString: 0
@@ -97,7 +160,7 @@ table Dim_Site
 		dataType: int64
 		formatString: 0
 		lineageTag: f2a3b4c5-d6e7-4f8a-9b0c-1d2e3f4a5b6c
-		summarizeBy: none
+		summarizeBy: count
 		sourceColumn: HeadMasonID
 
 		annotation SummarizationSetBy = Automatic
@@ -106,7 +169,7 @@ table Dim_Site
 		dataType: int64
 		formatString: 0
 		lineageTag: a3b4c5d6-e7f8-4a9b-0c1d-2e3f4a5b6c7d
-		summarizeBy: none
+		summarizeBy: count
 		sourceColumn: SiteManagerID
 
 		annotation SummarizationSetBy = Automatic
@@ -184,6 +247,11 @@ table Dim_Site
 		summarizeBy: none
 		sourceColumn: CreatedAt
 
+		variation Variation
+			isDefault
+			relationship: 989b692b-f77e-4794-896f-fb63b0b2f32c
+			defaultHierarchy: LocalDateTable_16af43ec-a7b6-4e2e-a394-c7400db38b1e.'Date Hierarchy'
+
 		annotation SummarizationSetBy = Automatic
 
 	column UpdatedAt
@@ -193,104 +261,177 @@ table Dim_Site
 		summarizeBy: none
 		sourceColumn: UpdatedAt
 
+		variation Variation
+			isDefault
+			relationship: 92047f99-399d-4d2c-9581-1a987c7c88f3
+			defaultHierarchy: LocalDateTable_60d6956c-9c98-4a85-858e-5c84dc444b4b.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column ContractorName
+		dataType: string
+		lineageTag: c772f84d-277a-49a2-952f-1c7f3a170687
+		summarizeBy: none
+		sourceColumn: ContractorName
+
+		annotation SummarizationSetBy = Automatic
+
+	column ContractorPhone
+		dataType: string
+		lineageTag: bf2f247a-30c4-46d6-abdb-c092cb3b90c9
+		summarizeBy: none
+		sourceColumn: ContractorPhone
+
+		annotation SummarizationSetBy = Automatic
+
+	column HasContractor
+		dataType: string
+		lineageTag: 9189eca8-b140-4ab5-99c6-1bc625cdc43a
+		summarizeBy: none
+		sourceColumn: HasContractor
+
+		annotation SummarizationSetBy = Automatic
+
+	column created_by
+		dataType: int64
+		formatString: 0
+		lineageTag: 6bc2cd1a-2f5b-4140-9b28-c13aa656ff25
+		summarizeBy: sum
+		sourceColumn: created_by
+
+		annotation SummarizationSetBy = Automatic
+
+	column HasEngineer
+		dataType: string
+		lineageTag: 0460dcc1-888e-4522-8ea4-b62e06dfecfe
+		summarizeBy: none
+		sourceColumn: HasEngineer
+
+		annotation SummarizationSetBy = Automatic
+
+	column latitude
+		dataType: string
+		lineageTag: 965384d4-025b-4afa-8e4f-dcfde7492a9b
+		summarizeBy: none
+		sourceColumn: latitude
+
+		annotation SummarizationSetBy = Automatic
+
+	column longitude
+		dataType: string
+		lineageTag: fc464918-cf3f-45b1-a1af-651f8d04a0e8
+		summarizeBy: none
+		sourceColumn: longitude
+
 		annotation SummarizationSetBy = Automatic
 
 	partition Dim_Site = m
 		mode: import
 		source = ```
 				// ============================================================
-				// Dim_Site - Site Dimension Table
-				// Source: public potential_site (11,558 records)
-				// 
-				// PURPOSE:
-				// Master dimension for all sites (potential projects)
-				// Links to Engineer (engineer_id), Contractor (contractor_id)
-				// Central hub for Fact_UserOrders disbursement calculations
-				// ============================================================
-				
-				let
-				    // Reference the existing 'public potential_site' table
-				    Source = #"public potential_site",
-				    
-				    // Get all column names
-				    AllColumns = Table.ColumnNames(Source),
-				    
-				    // Filter out deleted records
-				    ActiveRecords = if List.Contains(AllColumns, "delete_status") then
-				        Table.SelectRows(Source, each 
-				            let ds = try Text.Upper(Text.From([delete_status])) otherwise null
-				            in ds = null or ds = "NO" or ds = "N" or ds = "0" or ds = "FALSE"
-				        )
-				    else Source,
-				    
-				    // Select and rename columns
-				    SelectedColumns = Table.SelectColumns(ActiveRecords, {
-				        "id",
-				        "potential_site", "project_name", "site_type", "project_size",
-				        "address", "area_name", "territory_name",
-				        "engineer_id", "contractor_id", "bazaar_id", "head_mason_id", "site_manager_id",
-				        "status", "converted_site_status", "has_order_approved",
-				        "est_vol_cmt", "est_vol_ispat",
-				        "assigned_sr", "assigned_asm", "assigned_zsm",
-				        "created_at", "updated_at"
-				    }, MissingField.UseNull),
-				    
-				    // Rename columns to PascalCase
-				    RenamedColumns = Table.RenameColumns(SelectedColumns, {
-				        {"id", "SiteID"},
-				        {"potential_site", "SiteName"},
-				        {"project_name", "ProjectName"},
-				        {"site_type", "SiteType"},
-				        {"project_size", "ProjectSize"},
-				        {"address", "Address"},
-				        {"area_name", "AreaName"},
-				        {"territory_name", "TerritoryName"},
-				        {"engineer_id", "EngineerID"},
-				        {"contractor_id", "ContractorID"},
-				        {"bazaar_id", "BazaarID"},
-				        {"head_mason_id", "HeadMasonID"},
-				        {"site_manager_id", "SiteManagerID"},
-				        {"status", "Status"},
-				        {"converted_site_status", "ConvertedSiteStatus"},
-				        {"has_order_approved", "HasOrderApproved"},
-				        {"est_vol_cmt", "EstVolCement"},
-				        {"est_vol_ispat", "EstVolIspat"},
-				        {"assigned_sr", "AssignedSR"},
-				        {"assigned_asm", "AssignedASM"},
-				        {"assigned_zsm", "AssignedZSM"},
-				        {"created_at", "CreatedAt"},
-				        {"updated_at", "UpdatedAt"}
-				    }, MissingField.Ignore),
-				    
-				    // Set data types
-				    TypedColumns = Table.TransformColumnTypes(RenamedColumns, {
-				        {"SiteID", Int64.Type},
-				        {"SiteName", type text},
-				        {"ProjectName", type text},
-				        {"SiteType", type text},
-				        {"ProjectSize", type text},
-				        {"Address", type text},
-				        {"AreaName", type text},
-				        {"TerritoryName", type text},
-				        {"EngineerID", Int64.Type},
-				        {"ContractorID", Int64.Type},
-				        {"BazaarID", Int64.Type},
-				        {"HeadMasonID", Int64.Type},
-				        {"SiteManagerID", Int64.Type},
-				        {"Status", type text},
-				        {"ConvertedSiteStatus", type text},
-				        {"HasOrderApproved", type text},
-				        {"EstVolCement", Int64.Type},
-				        {"EstVolIspat", type number},
-				        {"AssignedSR", type text},
-				        {"AssignedASM", type text},
-				        {"AssignedZSM", type text},
-				        {"CreatedAt", type datetime},
-				        {"UpdatedAt", type datetime}
-			    })
-			in
-			    TypedColumns
+					// Dim_Site - Site Dimension Table
+					// Source: public potential_site (11,558 records)
+					// 
+					// PURPOSE:
+					// Master dimension for all sites (potential projects)
+					// Links to Engineer (engineer_id), Contractor (contractor_id)
+					// Central hub for Fact_UserOrders disbursement calculations
+					// ============================================================
+					
+					let
+					    // Reference the existing 'public potential_site' table
+					    Source = #"public potential_site",
+					    
+					    // Get all column names
+					    AllColumns = Table.ColumnNames(Source),
+					    
+					    // Filter out deleted records
+					    ActiveRecords = if List.Contains(AllColumns, "delete_status") then
+					        Table.SelectRows(Source, each 
+					            let ds = try Text.Upper(Text.From([delete_status])) otherwise null
+					            in ds = null or ds = "NO" or ds = "N" or ds = "0" or ds = "FALSE"
+					        )
+					    else Source,
+					    
+					    // Select and rename columns
+					    SelectedColumns = Table.SelectColumns(ActiveRecords, {
+					        "id",
+					        "potential_site", "project_name", "site_type", "project_size",
+					        "address", "area_name", "territory_name",
+					        "engineer_id", "contractor_id", "bazaar_id", "head_mason_id", "site_manager_id",
+					        "status", "converted_site_status", "has_order_approved",
+					        "est_vol_cmt", "est_vol_ispat",
+					        "assigned_sr", "assigned_asm", "assigned_zsm",
+					        "created_at", "updated_at"
+					    }, MissingField.UseNull),
+					    
+					    // Rename columns to PascalCase
+					    RenamedColumns = Table.RenameColumns(SelectedColumns, {
+					        {"id", "SiteID"},
+					        {"potential_site", "SiteName"},
+					        {"project_name", "ProjectName"},
+					        {"site_type", "SiteType"},
+					        {"project_size", "ProjectSize"},
+					        {"address", "Address"},
+					        {"area_name", "AreaName"},
+					        {"territory_name", "TerritoryName"},
+					        {"engineer_id", "EngineerID"},
+					        {"contractor_id", "ContractorID"},
+					        {"bazaar_id", "BazaarID"},
+					        {"head_mason_id", "HeadMasonID"},
+					        {"site_manager_id", "SiteManagerID"},
+					        {"status", "Status"},
+					        {"converted_site_status", "ConvertedSiteStatus"},
+					        {"has_order_approved", "HasOrderApproved"},
+					        {"est_vol_cmt", "EstVolCement"},
+					        {"est_vol_ispat", "EstVolIspat"},
+					        {"assigned_sr", "AssignedSR"},
+					        {"assigned_asm", "AssignedASM"},
+					        {"assigned_zsm", "AssignedZSM"},
+					        {"created_at", "CreatedAt"},
+					        {"updated_at", "UpdatedAt"}
+					    }, MissingField.Ignore),
+					    
+					    // Set data types
+					    TypedColumns = Table.TransformColumnTypes(RenamedColumns, {
+					        {"SiteID", Int64.Type},
+					        {"SiteName", type text},
+					        {"ProjectName", type text},
+					        {"SiteType", type text},
+					        {"ProjectSize", type text},
+					        {"Address", type text},
+					        {"AreaName", type text},
+					        {"TerritoryName", type text},
+					        {"EngineerID", Int64.Type},
+					        {"ContractorID", Int64.Type},
+					        {"BazaarID", Int64.Type},
+					        {"HeadMasonID", Int64.Type},
+					        {"SiteManagerID", Int64.Type},
+					        {"Status", type text},
+					        {"ConvertedSiteStatus", type text},
+					        {"HasOrderApproved", type text},
+					        {"EstVolCement", Int64.Type},
+					        {"EstVolIspat", type number},
+					        {"AssignedSR", type text},
+					        {"AssignedASM", type text},
+					        {"AssignedZSM", type text},
+					        {"CreatedAt", type datetime},
+					        {"UpdatedAt", type datetime}
+				    }),
+				  #"Merged queries" = Table.NestedJoin(TypedColumns, {"ContractorID"}, Dim_Contractor, {"ContractorID"}, "Dim_Contractor", JoinKind.LeftOuter),
+				  #"Expanded Dim_Contractor" = Table.ExpandTableColumn(#"Merged queries", "Dim_Contractor", {"ContractorName", "ContractorPhone"}, {"ContractorName", "ContractorPhone"}),
+				  #"Added custom" = Table.AddColumn(#"Expanded Dim_Contractor", "Custom", each if [ContractorID] <> null then "Yes" else "No"),
+				  #"Renamed columns" = Table.RenameColumns(#"Added custom", {{"Custom", "HasContractor"}}),
+				  #"Merged queries 1" = Table.NestedJoin(#"Renamed columns", {"SiteID"}, #"public potential_site", {"id"}, "public potential_site", JoinKind.LeftOuter),
+				  #"Expanded public potential_site" = Table.ExpandTableColumn(#"Merged queries 1", "public potential_site", {"created_by"}, {"created_by"}),
+				  #"Added custom 1" = Table.AddColumn(#"Expanded public potential_site", "HasEngineer", each if [EngineerID] <> null then "Yes" else "No"),
+				  #"Merged queries 2" = Table.NestedJoin(#"Added custom 1", {"SiteID"}, #"public potential_site", {"id"}, "public potential_site", JoinKind.LeftOuter),
+				  #"Expanded public potential_site 1" = Table.ExpandTableColumn(#"Merged queries 2", "public potential_site", {"latitude", "longitude"}, {"latitude", "longitude"})
+				in
+				    #"Expanded public potential_site 1"
 				```
 
 	annotation PBI_NavigationStepName = Navigation	annotation PBI_ResultType = Table
+
+	annotation PBI_ResultType = Table
 

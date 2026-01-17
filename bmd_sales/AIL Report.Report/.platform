@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "AIL Report"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "342ec34e-ebbe-a5fb-4ba7-b7216290cd84"
+  }
+}

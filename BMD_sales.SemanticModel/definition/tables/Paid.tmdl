@@ -1,0 +1,101 @@
+table Paid
+	lineageTag: 27800ed0-a8d1-4e90-a074-094b7f328f09
+
+	measure Paid = ```
+			
+			VAR Result =
+			    CALCULATE (
+			        SUM ( Paid[Amount] ),
+			        TREATAS (
+			            VALUES ( Dim_Contractor[ContractorID] ),
+			            Paid[id]
+			        )
+			    )
+			RETURN
+			IF ( ISBLANK ( Result ), 0, Result )
+			
+			```
+		formatString: 0
+		lineageTag: 0c832aa5-9570-4b8f-b02d-f287e2c95e71
+
+	measure Net_Paid =
+			
+			VAR GrossPaid = [Paid]
+			VAR Returned = [Return]
+			VAR Result = GrossPaid - Returned
+			RETURN
+			IF ( Result <= 0, 0, Result )
+		formatString: 0
+		lineageTag: 81d33eaa-d9f1-4dc9-89ff-7c201767a1d5
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 3fabf005-2f64-43c2-bc3f-53d40fa750a2
+		summarizeBy: none
+		sourceColumn: Date
+
+		variation Variation
+			isDefault
+			relationship: b17d1427-5806-4697-bbe1-81c73ceebcef
+			defaultHierarchy: LocalDateTable_2b9df5da-7f6c-4d77-8d62-34652da3aa77.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column id
+		dataType: int64
+		formatString: 0
+		lineageTag: 69f5e525-205e-4efb-9cb3-23643a65cbc5
+		summarizeBy: none
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	column Name
+		dataType: string
+		lineageTag: e9f6e49d-7138-4b1b-bd71-021fc7857298
+		summarizeBy: none
+		sourceColumn: Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Phone
+		dataType: string
+		lineageTag: 274826c2-19a0-497c-a64c-f8ab7b20105c
+		summarizeBy: none
+		sourceColumn: Phone
+
+		annotation SummarizationSetBy = Automatic
+
+	column Amount
+		dataType: int64
+		formatString: 0
+		lineageTag: 4463e0b8-3d22-4ed3-baf4-3eb7cc2cdbae
+		summarizeBy: sum
+		sourceColumn: Amount
+
+		annotation SummarizationSetBy = Automatic
+
+	column Status
+		dataType: string
+		lineageTag: efef77a0-b5a1-4333-8c6b-e5f99f53bc17
+		summarizeBy: none
+		sourceColumn: Status
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Paid = m
+		mode: import
+		source =
+				let
+				  Source = GoogleSheets.Contents("https://docs.google.com/spreadsheets/d/1zjWLuG2KqayTm4EhyaVEVk5sXqvE70g5q7FVhdruIS8/edit?gid=0#gid=0"),
+				  #"Navigation 1" = Source{[name = "Paid", ItemKind = "Table"]}[Data],
+				  #"Promoted headers" = Table.PromoteHeaders(#"Navigation 1"),
+				  #"Changed column type 1" = Table.TransformColumnTypes(#"Promoted headers", {{"Date", type date}, {"Amount", Int64.Type}, {"id", Int64.Type}})
+				in
+				  #"Changed column type 1"
+
+	annotation PBI_ResultType = Table
+

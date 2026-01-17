@@ -1,0 +1,40 @@
+table Ach_Threshold_Switch
+	lineageTag: 14fa6529-8dc3-4167-a9f1-3895a457474d
+
+	column Label
+		lineageTag: 32deff12-cc86-4091-905c-b091a7d7e96f
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Label]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Threshold
+		lineageTag: a155ba47-c87b-4eb9-b91a-cb2517bb8319
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Threshold]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition Ach_Threshold_Switch = calculated
+		mode: import
+		source = ```
+				
+				DATATABLE (
+				    "Label", STRING,
+				    "Threshold", DOUBLE,
+				    {
+				        { "≤ 70%", 0.7 },
+				        { "≤ 50%", 0.5 },
+				        { "≤ 30%", 0.3 },
+				        { "≤ 10%", 0.1 }
+				    }
+				)
+				
+				```
+
+	annotation PBI_Id = 4ba125162cb241c1bffae330f063f18f
+

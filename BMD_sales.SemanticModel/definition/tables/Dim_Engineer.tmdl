@@ -32,7 +32,7 @@ table Dim_Engineer
 		lineageTag: d6e7f8a9-b0c1-4d2e-3f4a-5b6c7d8e9f0a
 
 	/// Engineers with pending orders
-	measure Engineers_With_Pending = 
+	measure Engineers_With_Pending =
 			CALCULATE(
 				COUNTROWS('Dim_Engineer'),
 				FILTER('Dim_Engineer', 'Dim_Engineer'[Pending_Order_Count] > 0)
@@ -42,7 +42,7 @@ table Dim_Engineer
 		lineageTag: e7f8a9b0-c1d2-4e3f-4a5b-6c7d8e9f0a1b
 
 	/// Engineers with ready orders
-	measure Engineers_With_Ready = 
+	measure Engineers_With_Ready =
 			CALCULATE(
 				COUNTROWS('Dim_Engineer'),
 				FILTER('Dim_Engineer', 'Dim_Engineer'[Ready_Order_Count] > 0)
@@ -50,6 +50,18 @@ table Dim_Engineer
 		formatString: #,##0
 		displayFolder: Counts
 		lineageTag: f8a9b0c1-d2e3-4f4a-5b6c-7d8e9f0a1b2c
+
+	measure 'Total Active Engineer (ACL)' =
+			
+			CALCULATE (
+			    DISTINCTCOUNT ( Dim_Site[EngineerID] ),
+			    Dim_Engineer[Is_Active_Engineer] = TRUE(),
+			    Fact_UserOrders[organization_id] = 2,
+			    NOT ISBLANK ( Dim_Site[EngineerID] )
+			)
+		formatString: 0
+		displayFolder: Counts
+		lineageTag: a59b7f85-4f51-4641-bb18-637301c5c943
 
 	column EngineerID
 		dataType: int64
@@ -64,7 +76,7 @@ table Dim_Engineer
 		dataType: int64
 		formatString: 0
 		lineageTag: b0c1d2e3-f4a5-4b6c-7d8e-9f0a1b2c3d4e
-		summarizeBy: none
+		summarizeBy: count
 		sourceColumn: ClientID
 
 		annotation SummarizationSetBy = Automatic
@@ -97,7 +109,7 @@ table Dim_Engineer
 		dataType: int64
 		formatString: 0
 		lineageTag: f4a5b6c7-d8e9-4f0a-1b2c-3d4e5f6a7b8c
-		summarizeBy: none
+		summarizeBy: count
 		sourceColumn: BankAccountID
 
 		annotation SummarizationSetBy = Automatic
@@ -146,7 +158,7 @@ table Dim_Engineer
 		dataType: int64
 		formatString: 0
 		lineageTag: f0a1b2c3-d4e5-4f6a-7b8c-9d0e1f2a3b4c
-		summarizeBy: none
+		summarizeBy: count
 		sourceColumn: UpazillaID
 
 		annotation SummarizationSetBy = Automatic
@@ -198,6 +210,11 @@ table Dim_Engineer
 		summarizeBy: none
 		sourceColumn: CreatedAt
 
+		variation Variation
+			isDefault
+			relationship: 2b7d2e92-c070-47be-b02a-e1c7d5fce54d
+			defaultHierarchy: LocalDateTable_d744dc99-ed74-4df5-9001-0724d0bb1432.'Date Hierarchy'
+
 		annotation SummarizationSetBy = Automatic
 
 	column UpdatedAt
@@ -207,13 +224,18 @@ table Dim_Engineer
 		summarizeBy: none
 		sourceColumn: UpdatedAt
 
+		variation Variation
+			isDefault
+			relationship: aa1ef1af-80ed-41b1-ac54-6ccf18ec214f
+			defaultHierarchy: LocalDateTable_af09596c-53b2-42fa-adb6-06cabd6a0ab3.'Date Hierarchy'
+
 		annotation SummarizationSetBy = Automatic
 
 	column CreatedByID
 		dataType: int64
 		formatString: 0
 		lineageTag: b8c9d0e1-f2a3-4b4c-5d6e-7f8a9b0c1d2e
-		summarizeBy: none
+		summarizeBy: count
 		sourceColumn: CreatedByID
 
 		annotation SummarizationSetBy = Automatic
@@ -284,373 +306,388 @@ table Dim_Engineer
 
 		annotation SummarizationSetBy = Automatic
 
+	column Is_Active_Engineer =
+			
+			VAR OrdersUnderContractor =
+			    COUNTROWS (
+			        RELATEDTABLE ( Fact_UserOrders )
+			    )
+			RETURN
+			IF ( OrdersUnderContractor > 0, TRUE(), BLANK() )
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: a4524876-71ca-4506-9d29-db3f672688cc
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
 	partition Dim_Engineer = m
 		mode: import
 		source = ```
 				// ============================================================
-				// Dim_Engineer - Engineer Dimension Table
-				// 
-				// PURPOSE:
-				// Provides engineer dimension with details from public.client
-				// and aggregated order disbursement metrics from user_orders.
-				// 
-				// DATA SOURCES:
-				// - public.engineers: Engineer IDs and type
-				// - public.client: Client details (where client_type = 'ENGINEER')
-				// - public.user_orders: Disbursement status (is_engineer_eligible, order_status)
-				// - public.potential_site: Links site_id to engineer_id
-				// 
-				// KEY COLUMNS:
-				// - EngineerID: ID from public.engineers table
-				// - ClientID: ID from public.client table (for lookup)
-				// - Pending_Disbursement: Amount for PENDING/PENDING_SR_VERIFICATION orders
-				// - Ready_For_Disbursement: Amount for APPROVED orders
-				// 
-				// DISBURSEMENT LOGIC (from user_orders):
-				// - is_engineer_eligible = TRUE → Engineer is eligible for disbursement
-				// - order_status = PENDING/PENDING_SR_VERIFICATION → Pending Disbursement
-				// - order_status = APPROVED → Ready for Disbursement
-				// ============================================================
-				
-				let
-				    // ============================================================
-				    // STEP 1: Load engineer IDs and details from public.engineers
-				    // ============================================================
-				    EngineerSource = #"public engineers",
-				    EngineerSelected = Table.SelectColumns(EngineerSource, {
-				        "id", "engineer_type", "consultancy_firm"
-				    }, MissingField.UseNull),
-				    EngineerRenamed = Table.RenameColumns(EngineerSelected, {
-				        {"id", "EngineerID"},
-				        {"engineer_type", "EngineerType"},
-				        {"consultancy_firm", "ConsultancyFirm"}
-				    }),
-				    
-				    // ============================================================
-				    // STEP 2: Load client details from public.client
-				    // Filter to only ENGINEER type clients
-				    // ============================================================
-				    ClientSource = #"public client",
-				    
-				    // Select relevant columns from public.client
-				    ClientSelected = Table.SelectColumns(ClientSource, {
-				        "id", "client_type", "name", "phone", "bkash_number", 
-				        "bank_account_id", "bank_name", "routing_number", "ac_number",
-				        "address", "secondary_address", "upazilla_id",
-				        "status", "notes", "photo",
-				        "created_at", "updated_at", "created_by_id", "is_deleted"
-				    }, MissingField.UseNull),
-				    
-				    // Filter to ENGINEER type only
-				    ClientEngineers = Table.SelectRows(ClientSelected, each 
-				        Text.Upper(Text.From([client_type])) = "ENGINEER"
-				    ),
-				    
-				    // Filter out deleted records
-				    ClientActive = Table.SelectRows(ClientEngineers, each
-				        let
-				            del = if [is_deleted] = null then "NO" else try Text.Upper(Text.From([is_deleted])) otherwise "NO"
-				        in
-				            del = "NO" or del = "N" or del = "0" or del = "FALSE"
-				    ),
-				    
-				    // Rename client columns
-				    ClientRenamed = Table.RenameColumns(ClientActive, {
-				        {"id", "ClientID"},
-				        {"name", "EngineerName"},
-				        {"phone", "EngineerPhone"},
-				        {"bkash_number", "BkashNumber"},
-				        {"bank_account_id", "BankAccountID"},
-				        {"bank_name", "BankName"},
-				        {"routing_number", "RoutingNumber"},
-				        {"ac_number", "ACNumber"},
-				        {"address", "Address"},
-				        {"secondary_address", "SecondaryAddress"},
-				        {"upazilla_id", "UpazillaID"},
-				        {"status", "Status"},
-				        {"notes", "Notes"},
-				        {"photo", "Photo"},
-				        {"created_at", "CreatedAt"},
-				        {"updated_at", "UpdatedAt"},
-				        {"created_by_id", "CreatedByID"}
-				    }, MissingField.Ignore),
-				    
-				    // Remove temporary columns
-				    ClientClean = Table.RemoveColumns(ClientRenamed, {"client_type", "is_deleted"}, MissingField.Ignore),
-				    
-				    // ============================================================
-				    // STEP 3: Join engineer IDs with client details
-				    // ============================================================
-				    JoinedEngineers = Table.NestedJoin(
-				        EngineerRenamed,
-				        {"EngineerID"},
-				        ClientClean,
-				        {"ClientID"},
-				        "ClientDetails",
-				        JoinKind.LeftOuter
-				    ),
-				    
-				    ExpandedEngineers = Table.ExpandTableColumn(
-				        JoinedEngineers,
-				        "ClientDetails",
-				        {"ClientID", "EngineerName", "EngineerPhone", "BkashNumber", 
-				         "BankAccountID", "BankName", "RoutingNumber", "ACNumber",
-				         "Address", "SecondaryAddress", "UpazillaID",
-				         "Status", "Notes", "Photo", "CreatedAt", "UpdatedAt", "CreatedByID"},
-				        {"ClientID", "EngineerName", "EngineerPhone", "BkashNumber", 
-				         "BankAccountID", "BankName", "RoutingNumber", "ACNumber",
-				         "Address", "SecondaryAddress", "UpazillaID",
-				         "Status", "Notes", "Photo", "CreatedAt", "UpdatedAt", "CreatedByID"}
-				    ),
-				    
-				    // ============================================================
-				    // STEP 4: Load user_orders for disbursement calculations
-				    // This is the source of truth for disbursement status
-				    // ============================================================
-				    UserOrdersSource = #"public user_orders",
-				    
-				    // Get potential_site to find engineer_id linkage via site_id
-				    PotentialSiteSource = #"public potential_site",
-				    PotentialSiteCols = Table.ColumnNames(PotentialSiteSource),
-				    
-				    // Select site_id and engineer_id from potential_site
-				    PotentialSiteSelected = if List.Contains(PotentialSiteCols, "engineer_id") then
-				        Table.SelectColumns(PotentialSiteSource, {"id", "engineer_id"}, MissingField.UseNull)
-				    else
-				        Table.AddColumn(Table.SelectColumns(PotentialSiteSource, {"id"}), "engineer_id", each null, Int64.Type),
-				    
-				    PotentialSiteRenamed = Table.RenameColumns(PotentialSiteSelected, {
-				        {"id", "site_id"},
-				        {"engineer_id", "ps_engineer_id"}
-				    }),
-				    
-				    // Select relevant columns from user_orders
-				    UserOrdersSelected = Table.SelectColumns(UserOrdersSource, {
-				        "id", "order_status", "site_id", "total_amount", "is_engineer_eligible"
-				    }, MissingField.UseNull),
-				    
-				    // Filter to engineer-eligible orders only (is_engineer_eligible = TRUE)
-				    UserOrdersEngineerEligible = Table.SelectRows(UserOrdersSelected, each
-				        [is_engineer_eligible] = true or [is_engineer_eligible] = 1
-				    ),
-				    
-				    // Join with potential_site to get engineer_id
-				    UserOrdersWithEngineer = Table.NestedJoin(
-				        UserOrdersEngineerEligible,
-				        {"site_id"},
-				        PotentialSiteRenamed,
-				        {"site_id"},
-				        "PotentialSite",
-				        JoinKind.LeftOuter
-				    ),
-				    
-				    UserOrdersExpanded = Table.ExpandTableColumn(
-				        UserOrdersWithEngineer,
-				        "PotentialSite",
-				        {"ps_engineer_id"},
-				        {"engineer_id"}
-				    ),
-				    
-				    // Filter to orders with an engineer linked via site
-				    UserOrdersWithEngineerOnly = Table.SelectRows(UserOrdersExpanded, each [engineer_id] <> null),
-				    
-				    // Add disbursement status classification based on user_orders.order_status
-				    // PENDING, PENDING_SR_VERIFICATION = "Pending"
-				    // APPROVED = "Ready"
-				    UserOrdersWithStatus = Table.AddColumn(UserOrdersWithEngineerOnly, "DisbursementGroup", each
-				        let
-				            status = if [order_status] = null then "" else Text.Upper(Text.From([order_status]))
-				        in
-				            if status = "PENDING" or status = "PENDING_SR_VERIFICATION" then "Pending"
-				            else if status = "APPROVED" then "Ready"
-				            else "Other",
-				        type text
-				    ),
-				    
-				    // Convert total_amount to number
-				    UserOrdersWithAmount = Table.AddColumn(UserOrdersWithStatus, "amount", each
-				        try Number.From([total_amount]) otherwise 0,
-				        type number
-				    ),
-				    
-				    // ============================================================
-				    // STEP 5: Get order_items for MT calculation
-				    // ============================================================
-				    OrderItemsSource = #"public order_items",
-				    SKUSource = #"public sku_data",
-				    
-				    // Get org_id from SKU for MT conversion
-				    SKUWithOrg = Table.SelectColumns(SKUSource, {"id", "org_id"}, MissingField.UseNull),
-				    
-				    OrderItemsSelected = Table.SelectColumns(OrderItemsSource, {
-				        "user_order_history_id", "qty", "sku_info_id"
-				    }, MissingField.UseNull),
-				    
-				    // Join with SKU to get org_id
-				    OrderItemsWithSKU = Table.NestedJoin(
-				        OrderItemsSelected,
-				        {"sku_info_id"},
-				        SKUWithOrg,
-				        {"id"},
-				        "SKU",
-				        JoinKind.LeftOuter
-				    ),
-				    
-				    OrderItemsExpanded = Table.ExpandTableColumn(OrderItemsWithSKU, "SKU", {"org_id"}, {"org_id"}),
-				    
-				    // Calculate MT (ACL = qty/20, others = qty as-is)
-				    OrderItemsWithMT = Table.AddColumn(OrderItemsExpanded, "qty_in_mt", each
-				        let
-				            q = if [qty] = null then 0 else try Number.From([qty]) otherwise 0
-				        in
-				            if [org_id] = 1 then q / 20 else q,
-				        type number
-				    ),
-				    
-				    // Aggregate by user_order_history_id
-				    OrderItemsAgg = Table.Group(
-				        OrderItemsWithMT,
-				        {"user_order_history_id"},
-				        {
-				            {"total_qty_mt", each List.Sum([qty_in_mt]), type number}
-				        }
-				    ),
-				    
-				    // Join MT with user_orders
-				    UserOrdersWithMT = Table.NestedJoin(
-				        UserOrdersWithAmount,
-				        {"id"},
-				        OrderItemsAgg,
-				        {"user_order_history_id"},
-				        "ItemsAgg",
-				        JoinKind.LeftOuter
-				    ),
-				    
-				    UserOrdersExpandedMT = Table.ExpandTableColumn(UserOrdersWithMT, "ItemsAgg", {"total_qty_mt"}, {"qty_in_mt"}),
-				    
-				    // Fill nulls
-				    UserOrdersFilled = Table.ReplaceValue(UserOrdersExpandedMT, null, 0, Replacer.ReplaceValue, {"qty_in_mt", "amount"}),
-				    
-				    // ============================================================
-				    // STEP 6: Aggregate disbursement by engineer
-				    // ============================================================
-				    
-				    // Pending disbursement (PENDING or PENDING_SR_VERIFICATION)
-				    PendingOrders = Table.SelectRows(UserOrdersFilled, each [DisbursementGroup] = "Pending"),
-				    PendingAgg = Table.Group(
-				        PendingOrders,
-				        {"engineer_id"},
-				        {
-				            {"Pending_Disbursement", each List.Sum([amount]), type number},
-				            {"Pending_Disbursement_MT", each List.Sum([qty_in_mt]), type number},
-				            {"Pending_Order_Count", each Table.RowCount(_), Int64.Type}
-				        }
-				    ),
-				    PendingRenamed = Table.RenameColumns(PendingAgg, {{"engineer_id", "EngineerID_Pending"}}),
-				    
-				    // Ready for disbursement (APPROVED)
-				    ReadyOrders = Table.SelectRows(UserOrdersFilled, each [DisbursementGroup] = "Ready"),
-				    ReadyAgg = Table.Group(
-				        ReadyOrders,
-				        {"engineer_id"},
-				        {
-				            {"Ready_For_Disbursement", each List.Sum([amount]), type number},
-				            {"Ready_For_Disbursement_MT", each List.Sum([qty_in_mt]), type number},
-				            {"Ready_Order_Count", each Table.RowCount(_), Int64.Type}
-				        }
-				    ),
-				    ReadyRenamed = Table.RenameColumns(ReadyAgg, {{"engineer_id", "EngineerID_Ready"}}),
-				    
-				    // ============================================================
-				    // STEP 7: Join disbursement aggregates with engineer dimension
-				    // ============================================================
-				    
-				    // Join pending disbursement
-				    WithPending = Table.NestedJoin(
-				        ExpandedEngineers,
-				        {"EngineerID"},
-				        PendingRenamed,
-				        {"EngineerID_Pending"},
-				        "PendingData",
-				        JoinKind.LeftOuter
-				    ),
-				    
-				    ExpandedPending = Table.ExpandTableColumn(
-				        WithPending,
-				        "PendingData",
-				        {"Pending_Disbursement", "Pending_Disbursement_MT", "Pending_Order_Count"},
-				        {"Pending_Disbursement", "Pending_Disbursement_MT", "Pending_Order_Count"}
-				    ),
-				    
-				    // Join ready for disbursement
-				    WithReady = Table.NestedJoin(
-				        ExpandedPending,
-				        {"EngineerID"},
-				        ReadyRenamed,
-				        {"EngineerID_Ready"},
-				        "ReadyData",
-				        JoinKind.LeftOuter
-				    ),
-				    
-				    ExpandedReady = Table.ExpandTableColumn(
-				        WithReady,
-				        "ReadyData",
-				        {"Ready_For_Disbursement", "Ready_For_Disbursement_MT", "Ready_Order_Count"},
-				        {"Ready_For_Disbursement", "Ready_For_Disbursement_MT", "Ready_Order_Count"}
-				    ),
-				    
-				    // ============================================================
-				    // STEP 8: Fill nulls and add EngineerKey
-				    // ============================================================
-				    FilledNulls = Table.ReplaceValue(
-				        ExpandedReady, 
-				        null, 
-				        0, 
-				        Replacer.ReplaceValue, 
-				        {"Pending_Disbursement", "Pending_Disbursement_MT", "Pending_Order_Count",
-				         "Ready_For_Disbursement", "Ready_For_Disbursement_MT", "Ready_Order_Count"}
-				    ),
-				    
-				    // Add EngineerKey for joining with Fact tables
-				    WithEngineerKey = Table.AddColumn(FilledNulls, "EngineerKey", each 
-				        "Engineer-" & Text.From([EngineerID]),
-				        type text
-				    ),
-				    
-				    // ============================================================
-				    // STEP 9: Set data types
-				    // ============================================================
-				    TypedTable = Table.TransformColumnTypes(WithEngineerKey, {
-				        {"EngineerID", Int64.Type},
-				        {"ClientID", Int64.Type},
-				        {"EngineerName", type text},
-				        {"EngineerPhone", type text},
-				        {"BkashNumber", type text},
-				        {"BankAccountID", Int64.Type},
-				        {"BankName", type text},
-				        {"RoutingNumber", type text},
-				        {"ACNumber", type text},
-				        {"Address", type text},
-				        {"SecondaryAddress", type text},
-				        {"UpazillaID", Int64.Type},
-				        {"EngineerType", type text},
-				        {"ConsultancyFirm", type text},
-				        {"Status", type text},
-				        {"Notes", type text},
-				        {"Photo", type text},
-				        {"CreatedAt", type datetime},
-				        {"UpdatedAt", type datetime},
-				        {"CreatedByID", Int64.Type},
-				        {"Pending_Disbursement", type number},
-				        {"Ready_For_Disbursement", type number},
-				        {"Pending_Disbursement_MT", type number},
-				        {"Ready_For_Disbursement_MT", type number},
-				        {"Pending_Order_Count", Int64.Type},
-				        {"Ready_Order_Count", Int64.Type},
-				        {"EngineerKey", type text}
-			    })
-			in
-			    TypedTable
+					// Dim_Engineer - Engineer Dimension Table
+					// 
+					// PURPOSE:
+					// Provides engineer dimension with details from public.client
+					// and aggregated order disbursement metrics from user_orders.
+					// 
+					// DATA SOURCES:
+					// - public.engineers: Engineer IDs and type
+					// - public.client: Client details (where client_type = 'ENGINEER')
+					// - public.user_orders: Disbursement status (is_engineer_eligible, order_status)
+					// - public.potential_site: Links site_id to engineer_id
+					// 
+					// KEY COLUMNS:
+					// - EngineerID: ID from public.engineers table
+					// - ClientID: ID from public.client table (for lookup)
+					// - Pending_Disbursement: Amount for PENDING/PENDING_SR_VERIFICATION orders
+					// - Ready_For_Disbursement: Amount for APPROVED orders
+					// 
+					// DISBURSEMENT LOGIC (from user_orders):
+					// - is_engineer_eligible = TRUE → Engineer is eligible for disbursement
+					// - order_status = PENDING/PENDING_SR_VERIFICATION → Pending Disbursement
+					// - order_status = APPROVED → Ready for Disbursement
+					// ============================================================
+					
+					let
+					    // ============================================================
+					    // STEP 1: Load engineer IDs and details from public.engineers
+					    // ============================================================
+					    EngineerSource = #"public engineers",
+					    EngineerSelected = Table.SelectColumns(EngineerSource, {
+					        "id", "engineer_type", "consultancy_firm"
+					    }, MissingField.UseNull),
+					    EngineerRenamed = Table.RenameColumns(EngineerSelected, {
+					        {"id", "EngineerID"},
+					        {"engineer_type", "EngineerType"},
+					        {"consultancy_firm", "ConsultancyFirm"}
+					    }),
+					    
+					    // ============================================================
+					    // STEP 2: Load client details from public.client
+					    // Filter to only ENGINEER type clients
+					    // ============================================================
+					    ClientSource = #"public client",
+					    
+					    // Select relevant columns from public.client
+					    ClientSelected = Table.SelectColumns(ClientSource, {
+					        "id", "client_type", "name", "phone", "bkash_number", 
+					        "bank_account_id", "bank_name", "routing_number", "ac_number",
+					        "address", "secondary_address", "upazilla_id",
+					        "status", "notes", "photo",
+					        "created_at", "updated_at", "created_by_id", "is_deleted"
+					    }, MissingField.UseNull),
+					    
+					    // Filter to ENGINEER type only
+					    ClientEngineers = Table.SelectRows(ClientSelected, each 
+					        Text.Upper(Text.From([client_type])) = "ENGINEER"
+					    ),
+					    
+					    // Filter out deleted records
+					    ClientActive = Table.SelectRows(ClientEngineers, each
+					        let
+					            del = if [is_deleted] = null then "NO" else try Text.Upper(Text.From([is_deleted])) otherwise "NO"
+					        in
+					            del = "NO" or del = "N" or del = "0" or del = "FALSE"
+					    ),
+					    
+					    // Rename client columns
+					    ClientRenamed = Table.RenameColumns(ClientActive, {
+					        {"id", "ClientID"},
+					        {"name", "EngineerName"},
+					        {"phone", "EngineerPhone"},
+					        {"bkash_number", "BkashNumber"},
+					        {"bank_account_id", "BankAccountID"},
+					        {"bank_name", "BankName"},
+					        {"routing_number", "RoutingNumber"},
+					        {"ac_number", "ACNumber"},
+					        {"address", "Address"},
+					        {"secondary_address", "SecondaryAddress"},
+					        {"upazilla_id", "UpazillaID"},
+					        {"status", "Status"},
+					        {"notes", "Notes"},
+					        {"photo", "Photo"},
+					        {"created_at", "CreatedAt"},
+					        {"updated_at", "UpdatedAt"},
+					        {"created_by_id", "CreatedByID"}
+					    }, MissingField.Ignore),
+					    
+					    // Remove temporary columns
+					    ClientClean = Table.RemoveColumns(ClientRenamed, {"client_type", "is_deleted"}, MissingField.Ignore),
+					    
+					    // ============================================================
+					    // STEP 3: Join engineer IDs with client details
+					    // ============================================================
+					    JoinedEngineers = Table.NestedJoin(
+					        EngineerRenamed,
+					        {"EngineerID"},
+					        ClientClean,
+					        {"ClientID"},
+					        "ClientDetails",
+					        JoinKind.LeftOuter
+					    ),
+					    
+					    ExpandedEngineers = Table.ExpandTableColumn(
+					        JoinedEngineers,
+					        "ClientDetails",
+					        {"ClientID", "EngineerName", "EngineerPhone", "BkashNumber", 
+					         "BankAccountID", "BankName", "RoutingNumber", "ACNumber",
+					         "Address", "SecondaryAddress", "UpazillaID",
+					         "Status", "Notes", "Photo", "CreatedAt", "UpdatedAt", "CreatedByID"},
+					        {"ClientID", "EngineerName", "EngineerPhone", "BkashNumber", 
+					         "BankAccountID", "BankName", "RoutingNumber", "ACNumber",
+					         "Address", "SecondaryAddress", "UpazillaID",
+					         "Status", "Notes", "Photo", "CreatedAt", "UpdatedAt", "CreatedByID"}
+					    ),
+					    
+					    // ============================================================
+					    // STEP 4: Load user_orders for disbursement calculations
+					    // This is the source of truth for disbursement status
+					    // ============================================================
+					    UserOrdersSource = #"public user_orders",
+					    
+					    // Get potential_site to find engineer_id linkage via site_id
+					    PotentialSiteSource = #"public potential_site",
+					    PotentialSiteCols = Table.ColumnNames(PotentialSiteSource),
+					    
+					    // Select site_id and engineer_id from potential_site
+					    PotentialSiteSelected = if List.Contains(PotentialSiteCols, "engineer_id") then
+					        Table.SelectColumns(PotentialSiteSource, {"id", "engineer_id"}, MissingField.UseNull)
+					    else
+					        Table.AddColumn(Table.SelectColumns(PotentialSiteSource, {"id"}), "engineer_id", each null, Int64.Type),
+					    
+					    PotentialSiteRenamed = Table.RenameColumns(PotentialSiteSelected, {
+					        {"id", "site_id"},
+					        {"engineer_id", "ps_engineer_id"}
+					    }),
+					    
+					    // Select relevant columns from user_orders
+					    UserOrdersSelected = Table.SelectColumns(UserOrdersSource, {
+					        "id", "order_status", "site_id", "total_amount", "is_engineer_eligible"
+					    }, MissingField.UseNull),
+					    
+					    // Filter to engineer-eligible orders only (is_engineer_eligible = TRUE)
+					    UserOrdersEngineerEligible = Table.SelectRows(UserOrdersSelected, each
+					        [is_engineer_eligible] = true or [is_engineer_eligible] = 1
+					    ),
+					    
+					    // Join with potential_site to get engineer_id
+					    UserOrdersWithEngineer = Table.NestedJoin(
+					        UserOrdersEngineerEligible,
+					        {"site_id"},
+					        PotentialSiteRenamed,
+					        {"site_id"},
+					        "PotentialSite",
+					        JoinKind.LeftOuter
+					    ),
+					    
+					    UserOrdersExpanded = Table.ExpandTableColumn(
+					        UserOrdersWithEngineer,
+					        "PotentialSite",
+					        {"ps_engineer_id"},
+					        {"engineer_id"}
+					    ),
+					    
+					    // Filter to orders with an engineer linked via site
+					    UserOrdersWithEngineerOnly = Table.SelectRows(UserOrdersExpanded, each [engineer_id] <> null),
+					    
+					    // Add disbursement status classification based on user_orders.order_status
+					    // PENDING, PENDING_SR_VERIFICATION = "Pending"
+					    // APPROVED = "Ready"
+					    UserOrdersWithStatus = Table.AddColumn(UserOrdersWithEngineerOnly, "DisbursementGroup", each
+					        let
+					            status = if [order_status] = null then "" else Text.Upper(Text.From([order_status]))
+					        in
+					            if status = "PENDING" or status = "PENDING_SR_VERIFICATION" then "Pending"
+					            else if status = "APPROVED" then "Ready"
+					            else "Other",
+					        type text
+					    ),
+					    
+					    // Convert total_amount to number
+					    UserOrdersWithAmount = Table.AddColumn(UserOrdersWithStatus, "amount", each
+					        try Number.From([total_amount]) otherwise 0,
+					        type number
+					    ),
+					    
+					    // ============================================================
+					    // STEP 5: Get order_items for MT calculation
+					    // ============================================================
+					    OrderItemsSource = #"public order_items",
+					    SKUSource = #"public sku_data",
+					    
+					    // Get org_id from SKU for MT conversion
+					    SKUWithOrg = Table.SelectColumns(SKUSource, {"id", "org_id"}, MissingField.UseNull),
+					    
+					    OrderItemsSelected = Table.SelectColumns(OrderItemsSource, {
+					        "user_order_history_id", "qty", "sku_info_id"
+					    }, MissingField.UseNull),
+					    
+					    // Join with SKU to get org_id
+					    OrderItemsWithSKU = Table.NestedJoin(
+					        OrderItemsSelected,
+					        {"sku_info_id"},
+					        SKUWithOrg,
+					        {"id"},
+					        "SKU",
+					        JoinKind.LeftOuter
+					    ),
+					    
+					    OrderItemsExpanded = Table.ExpandTableColumn(OrderItemsWithSKU, "SKU", {"org_id"}, {"org_id"}),
+					    
+					    // Calculate MT (ACL = qty/20, others = qty as-is)
+					    OrderItemsWithMT = Table.AddColumn(OrderItemsExpanded, "qty_in_mt", each
+					        let
+					            q = if [qty] = null then 0 else try Number.From([qty]) otherwise 0
+					        in
+					            if [org_id] = 1 then q / 20 else q,
+					        type number
+					    ),
+					    
+					    // Aggregate by user_order_history_id
+					    OrderItemsAgg = Table.Group(
+					        OrderItemsWithMT,
+					        {"user_order_history_id"},
+					        {
+					            {"total_qty_mt", each List.Sum([qty_in_mt]), type number}
+					        }
+					    ),
+					    
+					    // Join MT with user_orders
+					    UserOrdersWithMT = Table.NestedJoin(
+					        UserOrdersWithAmount,
+					        {"id"},
+					        OrderItemsAgg,
+					        {"user_order_history_id"},
+					        "ItemsAgg",
+					        JoinKind.LeftOuter
+					    ),
+					    
+					    UserOrdersExpandedMT = Table.ExpandTableColumn(UserOrdersWithMT, "ItemsAgg", {"total_qty_mt"}, {"qty_in_mt"}),
+					    
+					    // Fill nulls
+					    UserOrdersFilled = Table.ReplaceValue(UserOrdersExpandedMT, null, 0, Replacer.ReplaceValue, {"qty_in_mt", "amount"}),
+					    
+					    // ============================================================
+					    // STEP 6: Aggregate disbursement by engineer
+					    // ============================================================
+					    
+					    // Pending disbursement (PENDING or PENDING_SR_VERIFICATION)
+					    PendingOrders = Table.SelectRows(UserOrdersFilled, each [DisbursementGroup] = "Pending"),
+					    PendingAgg = Table.Group(
+					        PendingOrders,
+					        {"engineer_id"},
+					        {
+					            {"Pending_Disbursement", each List.Sum([amount]), type number},
+					            {"Pending_Disbursement_MT", each List.Sum([qty_in_mt]), type number},
+					            {"Pending_Order_Count", each Table.RowCount(_), Int64.Type}
+					        }
+					    ),
+					    PendingRenamed = Table.RenameColumns(PendingAgg, {{"engineer_id", "EngineerID_Pending"}}),
+					    
+					    // Ready for disbursement (APPROVED)
+					    ReadyOrders = Table.SelectRows(UserOrdersFilled, each [DisbursementGroup] = "Ready"),
+					    ReadyAgg = Table.Group(
+					        ReadyOrders,
+					        {"engineer_id"},
+					        {
+					            {"Ready_For_Disbursement", each List.Sum([amount]), type number},
+					            {"Ready_For_Disbursement_MT", each List.Sum([qty_in_mt]), type number},
+					            {"Ready_Order_Count", each Table.RowCount(_), Int64.Type}
+					        }
+					    ),
+					    ReadyRenamed = Table.RenameColumns(ReadyAgg, {{"engineer_id", "EngineerID_Ready"}}),
+					    
+					    // ============================================================
+					    // STEP 7: Join disbursement aggregates with engineer dimension
+					    // ============================================================
+					    
+					    // Join pending disbursement
+					    WithPending = Table.NestedJoin(
+					        ExpandedEngineers,
+					        {"EngineerID"},
+					        PendingRenamed,
+					        {"EngineerID_Pending"},
+					        "PendingData",
+					        JoinKind.LeftOuter
+					    ),
+					    
+					    ExpandedPending = Table.ExpandTableColumn(
+					        WithPending,
+					        "PendingData",
+					        {"Pending_Disbursement", "Pending_Disbursement_MT", "Pending_Order_Count"},
+					        {"Pending_Disbursement", "Pending_Disbursement_MT", "Pending_Order_Count"}
+					    ),
+					    
+					    // Join ready for disbursement
+					    WithReady = Table.NestedJoin(
+					        ExpandedPending,
+					        {"EngineerID"},
+					        ReadyRenamed,
+					        {"EngineerID_Ready"},
+					        "ReadyData",
+					        JoinKind.LeftOuter
+					    ),
+					    
+					    ExpandedReady = Table.ExpandTableColumn(
+					        WithReady,
+					        "ReadyData",
+					        {"Ready_For_Disbursement", "Ready_For_Disbursement_MT", "Ready_Order_Count"},
+					        {"Ready_For_Disbursement", "Ready_For_Disbursement_MT", "Ready_Order_Count"}
+					    ),
+					    
+					    // ============================================================
+					    // STEP 8: Fill nulls and add EngineerKey
+					    // ============================================================
+					    FilledNulls = Table.ReplaceValue(
+					        ExpandedReady, 
+					        null, 
+					        0, 
+					        Replacer.ReplaceValue, 
+					        {"Pending_Disbursement", "Pending_Disbursement_MT", "Pending_Order_Count",
+					         "Ready_For_Disbursement", "Ready_For_Disbursement_MT", "Ready_Order_Count"}
+					    ),
+					    
+					    // Add EngineerKey for joining with Fact tables
+					    WithEngineerKey = Table.AddColumn(FilledNulls, "EngineerKey", each 
+					        "Engineer-" & Text.From([EngineerID]),
+					        type text
+					    ),
+					    
+					    // ============================================================
+					    // STEP 9: Set data types
+					    // ============================================================
+					    TypedTable = Table.TransformColumnTypes(WithEngineerKey, {
+					        {"EngineerID", Int64.Type},
+					        {"ClientID", Int64.Type},
+					        {"EngineerName", type text},
+					        {"EngineerPhone", type text},
+					        {"BkashNumber", type text},
+					        {"BankAccountID", Int64.Type},
+					        {"BankName", type text},
+					        {"RoutingNumber", type text},
+					        {"ACNumber", type text},
+					        {"Address", type text},
+					        {"SecondaryAddress", type text},
+					        {"UpazillaID", Int64.Type},
+					        {"EngineerType", type text},
+					        {"ConsultancyFirm", type text},
+					        {"Status", type text},
+					        {"Notes", type text},
+					        {"Photo", type text},
+					        {"CreatedAt", type datetime},
+					        {"UpdatedAt", type datetime},
+					        {"CreatedByID", Int64.Type},
+					        {"Pending_Disbursement", type number},
+					        {"Ready_For_Disbursement", type number},
+					        {"Pending_Disbursement_MT", type number},
+					        {"Ready_For_Disbursement_MT", type number},
+					        {"Pending_Order_Count", Int64.Type},
+					        {"Ready_Order_Count", Int64.Type},
+					        {"EngineerKey", type text}
+				    })
+				in
+				    TypedTable
 				```
 
 	annotation PBI_ResultType = Table
+

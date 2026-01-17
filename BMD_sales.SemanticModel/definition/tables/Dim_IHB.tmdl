@@ -21,7 +21,7 @@ table Dim_IHB
 		isKey
 		formatString: 0
 		lineageTag: ihb-c001-id
-		summarizeBy: none
+		summarizeBy: count
 		sourceColumn: IHBID
 
 		annotation SummarizationSetBy = Automatic
@@ -30,7 +30,7 @@ table Dim_IHB
 		dataType: int64
 		formatString: 0
 		lineageTag: ihb-c002-clientid
-		summarizeBy: none
+		summarizeBy: count
 		sourceColumn: ClientID
 
 		annotation SummarizationSetBy = Automatic
@@ -91,6 +91,11 @@ table Dim_IHB
 		summarizeBy: none
 		sourceColumn: CreatedAt
 
+		variation Variation
+			isDefault
+			relationship: c5f9d95d-2f70-49fc-a4a9-0ecfd4d2a5d6
+			defaultHierarchy: LocalDateTable_90fa9c83-f7e1-4870-99a0-9a04b495e1dd.'Date Hierarchy'
+
 		annotation SummarizationSetBy = Automatic
 
 	column UpdatedAt
@@ -100,13 +105,18 @@ table Dim_IHB
 		summarizeBy: none
 		sourceColumn: UpdatedAt
 
+		variation Variation
+			isDefault
+			relationship: cfcd87c4-3ce7-42c8-986a-d3fcae0f4e56
+			defaultHierarchy: LocalDateTable_468ee0da-f389-4085-9863-a3a7ae9f56f0.'Date Hierarchy'
+
 		annotation SummarizationSetBy = Automatic
 
 	column CreatedByID
 		dataType: int64
 		formatString: 0
 		lineageTag: ihb-c011-createdbyid
-		summarizeBy: none
+		summarizeBy: count
 		sourceColumn: CreatedByID
 
 		annotation SummarizationSetBy = Automatic

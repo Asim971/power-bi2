@@ -355,6 +355,14 @@ table Dim_User
 
 		annotation SummarizationSetBy = Automatic
 
+	column Location
+		dataType: string
+		lineageTag: e97ca3b6-f31a-4afe-a052-4671328f108d
+		summarizeBy: none
+		sourceColumn: Location
+
+		annotation SummarizationSetBy = Automatic
+
 	partition Dim_User = m
 		mode: import
 		source =
@@ -703,9 +711,14 @@ table Dim_User
 								    }),
 				
 								    // ---- Remove delete_status ----
-								    CleanedTable = Table.RemoveColumns(TypedTable, {"delete_status"})
+								    CleanedTable = Table.RemoveColumns(TypedTable, {"delete_status"}),
+				  #"Added custom" = Table.TransformColumnTypes(Table.AddColumn(CleanedTable, "Location", each if [RoleName] = "ASM" then [AreaName]
+				else if [RoleName] = "ZSM" then [ZoneName]
+				else if [RoleName] = "SR" then [TerritoryName]
+				else null), {{"Location", type text}}),
+				  #"Sorted rows" = Table.Sort(#"Added custom", {{"RoleID", Order.Descending}})
 								in
-								    CleanedTable
+								    #"Sorted rows"
 
 	changedProperty = IsHidden
 

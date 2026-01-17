@@ -1,0 +1,98 @@
+table Dim_Location
+	lineageTag: 901e0f85-31f4-4a25-bb31-38e75c3f8f19
+
+	column territory_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 3c245442-071a-4d3c-bd72-c068685b4779
+		summarizeBy: none
+		sourceColumn: territory_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column territory_name
+		dataType: string
+		lineageTag: 08f34209-372e-4086-9c20-7712fac78d31
+		summarizeBy: none
+		sourceColumn: territory_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column nation_name
+		dataType: string
+		lineageTag: d19c55b6-8c73-4c45-b478-b5296d6bd07d
+		summarizeBy: none
+		sourceColumn: nation_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column area_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 0a174759-0a53-42b1-9ccb-411edda18f61
+		summarizeBy: none
+		sourceColumn: area_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column nation_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 51cec25a-e22c-4259-9842-79857ff2a7c2
+		summarizeBy: none
+		sourceColumn: nation_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column organization_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 12b3a9b4-3d77-4de1-b590-52e39d4c8ba5
+		summarizeBy: none
+		sourceColumn: organization_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column area_name
+		dataType: string
+		lineageTag: 3fdeec84-3abc-4e6b-b7f8-d3d982a18afe
+		summarizeBy: none
+		sourceColumn: area_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column region_name
+		dataType: string
+		lineageTag: ffedf9a2-c78d-4f10-9f60-10d021ec84d1
+		summarizeBy: none
+		sourceColumn: region_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column zone_name
+		dataType: string
+		lineageTag: 66690016-d715-4e7c-8c94-afad3e41352d
+		summarizeBy: none
+		sourceColumn: zone_name
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_Location = m
+		mode: import
+		source =
+				let
+				  Source = #"public territory",
+				  #"Removed columns" = Table.RemoveColumns(Source, {"area_name"}),
+				  #"Renamed columns" = Table.RenameColumns(#"Removed columns", {{"id", "territory_id"}}),
+				  #"Removed columns 1" = Table.RemoveColumns(#"Renamed columns", {"assigned_agm", "assigned_asm", "assigned_bdo", "assigned_cro", "assigned_gm", "assigned_sr", "assigned_zsm", "bd_territory_names", "created_at", "created_by", "delete_status", "district_name", "moduleid"}),
+				  #"Renamed columns 1" = Table.RenameColumns(#"Removed columns 1", {{"name", "territory_name"}}),
+				  #"Removed columns 2" = Table.RemoveColumns(#"Renamed columns 1", {"namespaceid", "owned_by", "revision", "upazilla_names", "updated_at", "updated_by", "zone_name", "region_name", "district_id", "region_id", "zone_id", "deleted_by", "code", "module_code_id"}),
+				  #"Merged queries" = Table.NestedJoin(#"Removed columns 2", {"area_id"}, #"public areas", {"id"}, "public areas", JoinKind.LeftOuter),
+				  #"Expanded public areas" = Table.ExpandTableColumn(#"Merged queries", "public areas", {"name", "region_name", "zone_name"}, {"name", "region_name", "zone_name"}),
+				  #"Removed columns 3" = Table.RemoveColumns(#"Expanded public areas", {"recordid"}),
+				  #"Renamed columns 2" = Table.RenameColumns(#"Removed columns 3", {{"name", "area_name"}})
+				in
+				  #"Renamed columns 2"
+
+	annotation PBI_ResultType = Table
+

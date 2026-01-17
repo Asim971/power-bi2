@@ -1,7 +1,7 @@
 table Dim_Retailer
 	lineageTag: ret-1a2b-3c4d-5e6f-7890abcdef03
 
-	measure Total_Retailer_Count = COUNTROWS('Dim_Retailer')
+	measure Total_Retailer_Count2 = COUNTROWS('Dim_Retailer')
 		formatString: #,##0
 		displayFolder: Counts
 		lineageTag: ret-m001-count-total
@@ -30,7 +30,7 @@ table Dim_Retailer
 		dataType: int64
 		formatString: 0
 		lineageTag: ret-c002-clientid
-		summarizeBy: none
+		summarizeBy: count
 		sourceColumn: ClientID
 
 		annotation SummarizationSetBy = Automatic
@@ -71,7 +71,7 @@ table Dim_Retailer
 		dataType: int64
 		formatString: 0
 		lineageTag: ret-c007-bazaarid
-		summarizeBy: none
+		summarizeBy: count
 		sourceColumn: BazaarID
 
 		annotation SummarizationSetBy = Automatic
@@ -115,6 +115,11 @@ table Dim_Retailer
 		summarizeBy: none
 		sourceColumn: CreatedAt
 
+		variation Variation
+			isDefault
+			relationship: 8c53b945-5aa1-4038-a04c-cbcb6f29ce38
+			defaultHierarchy: LocalDateTable_1bf4adbc-4c20-45d0-996a-7804716f467d.'Date Hierarchy'
+
 		annotation SummarizationSetBy = Automatic
 
 	column UpdatedAt
@@ -123,6 +128,11 @@ table Dim_Retailer
 		lineageTag: ret-c013-updatedat
 		summarizeBy: none
 		sourceColumn: UpdatedAt
+
+		variation Variation
+			isDefault
+			relationship: 366978af-3027-4720-8976-ab15f62eb353
+			defaultHierarchy: LocalDateTable_6a14141e-fafb-4a1f-95cd-18f46f0ae15f.'Date Hierarchy'
 
 		annotation SummarizationSetBy = Automatic
 
@@ -137,22 +147,23 @@ table Dim_Retailer
 	partition Dim_Retailer = m
 		mode: import
 		source =
-			let
-			    RetailerSource = #"public uncovered_retailer",
-			    RetailerSelected = Table.SelectColumns(RetailerSource, {"id", "bazaar_id", "shop_address", "shop_photo", "product_types", "competitor_names", "is_converted_to_retailer"}, MissingField.UseNull),
-			    RetailerRenamed = Table.RenameColumns(RetailerSelected, {{"id", "RetailerID"}, {"bazaar_id", "BazaarID"}, {"shop_address", "ShopAddress"}, {"shop_photo", "ShopPhoto"}, {"product_types", "ProductTypes"}, {"competitor_names", "CompetitorNames"}, {"is_converted_to_retailer", "IsConverted"}}),
-			    ClientSource = #"public client",
-			    ClientSelected = Table.SelectColumns(ClientSource, {"id", "client_type", "name", "phone", "status", "created_at", "updated_at", "is_deleted"}, MissingField.UseNull),
-			    ClientRetailers = Table.SelectRows(ClientSelected, each Text.Upper(Text.From([client_type])) = "UNCOVERED_RETAILER"),
-			    ClientActive = Table.SelectRows(ClientRetailers, each let del = if [is_deleted] = null then "NO" else try Text.Upper(Text.From([is_deleted])) otherwise "NO" in del = "NO" or del = "N" or del = "0" or del = "FALSE"),
-			    ClientRenamed = Table.RenameColumns(ClientActive, {{"id", "ClientID"}, {"name", "RetailerName"}, {"phone", "RetailerPhone"}, {"status", "Status"}, {"created_at", "CreatedAt"}, {"updated_at", "UpdatedAt"}}, MissingField.Ignore),
-			    ClientClean = Table.RemoveColumns(ClientRenamed, {"client_type", "is_deleted"}, MissingField.Ignore),
-			    JoinedRetailers = Table.NestedJoin(RetailerRenamed, {"RetailerID"}, ClientClean, {"ClientID"}, "ClientDetails", JoinKind.LeftOuter),
-			    ExpandedRetailers = Table.ExpandTableColumn(JoinedRetailers, "ClientDetails", {"ClientID", "RetailerName", "RetailerPhone", "Status", "CreatedAt", "UpdatedAt"}, {"ClientID", "RetailerName", "RetailerPhone", "Status", "CreatedAt", "UpdatedAt"}),
-			    WithRetailerKey = Table.AddColumn(ExpandedRetailers, "RetailerKey", each "Retailer-" & Text.From([RetailerID]), type text),
-			    TypedTable = Table.TransformColumnTypes(WithRetailerKey, {{"RetailerID", Int64.Type}, {"ClientID", Int64.Type}, {"BazaarID", Int64.Type}, {"RetailerName", type text}, {"RetailerPhone", type text}, {"ShopAddress", type text}, {"ShopPhoto", type text}, {"ProductTypes", type text}, {"CompetitorNames", type text}, {"IsConverted", type text}, {"Status", type text}, {"CreatedAt", type datetime}, {"UpdatedAt", type datetime}, {"RetailerKey", type text}})
-			in
-			    TypedTable
+				let
+				    RetailerSource = #"public uncovered_retailer",
+				    RetailerSelected = Table.SelectColumns(RetailerSource, {"id", "bazaar_id", "shop_address", "shop_photo", "product_types", "competitor_names", "is_converted_to_retailer"}, MissingField.UseNull),
+				    RetailerRenamed = Table.RenameColumns(RetailerSelected, {{"id", "RetailerID"}, {"bazaar_id", "BazaarID"}, {"shop_address", "ShopAddress"}, {"shop_photo", "ShopPhoto"}, {"product_types", "ProductTypes"}, {"competitor_names", "CompetitorNames"}, {"is_converted_to_retailer", "IsConverted"}}),
+				    ClientSource = #"public client",
+				    ClientSelected = Table.SelectColumns(ClientSource, {"id", "client_type", "name", "phone", "status", "created_at", "updated_at", "is_deleted"}, MissingField.UseNull),
+				    ClientRetailers = Table.SelectRows(ClientSelected, each Text.Upper(Text.From([client_type])) = "UNCOVERED_RETAILER"),
+				    ClientActive = Table.SelectRows(ClientRetailers, each let del = if [is_deleted] = null then "NO" else try Text.Upper(Text.From([is_deleted])) otherwise "NO" in del = "NO" or del = "N" or del = "0" or del = "FALSE"),
+				    ClientRenamed = Table.RenameColumns(ClientActive, {{"id", "ClientID"}, {"name", "RetailerName"}, {"phone", "RetailerPhone"}, {"status", "Status"}, {"created_at", "CreatedAt"}, {"updated_at", "UpdatedAt"}}, MissingField.Ignore),
+				    ClientClean = Table.RemoveColumns(ClientRenamed, {"client_type", "is_deleted"}, MissingField.Ignore),
+				    JoinedRetailers = Table.NestedJoin(RetailerRenamed, {"RetailerID"}, ClientClean, {"ClientID"}, "ClientDetails", JoinKind.LeftOuter),
+				    ExpandedRetailers = Table.ExpandTableColumn(JoinedRetailers, "ClientDetails", {"ClientID", "RetailerName", "RetailerPhone", "Status", "CreatedAt", "UpdatedAt"}, {"ClientID", "RetailerName", "RetailerPhone", "Status", "CreatedAt", "UpdatedAt"}),
+				    WithRetailerKey = Table.AddColumn(ExpandedRetailers, "RetailerKey", each "Retailer-" & Text.From([RetailerID]), type text),
+				    TypedTable = Table.TransformColumnTypes(WithRetailerKey, {{"RetailerID", Int64.Type}, {"ClientID", Int64.Type}, {"BazaarID", Int64.Type}, {"RetailerName", type text}, {"RetailerPhone", type text}, {"ShopAddress", type text}, {"ShopPhoto", type text}, {"ProductTypes", type text}, {"CompetitorNames", type text}, {"IsConverted", type text}, {"Status", type text}, {"CreatedAt", type datetime}, {"UpdatedAt", type datetime}, {"RetailerKey", type text}}),
+				  #"Sorted rows" = Table.Sort(TypedTable, {{"RetailerID", Order.Ascending}})
+				in
+				    #"Sorted rows"
 
 	annotation PBI_ResultType = Table
 

@@ -8,7 +8,7 @@ table Dim_HeadMason
 		lineageTag: hm-m001-count-total
 
 	/// Head masons with approved status
-	measure Approved_HeadMason = 
+	measure Approved_HeadMason =
 			CALCULATE(
 				COUNTROWS('Dim_HeadMason'),
 				'Dim_HeadMason'[Status] = "APPROVED"
@@ -18,7 +18,7 @@ table Dim_HeadMason
 		lineageTag: hm-m002-approved
 
 	/// Head masons with pending status
-	measure Pending_HeadMason = 
+	measure Pending_HeadMason =
 			CALCULATE(
 				COUNTROWS('Dim_HeadMason'),
 				'Dim_HeadMason'[Status] = "PENDING"
@@ -32,7 +32,7 @@ table Dim_HeadMason
 		isKey
 		formatString: 0
 		lineageTag: hm-c001-id
-		summarizeBy: none
+		summarizeBy: count
 		sourceColumn: HeadMasonID
 
 		annotation SummarizationSetBy = Automatic
@@ -73,7 +73,7 @@ table Dim_HeadMason
 		dataType: int64
 		formatString: 0
 		lineageTag: hm-c006-upazillaid
-		summarizeBy: none
+		summarizeBy: count
 		sourceColumn: UpazillaID
 
 		annotation SummarizationSetBy = Automatic
@@ -109,6 +109,11 @@ table Dim_HeadMason
 		summarizeBy: none
 		sourceColumn: CreatedAt
 
+		variation Variation
+			isDefault
+			relationship: 4e5a01cb-cbd3-46b1-b336-9f746b847a3a
+			defaultHierarchy: LocalDateTable_08616169-7ea4-4538-b6f0-c90f56b7a508.'Date Hierarchy'
+
 		annotation SummarizationSetBy = Automatic
 
 	column UpdatedAt
@@ -118,13 +123,18 @@ table Dim_HeadMason
 		summarizeBy: none
 		sourceColumn: UpdatedAt
 
+		variation Variation
+			isDefault
+			relationship: fe1af5de-1d21-4def-99f2-d2dbaf26607f
+			defaultHierarchy: LocalDateTable_ac0c8ca7-83e5-4a8c-b7e1-6be2496df64d.'Date Hierarchy'
+
 		annotation SummarizationSetBy = Automatic
 
 	column CreatedByID
 		dataType: int64
 		formatString: 0
 		lineageTag: hm-c012-createdbyid
-		summarizeBy: none
+		summarizeBy: count
 		sourceColumn: CreatedByID
 
 		annotation SummarizationSetBy = Automatic

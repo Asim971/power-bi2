@@ -1,0 +1,79 @@
+table Retailer_Paid
+	lineageTag: e304f3ca-491b-4c65-b6ae-aa332c1d097c
+
+	measure Total_Retailer_Paid = SUM ( Retailer_Paid[Amount] )
+		formatString: 0
+		lineageTag: d3a37604-fcba-44f7-9661-a087e6a1b6e1
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 35a4f004-3e36-4068-a9cc-818ddc885f2d
+		summarizeBy: none
+		sourceColumn: Date
+
+		variation Variation
+			isDefault
+			relationship: 2e215a29-5fd1-4665-abca-bcc31c796caa
+			defaultHierarchy: LocalDateTable_a82dc137-d84d-4c56-981a-c572c9fef2f9.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column id
+		dataType: int64
+		formatString: 0
+		lineageTag: 98cfc452-8b26-456d-9bab-1d60330f4e56
+		summarizeBy: none
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	column Name
+		dataType: string
+		lineageTag: b10e1abf-010b-4eb3-9893-54ce942b39bc
+		summarizeBy: none
+		sourceColumn: Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Phone
+		dataType: int64
+		formatString: 0
+		lineageTag: e61d828c-506e-45c8-81d6-2563efa3d39c
+		summarizeBy: sum
+		sourceColumn: Phone
+
+		annotation SummarizationSetBy = Automatic
+
+	column Amount
+		dataType: int64
+		formatString: 0
+		lineageTag: caeac4f4-63a1-40f7-897c-4ad35cdcdf7d
+		summarizeBy: sum
+		sourceColumn: Amount
+
+		annotation SummarizationSetBy = Automatic
+
+	column Status
+		dataType: string
+		lineageTag: f2439852-6130-4cc1-8bee-780a77b64fc1
+		summarizeBy: none
+		sourceColumn: Status
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Retailer_Paid = m
+		mode: import
+		source =
+				let
+				  Source = GoogleSheets.Contents("https://docs.google.com/spreadsheets/d/1hiLLoNXL2bpirwveTvYTeTwZaSmcfVpB-a8j0rg00Aw/edit?gid=1482171367#gid=1482171367"),
+				  #"Navigation 1" = Source{[name = "Paid", ItemKind = "Table"]}[Data],
+				  #"Promoted headers" = Table.PromoteHeaders(#"Navigation 1", [PromoteAllScalars = true]),
+				  #"Changed column type" = Table.TransformColumnTypes(#"Promoted headers", {{"Date", type date}, {"id", Int64.Type}, {"Status", type text}, {"Phone", Int64.Type}, {"Name", type text}, {"Amount", Int64.Type}})
+				in
+				  #"Changed column type"
+
+	annotation PBI_ResultType = Table
+

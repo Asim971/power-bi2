@@ -1,0 +1,130 @@
+table Dim_Dealers
+	lineageTag: 55b43258-f431-449d-9c6b-3d3bb8d0b057
+
+	measure 'Total Dealers' = COUNTROWS(Dim_Dealers)
+		formatString: 0
+		lineageTag: 9b205d4d-8b02-49f0-b679-97f894662b48
+
+	column id
+		dataType: int64
+		formatString: 0
+		lineageTag: b15aa1f7-d747-4048-afba-1a6a98230f57
+		summarizeBy: sum
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	column address
+		dataType: string
+		lineageTag: a159e199-75cc-4a02-8377-3dbd0ab81cc4
+		summarizeBy: none
+		sourceColumn: address
+
+		annotation SummarizationSetBy = Automatic
+
+	column created_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 2b195e05-803d-4143-b9ab-4b3894f8f81e
+		summarizeBy: none
+		sourceColumn: created_at
+
+		variation Variation
+			isDefault
+			relationship: 8d60795d-388b-44b5-9338-3c77414d8cca
+			defaultHierarchy: LocalDateTable_665de3c0-ffe5-44f3-b1bb-ff77efd938f7.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_deleted
+		dataType: string
+		lineageTag: 1641e652-1521-408d-99fe-81b324e9ee31
+		summarizeBy: none
+		sourceColumn: is_deleted
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_soft_deleted
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 75dc1edb-a2bc-4ec7-a761-3513fd968fcb
+		summarizeBy: none
+		sourceColumn: is_soft_deleted
+
+		annotation SummarizationSetBy = Automatic
+
+	column mobile_no
+		dataType: string
+		lineageTag: 38ff025d-d664-4845-9b94-277e36505ff9
+		summarizeBy: none
+		sourceColumn: mobile_no
+
+		annotation SummarizationSetBy = Automatic
+
+	column name
+		dataType: string
+		lineageTag: 4764b8fd-46ee-4d73-aa13-66aab38f61b5
+		summarizeBy: none
+		sourceColumn: name
+
+		annotation SummarizationSetBy = Automatic
+
+	column nid_no
+		dataType: string
+		lineageTag: cd74834e-962a-4078-95b5-c6d9a36e39e2
+		summarizeBy: none
+		sourceColumn: nid_no
+
+		annotation SummarizationSetBy = Automatic
+
+	column shop_name
+		dataType: string
+		lineageTag: a461794d-ec02-47e5-820b-d03a9a597619
+		summarizeBy: none
+		sourceColumn: shop_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column updated_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: b0b1ea60-957c-42ae-a769-3605f7b72d10
+		summarizeBy: none
+		sourceColumn: updated_at
+
+		variation Variation
+			isDefault
+			relationship: 352d8eb9-0aed-48b3-b15b-4997b04201e6
+			defaultHierarchy: LocalDateTable_251ebb8e-62bb-459e-8bf4-a2ebe4d4169f.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column created_by_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 30b9e7ed-2c36-490a-9960-4514244b247c
+		summarizeBy: sum
+		sourceColumn: created_by_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column organization_id
+		dataType: int64
+		formatString: 0
+		lineageTag: c9b3d455-820a-4fe9-9874-f6e24ac0871d
+		summarizeBy: sum
+		sourceColumn: organization_id
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_Dealers = m
+		mode: import
+		source =
+				let
+				  Source = #"public dealers",
+				  #"Removed columns" = Table.RemoveColumns(Source, {"ac_name", "ac_no", "assigned_gm", "bank", "bkash_no", "branch_name", "dealer_status", "delete_status", "district_name", "district_name_text", "dob", "experience", "moduleid", "namespaceid", "number_of_upazillas", "nid_photo", "nation_name", "nation_name_text", "photo", "recordid", "revision", "routing_no", "shop_address", "trade_license", "upazilla_names_text", "deleted_by", "updated_by", "business_type", "dynamics_code", "code", "module_code_id"})
+				in
+				  #"Removed columns"
+
+	annotation PBI_ResultType = Table
+

@@ -2,6 +2,20 @@ table Dim_Date
 	lineageTag: 0b020ba2-3b0c-4252-b1ae-96eedaad2430
 	dataCategory: Time
 
+	measure Selected_Date = ```
+			
+			VAR SelectedDate =
+			    SELECTEDVALUE ( Dim_Date[Date] )
+			RETURN
+			IF (
+			    ISBLANK ( SelectedDate ),
+			    "No date selected",
+			    FORMAT ( SelectedDate, "dd MMM yyyy" )
+			)
+			
+			```
+		lineageTag: 7c1b757b-1379-4a5c-afd9-8b2ecee46216
+
 	column DateKey
 		dataType: dateTime
 		formatString: Long Date

@@ -334,14 +334,6 @@ expression 'public project' =
 		  #"Navigation 1"
 	lineageTag: eaf5db41-6a0e-4e6a-9811-56f3d25142b8
 
-expression 'public project_conversion' =
-		let
-		  Source = PostgreSQL.Database("172.17.19.21", "bmdsalesdb"),
-		  #"Navigation 1" = Source{[Schema = "public", Item = "project_conversion"]}[Data]
-		in
-		  #"Navigation 1"
-	lineageTag: ec5a74f4-ab0c-434b-9884-22d73db21766
-
 expression 'public project_handover' =
 		let
 		  Source = PostgreSQL.Database("172.17.19.21", "bmdsalesdb"),
@@ -664,11 +656,11 @@ expression 'public zone' =
 		  #"Navigation 1"
 	lineageTag: aeda3352-b185-4f85-9ab7-abc9551c1cd2
 
-expression 'public user_order_history_details' =
+expression 'public project_conversion' =
 		let
 		  Source = PostgreSQL.Database("172.17.19.21", "bmdsalesdb"),
-		  #"Navigation 1" = Source{[Schema = "public", Item = "user_order_history_details"]}[Data]
+		  #"Navigation 1" = Source{[Schema = "public", Item = "project_conversion"]}[Data]
 		in
 		  #"Navigation 1"
-	lineageTag: 6e1f2d3c-4b5a-6789-9abc-def012345678
+	lineageTag: ec5a74f4-ab0c-434b-9884-22d73db21766
 

@@ -1,0 +1,76 @@
+table Dim_UncoverRetailer
+	lineageTag: f4d3cff8-20f9-4857-a5c0-3c652530ec40
+
+	measure Total_Uncover_Retailer = COUNTROWS(Dim_UncoverRetailer)
+		formatString: 0
+		lineageTag: 716084dc-3a16-4a79-b65e-950981ee0d34
+
+	column is_converted_to_retailer
+		dataType: string
+		lineageTag: 5e77ad4d-e371-44e0-87c3-da724e594de0
+		summarizeBy: none
+		sourceColumn: is_converted_to_retailer
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_types
+		dataType: string
+		lineageTag: 21be5ef3-90ed-4aed-9f5a-125bfe3d90f8
+		summarizeBy: none
+		sourceColumn: product_types
+
+		annotation SummarizationSetBy = Automatic
+
+	column id
+		dataType: int64
+		formatString: 0
+		lineageTag: 32fece51-653a-420a-add4-5ab87b11ca55
+		summarizeBy: sum
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	column bazaar_id
+		dataType: int64
+		formatString: 0
+		lineageTag: da367213-1021-443e-aa5a-c2cad511b472
+		summarizeBy: sum
+		sourceColumn: bazaar_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column latitude
+		dataType: string
+		lineageTag: 5662ccd2-1632-437a-9afc-db1efc34f106
+		summarizeBy: none
+		sourceColumn: latitude
+
+		annotation SummarizationSetBy = Automatic
+
+	column longitude
+		dataType: string
+		lineageTag: 17e54711-91ef-4583-bb8a-3d8afea13278
+		summarizeBy: none
+		sourceColumn: longitude
+
+		annotation SummarizationSetBy = Automatic
+
+	column shop_name
+		dataType: string
+		lineageTag: 7c341f4e-5c95-4262-afdd-624d3190a09f
+		summarizeBy: none
+		sourceColumn: shop_name
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_UncoverRetailer = m
+		mode: import
+		source =
+				let
+				  Source = #"public uncovered_retailer",
+				  #"Removed columns" = Table.RemoveColumns(Source, {"total_year_of_experience", "location_photo", "shop_photo", "shop_address", "competitor_names"})
+				in
+				  #"Removed columns"
+
+	annotation PBI_ResultType = Table
+

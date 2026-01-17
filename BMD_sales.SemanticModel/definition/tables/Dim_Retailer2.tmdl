@@ -1,0 +1,224 @@
+table Dim_Retailer2
+	lineageTag: e3de5c87-8561-43d3-acfe-6afb779253e5
+
+	measure Total_Retailer_Count =
+			
+			CALCULATE (
+			    COUNTROWS ( Dim_Retailer2 ),
+			    REMOVEFILTERS ()
+			)
+		formatString: 0
+		lineageTag: 494c4da3-8064-4783-9073-4043a84f1a6a
+
+	measure Active_Retailers = ```
+			
+			CALCULATE (
+			    DISTINCTCOUNT ( Fact_RetailOrder[retailer_id]),
+			    YEAR ( Fact_RetailOrder[order_date] ) = YEAR ( TODAY() ),
+			    MONTH ( Fact_RetailOrder[order_date] ) = MONTH ( TODAY() )
+			)
+			
+			```
+		formatString: 0
+		lineageTag: 0b8cf235-897f-4bcf-a1bc-69c2735cb7e0
+
+	measure Potential_Retailers = ```
+			
+			[Total_Retailer_Count] - [Active_Retailers]
+			
+			```
+		formatString: 0
+		lineageTag: 0bc4536e-31c9-4ef1-87d4-39dc9094990c
+
+	measure Retailer_Visit_Count =
+			
+			CALCULATE (
+			    COUNTROWS ( Fact_Visit ),
+			    Fact_Visit[ClientType] = "Retailer",
+			    TREATAS (
+			        VALUES ( Dim_Retailer2[id] ),
+			        Fact_Visit[ClientID]
+			    )
+			)
+		formatString: 0
+		lineageTag: e2e4e721-55b7-4358-8202-18fe43e3e839
+
+	measure Total_Retailer_UncoverRetailer_Count = [Total_Retailer_Count]+[Total_Uncover_Retailer]
+		formatString: 0
+		lineageTag: fea9aa75-015b-4932-8485-eef26b568a99
+
+	measure Total_Retailers_No_Duplicate_Logic =
+			
+			VAR Retailers_Not_From_Uncovered =
+			    CALCULATE (
+			        COUNTROWS ( Dim_Retailer2 ),
+			        ISBLANK ( Dim_Retailer2[uncovered_retailer_id] )
+			    )
+			VAR Total_Uncovered =
+			    [Total_Uncover_Retailer]
+			RETURN
+			Retailers_Not_From_Uncovered + Total_Uncovered
+		formatString: 0
+		lineageTag: 7d3b9304-8de4-4b31-b536-343b13778788
+
+	measure Total_Retailers_date =
+			
+			CALCULATE (
+			    DISTINCTCOUNT ( Dim_Retailer[RetailerID] ),
+			    TREATAS (
+			        VALUES ( Dim_Date[Date] ),
+			        Dim_Retailer2[created_at]
+			    )
+			)
+		formatString: 0
+		lineageTag: 2f0e6f03-2d04-4800-a897-b343dff7ec14
+
+	measure Total_Retailer_Count_ACL = ```
+			
+			CALCULATE (
+			    COUNTROWS ( Dim_Retailer2 ),
+			    REMOVEFILTERS (),
+			    Dim_Retailer2[organization_id] = 1
+			)
+			
+			```
+		formatString: 0
+		lineageTag: 93b756e1-dd7f-4b68-ae7a-7a0e7185b798
+
+	measure Total_Retailer_Count_AIL = ```
+			
+			CALCULATE (
+			    COUNTROWS ( Dim_Retailer2 ),
+			    REMOVEFILTERS (),
+			    Dim_Retailer2[organization_id] = 2
+			)
+			
+			```
+		formatString: 0
+		lineageTag: d8d36a27-8468-4a67-b1f9-9e61195da922
+
+	column id
+		dataType: int64
+		formatString: 0
+		lineageTag: 735ed7bd-cb0c-437d-be94-978e04f55a82
+		summarizeBy: none
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	column bkash_no
+		dataType: string
+		lineageTag: 2c12a540-913b-4001-86ae-d6bf8c7526e4
+		summarizeBy: none
+		sourceColumn: bkash_no
+
+		annotation SummarizationSetBy = Automatic
+
+	column created_at
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: cbff3a70-d858-454a-8926-f319d196a6da
+		summarizeBy: none
+		sourceColumn: created_at
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column mobile_no
+		dataType: string
+		lineageTag: c7933e8d-af67-4d6e-ad43-20c3a3c206f5
+		summarizeBy: none
+		sourceColumn: mobile_no
+
+		annotation SummarizationSetBy = Automatic
+
+	column name
+		dataType: string
+		lineageTag: 7768f55b-6e53-41a3-a5e0-bcbf5f5ac5c4
+		summarizeBy: none
+		sourceColumn: name
+
+		annotation SummarizationSetBy = Automatic
+
+	column status
+		dataType: string
+		lineageTag: 57d61cd3-14d2-46fc-a9f9-702470f0beb6
+		summarizeBy: none
+		sourceColumn: status
+
+		annotation SummarizationSetBy = Automatic
+
+	column bazaar_id
+		dataType: int64
+		formatString: 0
+		lineageTag: e4e6a537-061a-46b9-a23c-84d547ad23b2
+		summarizeBy: none
+		sourceColumn: bazaar_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column dealer_id
+		dataType: int64
+		formatString: 0
+		lineageTag: d124380a-d7fa-4dc5-aaf4-7a5d92c484ad
+		summarizeBy: sum
+		sourceColumn: dealer_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column organization_id
+		dataType: int64
+		formatString: 0
+		lineageTag: afeb536e-7cca-4d59-abed-3e7ea0a328c5
+		summarizeBy: sum
+		sourceColumn: organization_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column uncovered_retailer_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 6613916b-b17a-4339-9fc2-85ac0ac4663a
+		summarizeBy: sum
+		sourceColumn: uncovered_retailer_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column lat
+		dataType: string
+		lineageTag: d35b1250-f4a4-4a23-97c7-b9c10a713b39
+		summarizeBy: none
+		sourceColumn: lat
+
+		annotation SummarizationSetBy = Automatic
+
+	column lng
+		dataType: string
+		lineageTag: 16da49f6-963e-46cd-b844-937da1ebe8ba
+		summarizeBy: none
+		sourceColumn: lng
+
+		annotation SummarizationSetBy = Automatic
+
+	column ClientKey
+		dataType: string
+		lineageTag: f441a436-a0c5-4474-b3b0-53b8bf3a98ac
+		summarizeBy: none
+		sourceColumn: ClientKey
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_Retailer2 = m
+		mode: import
+		source =
+				let
+				  Source = #"public retailers",
+				  #"Removed columns" = Table.RemoveColumns(Source, {"address", "area_of_work", "assigned_agm", "assigned_asm", "assigned_gm", "assigned_sr", "assigned_sr_name", "assigned_zsm", "bank_name", "bazaar_name", "bazaar_name_text", "branch_name", "created_by", "dealer_name", "dob", "experience", "is_deleted", "message", "moduleid", "ac_name", "ac_no", "namespaceid", "nid_no", "nid_photo", "owned_by", "photo", "preferred_mfs", "present_address", "recordid", "revision", "routing_no", "shop_address", "shop_name", "updated_at", "updated_by", "created_by_user_id", "deleted_by", "updated_by_user", "business_type", "location_photo", "location_save_for_later", "mfs", "mfs_type", "code", "module_code_id"}),
+				  #"Changed column type" = Table.TransformColumnTypes(#"Removed columns", {{"created_at", type date}}),
+				  #"Added custom" = Table.TransformColumnTypes(Table.AddColumn(#"Changed column type", "ClientKey", each "Retailer-" & Text.From([id])), {{"ClientKey", type text}})
+				in
+				  #"Added custom"
+
+	annotation PBI_ResultType = Table
+

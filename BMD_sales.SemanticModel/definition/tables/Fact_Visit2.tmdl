@@ -1,0 +1,429 @@
+table Fact_Visit2
+	lineageTag: 4666cd22-3542-44c7-be09-34b6fc148cb5
+
+	measure Total_Visits2 = COUNTROWS ( Fact_Visit2 )
+		formatString: 0
+		lineageTag: 526aa81c-80d1-4747-b63f-40d5060cc906
+
+	measure Active_Employees2 =
+			
+			CALCULATE (
+			    DISTINCTCOUNT ( Dim_User[EmployeeID] ),
+			    Fact_Visit2
+			)
+		formatString: 0
+		lineageTag: 57e46549-6d51-4bc4-9f9b-b4c1116bcdf9
+
+	measure Inactive_Employees =
+			
+			[Total_Employees] - [Active_Employees2]
+		formatString: 0
+		lineageTag: 202890b1-c94f-4906-a9d1-3fbfd27c8d69
+
+	measure Unique_Clients_Visited2 = DISTINCTCOUNT('Fact_Visit2'[ClientKey])
+		formatString: 0
+		lineageTag: a536860c-d265-4d25-96a1-83d4a35cbb49
+
+	measure Total_UncoverRetailer_Visits2 =
+			
+			SUMX (
+			    VALUES ( Dim_Date[Date] ),
+			    CALCULATE (
+			        DISTINCTCOUNT ( Fact_Visit2[ClientKey] ),
+			        Dim_Client_Simple[ClientType] = "UncoveredRetailer",
+			        REMOVEFILTERS ( Dim_EntityGroup[EntityGroup] )
+			    )
+			)
+		formatString: 0
+		lineageTag: 61d17535-f0d6-465a-ba19-9475b6026702
+
+	measure UniqueEmployeesWithVisits = DISTINCTCOUNT('Fact_Visit2'[created_by_id])
+		formatString: 0
+		lineageTag: 24cbce39-0344-4662-a30e-a286e8b4f399
+
+	measure 'Total Site + IHB Visits2' =
+			
+			CALCULATE (
+			    [Total_Visits2],
+			    Dim_Client_Simple[ClientType] IN { "Site", "IHB" },
+			    REMOVEFILTERS ( Dim_EntityGroup[EntityGroup] )
+			)
+		formatString: 0
+		lineageTag: ebe374c7-2c36-4629-a42e-d443d0468fa5
+
+	measure Visit_Percentage_By_EntityGroup = ```
+			
+			DIVIDE (
+			    [Daily_Unique_Client_Visits],
+			    CALCULATE (
+			        [Daily_Unique_Client_Visits],
+			        REMOVEFILTERS ( Dim_Client_Simple[EntityGroup] )
+			    ),
+			    0
+			)
+			
+			```
+		lineageTag: f7d18a94-45d3-4e0c-acf1-84b576480ab4
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Daily_Unique_Client_Visits =
+			
+			SUMX (
+			    VALUES ( Dim_Date[Date] ),
+			    CALCULATE (
+			        DISTINCTCOUNT ( Fact_Visit2[ClientKey] )
+			    )
+			)
+		formatString: 0
+		lineageTag: 35634534-6382-4f65-af0a-5cca3900ec21
+
+	column id
+		dataType: int64
+		formatString: 0
+		lineageTag: 071bda72-7bbb-49f0-bbc9-7c3acf086e6a
+		summarizeBy: sum
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	column create_by_name
+		dataType: string
+		lineageTag: 64c19a20-2565-4b68-89c5-dd71e2605716
+		summarizeBy: none
+		sourceColumn: create_by_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column created_at
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 467c3f50-db5b-4ebf-bf14-c25901efc618
+		summarizeBy: none
+		sourceColumn: created_at
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column followup_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: c5e55df7-3a59-4227-b8f7-316c30f2bb80
+		summarizeBy: none
+		sourceColumn: followup_date
+
+		variation Variation
+			isDefault
+			relationship: f9f197ed-e99a-456e-ac1a-74ea77dcb6ff
+			defaultHierarchy: LocalDateTable_bbf9fa7d-517c-4dba-8e95-5fcc6a54ea34.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column influencer_type
+		dataType: string
+		lineageTag: cc81da66-7741-40ee-965f-db775eaf0cb6
+		summarizeBy: none
+		sourceColumn: influencer_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column role_level
+		dataType: int64
+		formatString: 0
+		lineageTag: 5fa29e3a-d8ed-424e-9292-21ce2847d01a
+		summarizeBy: sum
+		sourceColumn: role_level
+
+		annotation SummarizationSetBy = Automatic
+
+	column updated_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 6af9891c-f317-4a30-ac42-8f6ae62fa9c4
+		summarizeBy: none
+		sourceColumn: updated_at
+
+		variation Variation
+			isDefault
+			relationship: e031f26d-dcf5-468d-b764-b94012f0ffc6
+			defaultHierarchy: LocalDateTable_c0a1af1c-94d3-496b-9d1d-5f5171ee252e.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column visit_type
+		dataType: string
+		lineageTag: 42ee1011-585e-4d53-90e4-f61c5a6afb8e
+		summarizeBy: none
+		sourceColumn: visit_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column contractor_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 0b551011-1a57-4064-b47d-2bc35df3806a
+		summarizeBy: sum
+		sourceColumn: contractor_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column created_by_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 7eca3c26-c82e-405c-9d56-519ef3749c58
+		summarizeBy: none
+		sourceColumn: created_by_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column dealer_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 1e6381e3-fba3-4568-881c-d603169284a3
+		summarizeBy: sum
+		sourceColumn: dealer_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column engineer_id
+		dataType: int64
+		formatString: 0
+		lineageTag: dbd6c62a-886c-47c1-b13c-82a443c35c83
+		summarizeBy: sum
+		sourceColumn: engineer_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column head_mason_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 4ae31e4b-c184-4161-a03f-b96b3484e232
+		summarizeBy: sum
+		sourceColumn: head_mason_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column ihb_registration_id
+		dataType: int64
+		formatString: 0
+		lineageTag: d14eb22e-6cca-4843-8a05-d83ae8c73224
+		summarizeBy: sum
+		sourceColumn: ihb_registration_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column organization_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 9e5626a5-32ca-4640-92a2-937b7cc2954a
+		summarizeBy: sum
+		sourceColumn: organization_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column potential_site_id
+		dataType: int64
+		formatString: 0
+		lineageTag: b384b27a-d55a-4554-a9e3-6b5922ef6c82
+		summarizeBy: sum
+		sourceColumn: potential_site_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column project_conversion_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 7250374e-5858-4a7b-b09a-b10bd3bf7a4e
+		summarizeBy: sum
+		sourceColumn: project_conversion_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column retailer_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 839aeddc-057c-4df6-9b8b-0b6e467ad335
+		summarizeBy: sum
+		sourceColumn: retailer_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column site_manager_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 566acbec-26c4-4b7c-8b8a-99adeaa0fa1a
+		summarizeBy: sum
+		sourceColumn: site_manager_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column updated_by_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 8b4681ac-a067-4315-8e79-0c04e5b9e542
+		summarizeBy: sum
+		sourceColumn: updated_by_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column visit_category_id
+		dataType: int64
+		formatString: 0
+		lineageTag: e201c32b-6320-4010-bfa4-cd31c4c04e55
+		summarizeBy: sum
+		sourceColumn: visit_category_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column visit_phase_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 574f36a0-22d0-48d5-b11a-3f5191aa6854
+		summarizeBy: sum
+		sourceColumn: visit_phase_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column visit_stage_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 1a953b67-12d2-4b2c-badf-374cceb2b049
+		summarizeBy: sum
+		sourceColumn: visit_stage_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column latitude
+		dataType: double
+		lineageTag: c18978f0-c648-4076-bfbc-715cbf7b2799
+		summarizeBy: sum
+		sourceColumn: latitude
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column longitude
+		dataType: double
+		lineageTag: c517bacd-7c3b-4411-b978-fa40de1ab2af
+		summarizeBy: sum
+		sourceColumn: longitude
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column bazaar_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 37281628-9057-4b92-b559-6e5d36c49172
+		summarizeBy: sum
+		sourceColumn: bazaar_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column carpenter_id
+		dataType: int64
+		formatString: 0
+		lineageTag: ce22b419-4e95-4ec2-b0a8-61807237081a
+		summarizeBy: sum
+		sourceColumn: carpenter_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column conversion_lead_id
+		dataType: int64
+		formatString: 0
+		lineageTag: f6692208-6e6a-46df-9528-63a4e5d72c3c
+		summarizeBy: sum
+		sourceColumn: conversion_lead_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column end_user_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 4f1e36e8-5448-45cc-a216-8c4dcc0421ca
+		summarizeBy: sum
+		sourceColumn: end_user_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column lead_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 17b5e56a-2766-4000-9685-0d24be8ba2ff
+		summarizeBy: sum
+		sourceColumn: lead_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column uncovered_retailer_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 5aae8420-7e8f-4e24-a20b-c0466a2c08a2
+		summarizeBy: sum
+		sourceColumn: uncovered_retailer_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column ClientKey
+		dataType: string
+		lineageTag: 503852f7-7bbc-46a8-b35d-2847b7e6d0b2
+		summarizeBy: none
+		sourceColumn: ClientKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ClientType
+		dataType: string
+		lineageTag: f4053b6e-4cff-41bc-8194-183b07f1eaad
+		summarizeBy: none
+		sourceColumn: ClientType
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Fact_Visit2 = m
+		mode: import
+		source =
+				let
+				  Source = #"public visits",
+				  #"Removed columns" = Table.RemoveColumns(Source, {"bd_incharge_feedback", "conversion_no", "delete_status", "entity_id", "entity_name", "entity_record_id", "feedback", "product_photo", "recordid", "territory_id", "territory_name", "visit_date_time", "visit_photo", "category", "code", "end_time", "picture_type", "projection", "start_time", "sub_category", "module_code_id", "route_id", "client_type"}),
+				  #"Added custom" = Table.TransformColumnTypes(Table.AddColumn(#"Removed columns", "ClientType", each if [visit_type] = "Dealer" then "Dealer"
+				else if [visit_type] = "Sites" then "Site"
+				else if [visit_type] = "General Sites" then "Site"
+				else if [visit_type] = "IHB" then "IHB"
+				else if [visit_type] = "Ihb" then "IHB"
+				else if [visit_type] = "Retailer" then "Retailer"
+				else if [visit_type] = "uncovered retailer" then "UncoveredRetailer"
+				else if [visit_type] = "Influencer" and [influencer_type] = "Contractor" then "Contractor"
+				else if [visit_type] = "Influencer" and [influencer_type] = "Site Engineer" then "SiteManager"
+				else if [visit_type] = "Influencer" and [influencer_type] = "Head Mason" then "HeadMason"
+				else if [visit_type] = "Influencer" and [influencer_type] = "Consultant Engineer" then "Engineer"
+				else null), {{"ClientType", type text}}),
+				  #"Added custom 1" = Table.TransformColumnTypes(Table.AddColumn(#"Added custom", "ClientKey", each if [dealer_id] <> null then "Dealer-" & Text.From([dealer_id])
+				else if [potential_site_id] <> null then "Site-" & Text.From([potential_site_id])
+				else if [ihb_registration_id] <> null then "IHB-" & Text.From([ihb_registration_id])
+				else if [retailer_id] <> null then "Retailer-" & Text.From([retailer_id])
+				else if [uncovered_retailer_id] <> null then "UncoveredRetailer-" & Text.From([uncovered_retailer_id])
+				else if [contractor_id] <> null then "Contractor-" & Text.From([contractor_id])
+				else if [site_manager_id] <> null then "SiteManager-" & Text.From([site_manager_id])
+				else if [head_mason_id] <> null then "HeadMason-" & Text.From([head_mason_id])
+				else if [engineer_id] <> null then "Engineer-" & Text.From([engineer_id])
+				else null), {{"ClientKey", type text}}),
+				  #"Added custom 2" = Table.AddColumn(#"Added custom 1", "ClientType2", each if [ClientKey] <> null then
+				    Text.BeforeDelimiter([ClientKey], "-")
+				else
+				    null),
+				  #"Removed columns 1" = Table.RemoveColumns(#"Added custom 2", {"ClientType"}),
+				  #"Renamed columns" = Table.RenameColumns(#"Removed columns 1", {{"ClientType2", "ClientType"}}),
+				  #"Removed columns 2" = Table.RemoveColumns(#"Renamed columns", {"origin", "status"}),
+				  #"Changed column type" = Table.TransformColumnTypes(#"Removed columns 2", {{"created_at", type date}})
+				in
+				  #"Changed column type"
+
+	annotation PBI_ResultType = Table
+

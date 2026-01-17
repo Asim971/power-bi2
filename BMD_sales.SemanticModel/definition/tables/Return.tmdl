@@ -1,0 +1,81 @@
+table Return
+	lineageTag: 419e2e57-33b1-4d50-a33b-d4b994b1f020
+
+	measure Return =
+			
+			VAR Result =
+			    CALCULATE (
+			        SUM ( 'Return'[Amount] ),
+			        TREATAS (
+			            VALUES ( Dim_Contractor[ContractorID] ),
+			            'Return'[id]
+			        )
+			    )
+			RETURN
+			IF ( ISBLANK ( Result ), 0, Result )
+		formatString: 0
+		lineageTag: c5438808-292e-489a-8502-cedb4850f036
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 504996d0-25af-4f2c-a3a7-f28bae39690a
+		summarizeBy: none
+		sourceColumn: Date
+
+		variation Variation
+			isDefault
+			relationship: 1d5962e3-6de6-4497-8c84-544d440f04c4
+			defaultHierarchy: LocalDateTable_43afd7a7-4705-432a-bc3a-8db381ecfeaa.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column id
+		dataType: int64
+		formatString: 0
+		lineageTag: 5553bcf6-ebaa-410a-bcc3-65958879ccc4
+		summarizeBy: none
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	column Name
+		dataType: string
+		lineageTag: 0461114b-b936-4d56-a93e-5cfe7dc1cef0
+		summarizeBy: none
+		sourceColumn: Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Phone
+		dataType: string
+		lineageTag: 9e2ea1d1-f939-442c-80a2-4777c5815938
+		summarizeBy: none
+		sourceColumn: Phone
+
+		annotation SummarizationSetBy = Automatic
+
+	column Amount
+		dataType: int64
+		formatString: 0
+		lineageTag: 2a2b5a51-d887-4f70-bcc9-11d5577000a7
+		summarizeBy: sum
+		sourceColumn: Amount
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Return = m
+		mode: import
+		source =
+				let
+				  Source = GoogleSheets.Contents("https://docs.google.com/spreadsheets/d/1zjWLuG2KqayTm4EhyaVEVk5sXqvE70g5q7FVhdruIS8/edit?gid=0#gid=0"),
+				  #"Navigation 1" = Source{[name = "Return", ItemKind = "Table"]}[Data],
+				  #"Promoted headers" = Table.PromoteHeaders(#"Navigation 1"),
+				  #"Changed column type" = Table.TransformColumnTypes(#"Promoted headers", {{"Date", type date}, {"id", Int64.Type}, {"Amount", Int64.Type}})
+				in
+				  #"Changed column type"
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,199 @@
+table Fact_RetailOrder
+	lineageTag: 45867225-9226-4a56-a8fe-8df63d9c6310
+
+	measure Total_Order_Amount = SUM(Fact_RetailOrder[total_amount])
+		lineageTag: 0c470f7c-e99d-46c3-a952-371e85228ab4
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Total_Retail_Order_Quantity = SUM(Fact_RetailOrder[total_quantity])
+		lineageTag: 468c8102-192a-458a-9bf9-4357aff34649
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Total_Retails_Count = DISTINCTCOUNT(Fact_RetailOrder[retailer_id])
+		formatString: 0
+		lineageTag: 1d360938-80fa-4b4c-9581-5ac42c5a4324
+
+	measure Pending_Retailer_Order = ```
+			
+			VAR Result =
+			    CALCULATE (
+			        [Total_Retail_Order_Quantity] * 3,
+			        Fact_RetailOrder[retailer_order_status] <> "APPROVED",
+			        Fact_RetailOrder[retailer_order_status] <> "REJECTED"
+			    )
+			RETURN
+			COALESCE ( Result, 0 )
+			
+			```
+		lineageTag: 37d8afbc-21f8-4d2d-9487-24331b3b2ab8
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Due_Retailer_Order =
+			
+			VAR DueAmount =
+			    CALCULATE (
+			        [Total_Retail_Order_Quantity] * 3,
+			        Fact_RetailOrder[retailer_order_status] = "APPROVED"
+			    )
+			VAR PaidAmount = [Total_Retailer_Paid]
+			VAR Remaining = DueAmount - PaidAmount
+			RETURN
+			IF (
+			    Remaining <= 0,
+			    0,
+			    Remaining
+			)
+		lineageTag: b76a0b8a-893e-4422-8586-8be69fef6741
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Avg_Volume_Per_Retailer = ```
+			
+			DIVIDE (
+			    [Total_Retail_Order_Quantity],
+			    [Active_Retailers],
+			    0
+			)
+			
+			```
+		lineageTag: 513fecad-ee6e-4290-b335-857a211fe2b8
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Avg_Order_per_Retailers =
+			
+			DIVIDE (
+			    [Total_Retail_Order_Quantity],
+			    [Active_Retailers]
+			)
+		lineageTag: 9c79398a-adf9-499a-8777-b6fbaa1ec002
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column id
+		dataType: int64
+		formatString: 0
+		lineageTag: 528d49d8-8bcd-44bd-b97e-6d47cd80ae8f
+		summarizeBy: sum
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	column latitude
+		dataType: string
+		lineageTag: c84345ea-1d1a-4507-a9e6-d379a52af2c3
+		summarizeBy: none
+		sourceColumn: latitude
+
+		annotation SummarizationSetBy = Automatic
+
+	column longitude
+		dataType: string
+		lineageTag: b82bd808-109e-432d-8e0a-f3c7c556aa60
+		summarizeBy: none
+		sourceColumn: longitude
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: c2391416-0450-4358-b072-0174f3c8b42d
+		summarizeBy: none
+		sourceColumn: order_date
+
+		variation Variation
+			isDefault
+			relationship: a2dd2d07-4959-4f48-aa36-adb5c58fa380
+			defaultHierarchy: LocalDateTable_67abb228-df6e-431a-9d86-0427590bb1f4.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column retailer_order_payment_type
+		dataType: string
+		lineageTag: c879e8d9-6a78-47ab-aeda-e254c5e29c25
+		summarizeBy: none
+		sourceColumn: retailer_order_payment_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column retailer_order_status
+		dataType: string
+		lineageTag: d117d753-fbb1-4365-bdb2-80efc440a7b9
+		summarizeBy: none
+		sourceColumn: retailer_order_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_amount
+		dataType: double
+		lineageTag: bffcca0c-c527-4ec9-9276-161a1ea97655
+		summarizeBy: sum
+		sourceColumn: total_amount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column total_quantity
+		dataType: double
+		lineageTag: e1841613-3315-41aa-9925-9e9690e43866
+		summarizeBy: sum
+		sourceColumn: total_quantity
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column unit_type
+		dataType: string
+		lineageTag: 01017c86-0a4d-45aa-a87a-9f27b420057a
+		summarizeBy: none
+		sourceColumn: unit_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column retailer_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 227e868b-f4c3-4c04-aff9-40efcda9f1fe
+		summarizeBy: none
+		sourceColumn: retailer_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column user_id
+		dataType: int64
+		formatString: 0
+		lineageTag: dd218715-2cf5-4a1f-8c23-3e71f6902d6e
+		summarizeBy: none
+		sourceColumn: user_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column dealer_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 25a67e32-00e5-45d1-8844-ff77490aa61f
+		summarizeBy: sum
+		sourceColumn: dealer_id
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Fact_RetailOrder = m
+		mode: import
+		source =
+				let
+				  Source = #"public retailer_order",
+				  #"Removed columns" = Table.RemoveColumns(Source, {"approval_date", "approved_image_url", "delete_status", "feed_back", "rejection_feed_back", "code", "module_code_id"}),
+				  #"Changed column type" = Table.TransformColumnTypes(#"Removed columns", {{"order_date", type date}})
+				in
+				  #"Changed column type"
+
+	annotation PBI_ResultType = Table
+

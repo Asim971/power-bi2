@@ -1,0 +1,183 @@
+table Pending
+	lineageTag: 07fb456b-ba79-449d-8465-79f212846f8b
+
+	measure Pending =
+			
+			CALCULATE (
+			    [Total_Order_Bags] * 3,
+			    NOT ISBLANK ( Dim_Contractor[ContractorID] )
+			)
+		formatString: 0
+		lineageTag: 3473f589-1538-4b3a-874d-7d5259a9f104
+
+	measure Pending_For_SR = ```
+			
+			VAR Result =
+			    CALCULATE (
+			        [Total_PartnerEligible_Orders_Bags] * 3,
+			        NOT ISBLANK ( Dim_Contractor[ContractorID] ),
+			        Dim_User[RoleName] = "Sr",
+			        Fact_UserOrders[order_status] <> "APPROVED",
+			        Fact_UserOrders[order_status] <> "REJECTED"
+			    )
+			RETURN
+			IF ( ISBLANK ( Result ), 0, Result )
+			
+			```
+		formatString: 0
+		lineageTag: e4a262ff-9a94-45f1-b7f7-7e2d91a11750
+
+	measure Due_For_SR =
+			
+			VAR Result =
+			    CALCULATE (
+			        [Total_PartnerEligible_Orders_Bags] * 3,
+			        NOT ISBLANK ( Dim_Contractor[ContractorID] ),
+			        Dim_User[RoleName] = "Sr",
+			    Fact_UserOrders[order_status] = "APPROVED"
+			    )
+			RETURN
+			IF (
+			    ISBLANK ( Result ),
+			    0,
+			    Result
+			)
+		formatString: 0
+		lineageTag: 1ad26a09-03a8-430b-be5e-c0b0030cfac8
+
+	measure Remaining_Due_For_SR = ```
+			
+			VAR Remaining =
+			    [Due_For_SR]
+			    - [Processing_Raw]
+			    - [Net_Paid]
+			RETURN
+			IF ( Remaining <= 0, 0, Remaining )
+			
+			```
+		formatString: 0
+		lineageTag: 4d1cc3cc-bea6-4371-8bf3-6004f506c02b
+
+	measure Total_Pending_For_SR = ```
+			
+			VAR Result =
+			    CALCULATE (
+			        [Total_PartnerEligible_Orders_Bags] * 3,
+			        NOT ISBLANK ( Dim_Contractor[ContractorID] ),
+			        Dim_User[RoleName] = "Sr"
+			    )
+			RETURN
+			IF ( ISBLANK ( Result ), 0, Result )
+			
+			```
+		formatString: 0
+		lineageTag: baf5df4b-729f-4ec4-865d-aaf135c93f11
+
+	measure Partner_Incentive_Rate = ```
+			
+			VAR Bags = [Total_PartnerEligible_Orders_Bags]
+			RETURN
+			SWITCH (
+			    TRUE(),
+			    Bags >= 1000, 8.00,
+			    Bags >= 700,  6.00,
+			    Bags >= 500,  5.00,
+			    Bags >= 300,  4.00,
+			    Bags >= 200,  3.50,
+			    Bags >= 100,  3.00,
+			    Bags >= 50,   2.50,
+			    0
+			)
+			
+			```
+		lineageTag: 784d7d89-46eb-4ebf-931a-742075338a23
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Pending_For_SR_New = ```
+			
+			VAR Amount =
+			    CALCULATE (
+			        [Total_PartnerEligible_Orders_Bags]
+			            * [Partner_Incentive_Rate],
+			        NOT ISBLANK ( Dim_Contractor[ContractorID] ),
+			        Dim_User[RoleName] = "Sr",
+			        Fact_UserOrders[order_status] <> "APPROVED",
+			        Fact_UserOrders[order_status] <> "REJECTED"
+			    )
+			RETURN
+			COALESCE ( Amount, 0 )
+			
+			```
+		lineageTag: 1c97f365-952c-45ea-bfc2-77ddf3049a51
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Due_For_SR_New = ```
+			
+			VAR Amount =
+			    CALCULATE (
+			        [Total_PartnerEligible_Orders_Bags]
+			            * [Partner_Incentive_Rate],
+			        NOT ISBLANK ( Dim_Contractor[ContractorID] ),
+			        Dim_User[RoleName] = "Sr",
+			        Fact_UserOrders[order_status] = "APPROVED"
+			    )
+			RETURN
+			COALESCE ( Amount, 0 )
+			
+			```
+		lineageTag: 05a997a2-53bb-490f-9a28-22e4f049566b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Remaining_Due_For_SR_New = ```
+			
+			VAR Remaining =
+			    [Due_For_SR_New]
+			    - [Processing_Raw]
+			    - [Net_Paid]
+			RETURN
+			IF ( Remaining <= 0, 0, Remaining )
+			
+			```
+		lineageTag: b1843c47-c670-4367-98a1-cf2ec18eb871
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column id
+		dataType: string
+		lineageTag: be1214f8-1593-47c6-b740-70c356ae0c76
+		summarizeBy: none
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	column Name
+		dataType: string
+		lineageTag: f628cd92-c1ac-447e-90ac-c2b6ab9e9e39
+		summarizeBy: none
+		sourceColumn: Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Phone
+		dataType: string
+		lineageTag: 5ec46da6-ff31-4c70-8b10-36b61743ccfd
+		summarizeBy: none
+		sourceColumn: Phone
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Pending = m
+		mode: import
+		source =
+				let
+				  Source = GoogleSheets.Contents("https://docs.google.com/spreadsheets/d/1zjWLuG2KqayTm4EhyaVEVk5sXqvE70g5q7FVhdruIS8/edit?gid=0#gid=0"),
+				  #"Navigation 1" = Source{[name = "Pending", ItemKind = "Table"]}[Data],
+				  #"Promoted headers" = Table.PromoteHeaders(#"Navigation 1", [PromoteAllScalars = true])
+				in
+				  #"Promoted headers"
+
+	annotation PBI_ResultType = Table
+

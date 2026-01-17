@@ -118,9 +118,10 @@ table Dim_Bazaar
 				  #"Expanded public bd_territory_bazaars" = Table.ExpandTableColumn(#"Merged queries", "public bd_territory_bazaars", {"bd_territory_id"}, {"bd_territory_id"}),
 				  #"Merged queries 1" = Table.NestedJoin(#"Expanded public bd_territory_bazaars", {"BazaarID"}, TerritoryBazaarListBuffered, {"bazaar_list_id"}, "public territory_bazaar_list", JoinKind.LeftOuter),
 				  #"Expanded public territory_bazaar_list" = Table.ExpandTableColumn(#"Merged queries 1", "public territory_bazaar_list", {"territory_id"}, {"territory_id"}),
-				  #"Removed duplicates" = Table.Distinct(#"Expanded public territory_bazaar_list", {"BazaarID"})
+				  #"Removed duplicates" = Table.Distinct(#"Expanded public territory_bazaar_list", {"BazaarID"}),
+				  #"Sorted rows" = Table.Sort(#"Removed duplicates", {{"BazaarID", Order.Ascending}})
 				in
-				    #"Removed duplicates"
+				    #"Sorted rows"
 				```
 
 	changedProperty = IsHidden

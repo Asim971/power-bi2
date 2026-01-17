@@ -1,0 +1,74 @@
+table 'Contractor Target'
+	lineageTag: 080572ab-03cb-4fe0-909e-4b517d75794f
+
+	measure Total_Contractor_Target = SUM('Contractor Target'[Target])
+		formatString: 0
+		lineageTag: 5275eded-ce07-4e75-b047-72bf478e3000
+
+	measure Target_vs_Achievement_Percent =
+			
+			DIVIDE (
+			    [Total_PartnerEligible_Orders_Bags],
+			    [Total_Contractor_Target],
+			    0
+			)
+		lineageTag: 22253ecd-c750-41a8-80cb-2437b9cdd0eb
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column id
+		dataType: int64
+		formatString: 0
+		lineageTag: d04a98ca-bf18-456f-9cd4-a190bdd0d650
+		summarizeBy: none
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	column name
+		dataType: string
+		lineageTag: e7fee52a-62dd-43e6-9516-a9bb958233e3
+		summarizeBy: none
+		sourceColumn: name
+
+		annotation SummarizationSetBy = Automatic
+
+	column email
+		dataType: string
+		lineageTag: 92f29d2d-490f-4849-b75d-eb81d6455fea
+		summarizeBy: none
+		sourceColumn: email
+
+		annotation SummarizationSetBy = Automatic
+
+	column role_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 919aada1-d4db-4169-9fde-6a98ec919670
+		summarizeBy: sum
+		sourceColumn: role_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column Target
+		dataType: int64
+		formatString: 0
+		lineageTag: 59e33cbd-582f-4664-806a-adaf0a33bfb3
+		summarizeBy: sum
+		sourceColumn: Target
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Contractor Target' = m
+		mode: import
+		source =
+				let
+				  Source = GoogleSheets.Contents("https://docs.google.com/spreadsheets/d/19WINZf1-7yaYzjWDQW5G5G7PBLPTcylP4CuvTezCwkM/edit?gid=0#gid=0"),
+				  #"Navigation 1" = Source{[name = "Contractor Target", ItemKind = "Table"]}[Data],
+				  #"Promoted headers" = Table.PromoteHeaders(#"Navigation 1", [PromoteAllScalars = true]),
+				  #"Changed column type" = Table.TransformColumnTypes(#"Promoted headers", {{"id", Int64.Type}, {"name", type text}, {"email", type text}, {"role_id", Int64.Type}, {"Target", Int64.Type}})
+				in
+				  #"Changed column type"
+
+	annotation PBI_ResultType = Table
+

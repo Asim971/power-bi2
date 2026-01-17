@@ -74,37 +74,6 @@ table Fact_Visit
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	/// Visits with territory derived from employee assignment (not GPS)
-	measure Employee_Derived_Territory_Visits = 
-			CALCULATE(
-				COUNTROWS('Fact_Visit'),
-				'Fact_Visit'[TerritorySource] = "Employee"
-			)
-		formatString: #,##0
-		displayFolder: GPS & Territory
-		lineageTag: fv-m001-emp-derived-territory
-
-	/// Visits with no territory (neither GPS nor employee derivation)
-	measure Unknown_Territory_Visits = 
-			CALCULATE(
-				COUNTROWS('Fact_Visit'),
-				'Fact_Visit'[TerritorySource] = "Unknown"
-			)
-		formatString: #,##0
-		displayFolder: GPS & Territory
-		lineageTag: fv-m002-unknown-territory
-
-	/// Percentage of visits that now have territory (GPS or derived)
-	measure Territory_Coverage_Rate = 
-			DIVIDE(
-				COUNTROWS(FILTER('Fact_Visit', 'Fact_Visit'[territory_id] <> BLANK())),
-				COUNTROWS('Fact_Visit'),
-				0
-			)
-		formatString: 0.0%
-		displayFolder: Rates
-		lineageTag: fv-m003-territory-coverage
-
 	/// Visits where the employee's zone doesn't match the client's zone
 	measure Zone_Mismatch_Visits =
 			CALCULATE(
@@ -122,7 +91,7 @@ table Fact_Visit
 
 		changedProperty = IsHidden
 
-	measure Total_Visits = COUNTROWS('Fact_Visit')
+	measure Total_Visits = COUNTROWS ( Fact_Visit )
 		formatString: #,##0
 		displayFolder: Visit Counts\Base
 		lineageTag: 34aafb72-4095-4c1a-bdcc-31f7eb99b15f
@@ -715,14 +684,15 @@ table Fact_Visit
 
 	measure Average_Visit_FRD = ```
 			
-					VAR TotalVisits = COUNTROWS('Fact_Visit')
-					VAR UniqueEmployeesWithVisits = DISTINCTCOUNT('Fact_Visit'[EmployeeID])
+					VAR TotalVisits = [Daily_Unique_Client_Visits]
+					VAR UniqueEmployeesWithVisits = DISTINCTCOUNT('Fact_Visit2'[created_by_id])
 					RETURN
 					IF(
 						UniqueEmployeesWithVisits = 0, 
 						0, 
-						ROUND(DIVIDE(TotalVisits, UniqueEmployeesWithVisits), 0)
+						DIVIDE(TotalVisits, UniqueEmployeesWithVisits)
 					)
+			
 			```
 		formatString: #,##0
 		displayFolder: FRD Dashboard\KPI Tiles
@@ -1181,13 +1151,13 @@ table Fact_Visit
 
 		changedProperty = IsHidden
 
-	measure simple_target = SUM(Fact_Target[DailyTarget])
+	measure simple_target = SUM(Target[DailyTarget])
 		formatString: 0
 		lineageTag: 649c1c48-53f9-48de-b660-6f00a26e49c0
 
 		changedProperty = IsHidden
 
-	measure sim_ach = DIVIDE([Total_Visits], [simple_target],"N/A")
+	measure sim_ach = DIVIDE([Daily_Unique_Client_Visits], [Total_Target_New],0)
 		lineageTag: 10de036b-8dae-4856-8d05-17381ce8483e
 
 		changedProperty = IsHidden
@@ -1198,7 +1168,8 @@ table Fact_Visit
 			
 			CALCULATE (
 			    [Total_Visits],
-			    'Fact_Visit'[ClientType] IN { "Site", "IHB" }
+			    'Fact_Visit'[visit_type] IN { "Sites", "IHB" },
+			    REMOVEFILTERS ( Dim_EntityGroup[EntityGroup] )
 			)
 		formatString: 0
 		displayFolder: Visit Counts
@@ -1259,6 +1230,204 @@ table Fact_Visit
 		lineageTag: 52aa8b39-8acd-53fe-bd55-aa89c1658ccb
 
 		changedProperty = IsHidden
+
+	/// Visits with territory derived from employee assignment (not GPS)
+	measure Employee_Derived_Territory_Visits =
+			CALCULATE(
+				COUNTROWS('Fact_Visit'),
+				'Fact_Visit'[TerritorySource] = "Employee"
+			)
+		formatString: #,##0
+		displayFolder: GPS & Territory
+		lineageTag: fv-m001-emp-derived-territory
+
+	/// Visits with no territory (neither GPS nor employee derivation)
+	measure Unknown_Territory_Visits =
+			CALCULATE(
+				COUNTROWS('Fact_Visit'),
+				'Fact_Visit'[TerritorySource] = "Unknown"
+			)
+		formatString: #,##0
+		displayFolder: GPS & Territory
+		lineageTag: fv-m002-unknown-territory
+
+	/// Percentage of visits that now have territory (GPS or derived)
+	measure Territory_Coverage_Rate =
+			DIVIDE(
+				COUNTROWS(FILTER('Fact_Visit', 'Fact_Visit'[territory_id] <> BLANK())),
+				COUNTROWS('Fact_Visit'),
+				0
+			)
+		formatString: 0.0%
+		displayFolder: Rates
+		lineageTag: fv-m003-territory-coverage
+
+	measure 'Average Visits per User' =
+			
+			DIVIDE (
+			    COUNTROWS ( Fact_Visit ),
+			    DISTINCTCOUNT ( Fact_Visit[ClientID] )
+			)
+		displayFolder: Visit Counts\Base
+		lineageTag: 5180805c-0188-45f2-b10f-32e78f2fc4fe
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Total_Visits_Contractor_Match =
+			
+			CALCULATE (
+			    COUNTROWS ( Fact_Visit ),
+			    TREATAS (
+			        VALUES ( Dim_Site[ContractorID] ),
+			        Fact_Visit[contractor_id]
+			    )
+			)
+		formatString: 0
+		displayFolder: Visit Counts
+		lineageTag: 7eea6785-46fc-47c4-8a8f-c7fe2bd60a16
+
+	measure Avg_Visits_Per_Contractor = ```
+			
+			DIVIDE (
+			    [Total_Visits],
+			    DISTINCTCOUNT ( Dim_Site[ContractorID] )
+			)
+			
+			```
+		lineageTag: 43877056-a583-48d4-912a-f979460ef00b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Average_Visit_FRD_Site_IHB = ```
+			
+			VAR TotalVisits =
+			    CALCULATE (
+			        COUNTROWS ( Fact_Visit2 ),
+			        Dim_Client_Simple[ClientType] IN { "Site", "IHB" },
+			        REMOVEFILTERS ( Dim_EntityGroup[EntityGroup] )
+			    )
+			VAR UniqueEmployeesWithVisits =
+			    CALCULATE (
+			        DISTINCTCOUNT ( Fact_Visit2[created_by_id] ),
+			        Dim_Client_Simple[ClientType] IN { "Site", "IHB" },
+			        REMOVEFILTERS ( Dim_EntityGroup[EntityGroup] )
+			    )
+			RETURN
+			IF (
+			    UniqueEmployeesWithVisits = 0,
+			    0,
+			    DIVIDE ( TotalVisits, UniqueEmployeesWithVisits )
+			)
+			
+			```
+		displayFolder: FRD Dashboard\KPI Tiles
+		lineageTag: 097a40ce-6b86-410c-ae58-a3470fd7bd50
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Total_Visits_Without_GroupEntity = ```
+			
+			CALCULATE (
+			    COUNTROWS ( Fact_Visit ),
+			    REMOVEFILTERS ( Dim_EntityGroup[EntityGroup] )
+			)
+			
+			```
+		formatString: 0
+		displayFolder: Visit Counts\Base
+		lineageTag: 18150cfd-cfed-47e7-b0a5-2672bb4dc811
+
+	measure Visit_Status = ```
+			
+			VAR DistanceValue =
+			    CALCULATE (
+			        SELECTEDVALUE ( Fact_Visit[Distance (M)] ),
+			        REMOVEFILTERS ( Dim_EntityGroup[EntityGroup] )
+			    )
+			RETURN
+			IF (
+			    ISBLANK ( DistanceValue ),
+			    BLANK(),
+			    IF (
+			        DistanceValue > 30,
+			        "Bad Visit",
+			        "Good Visit"
+			    )
+			)
+			
+			```
+		lineageTag: f8b7fb6e-3579-43ce-8562-371b25703b09
+
+	measure Total_Target_BDO_CRO =
+			
+			SUM ( Fact_Target[DailyTarget] )
+		formatString: 0
+		displayFolder: FRD Dashboard\Targets
+		lineageTag: 20106ec5-52ee-4341-adda-b06499ba583b
+
+	measure Total_UncoverRetailer_Visits =
+			CALCULATE(
+				COUNTROWS(Fact_Visit),
+				'Fact_Visit'[visit_type] = "uncovered retailer",
+			    REMOVEFILTERS ( Dim_EntityGroup[EntityGroup] )
+			)
+		formatString: 0
+		displayFolder: Visit Counts
+		lineageTag: d122e699-c8ed-47b9-a967-d08605bc2c35
+
+	measure Average_Visit_FRD_UncoverRetailer = ```
+			
+			VAR TotalVisits =
+			    CALCULATE (
+			        COUNTROWS ( Fact_Visit2 ),
+			        Dim_Client_Simple[ClientType] = "UncoveredRetailer",
+			        REMOVEFILTERS ( Dim_EntityGroup[EntityGroup] )
+			    )
+			VAR UniqueEmployeesWithVisits =
+			    CALCULATE (
+			        DISTINCTCOUNT ( Fact_Visit2[created_by_id] ),
+			        Dim_Client_Simple[ClientType] = "UncoveredRetailer",
+			        REMOVEFILTERS ( Dim_EntityGroup[EntityGroup] )
+			    )
+			RETURN
+			IF (
+			    UniqueEmployeesWithVisits = 0,
+			    0,
+			    DIVIDE ( TotalVisits, UniqueEmployeesWithVisits )
+			)
+			
+			```
+		displayFolder: FRD Dashboard\KPI Tiles
+		lineageTag: e24f229a-28b0-4e28-89a1-0c55876ae071
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Ach_Filter_Flag =
+			
+			VAR SelectedThreshold =
+			    SELECTEDVALUE ( Ach_Threshold_Switch[Threshold] )
+			RETURN
+			IF (
+			    ISBLANK ( SelectedThreshold ),
+			    1,
+			    IF ( [sim_ach] <= SelectedThreshold, 1, 0 )
+			)
+		formatString: 0
+		lineageTag: ebddff6c-6ffb-4715-9f65-c780aad9a317
+
+	measure Employees_Below_50_Percent = ```
+			
+			CALCULATE (
+			    DISTINCTCOUNT ( Dim_User[EmployeeID] ),
+			    FILTER (
+			        VALUES ( Dim_User[EmployeeID] ),
+			        [sim_ach] < 0.5
+			    )
+			)
+			
+			```
+		formatString: 0
+		lineageTag: 882041a0-9058-4e64-b2be-e7c73a271f7f
 
 	column VisitID
 		dataType: int64
@@ -1516,15 +1685,6 @@ table Fact_Visit
 
 		annotation SummarizationSetBy = Automatic
 
-	/// Indicates how territory was determined: GPS (from visit), Employee (derived from employee assignment), or Unknown
-	column TerritorySource
-		dataType: string
-		lineageTag: ts-001-territory-source-flag
-		summarizeBy: none
-		sourceColumn: TerritorySource
-
-		annotation SummarizationSetBy = Automatic
-
 	column territory_name
 		dataType: string
 		lineageTag: 17a78ca3-d95e-4965-a6a1-f74f66154cc2
@@ -1640,6 +1800,114 @@ table Fact_Visit
 		sourceColumn: CompanyCode
 
 		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Indicates how territory was determined: GPS (from visit), Employee (derived from employee assignment), or Unknown
+	column TerritorySource
+		dataType: string
+		lineageTag: ts-001-territory-source-flag
+		summarizeBy: none
+		sourceColumn: TerritorySource
+
+		annotation SummarizationSetBy = Automatic
+
+	column contractor_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 33d97dcd-cdef-4005-bd50-c67588f20be8
+		summarizeBy: sum
+		sourceColumn: contractor_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Distance (M)' = ```
+			
+			VAR VisitLat = Fact_Visit[Latitude]
+			VAR VisitLng = Fact_Visit[Longitude]
+			
+			VAR SiteLat =
+			    LOOKUPVALUE (
+			        Dim_Site[Latitude],
+			        Dim_Site[SiteID], Fact_Visit[ClientID]
+			    )
+			
+			VAR SiteLng =
+			    LOOKUPVALUE (
+			        Dim_Site[Longitude],
+			        Dim_Site[SiteID], Fact_Visit[ClientID]
+			    )
+			
+			RETURN
+			IF (
+			    Fact_Visit[ClientType] <> "Site"
+			        || ISBLANK ( Fact_Visit[ClientID] )
+			        || ISBLANK ( VisitLat )
+			        || ISBLANK ( VisitLng )
+			        || ISBLANK ( SiteLat )
+			        || ISBLANK ( SiteLng ),
+			    BLANK(),
+			
+			    VAR Lat1 = RADIANS ( VisitLat )
+			    VAR Lon1 = RADIANS ( VisitLng )
+			    VAR Lat2 = RADIANS ( SiteLat )
+			    VAR Lon2 = RADIANS ( SiteLng )
+			
+			    VAR dLat = Lat2 - Lat1
+			    VAR dLon = Lon2 - Lon1
+			
+			    VAR a =
+			        SIN ( dLat / 2 ) * SIN ( dLat / 2 )
+			            + COS ( Lat1 ) * COS ( Lat2 )
+			            * SIN ( dLon / 2 ) * SIN ( dLon / 2 )
+			
+			    VAR c =
+			        2 * ATAN ( SQRT ( a ) / SQRT ( 1 - a ) )
+			
+			    RETURN
+			        6371000 * c
+			)
+			
+			```
+		lineageTag: d89b201f-adfa-41f4-8699-96241aff78a8
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Visit_Status_col =
+			
+			IF (
+			    ISBLANK ( Fact_Visit[Distance (M)] ),
+			    BLANK(),
+			    IF (
+			        Fact_Visit[Distance (M)] > 30,
+			        "Bad Visit",
+			        "Good Visit"
+			    )
+			)
+		lineageTag: 4b66b573-f61f-4b60-a7da-82448e4d0af5
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Ach_Threshold_Switch = ```
+			
+			DATATABLE (
+			    "Label", STRING,
+			    "Threshold", DOUBLE,
+			    {
+			        { "≤ 70%", 0.7 },
+			        { "≤ 50%", 0.5 },
+			        { "≤ 30%", 0.3 },
+			        { "≤ 10%", 0.1 }
+			    }
+			)
+			
+			```
+		lineageTag: c9bc70db-3cd1-4e71-8f8b-c9759cfd5f88
+		summarizeBy: none
 
 		annotation SummarizationSetBy = Automatic
 
@@ -1919,9 +2187,11 @@ table Fact_Visit
 				        {"visit_date_time", type datetime},
 				        {"created_at", type datetime},
 				        {"updated_at", type datetime}
-				    })
+				    }),
+				  #"Merged queries" = Table.NestedJoin(TypedTable, {"VisitID"}, #"public visits", {"id"}, "public visits", JoinKind.LeftOuter),
+				  #"Expanded public visits" = Table.ExpandTableColumn(#"Merged queries", "public visits", {"contractor_id"}, {"contractor_id"})
 				in
-				    TypedTable
+				    #"Expanded public visits"
 				```
 
 	changedProperty = IsHidden

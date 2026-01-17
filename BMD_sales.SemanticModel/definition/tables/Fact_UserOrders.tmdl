@@ -7,11 +7,15 @@ table Fact_UserOrders
 		displayFolder: Orders\Base
 		lineageTag: 1a2b3c4d-5e6f-4a7b-8c9d-0e1f2a3b4c5d
 
+		changedProperty = IsHidden
+
 	/// Total order amount in BDT
 	measure Total_UserOrder_Amount = SUM('Fact_UserOrders'[TotalAmount])
 		formatString: #,##0.00
 		displayFolder: Orders\Base
 		lineageTag: 2b3c4d5e-6f7a-4b8c-9d0e-1f2a3b4c5d6e
+
+		changedProperty = IsHidden
 
 	/// Orders pending disbursement (PENDING or PENDING_SR_VERIFICATION)
 	measure Pending_Disbursement_Orders =
@@ -23,6 +27,8 @@ table Fact_UserOrders
 		displayFolder: Disbursement\Orders
 		lineageTag: 3c4d5e6f-7a8b-4c9d-0e1f-2a3b4c5d6e7f
 
+		changedProperty = IsHidden
+
 	/// Amount pending disbursement
 	measure Pending_Disbursement_Amount =
 			CALCULATE(
@@ -32,6 +38,8 @@ table Fact_UserOrders
 		formatString: #,##0.00
 		displayFolder: Disbursement\Amount
 		lineageTag: 4d5e6f7a-8b9c-4d0e-1f2a-3b4c5d6e7f8a
+
+		changedProperty = IsHidden
 
 	/// Orders ready for disbursement (APPROVED)
 	measure Ready_Disbursement_Orders =
@@ -43,6 +51,8 @@ table Fact_UserOrders
 		displayFolder: Disbursement\Orders
 		lineageTag: 5e6f7a8b-9c0d-4e1f-2a3b-4c5d6e7f8a9b
 
+		changedProperty = IsHidden
+
 	/// Amount ready for disbursement
 	measure Ready_Disbursement_Amount =
 			CALCULATE(
@@ -52,6 +62,8 @@ table Fact_UserOrders
 		formatString: #,##0.00
 		displayFolder: Disbursement\Amount
 		lineageTag: 6f7a8b9c-0d1e-4f2a-3b4c-5d6e7f8a9b0c
+
+		changedProperty = IsHidden
 
 	/// Engineer-eligible orders count
 	measure Engineer_Eligible_Orders =
@@ -63,6 +75,8 @@ table Fact_UserOrders
 		displayFolder: Eligibility\Engineer
 		lineageTag: 7a8b9c0d-1e2f-4a3b-4c5d-6e7f8a9b0c1d
 
+		changedProperty = IsHidden
+
 	/// Partner/Contractor-eligible orders count
 	measure Partner_Eligible_Orders =
 			CALCULATE(
@@ -72,6 +86,8 @@ table Fact_UserOrders
 		formatString: #,##0
 		displayFolder: Eligibility\Partner
 		lineageTag: 8b9c0d1e-2f3a-4b4c-5d6e-7f8a9b0c1d2e
+
+		changedProperty = IsHidden
 
 	/// Engineer pending disbursement amount
 	measure Engineer_Pending_Amount =
@@ -84,6 +100,8 @@ table Fact_UserOrders
 		displayFolder: Disbursement\Engineer
 		lineageTag: 9c0d1e2f-3a4b-4c5d-6e7f-8a9b0c1d2e3f
 
+		changedProperty = IsHidden
+
 	/// Engineer ready disbursement amount
 	measure Engineer_Ready_Amount =
 			CALCULATE(
@@ -94,6 +112,8 @@ table Fact_UserOrders
 		formatString: #,##0.00
 		displayFolder: Disbursement\Engineer
 		lineageTag: 0d1e2f3a-4b5c-4d6e-7f8a-9b0c1d2e3f4a
+
+		changedProperty = IsHidden
 
 	/// Partner/Contractor pending disbursement amount
 	measure Partner_Pending_Amount =
@@ -106,6 +126,8 @@ table Fact_UserOrders
 		displayFolder: Disbursement\Partner
 		lineageTag: 1e2f3a4b-5c6d-4e7f-8a9b-0c1d2e3f4a5b
 
+		changedProperty = IsHidden
+
 	/// Partner/Contractor ready disbursement amount
 	measure Partner_Ready_Amount =
 			CALCULATE(
@@ -117,11 +139,7 @@ table Fact_UserOrders
 		displayFolder: Disbursement\Partner
 		lineageTag: 2f3a4b5c-6d7e-4f8a-9b0c-1d2e3f4a5b6c
 
-	/// Alias for Total_UserOrders (for backward compatibility)
-	measure Total_Orders = [Total_UserOrders]
-		formatString: #,##0
-		displayFolder: Orders\Base
-		lineageTag: 3f4a5b6c-7d8e-4f9a-0b1c-2d3e4f5a6b7c
+		changedProperty = IsHidden
 
 	/// Approved orders count
 	measure Approved_Orders =
@@ -133,6 +151,8 @@ table Fact_UserOrders
 		displayFolder: Orders\By Status
 		lineageTag: 4a5b6c7d-8e9f-4a0b-1c2d-3e4f5a6b7c8d
 
+		changedProperty = IsHidden
+
 	/// Rejected orders count
 	measure Rejected_Orders =
 			CALCULATE(
@@ -142,6 +162,8 @@ table Fact_UserOrders
 		formatString: #,##0
 		displayFolder: Orders\By Status
 		lineageTag: 5b6c7d8e-9f0a-4b1c-2d3e-4f5a6b7c8d9e
+
+		changedProperty = IsHidden
 
 	/// Pending orders count (PENDING + PENDING_SR_VERIFICATION)
 	measure Pending_Orders =
@@ -153,6 +175,8 @@ table Fact_UserOrders
 		displayFolder: Orders\By Status
 		lineageTag: 6c7d8e9f-0a1b-4c2d-3e4f-5a6b7c8d9e0f
 
+		changedProperty = IsHidden
+
 	/// Order amount year-to-date
 	measure Order_Amount_YTD =
 			TOTALYTD(
@@ -163,11 +187,15 @@ table Fact_UserOrders
 		displayFolder: Orders\Time Intelligence
 		lineageTag: 7d8e9f0a-1b2c-4d3e-4f5a-6b7c8d9e0f1a
 
+		changedProperty = IsHidden
+
 	/// Average order value
 	measure Average_Order_Value = DIVIDE([Total_UserOrder_Amount], [Total_UserOrders], 0)
 		formatString: #,##0.00
 		displayFolder: Orders\Rates
 		lineageTag: 8e9f0a1b-2c3d-4e4f-5a6b-7c8d9e0f1a2b
+
+		changedProperty = IsHidden
 
 	/// Approval rate
 	measure Order_Approval_Rate = DIVIDE([Approved_Orders], [Total_UserOrders], 0)
@@ -175,12 +203,201 @@ table Fact_UserOrders
 		displayFolder: Orders\Rates
 		lineageTag: 9f0a1b2c-3d4e-4f5a-6b7c-8d9e0f1a2b3c
 
+		changedProperty = IsHidden
+
+	measure Avg_Order_Bags_per_Contractor =
+			
+			DIVIDE (
+			    [Total_PartnerEligible_Orders_Bags],
+			    [Total_Active_Contractor_Has_Order (Org 1)]
+			)
+		displayFolder: Orders\Base
+		lineageTag: 1149e9a1-3592-4d15-b561-b6fd684a4012
+
+		changedProperty = IsHidden
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Total_Visits_Pending = ```
+			
+			CALCULATE (
+			    COUNTROWS ( Fact_Visit ),
+			    TREATAS (
+			        VALUES ( Fact_UserOrders[SiteID] ),
+			        Fact_Visit[ClientID]
+			    ),
+			    Fact_UserOrders[DisbursementStatus] = "Pending"
+			)
+			
+			```
+		formatString: 0
+		lineageTag: d777fcc4-208e-4243-9b62-909b6c4bd875
+
+		changedProperty = IsHidden
+
+	measure Total_Order_Bags = SUM(Fact_UserOrders[qty_in_mt])
+		formatString: 0
+		displayFolder: Orders\Base
+		lineageTag: a0b7df46-16d3-411e-a95c-896812f5e3b7
+
+		changedProperty = IsHidden
+
+	measure Total_PartnerEligible_Orders =
+			
+			CALCULATE (
+			    COUNT ( Fact_UserOrders[SiteID] ),
+			    Fact_UserOrders[isPartnerEligible] = TRUE()
+			)
+		formatString: 0
+		lineageTag: 76461b85-d9be-4fc6-aaa1-8fb91fba7137
+
+		changedProperty = IsHidden
+
+	measure Total_PartnerEligible_Orders_With_Contractor =
+			
+			CALCULATE (
+			    DISTINCTCOUNT ( Fact_UserOrders[SiteID] ),
+			    Dim_Site[HasContractor] = "Yes",
+			    Fact_UserOrders[isPartnerEligible] = "True"
+			)
+		formatString: 0
+		lineageTag: 26cd6e94-f991-45b3-902f-2089bd91848c
+
+		changedProperty = IsHidden
+
+	measure Total_PartnerEligible_Orders_Bags =
+			
+			CALCULATE (
+			    SUM ( Fact_UserOrders[qty_in_mt] ),
+			    Dim_Site[HasContractor] = "Yes",
+			    Fact_UserOrders[isPartnerEligible] = "true"
+			)
+		formatString: 0
+		lineageTag: 99fd54e9-853c-4140-995f-3d547373b90f
+
+		changedProperty = IsHidden
+
+	measure Total_EngineerEligible_Orders_Bags =
+			
+			CALCULATE (
+			    SUM ( Fact_UserOrders[qty_in_mt] ),
+			    Dim_Site[HasEngineer] = "Yes",
+			    Fact_UserOrders[IsEngineerEligible] = TRUE()
+			)
+		formatString: 0
+		lineageTag: 1929cc30-2e87-4417-98d1-2320013db020
+
+		changedProperty = IsHidden
+
+	measure 'Total Sites (UserOrders)' = DISTINCTCOUNT ( Fact_UserOrders[SiteID] )
+		formatString: 0
+		lineageTag: 35acef16-41e9-4cbf-801e-62fc9789dc8c
+
+		changedProperty = IsHidden
+
+	measure Total_Order_Quantity = SUM(Fact_UserOrders[qty_in_mt])
+		formatString: 0
+		displayFolder: Orders\Base
+		lineageTag: 3ac9e79f-9a8f-48b7-b0a3-337eccc69207
+
+		changedProperty = IsHidden
+
+	measure Total_PartnerEligible_Orders_With_Contractor_Count =
+			
+			CALCULATE (
+			    DISTINCTCOUNT ( Fact_UserOrders[ContractorID] ),
+			    Dim_Site[HasContractor] = "Yes",
+			    Fact_UserOrders[isPartnerEligible] = "True"
+			)
+		formatString: 0
+		lineageTag: db700311-77ec-447e-ad8c-7a9964b618cc
+
+		changedProperty = IsHidden
+
+	measure 'Total_Active_Contractor_Has_Order (Org 1)' =
+			
+			CALCULATE (
+			    DISTINCTCOUNT ( Fact_UserOrders[SiteID] ),
+			    Dim_Site[HasContractor] = "Yes",
+			    Fact_UserOrders[isPartnerEligible] = "True",
+			    Fact_UserOrders[organization_id] = 1
+			)
+		formatString: 0
+		lineageTag: 48991423-7874-419a-ae49-f5dab0f5df52
+
+		changedProperty = IsHidden
+
+	measure Total_Contractor_UserOrder =
+			
+			CALCULATE (
+			    COUNT ( Dim_Site[ContractorID] ),
+			    Dim_Site[HasContractor] = "Yes",
+			    Fact_UserOrders[isPartnerEligible] = "True"
+			)
+		formatString: 0
+		lineageTag: 2659ff15-3234-4bf0-a6f1-12ccd18c609c
+
+		changedProperty = IsHidden
+
+	measure Total_EngineerEligible_Orders_With_Engineers =
+			
+			CALCULATE (
+			    DISTINCTCOUNT ( Fact_UserOrders[SiteID] ),
+			    Dim_Site[HasEngineer] = "Yes",
+			    Fact_UserOrders[IsEngineerEligible] = TRUE()
+			)
+		formatString: 0
+		lineageTag: 69b263da-7d09-4ce1-8494-a96f152c7808
+
+		changedProperty = IsHidden
+
+	measure Total_Unique_Retailers = DISTINCTCOUNT ( Fact_UserOrders[RetailerID])
+		formatString: 0
+		lineageTag: 0a3fecde-7d9e-471b-89d7-3440e612deb8
+
+		changedProperty = IsHidden
+
+	measure Total_PartnerEligible_Orders_MT =
+			
+			CALCULATE (
+			    SUM ( Fact_UserOrders[qty] ),
+			    Dim_Site[HasContractor] = "Yes",
+			    Fact_UserOrders[isPartnerEligible] = "true"
+			)
+		lineageTag: ac96d5bd-1ed8-4ae1-8a2d-fa7cb69c349f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total_Active_Contractor_Has_Order (Org 2)' =
+			
+			CALCULATE (
+			    DISTINCTCOUNT ( Fact_UserOrders[SiteID] ),
+			    Dim_Site[HasContractor] = "Yes",
+			    Fact_UserOrders[isPartnerEligible] = "True",
+			    Fact_UserOrders[organization_id] = 2
+			)
+		formatString: 0
+		lineageTag: e37a081a-517c-4e95-a865-f1343a32fa4a
+
+	measure 'Avg_Order_Bags_per_Contractor (Org 2)' =
+			
+			DIVIDE (
+			    [Total_PartnerEligible_Orders_MT],
+			    [Total_Active_Contractor_Has_Order (Org 2)]
+			)
+		displayFolder: Orders\Base
+		lineageTag: 57e1489d-370e-469a-995a-b3635a31f7b6
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
 	column UserOrderID
 		dataType: int64
 		formatString: 0
 		lineageTag: 3a4b5c6d-7e8f-4a9b-0c1d-2e3f4a5b6c7d
-		summarizeBy: none
+		summarizeBy: count
 		sourceColumn: UserOrderID
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -191,14 +408,18 @@ table Fact_UserOrders
 		summarizeBy: none
 		sourceColumn: SiteID
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column ProjectConversionID
 		dataType: int64
 		formatString: 0
 		lineageTag: 5c6d7e8f-9a0b-4c1d-2e3f-4a5b6c7d8e9f
-		summarizeBy: none
+		summarizeBy: count
 		sourceColumn: ProjectConversionID
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -206,8 +427,10 @@ table Fact_UserOrders
 		dataType: int64
 		formatString: 0
 		lineageTag: 6d7e8f9a-0b1c-4d2e-3f4a-5b6c7d8e9f0a
-		summarizeBy: none
+		summarizeBy: count
 		sourceColumn: BazaarID
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -215,8 +438,10 @@ table Fact_UserOrders
 		dataType: int64
 		formatString: 0
 		lineageTag: 7e8f9a0b-1c2d-4e3f-4a5b-6c7d8e9f0a1b
-		summarizeBy: none
+		summarizeBy: count
 		sourceColumn: DealerID
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -224,8 +449,10 @@ table Fact_UserOrders
 		dataType: int64
 		formatString: 0
 		lineageTag: 8f9a0b1c-2d3e-4f4a-5b6c-7d8e9f0a1b2c
-		summarizeBy: none
+		summarizeBy: count
 		sourceColumn: RetailerID
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -235,6 +462,8 @@ table Fact_UserOrders
 		summarizeBy: none
 		sourceColumn: OrderStatus
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column DisbursementStatus
@@ -242,6 +471,8 @@ table Fact_UserOrders
 		lineageTag: 0b1c2d3e-4f5a-4b6c-7d8e-9f0a1b2c3d4e
 		summarizeBy: none
 		sourceColumn: DisbursementStatus
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -251,6 +482,8 @@ table Fact_UserOrders
 		summarizeBy: none
 		sourceColumn: OrderCategory
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column OrderType
@@ -258,6 +491,8 @@ table Fact_UserOrders
 		lineageTag: 2d3e4f5a-6b7c-4d8e-9f0a-1b2c3d4e5f6a
 		summarizeBy: none
 		sourceColumn: OrderType
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -267,6 +502,8 @@ table Fact_UserOrders
 		summarizeBy: none
 		sourceColumn: DeliveryMethod
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column Stage
@@ -274,6 +511,8 @@ table Fact_UserOrders
 		lineageTag: 4f5a6b7c-8d9e-4f0a-1b2c-3d4e5f6a7b8c
 		summarizeBy: none
 		sourceColumn: Stage
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -284,14 +523,17 @@ table Fact_UserOrders
 		summarizeBy: none
 		sourceColumn: IsEngineerEligible
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column IsPartnerEligible
-		dataType: boolean
-		formatString: """TRUE"";""TRUE"";""FALSE"""
+		dataType: string
 		lineageTag: 6b7c8d9e-0f1a-4b2c-3d4e-5f6a7b8c9d0e
 		summarizeBy: none
 		sourceColumn: IsPartnerEligible
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -302,14 +544,7 @@ table Fact_UserOrders
 		summarizeBy: sum
 		sourceColumn: TotalAmount
 
-		annotation SummarizationSetBy = Automatic
-
-	column qty_in_mt
-		dataType: double
-		formatString: #,##0.00
-		lineageTag: a1b2c3d4-e5f6-7890-abcd-ef1234567891
-		summarizeBy: sum
-		sourceColumn: qty_in_mt
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -319,6 +554,8 @@ table Fact_UserOrders
 		summarizeBy: none
 		sourceColumn: DNNumber
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column DeliveryAddress
@@ -326,6 +563,8 @@ table Fact_UserOrders
 		lineageTag: 9e0f1a2b-3c4d-4e5f-6a7b-8c9d0e1f2a3b
 		summarizeBy: none
 		sourceColumn: DeliveryAddress
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -336,6 +575,13 @@ table Fact_UserOrders
 		summarizeBy: none
 		sourceColumn: CreatedAt
 
+		variation Variation
+			isDefault
+			relationship: 60da4107-8447-430e-9dde-04b36065f5cf
+			defaultHierarchy: LocalDateTable_bde8d816-759e-467f-8812-7188e3d4e624.'Date Hierarchy'
+
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column UpdatedAt
@@ -345,23 +591,38 @@ table Fact_UserOrders
 		summarizeBy: none
 		sourceColumn: UpdatedAt
 
+		variation Variation
+			isDefault
+			relationship: 696d39f5-2251-4033-b158-fe66abb12833
+			defaultHierarchy: LocalDateTable_bbca09d9-5523-4af9-87d1-daec2670c5d4.'Date Hierarchy'
+
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column OrderDateKey
 		dataType: dateTime
-		formatString: Short Date
+		formatString: Long Date
 		lineageTag: 2b3c4d5e-6f7a-4b8c-9d0e-1f2a3b4c5d6e
 		summarizeBy: none
 		sourceColumn: OrderDateKey
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
 
 	column CreatedByID
 		dataType: int64
 		formatString: 0
 		lineageTag: 3c4d5e6f-7a8b-4c9d-0e1f-2a3b4c5d6e7f
-		summarizeBy: none
+		summarizeBy: count
 		sourceColumn: CreatedByID
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -369,142 +630,215 @@ table Fact_UserOrders
 		dataType: int64
 		formatString: 0
 		lineageTag: 4d5e6f7a-8b9c-4d0e-1f2a-3b4c5d6e7f8a
-		summarizeBy: none
+		summarizeBy: count
 		sourceColumn: UpdatedByID
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
+
+	column qty_in_mt
+		dataType: int64
+		formatString: #,##0.00
+		lineageTag: a1b2c3d4-e5f6-7890-abcd-ef1234567891
+		summarizeBy: sum
+		sourceColumn: qty_in_mt
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column organization_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 29f5bcac-7e1c-4b4b-ae57-c5f47eefcdb6
+		summarizeBy: sum
+		sourceColumn: organization_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column fianl_qty_in_mt
+		dataType: int64
+		formatString: 0
+		lineageTag: f069ce1b-c847-4058-a080-f32b6f0903be
+		summarizeBy: sum
+		sourceColumn: fianl_qty_in_mt
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column created_by
+		dataType: int64
+		formatString: 0
+		lineageTag: 933f098f-5f95-4e68-956c-451028aa7aa2
+		summarizeBy: none
+		sourceColumn: created_by
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_status
+		dataType: string
+		lineageTag: dd3ec23f-6e5d-49e5-8f13-a1261d15cccd
+		summarizeBy: none
+		sourceColumn: order_status
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column ContractorID
+		dataType: int64
+		formatString: 0
+		lineageTag: 535a36c4-599b-42d7-bc83-a9b64687c49e
+		summarizeBy: count
+		sourceColumn: ContractorID
+
+		annotation SummarizationSetBy = Automatic
+
+	column qty
+		dataType: double
+		lineageTag: 384143e7-196b-4580-bebc-4b072536b62c
+		summarizeBy: sum
+		sourceColumn: qty
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	partition Fact_UserOrders = m
 		mode: import
 		source = ```
 				// ============================================================
-				// Fact_UserOrders - User Orders Fact Table
-				// Source: public user_orders (1,407 records)
-				// 
-				// PURPOSE:
-				// Tracks all user orders and their disbursement status
-				// Primary fact table for disbursement calculations
-				// Links to Dim_Site (via site_id) for engineer/contractor info
-				// 
-				// KEY FIELDS:
-				// - order_status: PENDING, PENDING_SR_VERIFICATION, APPROVED, REJECTED
-				// - is_engineer_eligible: Boolean flag for engineer disbursement
-				// - is_partner_eligible: Boolean flag for contractor/partner disbursement
-				// - site_id: Links to Dim_Site (potential_site)
-				// - qty_in_mt: Quantity from project_conversion.total_quantity
-				// ============================================================
-				
-				let
-				    // Reference the existing 'public user_orders' table
-				    Source = #"public user_orders",
-				    
-				    // Reference project_conversion for qty_in_mt
-				    ProjectConversion = #"public project_conversion",
-				    
-				    // Select qty columns from project_conversion
-				    PC_Qty = Table.SelectColumns(ProjectConversion, {"id", "total_quantity"}, MissingField.UseNull),
-				    PC_Renamed = Table.RenameColumns(PC_Qty, {{"id", "pc_id"}, {"total_quantity", "qty_in_mt_text"}}),
-				    
-				    // Select columns from user_orders
-				    SelectedColumns = Table.SelectColumns(Source, {
-				        "id",
-				        "site_id", "project_conversion_id", "bazaar_id", "dealer_id", "retailer_id",
-				        "order_status", "order_category", "order_type", "delivery_method", "stage",
-				        "is_engineer_eligible", "is_partner_eligible",
-				        "total_amount", "dn_number", "delivery_address",
-				        "created_at", "updated_at", "created_by", "updated_by"
-				    }, MissingField.UseNull),
-				    
-				    // Join with project_conversion to get qty_in_mt
-				    JoinedWithPC = Table.NestedJoin(SelectedColumns, {"project_conversion_id"}, PC_Renamed, {"pc_id"}, "PC", JoinKind.LeftOuter),
-				    ExpandedPC = Table.ExpandTableColumn(JoinedWithPC, "PC", {"qty_in_mt_text"}, {"qty_in_mt_text"}),
-				    
-				    // Rename columns to PascalCase
-				    RenamedColumns = Table.RenameColumns(ExpandedPC, {
-				        {"id", "UserOrderID"},
-				        {"site_id", "SiteID"},
-				        {"project_conversion_id", "ProjectConversionID"},
-				        {"bazaar_id", "BazaarID"},
-				        {"dealer_id", "DealerID"},
-				        {"retailer_id", "RetailerID"},
-				        {"order_status", "OrderStatus"},
-				        {"order_category", "OrderCategory"},
-				        {"order_type", "OrderType"},
-				        {"delivery_method", "DeliveryMethod"},
-				        {"stage", "Stage"},
-				        {"is_engineer_eligible", "IsEngineerEligible"},
-				        {"is_partner_eligible", "IsPartnerEligible"},
-				        {"total_amount", "TotalAmount_Text"},
-				        {"dn_number", "DNNumber"},
-				        {"delivery_address", "DeliveryAddress"},
-				        {"created_at", "CreatedAt"},
-				        {"updated_at", "UpdatedAt"},
-				        {"created_by", "CreatedByID"},
-				        {"updated_by", "UpdatedByID"}
-				    }, MissingField.Ignore),
-				    
-                    // Convert total_amount from text to number
-				    WithTotalAmount = Table.AddColumn(RenamedColumns, "TotalAmount", each 
-				        try Number.From([TotalAmount_Text]) otherwise 0,
-				        type number
-				    ),
-				    
-				    // Convert qty_in_mt from text to number
-				    WithQtyInMT = Table.AddColumn(WithTotalAmount, "qty_in_mt", each 
-				        try Number.From([qty_in_mt_text]) otherwise 0,
-				        type number
-				    ),
-				    
-                    // Remove the text versions
-				    RemovedTextColumns = Table.RemoveColumns(WithQtyInMT, {"TotalAmount_Text", "qty_in_mt_text"}, MissingField.Ignore),
-				    
-				    // Add DisbursementStatus derived column
-				    // PENDING, PENDING_SR_VERIFICATION = "Pending"
-				    // APPROVED = "Ready"
-				    // REJECTED = "Rejected"
-				    WithDisbursementStatus = Table.AddColumn(RemovedTextColumns, "DisbursementStatus", each
-				        if [OrderStatus] = "PENDING" or [OrderStatus] = "PENDING_SR_VERIFICATION" then "Pending"
-				        else if [OrderStatus] = "APPROVED" then "Ready"
-				        else if [OrderStatus] = "REJECTED" then "Rejected"
-				        else "Other",
-				        type text
-				    ),
-				    
-				    // Add OrderDateKey for date dimension linking
-				    WithOrderDateKey = Table.AddColumn(WithDisbursementStatus, "OrderDateKey", each
-				        Date.From([CreatedAt]),
-				        type date
-				    ),
-				    
-				    // Set data types
-				    TypedColumns = Table.TransformColumnTypes(WithOrderDateKey, {
-				        {"UserOrderID", Int64.Type},
-				        {"SiteID", Int64.Type},
-				        {"ProjectConversionID", Int64.Type},
-				        {"BazaarID", Int64.Type},
-				        {"DealerID", Int64.Type},
-				        {"RetailerID", Int64.Type},
-				        {"OrderStatus", type text},
-				        {"DisbursementStatus", type text},
-				        {"OrderCategory", type text},
-				        {"OrderType", type text},
-				        {"DeliveryMethod", type text},
-				        {"Stage", type text},
-                {"IsEngineerEligible", type logical},
-				        {"IsPartnerEligible", type logical},
-				        {"TotalAmount", type number},
-				        {"qty_in_mt", type number},
-				        {"DNNumber", type text},
-				        {"DeliveryAddress", type text},
-				        {"CreatedAt", type datetime},
-				        {"UpdatedAt", type datetime},
-				        {"OrderDateKey", type date},
-				        {"CreatedByID", Int64.Type},
-				        {"UpdatedByID", Int64.Type}
-			    })
-			in
-			    TypedColumns
+								// Fact_UserOrders - User Orders Fact Table
+								// Source: public user_orders (1,407 records)
+								// 
+								// PURPOSE:
+								// Tracks all user orders and their disbursement status
+								// Primary fact table for disbursement calculations
+								// Links to Dim_Site (via site_id) for engineer/contractor info
+								// 
+								// KEY FIELDS:
+								// - order_status: PENDING, PENDING_SR_VERIFICATION, APPROVED, REJECTED
+								// - is_engineer_eligible: Boolean flag for engineer disbursement
+								// - is_partner_eligible: Boolean flag for contractor/partner disbursement
+								// - site_id: Links to Dim_Site (potential_site)
+								// - qty_in_mt: Quantity from project_conversion.total_quantity
+								// ============================================================
+								
+								let
+								    // Reference the existing 'public user_orders' table
+								    Source = #"public user_orders",
+								    
+								    // Reference project_conversion for qty_in_mt
+								    ProjectConversion = #"public project_conversion",
+								    
+								    // Select qty columns from project_conversion
+								    PC_Qty = Table.SelectColumns(ProjectConversion, {"id", "total_quantity"}, MissingField.UseNull),
+								    PC_Renamed = Table.RenameColumns(PC_Qty, {{"id", "pc_id"}, {"total_quantity", "qty_in_mt_text"}}),
+								    
+								    // Select columns from user_orders
+								    SelectedColumns = Table.SelectColumns(Source, {
+								        "id",
+								        "site_id", "project_conversion_id", "bazaar_id", "dealer_id", "retailer_id",
+								        "order_status", "order_category", "order_type", "delivery_method", "stage",
+								        "is_engineer_eligible", "is_partner_eligible",
+								        "total_amount", "dn_number", "delivery_address",
+								        "created_at", "updated_at", "created_by", "updated_by"
+								    }, MissingField.UseNull),
+								    
+								    // Join with project_conversion to get qty_in_mt
+								    JoinedWithPC = Table.NestedJoin(SelectedColumns, {"project_conversion_id"}, PC_Renamed, {"pc_id"}, "PC", JoinKind.LeftOuter),
+								    ExpandedPC = Table.ExpandTableColumn(JoinedWithPC, "PC", {"qty_in_mt_text"}, {"qty_in_mt_text"}),
+								    
+								    // Rename columns to PascalCase
+								    RenamedColumns = Table.RenameColumns(ExpandedPC, {
+								        {"id", "UserOrderID"},
+								        {"site_id", "SiteID"},
+								        {"project_conversion_id", "ProjectConversionID"},
+								        {"bazaar_id", "BazaarID"},
+								        {"dealer_id", "DealerID"},
+								        {"retailer_id", "RetailerID"},
+								        {"order_status", "OrderStatus"},
+								        {"order_category", "OrderCategory"},
+								        {"order_type", "OrderType"},
+								        {"delivery_method", "DeliveryMethod"},
+								        {"stage", "Stage"},
+								        {"is_engineer_eligible", "IsEngineerEligible"},
+								        {"is_partner_eligible", "IsPartnerEligible"},
+								        {"total_amount", "TotalAmount_Text"},
+								        {"dn_number", "DNNumber"},
+								        {"delivery_address", "DeliveryAddress"},
+								        {"created_at", "CreatedAt"},
+								        {"updated_at", "UpdatedAt"},
+								        {"created_by", "CreatedByID"},
+								        {"updated_by", "UpdatedByID"}
+								    }, MissingField.Ignore),
+								    
+				                    // Convert total_amount from text to number
+								    WithTotalAmount = Table.AddColumn(RenamedColumns, "TotalAmount", each 
+								        try Number.From([TotalAmount_Text]) otherwise 0,
+								        type number
+								    ),
+								    
+								    // Convert qty_in_mt from text to number
+								    WithQtyInMT = Table.AddColumn(WithTotalAmount, "qty_in_mt", each 
+								        try Number.From([qty_in_mt_text]) otherwise 0,
+								        type number
+								    ),
+								    
+				                    // Remove the text versions
+								    RemovedTextColumns = Table.RemoveColumns(WithQtyInMT, {"TotalAmount_Text", "qty_in_mt_text"}, MissingField.Ignore),
+								    
+								    // Add DisbursementStatus derived column
+								    // PENDING, PENDING_SR_VERIFICATION = "Pending"
+								    // APPROVED = "Ready"
+								    // REJECTED = "Rejected"
+								    WithDisbursementStatus = Table.AddColumn(RemovedTextColumns, "DisbursementStatus", each
+								        if [OrderStatus] = "PENDING" or [OrderStatus] = "PENDING_SR_VERIFICATION" then "Pending"
+								        else if [OrderStatus] = "APPROVED" then "Ready"
+								        else if [OrderStatus] = "REJECTED" then "Rejected"
+								        else "Other",
+								        type text
+								    ),
+								    
+								    // Add OrderDateKey for date dimension linking
+								    WithOrderDateKey = Table.AddColumn(WithDisbursementStatus, "OrderDateKey", each
+								        Date.From([CreatedAt]),
+								        type date
+								    ),
+								    
+								    // Set data types
+								    TypedColumns = Table.TransformColumnTypes(WithOrderDateKey, {{"UserOrderID", Int64.Type}, {"SiteID", Int64.Type}, {"ProjectConversionID", Int64.Type}, {"BazaarID", Int64.Type}, {"DealerID", Int64.Type}, {"RetailerID", Int64.Type}, {"OrderStatus", type text}, {"DisbursementStatus", type text}, {"OrderCategory", type text}, {"OrderType", type text}, {"DeliveryMethod", type text}, {"Stage", type text}, {"IsEngineerEligible", type logical}, {"IsPartnerEligible", type logical}, {"TotalAmount", type number}, {"qty_in_mt", Int64.Type}, {"DNNumber", type text}, {"DeliveryAddress", type text}, {"CreatedAt", type datetime}, {"UpdatedAt", type datetime}, {"OrderDateKey", type date}, {"CreatedByID", Int64.Type}, {"UpdatedByID", Int64.Type}}),
+				  #"Merged queries" = Table.NestedJoin(TypedColumns, {"ProjectConversionID"}, #"public project_conversion", {"id"}, "public project_conversion", JoinKind.LeftOuter),
+				  #"Expanded public project_conversion" = Table.ExpandTableColumn(#"Merged queries", "public project_conversion", {"organization_id"}, {"organization_id"}),
+				  #"Added custom" = Table.AddColumn(#"Expanded public project_conversion", "fianl_qty_in_mt", each if [organization_id] = 1
+				then [qty_in_mt] / 20
+				else if [organization_id] = 2
+				then [qty_in_mt]
+				else null),
+				  #"Changed column type" = Table.TransformColumnTypes(#"Added custom", {{"fianl_qty_in_mt", Int64.Type}}),
+				  #"Merged queries 1" = Table.NestedJoin(#"Changed column type", {"ProjectConversionID"}, #"public project_conversion", {"id"}, "public project_conversion", JoinKind.LeftOuter),
+				  #"Expanded public project_conversion 1" = Table.ExpandTableColumn(#"Merged queries 1", "public project_conversion", {"created_by"}, {"created_by"}),
+				  #"Changed column type 1" = Table.TransformColumnTypes(#"Expanded public project_conversion 1", {{"IsPartnerEligible", type text}}),
+				  #"Merged queries 2" = Table.NestedJoin(#"Changed column type 1", {"ProjectConversionID"}, #"public project_conversion", {"id"}, "public project_conversion", JoinKind.LeftOuter),
+				  #"Expanded public project_conversion 2" = Table.ExpandTableColumn(#"Merged queries 2", "public project_conversion", {"order_status"}, {"order_status"}),
+				  #"Reordered columns" = Table.ReorderColumns(#"Expanded public project_conversion 2", {"UserOrderID", "SiteID", "ProjectConversionID", "BazaarID", "DealerID", "RetailerID", "OrderStatus", "order_status", "OrderCategory", "OrderType", "DeliveryMethod", "Stage", "IsEngineerEligible", "IsPartnerEligible", "DNNumber", "DeliveryAddress", "CreatedAt", "UpdatedAt", "CreatedByID", "UpdatedByID", "TotalAmount", "qty_in_mt", "DisbursementStatus", "OrderDateKey", "organization_id", "fianl_qty_in_mt", "created_by"}),
+				  #"Merged queries 3" = Table.NestedJoin(#"Reordered columns", {"SiteID"}, Dim_Site, {"SiteID"}, "Dim_Site", JoinKind.LeftOuter),
+				  #"Expanded Dim_Site" = Table.ExpandTableColumn(#"Merged queries 3", "Dim_Site", {"ContractorID"}, {"ContractorID"}),
+				  #"Merged queries 4" = Table.NestedJoin(#"Expanded Dim_Site", {"UserOrderID"}, #"public order_items", {"user_order_history_id"}, "public order_items", JoinKind.LeftOuter),
+				  #"Expanded public order_items" = Table.ExpandTableColumn(#"Merged queries 4", "public order_items", {"qty"}, {"qty"})
+							in
+							    #"Expanded public order_items"
 				```
 
+	changedProperty = IsHidden
+
 	annotation PBI_NavigationStepName = Navigation	annotation PBI_ResultType = Table
+
+	annotation PBI_ResultType = Table
 

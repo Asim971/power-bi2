@@ -1,0 +1,92 @@
+table Processing
+	lineageTag: 69c1a5a3-b614-48d2-99c3-310232c2a92a
+
+	measure Processing_Raw =
+			
+			VAR Result = SUM ( Processing[Amount] )
+			RETURN
+			COALESCE ( Result, 0 )
+		formatString: 0
+		lineageTag: 86edf643-19dd-4af5-b709-ca67acab1119
+
+	measure Processing =
+			
+			VAR Remaining =
+			    [Processing_Raw] - [Net_Paid]
+			RETURN
+			IF ( Remaining <= 0, 0, Remaining )
+		formatString: 0
+		lineageTag: d39ec384-fa0a-401a-92b5-77bca66f5792
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 65b826c8-e940-42b1-a58d-99b9025ef235
+		summarizeBy: none
+		sourceColumn: Date
+
+		variation Variation
+			isDefault
+			relationship: 552d4830-d6cb-4e7a-9ed0-a680ee062600
+			defaultHierarchy: LocalDateTable_cf8b8de4-39bc-43fb-871e-19b64f1813a0.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column id
+		dataType: int64
+		formatString: 0
+		lineageTag: a5dbba9e-7cdc-496c-bf9f-6c37066dd1a0
+		summarizeBy: none
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	column Name
+		dataType: string
+		lineageTag: cb6b92ce-989d-4634-a225-28dd992ecc28
+		summarizeBy: none
+		sourceColumn: Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Phone
+		dataType: int64
+		formatString: 0
+		lineageTag: d86e4412-d463-4c5d-bcba-eaf726699b98
+		summarizeBy: sum
+		sourceColumn: Phone
+
+		annotation SummarizationSetBy = Automatic
+
+	column Amount
+		dataType: int64
+		formatString: 0
+		lineageTag: 5b598ecb-662d-4f0a-8f6b-cd2800de53de
+		summarizeBy: sum
+		sourceColumn: Amount
+
+		annotation SummarizationSetBy = Automatic
+
+	column Status
+		dataType: string
+		lineageTag: 8d9c5d5b-1270-44a4-84de-c3dfc183fe91
+		summarizeBy: none
+		sourceColumn: Status
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Processing = m
+		mode: import
+		source =
+				let
+				  Source = GoogleSheets.Contents("https://docs.google.com/spreadsheets/d/1zjWLuG2KqayTm4EhyaVEVk5sXqvE70g5q7FVhdruIS8/edit?gid=1791755828#gid=1791755828"),
+				  #"Navigation 1" = Source{[name = "Processing", ItemKind = "Table"]}[Data],
+				  #"Promoted headers" = Table.PromoteHeaders(#"Navigation 1", [PromoteAllScalars = true]),
+				  #"Changed column type" = Table.TransformColumnTypes(#"Promoted headers", {{"Date", type date}, {"id", Int64.Type}, {"Name", type text}, {"Phone", Int64.Type}, {"Amount", Int64.Type}, {"Status", type text}})
+				in
+				  #"Changed column type"
+
+	annotation PBI_ResultType = Table
+

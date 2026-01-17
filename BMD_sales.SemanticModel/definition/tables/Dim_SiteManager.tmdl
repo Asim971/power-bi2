@@ -8,7 +8,7 @@ table Dim_SiteManager
 		lineageTag: sm-m001-count-total
 
 	/// Site managers with approved status
-	measure Approved_SiteManagers = 
+	measure Approved_SiteManagers =
 			CALCULATE(
 				COUNTROWS('Dim_SiteManager'),
 				'Dim_SiteManager'[Status] = "APPROVED"
@@ -18,7 +18,7 @@ table Dim_SiteManager
 		lineageTag: sm-m002-approved
 
 	/// Site managers with pending status
-	measure Pending_SiteManagers = 
+	measure Pending_SiteManagers =
 			CALCULATE(
 				COUNTROWS('Dim_SiteManager'),
 				'Dim_SiteManager'[Status] = "PENDING"
@@ -28,7 +28,7 @@ table Dim_SiteManager
 		lineageTag: sm-m003-pending
 
 	/// Site managers rejected
-	measure Rejected_SiteManagers = 
+	measure Rejected_SiteManagers =
 			CALCULATE(
 				COUNTROWS('Dim_SiteManager'),
 				'Dim_SiteManager'[Status] = "REJECTED"
@@ -42,7 +42,7 @@ table Dim_SiteManager
 		isKey
 		formatString: 0
 		lineageTag: sm-c001-id
-		summarizeBy: none
+		summarizeBy: count
 		sourceColumn: SiteManagerID
 
 		annotation SummarizationSetBy = Automatic
@@ -83,7 +83,7 @@ table Dim_SiteManager
 		dataType: int64
 		formatString: 0
 		lineageTag: sm-c006-upazillaid
-		summarizeBy: none
+		summarizeBy: count
 		sourceColumn: UpazillaID
 
 		annotation SummarizationSetBy = Automatic
@@ -119,6 +119,11 @@ table Dim_SiteManager
 		summarizeBy: none
 		sourceColumn: CreatedAt
 
+		variation Variation
+			isDefault
+			relationship: 7773e7ff-a383-4abe-be71-1fb256c8e844
+			defaultHierarchy: LocalDateTable_0592c849-df1c-4951-ade9-5ce9e28ea3e3.'Date Hierarchy'
+
 		annotation SummarizationSetBy = Automatic
 
 	column UpdatedAt
@@ -128,13 +133,18 @@ table Dim_SiteManager
 		summarizeBy: none
 		sourceColumn: UpdatedAt
 
+		variation Variation
+			isDefault
+			relationship: 34d5c666-5027-4cd6-8afa-70b2d9f294d8
+			defaultHierarchy: LocalDateTable_5d6d2b25-bb1b-47ae-8ada-fded2791cc38.'Date Hierarchy'
+
 		annotation SummarizationSetBy = Automatic
 
 	column CreatedByID
 		dataType: int64
 		formatString: 0
 		lineageTag: sm-c012-createdbyid
-		summarizeBy: none
+		summarizeBy: count
 		sourceColumn: CreatedByID
 
 		annotation SummarizationSetBy = Automatic

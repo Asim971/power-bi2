@@ -1,0 +1,51 @@
+table Ach_Threshold_Switch_BDO
+	lineageTag: b19a0233-43a6-46ef-a426-791771ab3ae6
+
+	measure Ach_Filter_Flag_BDO =
+			
+			VAR SelectedThreshold =
+			    SELECTEDVALUE ( Ach_Threshold_Switch_BDO[Threshold] )
+			RETURN
+			IF (
+			    ISBLANK ( SelectedThreshold ),
+			    1,   -- show all when nothing selected
+			    IF ( [sim_ach] <= SelectedThreshold, 1, 0 )
+			)
+		formatString: 0
+		lineageTag: 6a5965dd-bf0a-4a34-ade0-bf2446f3ab3a
+
+	column Label
+		lineageTag: 1fd80d13-cfdb-4903-b214-e369c4ab4f76
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Label]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Threshold
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 933e04da-a61d-461e-8118-5722e32ce85b
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Threshold]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	partition Ach_Threshold_Switch_BDO = calculated
+		mode: import
+		source =
+				
+				DATATABLE (
+				    "Label", STRING,
+				    "Threshold", DECIMAL,
+				    {
+				        { "≤ 1%", 0.01 },
+				        { "≤ 50%", 0.5 },
+				        { "≤ 70%", 0.7 }
+				    }
+				)
+
+	annotation PBI_Id = ab304d02a59548199ba094d8f68f3d43
+
