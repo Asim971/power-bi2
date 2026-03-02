@@ -1,6 +1,12 @@
 table Dim_Location
 	lineageTag: 901e0f85-31f4-4a25-bb31-38e75c3f8f19
 
+	measure Total_Territories =
+			
+			DISTINCTCOUNT ( Dim_Location[territory_id])
+		formatString: 0
+		lineageTag: 35793c02-fc57-449f-926e-8f103ddb3184
+
 	column territory_id
 		dataType: int64
 		formatString: 0
@@ -30,7 +36,7 @@ table Dim_Location
 		dataType: int64
 		formatString: 0
 		lineageTag: 0a174759-0a53-42b1-9ccb-411edda18f61
-		summarizeBy: none
+		summarizeBy: sum
 		sourceColumn: area_id
 
 		annotation SummarizationSetBy = Automatic
@@ -39,7 +45,7 @@ table Dim_Location
 		dataType: int64
 		formatString: 0
 		lineageTag: 51cec25a-e22c-4259-9842-79857ff2a7c2
-		summarizeBy: none
+		summarizeBy: sum
 		sourceColumn: nation_id
 
 		annotation SummarizationSetBy = Automatic
@@ -48,7 +54,7 @@ table Dim_Location
 		dataType: int64
 		formatString: 0
 		lineageTag: 12b3a9b4-3d77-4de1-b590-52e39d4c8ba5
-		summarizeBy: none
+		summarizeBy: sum
 		sourceColumn: organization_id
 
 		annotation SummarizationSetBy = Automatic
@@ -74,6 +80,44 @@ table Dim_Location
 		lineageTag: 66690016-d715-4e7c-8c94-afad3e41352d
 		summarizeBy: none
 		sourceColumn: zone_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column deleted_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 0443a8cf-7378-4ea6-909c-0c30c2aade60
+		summarizeBy: none
+		sourceColumn: deleted_at
+
+		variation Variation
+			isDefault
+			relationship: 9cbe8a88-3b82-497d-a9c1-b9f53386dfb6
+			defaultHierarchy: LocalDateTable_e106ff45-94a8-4c0d-88d1-847f00d83ef9.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column dynamics_code
+		dataType: string
+		lineageTag: 14c52068-51e2-4ad1-8c51-9d39e77cb5a3
+		summarizeBy: none
+		sourceColumn: dynamics_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column dynamics_id
+		dataType: string
+		lineageTag: ab625c8c-5b1a-49a8-a163-a2e043a346af
+		summarizeBy: none
+		sourceColumn: dynamics_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column dynamics_status
+		dataType: string
+		lineageTag: dcc8cf9c-fe6f-4ee4-b28f-fbd3823f7f38
+		summarizeBy: none
+		sourceColumn: dynamics_status
 
 		annotation SummarizationSetBy = Automatic
 

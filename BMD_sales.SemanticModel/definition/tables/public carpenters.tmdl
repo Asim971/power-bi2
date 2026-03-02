@@ -1,0 +1,303 @@
+table 'public carpenters'
+	lineageTag: 50d5e35a-b415-4a65-84ec-6a454200ca75
+
+	column id
+		dataType: int64
+		formatString: 0
+		lineageTag: 60a58d95-8a02-43be-b9fa-3ea302798296
+		summarizeBy: sum
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	column address_line1
+		dataType: string
+		lineageTag: 4574e27b-f83f-414b-940a-5a5a03c94e96
+		summarizeBy: none
+		sourceColumn: address_line1
+
+		annotation SummarizationSetBy = Automatic
+
+	column address_line2
+		dataType: string
+		lineageTag: ac12140e-74db-41b4-a048-8b54dd7f559c
+		summarizeBy: none
+		sourceColumn: address_line2
+
+		annotation SummarizationSetBy = Automatic
+
+	column business_type
+		dataType: string
+		lineageTag: e76a9c73-7e5e-4881-bc82-a54687466d2d
+		summarizeBy: none
+		sourceColumn: business_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column carpenter_type
+		dataType: string
+		lineageTag: 96c50a46-6498-4b55-9eea-11b1085f7afe
+		summarizeBy: none
+		sourceColumn: carpenter_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column code
+		dataType: string
+		lineageTag: 3d516f02-baf8-4b34-be12-a312bfbe805e
+		summarizeBy: none
+		sourceColumn: code
+
+		annotation SummarizationSetBy = Automatic
+
+	column created_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 3984ab9b-e5d9-4956-b942-76a260869924
+		summarizeBy: none
+		sourceColumn: created_at
+
+		variation Variation
+			isDefault
+			relationship: 4369cabc-2849-45d5-baa9-31329510cf5f
+			defaultHierarchy: LocalDateTable_3aae1a2c-d063-4a35-a811-0d2104a52957.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column delete_status
+		dataType: string
+		lineageTag: 45edb1e8-68b8-444e-85a0-3b80b9e8ac0a
+		summarizeBy: none
+		sourceColumn: delete_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column deleted_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: c6ca7471-2676-4572-929b-66c48d9fd568
+		summarizeBy: none
+		sourceColumn: deleted_at
+
+		variation Variation
+			isDefault
+			relationship: 9e62bf59-292d-465d-8aad-915955323588
+			defaultHierarchy: LocalDateTable_f09d7c44-65f9-45e4-b18a-5c465ab52826.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column dob
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: f0d93906-2b4d-4f4b-a290-0719c6447306
+		summarizeBy: none
+		sourceColumn: dob
+
+		variation Variation
+			isDefault
+			relationship: e2fa4386-2285-4000-995c-f3497d2d16fb
+			defaultHierarchy: LocalDateTable_6d97619b-a0ba-4f4e-b043-381c231d7048.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column mobile_no
+		dataType: string
+		lineageTag: 83c690f0-a132-449a-9540-11bec176acd0
+		summarizeBy: none
+		sourceColumn: mobile_no
+
+		annotation SummarizationSetBy = Automatic
+
+	column name
+		dataType: string
+		lineageTag: df4f5508-7d6c-4b7e-a107-48bb092897b8
+		summarizeBy: none
+		sourceColumn: name
+
+		annotation SummarizationSetBy = Automatic
+
+	column nid
+		dataType: string
+		lineageTag: 4ecfb05e-f4fe-4777-827d-efb621dd2006
+		summarizeBy: none
+		sourceColumn: nid
+
+		annotation SummarizationSetBy = Automatic
+
+	column nid_photo
+		dataType: string
+		lineageTag: 99c4fcc6-0f8d-4707-894a-f270a3a17ff8
+		summarizeBy: none
+		sourceColumn: nid_photo
+
+		annotation SummarizationSetBy = Automatic
+
+	column nominee_name
+		dataType: string
+		lineageTag: 507c4305-99cb-4234-9836-72960735dd0c
+		summarizeBy: none
+		sourceColumn: nominee_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column nominee_nid
+		dataType: string
+		lineageTag: 654a53ad-4134-4e9b-90dd-5d4a13d9acaf
+		summarizeBy: none
+		sourceColumn: nominee_nid
+
+		annotation SummarizationSetBy = Automatic
+
+	column nominee_photo
+		dataType: string
+		lineageTag: f58be89b-22d1-464b-a8cf-060a5179a2c3
+		summarizeBy: none
+		sourceColumn: nominee_photo
+
+		annotation SummarizationSetBy = Automatic
+
+	column notes
+		dataType: string
+		lineageTag: 29c28925-039e-4815-a5c7-af578a46331c
+		summarizeBy: none
+		sourceColumn: notes
+
+		annotation SummarizationSetBy = Automatic
+
+	column photo
+		dataType: string
+		lineageTag: 1daa82db-9776-4cef-b815-a040df5e8a2b
+		summarizeBy: none
+		sourceColumn: photo
+
+		annotation SummarizationSetBy = Automatic
+
+	column preffered_mfs
+		dataType: string
+		lineageTag: d4312fbd-0be8-4437-a52f-d030e2a9ee43
+		summarizeBy: none
+		sourceColumn: preffered_mfs
+
+		annotation SummarizationSetBy = Automatic
+
+	column preffered_mfs_number
+		dataType: string
+		lineageTag: 07f93406-5f87-45a8-858c-5919b2c65207
+		summarizeBy: none
+		sourceColumn: preffered_mfs_number
+
+		annotation SummarizationSetBy = Automatic
+
+	column rejection_comment
+		dataType: string
+		lineageTag: 94fbebb0-4fc1-473a-9ba1-044259dbe4c2
+		summarizeBy: none
+		sourceColumn: rejection_comment
+
+		annotation SummarizationSetBy = Automatic
+
+	column status
+		dataType: string
+		lineageTag: 7f0c51b9-976e-4556-a516-d8bc65993680
+		summarizeBy: none
+		sourceColumn: status
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_experience_year
+		dataType: string
+		lineageTag: 4df82dad-cf31-42e5-854b-d988b5402cda
+		summarizeBy: none
+		sourceColumn: total_experience_year
+
+		annotation SummarizationSetBy = Automatic
+
+	column updated_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 3dbc4e32-56dc-4772-9966-dae38dd13c15
+		summarizeBy: none
+		sourceColumn: updated_at
+
+		variation Variation
+			isDefault
+			relationship: 4bf24569-9adf-49d6-b3cd-f93378f14544
+			defaultHierarchy: LocalDateTable_bf4abe08-7227-46e1-aca4-76db92130e10.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column created_by_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 0787c2d1-c412-4d90-8316-5608d7ea5c17
+		summarizeBy: sum
+		sourceColumn: created_by_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column deleted_by_id
+		dataType: int64
+		formatString: 0
+		lineageTag: a4f3f753-1bc9-498a-a417-d89c213e3bb5
+		summarizeBy: sum
+		sourceColumn: deleted_by_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column module_code_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 77d7d468-99ee-41bf-aae7-ce930425f376
+		summarizeBy: sum
+		sourceColumn: module_code_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column organization_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 1ae5891a-df35-46be-ad3b-13c013c9c8b8
+		summarizeBy: sum
+		sourceColumn: organization_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column upazilla_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 15b27c56-e0d5-439d-83b6-1fa994191b14
+		summarizeBy: sum
+		sourceColumn: upazilla_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column updated_by_id
+		dataType: int64
+		formatString: 0
+		lineageTag: dfd240b7-e93d-46d6-90f2-821c9f5bb888
+		summarizeBy: sum
+		sourceColumn: updated_by_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column nominee_nid_photo
+		dataType: string
+		lineageTag: 3192b8a8-3df9-4ed6-b6dc-603a9278d03e
+		summarizeBy: none
+		sourceColumn: nominee_nid_photo
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'public carpenters' = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("172.17.19.21", "bmdsalesdb"),
+				  #"Navigation 1" = Source{[Schema = "public", Item = "carpenters"]}[Data]
+				in
+				  #"Navigation 1"
+
+	annotation PBI_ResultType = Table
+

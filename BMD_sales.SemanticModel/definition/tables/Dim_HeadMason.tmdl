@@ -27,12 +27,25 @@ table Dim_HeadMason
 		displayFolder: Counts\By Status
 		lineageTag: hm-m003-pending
 
+	measure Total_HeadMason_By_Date =
+			
+			CALCULATE (
+			    COUNTROWS ( Dim_HeadMason ),
+			    TREATAS (
+			        VALUES ( Dim_Date[Date] ),
+			        Dim_HeadMason[CreatedAt]
+			    )
+			)
+		formatString: 0
+		displayFolder: Counts
+		lineageTag: 93ed5fa8-0fb4-45f9-b8f9-ba90bb5144a8
+
 	column HeadMasonID
 		dataType: int64
 		isKey
 		formatString: 0
 		lineageTag: hm-c001-id
-		summarizeBy: count
+		summarizeBy: none
 		sourceColumn: HeadMasonID
 
 		annotation SummarizationSetBy = Automatic
@@ -104,7 +117,7 @@ table Dim_HeadMason
 
 	column CreatedAt
 		dataType: dateTime
-		formatString: General Date
+		formatString: Long Date
 		lineageTag: hm-c010-createdat
 		summarizeBy: none
 		sourceColumn: CreatedAt
@@ -115,6 +128,8 @@ table Dim_HeadMason
 			defaultHierarchy: LocalDateTable_08616169-7ea4-4538-b6f0-c90f56b7a508.'Date Hierarchy'
 
 		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
 
 	column UpdatedAt
 		dataType: dateTime
@@ -224,21 +239,7 @@ table Dim_HeadMason
 				    // ============================================================
 				    // STEP 3: Set data types
 				    // ============================================================
-				    TypedTable = Table.TransformColumnTypes(WithHeadMasonKey, {
-				        {"HeadMasonID", Int64.Type},
-				        {"HeadMasonName", type text},
-				        {"HeadMasonPhone", type text},
-				        {"Address", type text},
-				        {"SecondaryAddress", type text},
-				        {"UpazillaID", Int64.Type},
-				        {"Status", type text},
-				        {"Notes", type text},
-				        {"Photo", type text},
-				        {"CreatedAt", type datetime},
-				        {"UpdatedAt", type datetime},
-				        {"CreatedByID", Int64.Type},
-				        {"HeadMasonKey", type text}
-				    })
+				    TypedTable = Table.TransformColumnTypes(WithHeadMasonKey, {{"HeadMasonID", Int64.Type}, {"HeadMasonName", type text}, {"HeadMasonPhone", type text}, {"Address", type text}, {"SecondaryAddress", type text}, {"UpazillaID", Int64.Type}, {"Status", type text}, {"Notes", type text}, {"Photo", type text}, {"CreatedAt", type date}, {"UpdatedAt", type datetime}, {"CreatedByID", Int64.Type}, {"HeadMasonKey", type text}})
 				in
 				    TypedTable
 				```

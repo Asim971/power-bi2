@@ -1,0 +1,48 @@
+table 'User Order Quantity Switch Engineer'
+	lineageTag: 2903fc08-3f77-49ff-a545-4775d6918177
+
+	column 'User Order Quantity Switch Engineer'
+		lineageTag: c77f0188-9d17-4597-b417-aa933ed9e331
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'User Order Quantity Switch Engineer Order'
+
+		relatedColumnDetails
+			groupByColumn: 'User Order Quantity Switch Engineer Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'User Order Quantity Switch Engineer Fields'
+		isHidden
+		lineageTag: 16f510fb-ce6f-4db3-a2b9-9967e960d6a1
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'User Order Quantity Switch Engineer Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'User Order Quantity Switch Engineer Order'
+		isHidden
+		formatString: 0
+		lineageTag: b3de3587-2de2-4cd4-9de1-b69c804f5233
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'User Order Quantity Switch Engineer' = calculated
+		mode: import
+		source =
+				{
+				    ("MT", NAMEOF('Fact_ProjectConversion'[Total_EngineerEligible_Orders_Bags]), 0),
+				    ("Number", NAMEOF('Fact_ProjectConversion'[Total_EngineerEligible_Orders_With_Engineer_No]), 1)
+				}
+
+	annotation PBI_Id = e441898a8d094c6980a1a3f1493a6ea6
+

@@ -1,0 +1,1244 @@
+table Fact_ProjectConversion
+	lineageTag: ff475557-5613-4b0f-9934-f3bb9466a0a3
+
+	measure Achievement_By_active_contractor =
+			
+			DIVIDE ( [actual_active_contractor], [target_active_contractor], 0 )
+		lineageTag: d6d647d9-a7b0-4586-b2f8-4c45dc2be3f2
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total_Active_Contractor_Has_Order (Org 1)' =
+			
+			CALCULATE (
+			    DISTINCTCOUNT ( Fact_ProjectConversion[site_id] ),
+			    Dim_Site[HasContractor] = "Yes",
+			    Fact_ProjectConversion[loyalty_of_contractor] = "True",
+			    Fact_ProjectConversion[organization_id] = 1
+			)
+		formatString: 0
+		lineageTag: 52fd6e2a-835c-4586-9bbc-2183da88c30f
+
+	measure 'Total_Active_Contractor_Has_Order (Org 2)' =
+			
+			CALCULATE (
+			    DISTINCTCOUNT ( Fact_ProjectConversion[site_id] ),
+			    Dim_Site[HasContractor] = "Yes",
+			    Fact_ProjectConversion[loyalty_of_contractor] = "True",
+			    Fact_ProjectConversion[organization_id] = 2
+			)
+		formatString: 0
+		lineageTag: 3dcab089-b64c-4d0c-8b12-8075d510cf8a
+
+	measure Total_EngineerEligible_Orders_Bags =
+			
+			COALESCE (
+			    CALCULATE (
+			        SUM ( Fact_ProjectConversion[total_quantity] ),
+			        Dim_Site[HasEngineer] = "Yes",
+			        Fact_ProjectConversion[loyalty_of_engineer] = "true"
+			    ),
+			    0
+			)
+		lineageTag: 51cec188-563b-4d16-b121-9c76919a2fee
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Total_EngineerEligible_Orders_Bags_Approved =
+			
+			CALCULATE (
+			    SUM ( Fact_ProjectConversion[total_quantity] ),
+			    Dim_Site[HasEngineer] = "Yes",
+			    Fact_ProjectConversion[loyalty_of_engineer] = "true",
+			    Fact_ProjectConversion[order_status] = "APPROVED"
+			)
+		lineageTag: 1a900f6d-daa0-406d-9b78-3d2369d4b962
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Total_EngineerEligible_Orders_Bags_Pending =
+			
+			CALCULATE (
+			    SUM ( Fact_ProjectConversion[total_quantity] ),
+			    Dim_Site[HasEngineer] = "Yes",
+			    Fact_ProjectConversion[loyalty_of_engineer] = "true",
+			    Fact_ProjectConversion[order_status] = "PENDING"
+			)
+		lineageTag: 96ac8333-0c22-484c-b37b-e61b2e04fc03
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Total_EngineerEligible_Orders_Bags_Pending_No =
+			
+			CALCULATE (
+			    DISTINCTCOUNT(Fact_ProjectConversion[id]),
+			    Dim_Site[HasEngineer] = "Yes",
+			    Fact_ProjectConversion[loyalty_of_engineer] = "true",
+			    Fact_ProjectConversion[order_status] = "PENDING"
+			)
+		formatString: 0
+		lineageTag: f4d1d859-4071-4ef2-b44b-1718571258e7
+
+	measure Total_EngineerEligible_Orders_Bags_Rejected =
+			
+			CALCULATE (
+			    SUM ( Fact_ProjectConversion[total_quantity] ),
+			    Dim_Site[HasEngineer] = "Yes",
+			    Fact_ProjectConversion[loyalty_of_engineer] = "true",
+			    Fact_ProjectConversion[order_status] = "REJECTED"
+			)
+		lineageTag: 2447d9e1-f6c5-4c9b-8223-2e885c21f41b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Total_EngineerEligible_Orders_With_Engineer_Count =
+			
+			CALCULATE (
+			    DISTINCTCOUNT ( Fact_ProjectConversion[engineer_id] ),
+			    Dim_Site[HasEngineer] = "Yes",
+			    Fact_ProjectConversion[loyalty_of_engineer] = "true"
+			)
+		formatString: 0
+		lineageTag: eb6eded0-ee11-4c6a-8618-d03ba1c70a5d
+
+	measure Total_PartnerEligible_Orders_Bags =
+			
+			COALESCE (
+			    CALCULATE (
+			        SUM ( Fact_ProjectConversion[total_quantity] ),
+			        Dim_Site[HasContractorHeadmason] = "Yes",
+			        Fact_ProjectConversion[loyalty_of_contractor] = "true"
+			    ),
+			    0
+			)
+		lineageTag: f954c4a7-9d1d-4be0-8d9b-8319036cfd79
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Total_PartnerEligible_Orders_Bags_Approved =
+			
+			CALCULATE (
+			    SUM ( Fact_ProjectConversion[total_quantity] ),
+			    Dim_Site[HasContractorHeadmason] = "Yes",
+			    Fact_ProjectConversion[loyalty_of_contractor] = "true",
+			    Fact_ProjectConversion[order_status] = "APPROVED"
+			)
+		lineageTag: 219477db-05a5-47e2-90f0-985ea1663516
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Total_PartnerEligible_Orders_Bags_Count =
+			
+			CALCULATE (
+			    DISTINCTCOUNT(Fact_ProjectConversion[id]),
+			    Dim_Site[HasContractorHeadmason] = "Yes",
+			    Fact_ProjectConversion[loyalty_of_contractor] = "true"
+			)
+		formatString: 0
+		lineageTag: 26648f0f-4b29-47c3-b665-b6771bfa1511
+
+	measure Total_PartnerEligible_Orders_Bags_HeadMason =
+			
+			COALESCE (
+			    CALCULATE (
+			        SUM ( Fact_ProjectConversion[total_quantity] ),
+			        Dim_Site[HasHeadMeson] = "Yes",
+			        Fact_ProjectConversion[loyalty_of_contractor] = "true"
+			    ),
+			    0
+			)
+		lineageTag: 604712c4-5c40-4a02-8500-54ee660572a0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Total_PartnerEligible_Orders_Bags_Pending =
+			
+			CALCULATE (
+			    SUM ( Fact_ProjectConversion[total_quantity] ),
+			    Dim_Site[HasContractorHeadmason] = "Yes",
+			    Fact_ProjectConversion[loyalty_of_contractor] = "true",
+			    Fact_ProjectConversion[order_status] = "PENDING"
+			)
+		formatString: 0
+		lineageTag: e861e7e2-e8f8-4641-accf-263fd7d359c5
+
+	measure Total_PartnerEligible_Orders_Bags_Pending_No =
+			
+			CALCULATE (
+			    DISTINCTCOUNT(Fact_ProjectConversion[id]),
+			    Dim_Site[HasContractorHeadmason] = "Yes",
+			    Fact_ProjectConversion[loyalty_of_contractor] = "true",
+			    Fact_ProjectConversion[order_status] = "PENDING"
+			)
+		formatString: 0
+		lineageTag: d51a66cb-593e-43c1-a718-bc5222d9886c
+
+	measure Total_PartnerEligible_Orders_Bags_Rejected =
+			
+			CALCULATE (
+			    SUM ( Fact_ProjectConversion[total_quantity] ),
+			    Dim_Site[HasContractorHeadmason] = "Yes",
+			    Fact_ProjectConversion[loyalty_of_contractor] = "true",
+			    Fact_ProjectConversion[order_status] = "REJECTED"
+			)
+		lineageTag: a1d44326-9f3b-4d5b-b16e-39dd000c4c40
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Total_PartnerEligible_Orders_Bags_Target = 20000
+		formatString: 0
+		lineageTag: 8fbb98c5-8246-42ed-8a33-506bf8105add
+
+	measure Total_PartnerEligible_Orders_MT =
+			
+			COALESCE (
+			    CALCULATE (
+			        SUM ( Fact_ProjectConversion[total_quantity] ),
+			        Dim_Site[HasContractor] = "Yes",
+			        Fact_ProjectConversion[loyalty_of_contractor] = "true"
+			    ),
+			    0
+			)
+		lineageTag: 626a673f-b3ea-4924-ac8f-d18bde148e67
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Total_PartnerEligible_Orders_MT_Pending =
+			
+			CALCULATE (
+			    DISTINCTCOUNT(Fact_ProjectConversion[total_quantity]),
+			    Dim_Site[HasContractor] = "Yes",
+			    Fact_ProjectConversion[loyalty_of_contractor] = "true",
+			    Fact_ProjectConversion[order_status] = "PENDING"
+			)
+		formatString: 0
+		lineageTag: 28948bd6-f31d-45cb-bb72-8ff955c5b840
+
+	measure Total_PartnerEligible_Orders_MT_Rejected =
+			
+			CALCULATE (
+			    SUM ( Fact_ProjectConversion[total_quantity] ),
+			    Dim_Site[HasEngineer] = "Yes",
+			    Fact_ProjectConversion[loyalty_of_engineer] = "true",
+			    Fact_ProjectConversion[order_status] = "REJECTED"
+			)
+		lineageTag: cc4492bc-e6f7-45e1-a708-1723a48f4af3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Total_PartnerEligible_Orders_With_Contractor_Count =
+			
+			CALCULATE (
+			    DISTINCTCOUNT ( Fact_ProjectConversion[Contractor_HeadMason_Id] ),
+			    Dim_Site[HasContractorHeadmason] = "Yes",
+			    Fact_ProjectConversion[loyalty_of_contractor] = "true"
+			)
+		formatString: 0
+		lineageTag: d4960881-4b94-40bc-a7ec-f5aa4ff711b4
+
+	measure Total_PartnerEligible_Orders_With_HeadMason_Count =
+			
+			CALCULATE (
+			    DISTINCTCOUNT ( Fact_ProjectConversion[head_mason_id] ),
+			    Dim_Site[HasHeadMeson] = "Yes",
+			    Fact_ProjectConversion[loyalty_of_contractor] = "true"
+			)
+		formatString: 0
+		lineageTag: a444e8e4-5260-4599-92d4-eecc1bd122c1
+
+	measure Total_Unique_Retailers = DISTINCTCOUNT ( Fact_ProjectConversion[retailer_id])
+		formatString: 0
+		lineageTag: 59a49931-13ec-4ce1-afb2-224a315c56a0
+
+	measure Total_vs_Target_Contractor_ACL_Display =
+			
+			VAR Total = [Total_PartnerEligible_Orders_Bags]
+			VAR Target = [Total_PartnerEligible_Orders_Bags_Target]
+			RETURN
+			FORMAT ( Total, "0" ) & " / " & FORMAT ( Target, "0" )
+		lineageTag: f1de7921-e716-4da2-9932-cb7b81b6134f
+
+	measure Total_Vs_Target_Contractor_ACL_Percentage =
+			
+			DIVIDE (
+			    [Total_PartnerEligible_Orders_Bags],
+			    [Total_PartnerEligible_Orders_Bags_Target],
+			    0
+			)
+		lineageTag: 90a152c0-ef91-45e1-a65a-62bba73c21e2
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Total_vs_Target_Engineer_ACL_Display =
+			
+			VAR Total = [Total_EngineerEligible_Orders_Bags]
+			VAR Target = [Total_PartnerEligible_Orders_Bags_Target]
+			RETURN
+			FORMAT ( Total, "0" ) & " / " & FORMAT ( Target, "0" )
+		lineageTag: d57c6a23-44be-4a2f-a306-8baf5f281172
+
+	measure Achievement_By_active_engineer =
+			
+			DIVIDE ( [Total_EngineerEligible_Orders_With_Engineer_Count], [target_active_contractor], 0 )
+		lineageTag: 6d184f90-3436-41c4-ac7b-7efa2c83ba01
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Avg_Order_Bags_per_Contractor (Org 2)' =
+			
+			DIVIDE (
+			    [Total_PartnerEligible_Orders_MT],
+			    [Total_PartnerEligible_Orders_With_Contractor_Count]
+			)
+		lineageTag: 2ed402a9-03ec-42fc-a815-1690b563200d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Avg_Order_Bags_per_Contractor_MT =
+			
+			DIVIDE (
+			    [Total_PartnerEligible_Orders_Bags_MT],
+			    [Total_Active_Contractor_Has_Order (Org 1)]
+			)
+		lineageTag: a3b97280-e0bf-4ac0-8774-eec7df4b84d6
+
+	measure Avg_Order_Bags_per_Contractor_Target = 700
+		formatString: 0
+		lineageTag: 65c94596-180f-4c8b-ac00-2f847ab9135e
+
+	measure 'Achievement_By_avg_vol_per_engineer (Org 2)' =
+			
+			DIVIDE ( [Avg_Order_Bags_per_Engineer], [target_avg_vol_per_contractor], 0 )
+		lineageTag: 8e5af7a2-63fa-456e-ac81-adcf026c8909
+
+	measure Achievement_By_contractor_visits =
+			
+			DIVIDE ( [Actual_Contractor_Visit], [Target_Contractor_Visit], 0 )
+		lineageTag: a8809b53-eec9-4c55-8df3-6a7b01dd036b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Achievement_By_Metric_Contractor =
+			
+			DIVIDE ( [Actual_By_Metric_Contractor], [Target_By_Metric_Contractor], 0 )
+		lineageTag: f732c160-8bf2-4e24-aeaa-57fac4f414c8
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Achievement_By_total_contractor_consumption =
+			
+			DIVIDE ( [actual_total_contractor_consumption], [target_total_contractor_consumption], 0 )
+		lineageTag: fcaf5b20-66fb-426e-afe3-6bc029d3ba59
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Achievement_By_total_contractor_consumption (Org 2)' =
+			
+			DIVIDE ( [Total_PartnerEligible_Orders_MT], [target_total_contractor_consumption], 0 )
+		lineageTag: d1630925-d925-4627-bb07-6b62ac806379
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Achievement_By_total_engineer_consumption (Org 2)' =
+			
+			DIVIDE ( [Total_EngineerEligible_Orders_Bags], [target_total_contractor_consumption], 0 )
+		lineageTag: 33c7ba8c-3a77-4916-a388-132803c20789
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Active_vs_Total_Contractor_ACL_Percentage =
+			
+			DIVIDE (
+			    [Total_Active_Contractor_Has_Order (Org 1)],
+			    [Total_Contractors],
+			    0
+			)
+		lineageTag: 96246420-3bfc-421c-a58c-022e228ebec3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Active_vs_Total_Contractor_AIL_Percentage =
+			
+			DIVIDE (
+			    [Total_PartnerEligible_Orders_With_Contractor_Count],
+			    [Total_Contractors],
+			    0
+			)
+		lineageTag: 6722434c-cd40-45aa-93df-669ceffcad65
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Active_vs_Total_Contractor_Display (Org 2)' =
+			
+			VAR Active = [Total_PartnerEligible_Orders_With_Contractor_Count]
+			VAR Total = [Total_Contractors]
+			RETURN
+			FORMAT ( Active, "0" ) & " / " & FORMAT ( Total, "0" )
+		lineageTag: 3baf89f9-47a2-4cc9-adca-b7b46877d50c
+
+	measure Active_vs_Total_Contractor_Visits_Percentage =
+			
+			DIVIDE (
+			    [Total_Visits2],
+			    [Contractor_Visits_Target],
+			    0
+			)
+		lineageTag: 9ef4d2f5-534f-4800-abf8-6537e0b03f82
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Active_vs_Total_Engineer_Display (Org 2)' =
+			
+			VAR Active = [Total_EngineerEligible_Orders_With_Engineer_Count]
+			VAR Total = [Total_Contractors]
+			RETURN
+			FORMAT ( Active, "0" ) & " / " & FORMAT ( Total, "0" )
+		lineageTag: f3161601-37df-4bad-b031-9e03941419e7
+
+	measure Active_vs_Total_HeadMason_Display =
+			
+			VAR Active = [Total_PartnerEligible_Orders_With_HeadMason_Count]
+			VAR Total = [Total_HeadMason_Count]
+			RETURN
+			FORMAT ( Active, "0" ) & " / " & FORMAT ( Total, "0" )
+		lineageTag: c01e345f-b572-4fc2-88b4-b1c2243a2589
+
+	measure Average_Daily_UserOrder_Price =
+			
+			AVERAGEX (
+			    FILTER (
+			        Fact_ProjectConversion,
+			        VAR RowPrice =
+			            DIVIDE (
+			                Fact_ProjectConversion[total_amount],
+			                Fact_ProjectConversion[total_quantity],
+			                0
+			            )
+			        RETURN
+			            RowPrice > 200
+			                && RowPrice < 600
+			    ),
+			    DIVIDE (
+			        Fact_ProjectConversion[total_amount],
+			        Fact_ProjectConversion[total_quantity],
+			        0
+			    )
+			)
+		formatString: 0
+		lineageTag: 0a0424ba-98c7-4f8b-8f10-366e6558243d
+
+	measure Average_Daily_UserOrder_Price_AIL =
+			
+			AVERAGEX (
+			    FILTER (
+			        Fact_ProjectConversion,
+			        VAR RowPrice =
+			            DIVIDE (
+			                Fact_ProjectConversion[total_amount],
+			                Fact_ProjectConversion[total_quantity],
+			                0
+			            )
+			        RETURN
+			            RowPrice > 60000
+			                && RowPrice < 90000
+			    ),
+			    DIVIDE (
+			        Fact_ProjectConversion[total_amount],
+			        Fact_ProjectConversion[total_quantity],
+			        0
+			    )
+			)
+		formatString: 0
+		lineageTag: dc60102b-5aca-4bac-8a96-f1251b4b0942
+
+	measure Avg_Order_Bags_per_Engineer =
+			
+			DIVIDE (
+			    [Total_EngineerEligible_Orders_Bags],
+			    [Total_EngineerEligible_Orders_With_Engineer_Count]
+			)
+		lineageTag: 5b976cc9-138e-47d6-96df-370e25c44a70
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Avg_Order_Bags_per_Contractor =
+			
+			DIVIDE (
+			    [Total_PartnerEligible_Orders_Bags],
+			    [Total_PartnerEligible_Orders_With_Contractor_Count]
+			)
+		lineageTag: 9bb1ea8d-7290-4bd9-9de1-e94aba293bd1
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Total_PartnerEligible_Orders_Bags_MT =
+			
+			CALCULATE (
+			    SUM ( Fact_ProjectConversion[total_quantity])/20,
+			    Dim_Site[HasContractorHeadmason] = "Yes",
+			    Fact_ProjectConversion[loyalty_of_contractor] = "true"
+			)
+		lineageTag: e3c9d97d-1a79-4a23-aa4f-a4dd577cf8b4
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Avg_Vol_Vs_Target_Contractor_Percentage =
+			
+			DIVIDE (
+			    [Avg_Order_Bags_per_Contractor],
+			    [Avg_Order_Bags_per_Contractor_Target],
+			    0
+			)
+		lineageTag: 38b375df-fbd7-42a2-9ff4-8f52ff563349
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Avg_Vol_Vs_Target_Contractor_Display =
+			
+			VAR Avg_Vol = [Avg_Order_Bags_per_Contractor]
+			VAR Target = [Avg_Order_Bags_per_Contractor_Target]
+			RETURN
+			FORMAT ( Avg_Vol, "0" ) & " / " & FORMAT ( Target, "0" )
+		lineageTag: 75857dc5-af21-4dd3-b319-c1b2cba69359
+
+	measure Achievement_By_avg_vol_per_contractor =
+			
+			DIVIDE ( [actual_avg_vol_per_contractor], [target_avg_vol_per_contractor], 0 )
+		lineageTag: 2be57249-634b-4db2-8c91-22ee81e3fca3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Achievement_By_avg_vol_per_contractor (Org 2)' =
+			
+			DIVIDE ( [Avg_Order_Bags_per_Contractor], [target_avg_vol_per_contractor], 0 )
+		lineageTag: 8d28d290-5151-4e93-b241-18a3578367dc
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Total_PartnerEligible_Orders_MT_Approved =
+			
+			CALCULATE (
+			    SUM ( Fact_ProjectConversion[total_quantity] ),
+			    Dim_Site[HasContractor] = "Yes",
+			    Fact_ProjectConversion[loyalty_of_contractor] = "true",
+			    Fact_ProjectConversion[order_status] = "APPROVED"
+			)
+		lineageTag: abef344e-5d04-437e-82b5-6830d4616c5a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Avg_Vol_Vs_Target_Engineer_Display =
+			
+			VAR Avg_Vol = [Avg_Order_Bags_per_Engineer]
+			VAR Target = [Avg_Order_Bags_per_Contractor_Target]
+			RETURN
+			FORMAT ( Avg_Vol, "0" ) & " / " & FORMAT ( Target, "0" )
+		lineageTag: f4cc73ae-93e9-4b08-af1b-bb38e6a577ea
+
+	measure Territories_With_Engineer_Orders =
+			
+			CALCULATE (
+			    DISTINCTCOUNT ( Fact_ProjectConversion[Territory_id_UserOrder] ),
+			    NOT ISBLANK ( Fact_ProjectConversion[Territory_id_UserOrder] ),
+			    Dim_Site[HasEngineer] = "Yes",
+			    Fact_ProjectConversion[loyalty_of_engineer] = "true"
+			)
+		formatString: 0
+		lineageTag: 74cf3486-052a-4dcb-8bc5-58ce21c6484f
+
+	measure Territories_With_Contractor_Orders =
+			
+			CALCULATE (
+			    DISTINCTCOUNT ( Fact_ProjectConversion[Territory_id_UserOrder] ),
+			    NOT ISBLANK ( Fact_ProjectConversion[Territory_id_UserOrder] ),
+			    Dim_Site[HasContractor] = "Yes",
+			    Fact_ProjectConversion[loyalty_of_contractor] = "true"
+			)
+		formatString: 0
+		lineageTag: 9f0640e8-3bff-4b6d-9c0b-91f93b0b92a6
+
+	measure Territory_Coverage_Display_Engineer = ```
+			
+			VAR Covered = [Territories_With_Engineer_Orders]
+			VAR Total = [Total_Territories]
+			RETURN
+			FORMAT ( Covered, "0" ) & " / " & FORMAT ( Total, "0" )
+			
+			```
+		lineageTag: 46d7a815-2df6-4782-98bb-28b4ff649105
+
+	measure Territory_Coverage_Display = ```
+			
+			VAR Covered = [Territories_With_Contractor_Orders]
+			VAR Total = [Total_Territories]
+			RETURN
+			FORMAT ( Covered, "0" ) & " / " & FORMAT ( Total, "0" )
+			
+			```
+		lineageTag: 9d40d5f3-c409-4be9-a6c5-40214ff160a1
+
+	measure Total_order_quantity = SUM(Fact_ProjectConversion[total_quantity])
+		lineageTag: d993ef29-bf45-4658-bfcc-985463acd346
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Total_PartnerEligible_Orders_Bags_No =
+			
+			CALCULATE (
+			    COUNT(Fact_ProjectConversion[site_id]),
+			    Dim_Site[HasContractorHeadmason] = "Yes",
+			    Fact_ProjectConversion[loyalty_of_contractor] = "true"
+			)
+		formatString: 0
+		lineageTag: 20231242-7b00-469a-87be-2f9d49475a5f
+
+	measure Total_EngineerEligible_Orders_With_Engineer_No =
+			
+			CALCULATE (
+			    COUNT ( Fact_ProjectConversion[site_id] ),
+			    Dim_Site[HasEngineer] = "Yes",
+			    Fact_ProjectConversion[loyalty_of_engineer] = "true"
+			)
+		formatString: 0
+		lineageTag: ea3abc7d-6ac3-4f45-947d-d5d873ce3eca
+
+	measure Active_Carpenter = DISTINCTCOUNT(Fact_ProjectConversion[carpenter_id])
+		formatString: 0
+		displayFolder: Carpenter
+		lineageTag: a7c6afbd-add9-488a-9e89-fba6bf5f35bd
+
+	measure Active_vs_Total_Carpenter_Display =
+			
+			VAR Active = [Active_Carpenter]
+			VAR Total = [Total_Carpenter]
+			RETURN
+			FORMAT ( Active, "0" ) & " / " & FORMAT ( Total, "0" )
+		displayFolder: Carpenter
+		lineageTag: cbb09ba4-e39c-4ef8-901c-04e1f02f9995
+
+	measure Total_vs_Target_Carpenter_Order_Display =
+			
+			VAR Total = [Total_order_quantity_rft]
+			VAR Target = [Total_PartnerEligible_Orders_Bags_Target]
+			RETURN
+			FORMAT ( Total, "0" ) & " / " & FORMAT ( Target, "0" )
+		displayFolder: Carpenter
+		lineageTag: e193e7c7-ff6d-4489-818d-6951c7c92f9e
+
+	measure Avg_Order_per_Carpenter =
+			
+			DIVIDE (
+			    [Total_order_quantity_rft],
+			    [Active_Carpenter]
+			)
+		displayFolder: Carpenter
+		lineageTag: 71bb40ac-cb07-4a49-a195-0c4902c60300
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Avg_Vol_Vs_Target_Carpenter_Display =
+			
+			VAR Avg_Vol = [Avg_Order_per_Carpenter]
+			VAR Target = [Avg_Order_Bags_per_Contractor_Target]
+			RETURN
+			FORMAT ( Avg_Vol, "0" ) & " / " & FORMAT ( Target, "0" )
+		displayFolder: Carpenter
+		lineageTag: a7647128-5a62-4677-8bda-d3ddc0bdb92a
+
+	measure Territories_With_Carpenter_Orders =
+			
+			CALCULATE (
+			    DISTINCTCOUNT ( Fact_ProjectConversion[Territory_id_UserOrder] ),
+			    NOT ISBLANK ( Fact_ProjectConversion[Territory_id_UserOrder] )
+			)
+		formatString: 0
+		displayFolder: Carpenter
+		lineageTag: 07e6d239-b7fc-4792-bb3b-2b5013130447
+
+	measure Territory_Coverage_Display_Carpenter = ```
+			
+			VAR Covered = [Territories_With_Carpenter_Orders]
+			VAR Total = [Total_Territories]
+			RETURN
+			FORMAT ( Covered, "0" ) & " / " & FORMAT ( Total, "0" )
+			
+			```
+		displayFolder: Carpenter
+		lineageTag: 2acc8e47-9418-4c0f-9550-9a09568cce34
+
+	measure Total_Carpenter_Pending_Count =
+			
+			CALCULATE (
+			    DISTINCTCOUNT(Fact_ProjectConversion[id]),
+			    Fact_ProjectConversion[order_status] IN { "PENDING", "PENDING_SR_VERIFICATION" }
+			)
+		formatString: 0
+		displayFolder: Carpenter
+		lineageTag: 7f563d9e-acd7-4c99-b11b-1f1372ac2e6e
+
+	measure Total_Carpenter_Order_Pending =
+			
+			CALCULATE (
+			    SUM ( Fact_ProjectConversion[total_rft_quantity] ),
+			    Fact_ProjectConversion[order_status] IN { "PENDING", "PENDING_SR_VERIFICATION" }
+			)
+		displayFolder: Carpenter
+		lineageTag: 235dd053-1894-4d3f-9f1f-f319f9d13329
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Total_Carpenter_Order_Approved =
+			
+			CALCULATE (
+			    SUM ( Fact_ProjectConversion[total_rft_quantity] ),
+			    Fact_ProjectConversion[order_status] = "APPROVED"
+			)
+		displayFolder: Carpenter
+		lineageTag: 8309a24a-85bd-4654-a09b-d68207d62b6b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Total_Carpenter_Order_Rejected =
+			
+			CALCULATE (
+			    SUM ( Fact_ProjectConversion[total_rft_quantity] ),
+			    Fact_ProjectConversion[order_status] = "REJECTED"
+			)
+		displayFolder: Carpenter
+		lineageTag: e3b6da27-efe8-4c32-95ba-b0297dba13ea
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Total_vs_Target_Carpenter_Order_Percentage =
+			
+			DIVIDE (
+			    [Total_order_quantity_rft],
+			    [Total_PartnerEligible_Orders_Bags_Target],
+			    0
+			)
+		displayFolder: Carpenter
+		lineageTag: 8ee6d24a-a827-4b9a-92f5-7b4d9bc843a7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Active_vs_Total_Carpenter_Percentage =
+			
+			DIVIDE (
+			    [Active_Carpenter],
+			    [Total_Carpenter],
+			    0
+			)
+		displayFolder: Carpenter
+		lineageTag: bd7045f1-92a8-4c9e-a8b1-1c76b31e7c28
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Total_order_quantity_rft = SUM(Fact_ProjectConversion[total_rft_quantity])
+		displayFolder: Carpenter
+		lineageTag: 0f228eca-e18a-4a52-9790-adc374d04bf3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Avg_Vol_Vs_Target_Carpenter_Percentage =
+			
+			DIVIDE (
+			    [Avg_Order_per_Carpenter],
+			    [Avg_Order_Bags_per_Contractor_Target],
+			    0
+			)
+		displayFolder: Carpenter
+		lineageTag: 45a4ec3e-f460-40c6-a1c6-ea6a73cdf532
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Total_Carpenter_Order_Count = COUNT(Fact_ProjectConversion[id])
+		formatString: 0
+		displayFolder: Carpenter
+		lineageTag: 44a95e35-ea7c-4a19-89bd-60e10cb45381
+
+	measure Average_Daily_UserOrder_Price_ACSL =
+			
+			AVERAGEX (
+			    FILTER (
+			        Fact_ProjectConversion,
+			        VAR RowPrice =
+			            DIVIDE (
+			                Fact_ProjectConversion[total_amount],
+			                Fact_ProjectConversion[total_rft_quantity],
+			                0
+			            )
+			        RETURN
+			            RowPrice > 0
+			                && RowPrice < 1000000
+			    ),
+			    DIVIDE (
+			        Fact_ProjectConversion[total_amount],
+			        Fact_ProjectConversion[total_rft_quantity],
+			        0
+			    )
+			)
+		lineageTag: cc358ca1-abb3-4b3f-904c-7174ca6d7ba4
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Achievement_By_carpenter_visits =
+			
+			DIVIDE ( [Daily_Unique_Client_Visits], [Target_Contractor_Visit], 0 )
+		displayFolder: Carpenter
+		lineageTag: 208dd6ba-4418-43ab-9088-6a0b2f87195a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Achievement_By_active_carpenter =
+			
+			DIVIDE ( [Active_Carpenter], [target_active_contractor], 0 )
+		displayFolder: Carpenter
+		lineageTag: 652aa940-982b-4c88-bc65-c94af7ec5bfa
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Achievement_By_avg_vol_per_carpenter =
+			
+			DIVIDE ( [Avg_Order_per_Carpenter], [target_avg_vol_per_contractor], 0 )
+		displayFolder: Carpenter
+		lineageTag: 45fcbea4-404a-4e5c-9b3e-9e1c6a68ad8a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Achievement_By_total_carpenter_consumption =
+			
+			DIVIDE ( [Total_order_quantity_rft], [target_total_contractor_consumption], 0 )
+		displayFolder: Carpenter
+		lineageTag: a8381337-0173-4f96-9e16-e76c9f86c3c7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Active_vs_Total_HeadMason_Percentage =
+			
+			DIVIDE (
+			    [Total_PartnerEligible_Orders_With_HeadMason_Count],
+			    [Total_HeadMason_Count],
+			    0
+			)
+		lineageTag: 40bb9f3a-16ef-47a8-b2a3-567765b45fbc
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Avg_Order_Bags_per_HeadMason =
+			
+			DIVIDE (
+			    [Total_PartnerEligible_Orders_Bags_HeadMason],
+			    [Total_PartnerEligible_Orders_With_HeadMason_Count]
+			)
+		lineageTag: 5e200a93-5d39-4df9-ab2b-a572c77bac3f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Avg_Vol_Vs_Target_HeadMason_Display =
+			
+			VAR Avg_Vol = [Avg_Order_Bags_per_HeadMason]
+			VAR Target = [Avg_Order_Bags_per_Contractor_Target]
+			RETURN
+			FORMAT ( Avg_Vol, "0" ) & " / " & FORMAT ( Target, "0" )
+		lineageTag: 29b560e1-95a3-4200-ac7b-690d155488e8
+
+	measure Total_vs_Target_HeadMason_ACL_Display =
+			
+			VAR Total = [Total_PartnerEligible_Orders_Bags_HeadMason]
+			VAR Target = [Total_PartnerEligible_Orders_Bags_Target]
+			RETURN
+			FORMAT ( Total, "0" ) & " / " & FORMAT ( Target, "0" )
+		lineageTag: 4020f5bd-9f25-453a-a753-853ba4dbcd9a
+
+	measure Total_vs_Target_HeadMason_ACL_Percentage =
+			
+			DIVIDE (
+			    [Total_PartnerEligible_Orders_Bags_HeadMason],
+			    [Total_PartnerEligible_Orders_Bags_Target],
+			    0
+			)
+		lineageTag: 255676f8-1aee-43b7-9260-cd32f02c2f03
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Territories_With_HeadMason_Orders =
+			
+			CALCULATE (
+			    DISTINCTCOUNT ( Fact_ProjectConversion[Territory_id_UserOrder] ),
+			    NOT ISBLANK ( Fact_ProjectConversion[Territory_id_UserOrder] ),
+			    Dim_Site[HasHeadMeson] = "Yes",
+			    Fact_ProjectConversion[loyalty_of_contractor] = "true"
+			)
+		formatString: 0
+		lineageTag: f4329ec4-8d1f-4665-aa7c-3b8ecff2a160
+
+	measure Territory_Coverage_Display_HeadMason = ```
+			
+			VAR Covered = [Territories_With_HeadMason_Orders]
+			VAR Total = [Total_Territories]
+			RETURN
+			FORMAT ( Covered, "0" ) & " / " & FORMAT ( Total, "0" )
+			
+			```
+		lineageTag: ec5c6b9b-fe95-4802-be33-b17c904d3bde
+
+	measure Total_PartnerEligible_Orders_Bags_Pending_No_HeadMason =
+			
+			CALCULATE (
+			    DISTINCTCOUNT(Fact_ProjectConversion[id]),
+			    Dim_Site[HasHeadMeson] = "Yes",
+			    Fact_ProjectConversion[loyalty_of_contractor] = "true",
+			    Fact_ProjectConversion[order_status] = "PENDING"
+			)
+		formatString: 0
+		lineageTag: 9db8e62f-f879-4277-8a9f-badab3cbfa77
+
+	measure Total_PartnerEligible_Orders_Bags_Pending_HeadMason =
+			
+			CALCULATE (
+			    SUM ( Fact_ProjectConversion[total_quantity] ),
+			    Dim_Site[HasHeadMeson] = "Yes",
+			    Fact_ProjectConversion[loyalty_of_contractor] = "true",
+			    Fact_ProjectConversion[order_status] = "PENDING"
+			)
+		lineageTag: 0ee1d29e-9e32-4eb0-98a7-a7211a662bd0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Total_PartnerEligible_Orders_Bags_Approved_HeadMason =
+			
+			CALCULATE (
+			    SUM ( Fact_ProjectConversion[total_quantity] ),
+			    Dim_Site[HasHeadMeson] = "Yes",
+			    Fact_ProjectConversion[loyalty_of_contractor] = "true",
+			    Fact_ProjectConversion[order_status] = "APPROVED"
+			)
+		lineageTag: 61d8ebdc-e95a-4105-b88d-c0efacc5127d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Total_PartnerEligible_Orders_Bags_Rejected_HeadMason =
+			
+			CALCULATE (
+			    SUM ( Fact_ProjectConversion[total_quantity] ),
+			    Dim_Site[HasHeadMeson] = "Yes",
+			    Fact_ProjectConversion[loyalty_of_contractor] = "true",
+			    Fact_ProjectConversion[order_status] = "REJECTED"
+			)
+		lineageTag: b43c4f1f-21ad-40a3-a671-b372e9cf2180
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Achievement_By_active_headmason =
+			
+			DIVIDE ( [Total_PartnerEligible_Orders_With_HeadMason_Count], [target_active_contractor], 0 )
+		lineageTag: 6c20d408-26d0-43d0-9572-1d1dcb8f1a9e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Achievement_By_avg_vol_per_headmason =
+			
+			DIVIDE ( [Avg_Order_Bags_per_HeadMason], [target_avg_vol_per_contractor], 0 )
+		lineageTag: 34923f03-67a8-4166-bf44-1dd6435cb179
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Achievement_By_total_headmason_consumption =
+			
+			DIVIDE ( [Total_PartnerEligible_Orders_Bags_HeadMason], [target_total_contractor_consumption], 0 )
+		lineageTag: 977d0981-aac5-4a7c-864d-0b8489533cc4
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column id
+		dataType: int64
+		formatString: 0
+		lineageTag: add423f2-30ab-4434-a8d4-e84afdbf2fd1
+		summarizeBy: sum
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	column created_at
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: d34ffaa7-e605-4a10-97aa-8a1100a3a400
+		summarizeBy: none
+		sourceColumn: created_at
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column created_by
+		dataType: int64
+		formatString: 0
+		lineageTag: fa940a8e-3418-42bf-a93d-73b8e72b54c6
+		summarizeBy: sum
+		sourceColumn: created_by
+
+		annotation SummarizationSetBy = Automatic
+
+	column delivery_method
+		dataType: string
+		lineageTag: 459a421a-66aa-4f02-ac1c-3cb02641ac8f
+		summarizeBy: none
+		sourceColumn: delivery_method
+
+		annotation SummarizationSetBy = Automatic
+
+	column ihb
+		dataType: string
+		lineageTag: ebb72d46-6ebb-4132-89ba-eb040a4df3ba
+		summarizeBy: none
+		sourceColumn: ihb
+
+		annotation SummarizationSetBy = Automatic
+
+	column loyalty_of_contractor
+		dataType: string
+		lineageTag: 4cacc263-afb6-40c1-8b40-6153e36b2445
+		summarizeBy: none
+		sourceColumn: loyalty_of_contractor
+
+		annotation SummarizationSetBy = Automatic
+
+	column loyalty_of_engineer
+		dataType: string
+		lineageTag: 576c1640-bf03-4d78-9282-1517b0b18637
+		summarizeBy: none
+		sourceColumn: loyalty_of_engineer
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_status
+		dataType: string
+		lineageTag: fceee6bf-d0c0-47c1-94be-77775036463a
+		summarizeBy: none
+		sourceColumn: order_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_amount
+		dataType: double
+		lineageTag: 800e9147-7378-4efa-8038-a2d5b9634f0e
+		summarizeBy: sum
+		sourceColumn: total_amount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column total_quantity
+		dataType: double
+		lineageTag: 1b6768ce-b8dc-4cb7-88db-fe0f5c2f2092
+		summarizeBy: sum
+		sourceColumn: total_quantity
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column unit
+		dataType: string
+		lineageTag: d6964cd0-07cb-45a6-8730-4a2304effb6a
+		summarizeBy: none
+		sourceColumn: unit
+
+		annotation SummarizationSetBy = Automatic
+
+	column dealer_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 455d2039-acad-4806-84e6-e5a331bd6220
+		summarizeBy: sum
+		sourceColumn: dealer_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column bazaar_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 44033cbe-9a16-4361-b0ae-aa0b7c2ab9a3
+		summarizeBy: sum
+		sourceColumn: bazaar_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column retailer_id
+		dataType: int64
+		formatString: 0
+		lineageTag: aa390ae7-5b64-4690-abba-0279825becbd
+		summarizeBy: sum
+		sourceColumn: retailer_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column organization_id
+		dataType: int64
+		formatString: 0
+		lineageTag: d5a64b40-b216-4a3e-bc80-4ff5cbfc3cdd
+		summarizeBy: sum
+		sourceColumn: organization_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column site_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 91ef11c6-43e1-47c8-9096-df48a6839b5e
+		summarizeBy: none
+		sourceColumn: site_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column carpenter_id
+		dataType: int64
+		formatString: 0
+		lineageTag: ed178e08-7fec-4634-84f1-b9149874290d
+		summarizeBy: none
+		sourceColumn: carpenter_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column deleted_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 00995d77-36e6-4f4b-96e7-3151911f1907
+		summarizeBy: none
+		sourceColumn: deleted_at
+
+		variation Variation
+			isDefault
+			relationship: 1e7550b3-5f7d-433f-b77e-0481d0ef7c08
+			defaultHierarchy: LocalDateTable_a936f8ba-b86c-4c9b-a06b-ce0fcd6e2c34.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column deleted_by
+		dataType: int64
+		formatString: 0
+		lineageTag: f2ed1baa-b0a0-451f-b02c-56abf1b12071
+		summarizeBy: sum
+		sourceColumn: deleted_by
+
+		annotation SummarizationSetBy = Automatic
+
+	column contractor_id
+		dataType: int64
+		formatString: 0
+		lineageTag: b4c054f1-744c-4b27-8510-ca1c1841b8a4
+		summarizeBy: sum
+		sourceColumn: contractor_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column engineer_id
+		dataType: int64
+		formatString: 0
+		lineageTag: c1e9ab36-fff4-430a-865f-635a60a06707
+		summarizeBy: sum
+		sourceColumn: engineer_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column head_mason_id
+		dataType: int64
+		formatString: 0
+		lineageTag: d4f9c826-f8aa-46c1-804b-642b3a18a825
+		summarizeBy: sum
+		sourceColumn: head_mason_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column Territory_id_UserOrder =
+			
+			CALCULATE (
+			    MAX ( Dim_Bazaar_Territory[territory_id] ),
+			    FILTER (
+			        Dim_Bazaar_Territory,
+			        Dim_Bazaar_Territory[bazaar_list_id] = Fact_ProjectConversion[bazaar_id]
+			            && Dim_Bazaar_Territory[organization_id] = Fact_ProjectConversion[organization_id]
+			    )
+			)
+		formatString: 0
+		lineageTag: 4972dad1-f7d7-479c-a01a-803d70545261
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_rft_quantity
+		dataType: double
+		lineageTag: d88007e7-63c0-4a99-a7eb-32d1b4e8dedd
+		summarizeBy: sum
+		sourceColumn: total_rft_quantity
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column memo_order_date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 207de008-e3cf-4e10-b6da-6a2c6cefcea1
+		summarizeBy: none
+		sourceColumn: memo_order_date
+
+		variation Variation
+			isDefault
+			relationship: 040cf88f-25cb-4be5-9bcc-14162c929c50
+			defaultHierarchy: LocalDateTable_5525b621-e681-4309-af31-b94a976f2c69.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column updated_by_user_order_request
+		dataType: int64
+		formatString: 0
+		lineageTag: 4096dcbb-5914-474e-9529-51d480a5aae8
+		summarizeBy: sum
+		sourceColumn: updated_by_user_order_request
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrderBy
+		dataType: int64
+		formatString: 0
+		lineageTag: 0ea6c910-3ebe-4125-acf8-18e0e5a4ebb7
+		summarizeBy: none
+		sourceColumn: OrderBy
+
+		annotation SummarizationSetBy = Automatic
+
+	column Contractor_HeadMason_Id
+		dataType: int64
+		formatString: 0
+		lineageTag: dd1f6a60-6786-45c5-986f-630e059ae159
+		summarizeBy: count
+		sourceColumn: Contractor_HeadMason_Id
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Fact_ProjectConversion = m
+		mode: import
+		source = ```
+				let
+				  Source = #"public project_conversion",
+				  #"Removed columns" = Table.RemoveColumns(Source, {"assigned_agm", "assigned_asm", "assigned_bdo", "assigned_cro", "assigned_gm", "assigned_sr", "assigned_zsm", "bazaar_name", "bd_team", "business_unit", "consultancy_firm", "contractor_loyalty", "dealer_name", "dealer_record_id", "delete_status", "delivery_address", "dn_number", "end_user", "engineer_loyalty", "engineer_name", "engineer_type", "engineer_type_name", "feedbacks", "memo_photo", "meta", "moduleid", "namespaceid", "notes", "owned_by", "payload", "potential_project", "potential_site_address", "potential_site_owner_name", "potential_site_record_id", "primary_contract", "recordid", "retailer", "retailer_name", "revision", "select_eng", "stage", "status", "territory_name", "total_qty", "updated_at", "updated_by", "visit_photo", "visit_status", "engineer_id", "potential_site_id", "project_id", "requested_order_status", "order_category", "code", "money_receipt_date", "money_receipt_number", "order_photo", "picture_type", "module_code_id", "resubmitted_by", "updated_at_for_resubmission", "updated_at_user_order_request", "potential_lead_id"}),
+				  #"Changed column type" = Table.TransformColumnTypes(#"Removed columns", {{"total_quantity", type number}}),
+				  #"Merged queries" = Table.NestedJoin(#"Changed column type", {"site_id"}, #"public potential_site", {"id"}, "public potential_site", JoinKind.LeftOuter),
+				  #"Expanded public potential_site" = Table.ExpandTableColumn(#"Merged queries", "public potential_site", {"contractor_id", "engineer_id", "head_mason_id"}, {"contractor_id", "engineer_id", "head_mason_id"}),
+				  #"Changed column type 1" = Table.TransformColumnTypes(#"Expanded public potential_site", {{"loyalty_of_contractor", type text}, {"loyalty_of_engineer", type text}, {"total_amount", type number}, {"created_at", type date}}),
+				  #"Sorted rows" = Table.Sort(#"Changed column type 1", {{"updated_by_user_order_request", Order.Descending}}),
+				  #"Added custom" = Table.TransformColumnTypes(Table.AddColumn(#"Sorted rows", "OrderBy", each if [updated_by_user_order_request] = null 
+				then [created_by] 
+				else [updated_by_user_order_request]), {{"OrderBy", Int64.Type}}),
+				  #"Sorted rows 1" = Table.Sort(#"Added custom", {{"updated_by_user_order_request", Order.Ascending}}),
+				  #"Added custom 1" = Table.TransformColumnTypes(Table.AddColumn(#"Sorted rows 1", "Contractor_HeadMason_Id", each if [contractor_id] <> null then [contractor_id]
+				else if [head_mason_id] <> null then [head_mason_id]
+				else null), {{"Contractor_HeadMason_Id", Int64.Type}})
+				in
+				  #"Added custom 1"
+				```
+
+	annotation PBI_ResultType = Table
+

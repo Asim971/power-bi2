@@ -1,0 +1,48 @@
+table 'User Order Quantity Switch AIL'
+	lineageTag: 96dd5cea-fe83-445a-9712-7534480cc635
+
+	column 'User Order Quantity Switch AIL'
+		lineageTag: 918e461b-b06e-45a8-8b4d-748e398b233c
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'User Order Quantity Switch AIL Order'
+
+		relatedColumnDetails
+			groupByColumn: 'User Order Quantity Switch AIL Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'User Order Quantity Switch AIL Fields'
+		isHidden
+		lineageTag: 043e3d82-ebfb-4a33-9e45-370db7f7e385
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'User Order Quantity Switch AIL Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'User Order Quantity Switch AIL Order'
+		isHidden
+		formatString: 0
+		lineageTag: a4ff7984-a286-494e-92fc-cfac5aedac7f
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'User Order Quantity Switch AIL' = calculated
+		mode: import
+		source =
+				{
+				    ("MT", NAMEOF('Fact_ProjectConversion'[Total_PartnerEligible_Orders_Bags]), 0),
+				    ("Number", NAMEOF('Fact_ProjectConversion'[Total_PartnerEligible_Orders_Bags_No]), 1)
+				}
+
+	annotation PBI_Id = 9a9fa6d3e526419ca729be633405ed70
+

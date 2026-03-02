@@ -1,0 +1,48 @@
+table 'User Order Quantity Switch ACSL'
+	lineageTag: 1a44dff2-878b-4078-becb-92f1a5cec336
+
+	column 'User Order Quantity Switch'
+		lineageTag: d3569687-4e96-4ac3-91be-ec52ed017e3e
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'User Order Quantity Switch Order'
+
+		relatedColumnDetails
+			groupByColumn: 'User Order Quantity Switch Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'User Order Quantity Switch Fields'
+		isHidden
+		lineageTag: 684ac2cf-4b44-413d-88f8-928ea63f898a
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'User Order Quantity Switch Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'User Order Quantity Switch Order'
+		isHidden
+		formatString: 0
+		lineageTag: 4003c4bd-a598-4678-8153-7df8a70af3cc
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'User Order Quantity Switch ACSL' = calculated
+		mode: import
+		source =
+				{
+				    ("RFT", NAMEOF('Fact_ProjectConversion'[Total_order_quantity_rft]), 0),
+				    ("Number", NAMEOF('Fact_ProjectConversion'[Total_Carpenter_Order_Count]), 1)
+				}
+
+	annotation PBI_Id = bf92fca807a445db92ea63313362539f
+

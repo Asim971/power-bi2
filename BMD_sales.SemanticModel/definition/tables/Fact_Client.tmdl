@@ -69,7 +69,7 @@ table Fact_Client
 		dataType: int64
 		formatString: 0
 		lineageTag: 78c177b8-2ac7-42ce-a62b-5ac2392ac1be
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: created_by_id
 
 		annotation SummarizationSetBy = Automatic
@@ -80,6 +80,20 @@ table Fact_Client
 		lineageTag: af0f60df-9d29-4776-9630-24c4c8057349
 		summarizeBy: sum
 		sourceColumn: upazilla_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column deleted_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 15b125f3-b1d6-400e-8a81-2be7800c0c11
+		summarizeBy: none
+		sourceColumn: deleted_at
+
+		variation Variation
+			isDefault
+			relationship: f66153ff-61d8-467a-a22f-ea721116043e
+			defaultHierarchy: LocalDateTable_b7c069a5-ac97-4c94-9f27-7729796ec246.'Date Hierarchy'
 
 		annotation SummarizationSetBy = Automatic
 

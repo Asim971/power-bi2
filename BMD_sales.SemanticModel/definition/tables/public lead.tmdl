@@ -1,0 +1,199 @@
+table 'public lead'
+	lineageTag: 439b837d-b33f-4754-a684-afd41f6086a4
+
+	column id
+		dataType: int64
+		formatString: 0
+		lineageTag: 4001b9b4-e5b5-4a39-8600-915935bbcf0c
+		summarizeBy: sum
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	column created_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 15ae7262-88f6-4d4e-b8a9-dac09d49e204
+		summarizeBy: none
+		sourceColumn: created_at
+
+		variation Variation
+			isDefault
+			relationship: c22d2c57-7967-4319-bc45-81d6d618c1c4
+			defaultHierarchy: LocalDateTable_609a72c8-5d02-4d2a-8c27-8c5f99d25c4a.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column created_by
+		dataType: int64
+		formatString: 0
+		lineageTag: de097d45-7e5e-4cc2-b287-88c4ab6c3c07
+		summarizeBy: sum
+		sourceColumn: created_by
+
+		annotation SummarizationSetBy = Automatic
+
+	column updated_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 77b5f781-f6e6-42a3-b731-8b982077d5d0
+		summarizeBy: none
+		sourceColumn: updated_at
+
+		variation Variation
+			isDefault
+			relationship: 2fd573f1-df01-4254-be2d-2b7245698aee
+			defaultHierarchy: LocalDateTable_a0386168-5913-4a91-9d9a-e9351e11c15f.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column updated_by
+		dataType: int64
+		formatString: 0
+		lineageTag: ebe99ae9-88ca-4b03-bd86-16c6184f626c
+		summarizeBy: sum
+		sourceColumn: updated_by
+
+		annotation SummarizationSetBy = Automatic
+
+	column address
+		dataType: string
+		lineageTag: 5950a16b-8503-43c1-be04-5e7e64bc815c
+		summarizeBy: none
+		sourceColumn: address
+
+		annotation SummarizationSetBy = Automatic
+
+	column code
+		dataType: string
+		lineageTag: 5f10c332-def9-4715-b474-34769fad53dc
+		summarizeBy: none
+		sourceColumn: code
+
+		annotation SummarizationSetBy = Automatic
+
+	column end_user
+		dataType: string
+		lineageTag: 124468b4-506d-4ff7-ad98-6667edbfb693
+		summarizeBy: none
+		sourceColumn: end_user
+
+		annotation SummarizationSetBy = Automatic
+
+	column name
+		dataType: string
+		lineageTag: bff2274b-f860-4563-b3cd-dd966349f119
+		summarizeBy: none
+		sourceColumn: name
+
+		annotation SummarizationSetBy = Automatic
+
+	column note
+		dataType: string
+		lineageTag: 8216196f-2c7d-4f1c-a776-447ff9700e5d
+		summarizeBy: none
+		sourceColumn: note
+
+		annotation SummarizationSetBy = Automatic
+
+	column phone_number
+		dataType: string
+		lineageTag: 4208f81e-f6e0-43f9-8437-c13bbce4e7e1
+		summarizeBy: none
+		sourceColumn: phone_number
+
+		annotation SummarizationSetBy = Automatic
+
+	column ref_category
+		dataType: string
+		lineageTag: adee4e5a-f217-4acb-9178-9e76479d80e2
+		summarizeBy: none
+		sourceColumn: ref_category
+
+		annotation SummarizationSetBy = Automatic
+
+	column ref_client_id
+		dataType: int64
+		formatString: 0
+		lineageTag: ee20e0cb-1157-472f-ad07-739f5d99af52
+		summarizeBy: sum
+		sourceColumn: ref_client_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column ref_client_name
+		dataType: string
+		lineageTag: 44a99cd6-1898-4e1a-a290-ddc14f2a825c
+		summarizeBy: none
+		sourceColumn: ref_client_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column user_type
+		dataType: string
+		lineageTag: 7c715381-6dbf-4398-9a48-ee05d40f368e
+		summarizeBy: none
+		sourceColumn: user_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column bazaar_id
+		dataType: int64
+		formatString: 0
+		lineageTag: e24010b8-c05e-4239-9899-40059d46648d
+		summarizeBy: sum
+		sourceColumn: bazaar_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column module_code_id
+		dataType: int64
+		formatString: 0
+		lineageTag: c2fa5653-14bb-41ea-94d0-b784af2ba852
+		summarizeBy: sum
+		sourceColumn: module_code_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column delete_status
+		dataType: string
+		lineageTag: 8bcbbe85-9871-474a-96ac-cc28b15088c5
+		summarizeBy: none
+		sourceColumn: delete_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column deleted_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: dbc3a9ff-5a34-4df1-a421-c2929670c696
+		summarizeBy: none
+		sourceColumn: deleted_at
+
+		variation Variation
+			isDefault
+			relationship: 608e5a02-2be8-4a0b-93f3-5821f017b31b
+			defaultHierarchy: LocalDateTable_b2b707e1-088c-4de1-b2b9-8bff2d17d955.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column deleted_by
+		dataType: int64
+		formatString: 0
+		lineageTag: 151912f7-4de7-4845-9f56-5b408e8fa7a0
+		summarizeBy: sum
+		sourceColumn: deleted_by
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'public lead' = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("172.17.19.21", "bmdsalesdb"),
+				  #"Navigation 1" = Source{[Schema = "public", Item = "lead"]}[Data]
+				in
+				  #"Navigation 1"
+
+	annotation PBI_ResultType = Table
+

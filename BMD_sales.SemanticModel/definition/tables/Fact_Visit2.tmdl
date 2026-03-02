@@ -8,8 +8,7 @@ table Fact_Visit2
 	measure Active_Employees2 =
 			
 			CALCULATE (
-			    DISTINCTCOUNT ( Dim_User[EmployeeID] ),
-			    Fact_Visit2
+			    DISTINCTCOUNT('Fact_Visit2'[created_by_id])
 			)
 		formatString: 0
 		lineageTag: 57e46549-6d51-4bc4-9f9b-b4c1116bcdf9
@@ -29,7 +28,7 @@ table Fact_Visit2
 			SUMX (
 			    VALUES ( Dim_Date[Date] ),
 			    CALCULATE (
-			        DISTINCTCOUNT ( Fact_Visit2[ClientKey] ),
+			        COUNT ( Fact_Visit2[ClientKey] ),
 			        Dim_Client_Simple[ClientType] = "UncoveredRetailer",
 			        REMOVEFILTERS ( Dim_EntityGroup[EntityGroup] )
 			    )
@@ -54,9 +53,9 @@ table Fact_Visit2
 	measure Visit_Percentage_By_EntityGroup = ```
 			
 			DIVIDE (
-			    [Daily_Unique_Client_Visits],
+			    [Total_Visits2],
 			    CALCULATE (
-			        [Daily_Unique_Client_Visits],
+			        [Total_Visits2],
 			        REMOVEFILTERS ( Dim_Client_Simple[EntityGroup] )
 			    ),
 			    0
@@ -72,11 +71,177 @@ table Fact_Visit2
 			SUMX (
 			    VALUES ( Dim_Date[Date] ),
 			    CALCULATE (
-			        DISTINCTCOUNT ( Fact_Visit2[ClientKey] )
+			        DISTINCTCOUNT( Fact_Visit2[ClientKey] )
 			    )
 			)
 		formatString: 0
 		lineageTag: 35634534-6382-4f65-af0a-5cca3900ec21
+
+	measure Total_Contractor_Visits2 =
+			
+			CALCULATE (
+			    [Total_Visits2]
+			)
+		formatString: 0
+		lineageTag: 1a308e6c-28c3-46e1-a4e7-9fdc83428020
+
+	measure Total_Retailer_Visits2 =
+			
+			SUMX (
+			    VALUES ( Dim_Date[Date] ),
+			    CALCULATE (
+			        [Total_Visits2],
+			        Dim_Client_Simple[ClientType] = "Retailer",
+			        REMOVEFILTERS ( Dim_EntityGroup[EntityGroup] )
+			    )
+			)
+		formatString: 0
+		lineageTag: 92e28309-3c8e-4f67-824f-62c8915dcd32
+
+	measure Uncovered_vs_Total_Display =
+			
+			VAR Uncovered = [Total_UncoverRetailer_Visits2]
+			VAR Total =
+			    [Total_Retailer_Visits2] + [Total_UncoverRetailer_Visits2]
+			RETURN
+			FORMAT ( Uncovered, "0" ) & " / " & FORMAT ( Total, "0" )
+		lineageTag: 6507b1b6-c04b-4569-bc90-affc557a3adc
+
+	measure Total_Retailer_UncoverRetailer_Visits = [Total_Retailer_Visits2] + [Total_UncoverRetailer_Visits2]
+		formatString: 0
+		lineageTag: 3911cfe4-4f65-4296-8626-3fa065f327bb
+
+	measure Active_vs_Total_Employee_Display =
+			
+			VAR Active = [Active_Employees2]
+			VAR Total = [Total_Employees_Without_Filter]
+			RETURN
+			FORMAT ( Active, "0" ) & " / " & FORMAT ( Total, "0" )
+		lineageTag: a9e7694a-0438-4573-9d57-360bf77c0aba
+
+	measure Total_vs_Target_Visits_Display =
+			
+			VAR Total = [Total_Visits2]
+			VAR Target = [Cumulative_Target]
+			RETURN
+			FORMAT ( Total, "0" ) & " / " & FORMAT ( Target, "0" )
+		lineageTag: c153c090-08f8-4052-8a09-050d9ed05c66
+
+	measure Total_vs_Target_Visits_Percentage =
+			
+			DIVIDE (
+			    [Total_Visits2],
+			    [Cumulative_Target],
+			    0
+			)
+		lineageTag: 0b8e9cd1-8c7a-4e71-bfd9-197fdfee95e1
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Total_Retailer_UncoverRetailer_Visits_Targets = 10000
+		formatString: 0
+		lineageTag: 85f986cf-8498-4fb4-9aaa-c808930d950b
+
+	measure Retailer_UncoverRetailer_Visits_vs_Retailer_UncoverRetailer_Visits_Target_Display = ```
+			
+			VAR Total = [Total_Retailer_UncoverRetailer_Visits]
+			VAR Target = [Total_Retailer_UncoverRetailer_Visits_Targets]
+			RETURN
+			FORMAT ( Total, "0" ) & " / " & FORMAT ( Target, "0" )
+			
+			```
+		lineageTag: d0af4201-0fa1-4fde-ac64-5f25ce488ef0
+
+	measure Retailer_UncoverRetailer_Visits_vs_Retailer_UncoverRetailer_Visits_Target_Percentage =
+			
+			DIVIDE (
+			    [Total_Retailer_UncoverRetailer_Visits],
+			    [Total_Retailer_UncoverRetailer_Visits_Targets],
+			    0
+			)
+		lineageTag: ae6b557c-bcfd-4382-97d9-fdc9f74d61b3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Average_Retailer_UncoverRetailer_Visits = DIVIDE([Total_Retailer_UncoverRetailer_Visits], [Total_Employees_Without_Filter],0)
+		lineageTag: 9a8ae183-42ec-4ad4-95bf-2560f31a57c5
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Contractor_Visits_Target = 10000
+		formatString: 0
+		lineageTag: 6a0c1a1b-1f76-4876-b656-7f419fb32fec
+
+	measure Total_vs_Target_Contractor_Visits_Display =
+			
+			VAR Total = [Total_Visits2]
+			VAR Target = [Contractor_Visits_Target]
+			RETURN
+			FORMAT ( Total, "0" ) & " / " & FORMAT ( Target, "0" )
+		lineageTag: 05cace54-056a-4fed-b9b7-fab492b318ee
+
+	measure Visit_Status_2 =
+			
+			VAR DistanceValue =
+			    CALCULATE (
+			        SELECTEDVALUE ( Fact_Visit2[Distance (M)_2] ),
+			        REMOVEFILTERS ( Dim_EntityGroup[EntityGroup] )
+			    )
+			RETURN
+			IF (
+			    ISBLANK ( DistanceValue ),
+			    BLANK(),
+			    IF (
+			        DistanceValue > 30,
+			        "Bad Visit",
+			        "Good Visit"
+			    )
+			)
+		lineageTag: b8197648-5480-4fd8-b17d-5416b1275041
+
+	measure Total_Bad_Visits =
+			
+			SUMX (
+			    VALUES ( Dim_Date[Date] ),
+			    CALCULATE (
+			        DISTINCTCOUNT ( Fact_Visit2[ClientKey] ),
+			        Fact_Visit2[Distance (M)_2] > 30,
+			        REMOVEFILTERS ( Dim_EntityGroup[EntityGroup] )
+			    )
+			)
+		formatString: 0
+		lineageTag: 7d3c34ab-b979-4c30-9b31-a78a3ca7eeba
+
+	measure Bad_Visit_Percentage =
+			
+			DIVIDE (
+			    [Total_Bad_Visits],
+			    [Daily_Unique_Client_Visits],
+			    0
+			)
+		lineageTag: 447a455f-f145-4470-861d-5b1bb6ba1021
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Total_Engineer_Visits2 =
+			
+			CALCULATE (
+			    [Total_Visits2]
+			)
+		formatString: 0
+		lineageTag: ba081aa9-bd47-4c7b-a050-6cc0f9ae0736
+
+	measure Daily_Unique_Client_Visits_Without_GroupEntity =
+			
+			SUMX (
+			    VALUES ( Dim_Date[Date] ),
+			    CALCULATE (
+			        DISTINCTCOUNT( Fact_Visit2[ClientKey] ),
+			        REMOVEFILTERS(Dim_EntityGroup[EntityGroup]
+			    )
+			))
+		formatString: 0
+		lineageTag: b10f1e93-38dd-48af-8253-f42fce5e67c4
 
 	column id
 		dataType: int64
@@ -165,7 +330,7 @@ table Fact_Visit2
 		dataType: int64
 		formatString: 0
 		lineageTag: 0b551011-1a57-4064-b47d-2bc35df3806a
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: contractor_id
 
 		annotation SummarizationSetBy = Automatic
@@ -192,7 +357,7 @@ table Fact_Visit2
 		dataType: int64
 		formatString: 0
 		lineageTag: dbd6c62a-886c-47c1-b13c-82a443c35c83
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: engineer_id
 
 		annotation SummarizationSetBy = Automatic
@@ -201,7 +366,7 @@ table Fact_Visit2
 		dataType: int64
 		formatString: 0
 		lineageTag: 4ae31e4b-c184-4161-a03f-b96b3484e232
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: head_mason_id
 
 		annotation SummarizationSetBy = Automatic
@@ -246,7 +411,7 @@ table Fact_Visit2
 		dataType: int64
 		formatString: 0
 		lineageTag: 839aeddc-057c-4df6-9b8b-0b6e467ad335
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: retailer_id
 
 		annotation SummarizationSetBy = Automatic
@@ -297,18 +462,21 @@ table Fact_Visit2
 		annotation SummarizationSetBy = Automatic
 
 	column latitude
-		dataType: double
+		dataType: decimal
+		formatString: 0.00
 		lineageTag: c18978f0-c648-4076-bfbc-715cbf7b2799
-		summarizeBy: sum
+		dataCategory: Latitude
+		summarizeBy: none
 		sourceColumn: latitude
 
-		annotation SummarizationSetBy = Automatic
+		changedProperty = DataType
 
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
+		annotation SummarizationSetBy = User
 
 	column longitude
 		dataType: double
 		lineageTag: c517bacd-7c3b-4411-b978-fa40de1ab2af
+		dataCategory: Longitude
 		summarizeBy: sum
 		sourceColumn: longitude
 
@@ -329,7 +497,7 @@ table Fact_Visit2
 		dataType: int64
 		formatString: 0
 		lineageTag: ce22b419-4e95-4ec2-b0a8-61807237081a
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: carpenter_id
 
 		annotation SummarizationSetBy = Automatic
@@ -386,6 +554,141 @@ table Fact_Visit2
 
 		annotation SummarizationSetBy = Automatic
 
+	column 'Distance (M)_2' = ```
+			
+			VAR VisitLat = Fact_Visit2[latitude]
+			VAR VisitLng = Fact_Visit2[longitude]
+			VAR ClientType = Fact_Visit2[ClientType]
+			
+			/* Resolve target latitude */
+			VAR TargetLat =
+			    SWITCH (
+			        TRUE (),
+			        ClientType = "Site",
+			            LOOKUPVALUE (
+			                Dim_Site[Latitude],
+			                Dim_Site[SiteID], Fact_Visit2[potential_site_id]
+			            ),
+			        ClientType = "Retailer",
+			            LOOKUPVALUE (
+			                Dim_Retailer2[lat],
+			                Dim_Retailer2[id], Fact_Visit2[retailer_id]
+			            ),
+			        ClientType = "UncoveredRetailer",
+			            LOOKUPVALUE (
+			                Dim_UncoverRetailer[Latitude],
+			                Dim_UncoverRetailer[id], Fact_Visit2[uncovered_retailer_id]
+			            ),
+			        BLANK ()
+			    )
+			
+			/* Resolve target longitude */
+			VAR TargetLng =
+			    SWITCH (
+			        TRUE (),
+			        ClientType = "Site",
+			            LOOKUPVALUE (
+			                Dim_Site[Longitude],
+			                Dim_Site[SiteID], Fact_Visit2[potential_site_id]
+			            ),
+			        ClientType = "Retailer",
+			            LOOKUPVALUE (
+			                Dim_Retailer2[lng],
+			                Dim_Retailer2[id], Fact_Visit2[retailer_id]
+			            ),
+			        ClientType = "UncoveredRetailer",
+			            LOOKUPVALUE (
+			                Dim_UncoverRetailer[Longitude],
+			                Dim_UncoverRetailer[id], Fact_Visit2[uncovered_retailer_id]
+			            ),
+			        BLANK ()
+			    )
+			
+			RETURN
+			IF (
+			    ISBLANK ( VisitLat )
+			        || ISBLANK ( VisitLng )
+			        || ISBLANK ( TargetLat )
+			        || ISBLANK ( TargetLng ),
+			    BLANK (),
+			
+			    VAR Lat1 = RADIANS ( VisitLat )
+			    VAR Lon1 = RADIANS ( VisitLng )
+			    VAR Lat2 = RADIANS ( TargetLat )
+			    VAR Lon2 = RADIANS ( TargetLng )
+			
+			    VAR dLat = Lat2 - Lat1
+			    VAR dLon = Lon2 - Lon1
+			
+			    VAR a =
+			        SIN ( dLat / 2 ) * SIN ( dLat / 2 )
+			            + COS ( Lat1 ) * COS ( Lat2 )
+			            * SIN ( dLon / 2 ) * SIN ( dLon / 2 )
+			
+			    VAR c =
+			        2 * ATAN ( SQRT ( a ) / SQRT ( 1 - a ) )
+			
+			    RETURN
+			        6371000 * c
+			)
+			
+			```
+		lineageTag: 50dc2452-9eef-4f99-9c17-d1f72d84ff48
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column deleted_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 50465b46-d51e-41f3-8fd4-4fc5516d77d0
+		summarizeBy: none
+		sourceColumn: deleted_at
+
+		variation Variation
+			isDefault
+			relationship: 9e596e3a-0d43-441e-9a0c-72a1cb13ba72
+			defaultHierarchy: LocalDateTable_65754af0-8a3c-451e-b970-476c5eabea58.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column deleted_by_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 6028062d-3ad9-41e4-8121-38a921063afc
+		summarizeBy: sum
+		sourceColumn: deleted_by_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column user_order_id
+		dataType: int64
+		formatString: 0
+		lineageTag: b2e2f822-1c0b-42ed-a00b-0331b3961393
+		summarizeBy: sum
+		sourceColumn: user_order_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column end_user
+		dataType: string
+		lineageTag: 06b79cbd-8554-4d22-aa2d-d50495b2eec3
+		summarizeBy: none
+		sourceColumn: end_user
+
+		annotation SummarizationSetBy = Automatic
+
+	column Contractor_HeadMason_Id
+		dataType: int64
+		formatString: 0
+		lineageTag: f418a5ca-69ef-4dfe-b11d-929d8395772e
+		summarizeBy: none
+		sourceColumn: Contractor_HeadMason_Id
+
+		annotation SummarizationSetBy = Automatic
+
 	partition Fact_Visit2 = m
 		mode: import
 		source =
@@ -404,7 +707,9 @@ table Fact_Visit2
 				else if [visit_type] = "Influencer" and [influencer_type] = "Head Mason" then "HeadMason"
 				else if [visit_type] = "Influencer" and [influencer_type] = "Consultant Engineer" then "Engineer"
 				else null), {{"ClientType", type text}}),
-				  #"Added custom 1" = Table.TransformColumnTypes(Table.AddColumn(#"Added custom", "ClientKey", each if [dealer_id] <> null then "Dealer-" & Text.From([dealer_id])
+				  #"Merged queries" = Table.NestedJoin(#"Added custom", {"lead_id"}, #"public lead", {"id"}, "public lead", JoinKind.LeftOuter),
+				  #"Expanded public lead" = Table.ExpandTableColumn(#"Merged queries", "public lead", {"end_user"}, {"end_user"}),
+				  #"Added custom 1" = Table.TransformColumnTypes(Table.AddColumn(#"Expanded public lead", "ClientKey", each if [dealer_id] <> null then "Dealer-" & Text.From([dealer_id])
 				else if [potential_site_id] <> null then "Site-" & Text.From([potential_site_id])
 				else if [ihb_registration_id] <> null then "IHB-" & Text.From([ihb_registration_id])
 				else if [retailer_id] <> null then "Retailer-" & Text.From([retailer_id])
@@ -413,6 +718,9 @@ table Fact_Visit2
 				else if [site_manager_id] <> null then "SiteManager-" & Text.From([site_manager_id])
 				else if [head_mason_id] <> null then "HeadMason-" & Text.From([head_mason_id])
 				else if [engineer_id] <> null then "Engineer-" & Text.From([engineer_id])
+				else if [carpenter_id] <> null then "Carpenter-" & Text.From([carpenter_id])
+				else if [lead_id] <> null and [end_user] = "NO" then "Lead-" & Text.From([lead_id])
+				else if [lead_id] <> null and [end_user] = "YES" then "EndUser-" & Text.From([lead_id])
 				else null), {{"ClientKey", type text}}),
 				  #"Added custom 2" = Table.AddColumn(#"Added custom 1", "ClientType2", each if [ClientKey] <> null then
 				    Text.BeforeDelimiter([ClientKey], "-")
@@ -421,9 +729,12 @@ table Fact_Visit2
 				  #"Removed columns 1" = Table.RemoveColumns(#"Added custom 2", {"ClientType"}),
 				  #"Renamed columns" = Table.RenameColumns(#"Removed columns 1", {{"ClientType2", "ClientType"}}),
 				  #"Removed columns 2" = Table.RemoveColumns(#"Renamed columns", {"origin", "status"}),
-				  #"Changed column type" = Table.TransformColumnTypes(#"Removed columns 2", {{"created_at", type date}})
+				  #"Changed column type" = Table.TransformColumnTypes(#"Removed columns 2", {{"created_at", type date}}),
+				  #"Added custom 3" = Table.TransformColumnTypes(Table.AddColumn(#"Changed column type", "Contractor_HeadMason_Id", each if [contractor_id] <> null then [contractor_id]
+				else if [head_mason_id] <> null then [head_mason_id]
+				else null), {{"Contractor_HeadMason_Id", Int64.Type}})
 				in
-				  #"Changed column type"
+				  #"Added custom 3"
 
 	annotation PBI_ResultType = Table
 

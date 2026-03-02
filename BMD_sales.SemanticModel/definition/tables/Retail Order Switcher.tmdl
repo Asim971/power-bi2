@@ -1,0 +1,48 @@
+table 'Retail Order Switcher'
+	lineageTag: 57651f81-9b22-4802-99d3-c0074bd87c8a
+
+	column 'Retail Order Switcher'
+		lineageTag: 31cfc23e-b8e3-45ea-9e6b-625c3869f5c1
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'Retail Order Switcher Order'
+
+		relatedColumnDetails
+			groupByColumn: 'Retail Order Switcher Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Retail Order Switcher Fields'
+		isHidden
+		lineageTag: 6ec3cf2b-9dbc-4e7a-be4c-1adf1921bf2b
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'Retail Order Switcher Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Retail Order Switcher Order'
+		isHidden
+		formatString: 0
+		lineageTag: 2a3b8d4a-fb4f-4b2f-b4fc-1df43dd9194d
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Retail Order Switcher' = calculated
+		mode: import
+		source =
+				{
+				    ("Bags", NAMEOF('Fact_RetailOrder'[Total_Retail_Order_Quantity]), 0),
+				    ("Number", NAMEOF('Fact_RetailOrder'[Total_Retail_Order_Count]), 1)
+				}
+
+	annotation PBI_Id = 5f36605026d248099b3634422eb3d0d4
+

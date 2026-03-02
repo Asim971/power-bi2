@@ -684,7 +684,7 @@ table Fact_Visit
 
 	measure Average_Visit_FRD = ```
 			
-					VAR TotalVisits = [Daily_Unique_Client_Visits]
+					VAR TotalVisits = [Total_Visits2]
 					VAR UniqueEmployeesWithVisits = DISTINCTCOUNT('Fact_Visit2'[created_by_id])
 					RETURN
 					IF(
@@ -1019,13 +1019,6 @@ table Fact_Visit
 
 		changedProperty = IsHidden
 
-	measure Total_Target = CALCULATE(SUM(Fact_Target[DailyTarget]), Fact_Target[EntityGroup] IN {"Customers", "Influencers"})
-		formatString: #,##0
-		displayFolder: FRD Dashboard\Targets
-		lineageTag: frd-total-target-010
-
-		changedProperty = IsHidden
-
 	measure Total_Achievement_Pct = ```
 			DIVIDE(
 				[Customer_Total_Visited] + [Influencer_Total_Visited], 
@@ -1157,7 +1150,7 @@ table Fact_Visit
 
 		changedProperty = IsHidden
 
-	measure sim_ach = DIVIDE([Daily_Unique_Client_Visits], [Total_Target_New],0)
+	measure sim_ach = DIVIDE([Total_Visits2], [Total_Target],0)
 		lineageTag: 10de036b-8dae-4856-8d05-17381ce8483e
 
 		changedProperty = IsHidden
@@ -1428,6 +1421,24 @@ table Fact_Visit
 			```
 		formatString: 0
 		lineageTag: 882041a0-9058-4e64-b2be-e7c73a271f7f
+
+	measure Average_Visit_FRD_Per_Day =
+			
+			AVERAGEX (
+			    VALUES ( Dim_Date[Date] ),
+			    VAR TotalVisitsPerDay =
+			        CALCULATE ( [Total_Visits2] )
+			    VAR UniqueEmployeesPerDay =
+			        CALCULATE (
+			            DISTINCTCOUNT ( Fact_Visit2[created_by_id] )
+			        )
+			    RETURN
+			        DIVIDE ( TotalVisitsPerDay, UniqueEmployeesPerDay, 0 )
+			)
+		displayFolder: FRD Dashboard\KPI Tiles
+		lineageTag: 02092359-3a1f-4ce9-83fa-37221b3d7f4a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	column VisitID
 		dataType: int64
@@ -1771,7 +1782,9 @@ table Fact_Visit
 
 	column latitude
 		dataType: double
+		formatString: 0
 		lineageTag: c3d4e5f6-7890-abcd-ef12-345678901234
+		dataCategory: Latitude
 		summarizeBy: sum
 		sourceColumn: latitude
 
@@ -1779,11 +1792,12 @@ table Fact_Visit
 
 		annotation SummarizationSetBy = Automatic
 
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
+		annotation PBI_FormatHint = {"isDecimal":true}
 
 	column longitude
 		dataType: double
 		lineageTag: d4e5f678-90ab-cdef-1234-567890123456
+		dataCategory: Longitude
 		summarizeBy: sum
 		sourceColumn: longitude
 
@@ -1888,25 +1902,6 @@ table Fact_Visit
 			    )
 			)
 		lineageTag: 4b66b573-f61f-4b60-a7da-82448e4d0af5
-		summarizeBy: none
-
-		annotation SummarizationSetBy = Automatic
-
-	column Ach_Threshold_Switch = ```
-			
-			DATATABLE (
-			    "Label", STRING,
-			    "Threshold", DOUBLE,
-			    {
-			        { "≤ 70%", 0.7 },
-			        { "≤ 50%", 0.5 },
-			        { "≤ 30%", 0.3 },
-			        { "≤ 10%", 0.1 }
-			    }
-			)
-			
-			```
-		lineageTag: c9bc70db-3cd1-4e71-8f8b-c9759cfd5f88
 		summarizeBy: none
 
 		annotation SummarizationSetBy = Automatic

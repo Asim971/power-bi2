@@ -1,0 +1,86 @@
+table Return_AIL
+	lineageTag: 139d01a5-096b-4918-bf8e-9550e1140559
+
+	measure Return_AIL =
+			
+			VAR Result =
+			    CALCULATE (
+			        SUM ( 'Return_AIL'[Amount] ),
+			        TREATAS (
+			            VALUES ( Dim_Contractor_HeadMason[PartnerID] ),
+			            'Return_AIL'[id]
+			        )
+			    )
+			RETURN
+			IF ( ISBLANK ( Result ), 0, Result )
+		formatString: 0
+		lineageTag: 2b5ea1b5-5db1-4ded-9cb6-3a49e09e3a3c
+
+	measure Return_AIL_Engineer_dummy = 0
+		formatString: 0
+		lineageTag: f4f1f84a-70b1-4907-8dd3-1270b8beb46d
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 1aadd965-f2a3-4d8e-b638-e2dfbd2dedbd
+		summarizeBy: none
+		sourceColumn: Date
+
+		variation Variation
+			isDefault
+			relationship: 0538319e-5105-4e75-960a-2708fa3550bb
+			defaultHierarchy: LocalDateTable_50c799fd-9c2b-496a-999c-479d820aad86.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column id
+		dataType: int64
+		formatString: 0
+		lineageTag: ab749486-68d1-416e-8cfd-f3703a280e57
+		summarizeBy: none
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	column Name
+		dataType: string
+		lineageTag: dd25545b-1ccd-481f-85bb-f5a2f394a915
+		summarizeBy: none
+		sourceColumn: Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Phone
+		dataType: int64
+		formatString: 0
+		lineageTag: cdb9e55f-3a38-45b5-8ce9-4910a11ded60
+		summarizeBy: sum
+		sourceColumn: Phone
+
+		annotation SummarizationSetBy = Automatic
+
+	column Amount
+		dataType: int64
+		formatString: 0
+		lineageTag: 0ddaf8d4-8b2d-406c-b599-31a234190b8e
+		summarizeBy: sum
+		sourceColumn: Amount
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Return_AIL = m
+		mode: import
+		source =
+				let
+				  Source = GoogleSheets.Contents("https://docs.google.com/spreadsheets/d/1NK0mf5nqW_6aByBHkPBx20wHAfT_yejPqyJ1N3TaqJ0/edit?gid=1457102551#gid=1457102551"),
+				  #"Navigation 1" = Source{[name = "Return_AIL", ItemKind = "Table"]}[Data],
+				  #"Promoted headers" = Table.PromoteHeaders(#"Navigation 1", [PromoteAllScalars = true]),
+				  #"Changed column type" = Table.TransformColumnTypes(#"Promoted headers", {{"Date", type date}, {"id", Int64.Type}, {"Name", type text}, {"Phone", Int64.Type}, {"Amount", Int64.Type}})
+				in
+				  #"Changed column type"
+
+	annotation PBI_ResultType = Table
+

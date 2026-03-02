@@ -56,7 +56,6 @@ table Dim_Engineer
 			CALCULATE (
 			    DISTINCTCOUNT ( Dim_Site[EngineerID] ),
 			    Dim_Engineer[Is_Active_Engineer] = TRUE(),
-			    Fact_UserOrders[organization_id] = 2,
 			    NOT ISBLANK ( Dim_Site[EngineerID] )
 			)
 		formatString: 0
@@ -303,20 +302,6 @@ table Dim_Engineer
 		lineageTag: c5d6e7f8-a9b0-4c1d-2e3f-4a5b6c7d8e9f
 		summarizeBy: none
 		sourceColumn: EngineerKey
-
-		annotation SummarizationSetBy = Automatic
-
-	column Is_Active_Engineer =
-			
-			VAR OrdersUnderContractor =
-			    COUNTROWS (
-			        RELATEDTABLE ( Fact_UserOrders )
-			    )
-			RETURN
-			IF ( OrdersUnderContractor > 0, TRUE(), BLANK() )
-		formatString: """TRUE"";""TRUE"";""FALSE"""
-		lineageTag: a4524876-71ca-4506-9d29-db3f672688cc
-		summarizeBy: none
 
 		annotation SummarizationSetBy = Automatic
 
@@ -684,9 +669,10 @@ table Dim_Engineer
 					        {"Pending_Order_Count", Int64.Type},
 					        {"Ready_Order_Count", Int64.Type},
 					        {"EngineerKey", type text}
-				    })
+				    }),
+				  #"Sorted rows" = Table.Sort(TypedTable, {{"EngineerID", Order.Descending}})
 				in
-				    TypedTable
+				    #"Sorted rows"
 				```
 
 	annotation PBI_ResultType = Table

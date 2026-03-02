@@ -7,7 +7,7 @@ table Paid
 			    CALCULATE (
 			        SUM ( Paid[Amount] ),
 			        TREATAS (
-			            VALUES ( Dim_Contractor[ContractorID] ),
+			            VALUES ( Dim_Contractor_HeadMason[PartnerID] ),
 			            Paid[id]
 			        )
 			    )

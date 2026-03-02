@@ -1,0 +1,95 @@
+table Metrics_Retail
+	lineageTag: 6ac51036-2c1b-455d-aefd-9047aa427baf
+
+	measure Actual_Retailer_Visit =
+			
+			[Total_Retailer_Visits2]
+		formatString: 0
+		lineageTag: 2261aa99-1fb1-45b8-be51-a6c56dfe5a52
+
+	measure Actual_Active_Retailer =
+			
+			[Active_Retailers]
+		formatString: 0
+		lineageTag: e0c583bd-321f-46b8-bb77-6b65a91f94e6
+
+	measure Actual_Avg_Vol_Per_Retailer = [Avg_Volume_Per_Retailer]
+		lineageTag: 3875b4f5-7fc1-4128-ba28-84e55411fffa
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Actual_Total_Retailer_Consumption =
+			
+			[Total_Retail_Order_Quantity]
+		lineageTag: f85e2595-e093-40b4-9477-45c846875c0a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Actual_By_Metric = ```
+			
+			SWITCH (
+			    SELECTEDVALUE ( Metrics_Retail[MetricName] ),
+			    "Retailer Visit", [Actual_Retailer_Visit],
+			    "Active Retailer", [Actual_Active_Retailer],
+			    "Avg Vol Per Retailer", [Actual_Avg_Vol_Per_Retailer],
+			    "Total Retailer Consumption", [Actual_Total_Retailer_Consumption]
+			)
+			
+			```
+		lineageTag: eb0b8ba6-d956-42b5-8cf6-3355a384945f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Ach_Filter_Flag_Retailer =
+			
+			VAR SelectedThreshold =
+			    SELECTEDVALUE ( Ach_Threshold_Switch[Threshold] )
+			RETURN
+			IF (
+			    ISBLANK ( SelectedThreshold ),
+			    1,
+			    IF ( [Achievement_By_total_retailer_consumption] <= SelectedThreshold, 1, 0 )
+			)
+		formatString: 0
+		lineageTag: 2c9488e0-6482-46bc-9c19-923c5f019e12
+
+	measure 'Actual_Avg_Vol_Per_Retailer (Org 2)' = [Avg_Volume_Per_Retailer_MT]
+		lineageTag: 317e4d28-db9d-4ccb-a61e-64e7f6e213ac
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column MetricKey
+		lineageTag: fba47ee9-fd54-4818-b64f-bd8916553605
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [MetricKey]
+
+		annotation SummarizationSetBy = Automatic
+
+	column MetricName
+		lineageTag: 78b02e4f-9950-4eaa-aff8-e1e0075d49d5
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [MetricName]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Metrics_Retail = calculated
+		mode: import
+		source = ```
+				
+				DATATABLE (
+				    "MetricKey", STRING,
+				    "MetricName", STRING,
+				    {
+				        { "RV", "Retailer Visit" },
+				        { "AR", "Active Retailer" },
+				        { "AV", "Avg Vol Per Retailer" },
+				        { "TRC", "Total Retailer Consumption" }
+				    }
+				)
+				
+				```
+
+	annotation PBI_Id = 47656ebe8b6841ffba56372eeef8f0b8
+

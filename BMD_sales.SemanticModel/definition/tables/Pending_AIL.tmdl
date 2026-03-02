@@ -1,11 +1,123 @@
 table Pending_AIL
 	lineageTag: de16bf63-6f3e-4b56-aee8-5f64365bc7d1
 
+	measure Pending_For_SR_AIL = ```
+			
+			VAR Result =
+			    CALCULATE (
+			        [Total_PartnerEligible_Orders_MT] * 200,
+			        NOT ISBLANK ( Dim_Contractor_HeadMason[PartnerID] ),
+			        Dim_User[RoleName] = "Sr",
+			        Fact_ProjectConversion[order_status] <> "APPROVED",
+			        Fact_ProjectConversion[order_status] <> "REJECTED"
+			    )
+			RETURN
+			IF ( ISBLANK ( Result ), 0, Result )
+			
+			```
+		lineageTag: a0768837-0f06-4cf4-87a9-be645142f70c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Due_For_SR_AIL = ```
+			
+			SUMX (
+			    VALUES ( Dim_Contractor_HeadMason[PartnerID] ),
+			
+			    VAR Bags =
+			        CALCULATE (
+			            [Total_PartnerEligible_Orders_MT],
+			            Dim_User[RoleName] = "Sr",
+			            Fact_ProjectConversion[order_status] = "APPROVED"
+			        )
+			
+			    VAR Due =
+			        Bags * 200
+			
+			    RETURN
+			        IF ( Due > 0, Due, 0 )
+			)
+			
+			```
+		lineageTag: 8d6a360e-d094-485b-bb2b-dc7a71045856
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Remaining_Due_For_SR_AIL =
+			
+			SUMX (
+			    VALUES ( Dim_Contractor_HeadMason[PartnerID] ),
+			    VAR Remaining =
+			        [Due_For_SR_AIL]
+			        - [Processing_AIL]
+			        - [Net_Paid_AIL]
+			        - [Return_AIL]
+			    RETURN
+			        IF ( Remaining > 0, Remaining, 0 )
+			)
+		lineageTag: faf4f2be-5fc6-425a-aaee-87f03085a8ec
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Due_For_SR_AIL_Engineer = ```
+			
+			SUMX (
+			    VALUES ( Dim_Engineer[EngineerID] ),
+			
+			    VAR Bags =
+			        CALCULATE (
+			            [Total_EngineerEligible_Orders_Bags],
+			            Dim_User[RoleName] = "Sr",
+			            Fact_ProjectConversion[order_status] = "APPROVED"
+			        )
+			
+			    VAR Due =
+			        Bags * 1
+			
+			    RETURN
+			        IF ( Due > 0, Due, 0 )
+			)
+			
+			```
+		lineageTag: c32b1a10-6873-4e7c-89a5-4accfd325f6a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Remaining_Due_For_SR_AIL_Engineer =
+			
+			SUMX (
+			    VALUES ( Dim_Engineer[EngineerID] ),
+			    VAR Remaining =
+			        [Due_For_SR_AIL_Engineer]
+			        - [Processing_AIL]
+			        - [Net_Paid_AIL]
+			        - [Return_AIL]
+			    RETURN
+			        IF ( Remaining > 0, Remaining, 0 )
+			)
+		lineageTag: a4842bdb-4400-44e7-99bb-292a78ecb1c1
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Pending_For_SR_AIL_Engineer =
+			
+			VAR Result =
+			    CALCULATE (
+			        [Total_EngineerEligible_Orders_Bags_Pending] * 1,
+			        NOT ISBLANK ( Dim_Engineer[EngineerID] ),
+			        Dim_User[RoleName] = "Sr"
+			    )
+			RETURN
+			IF ( ISBLANK ( Result ), 0, Result )
+		lineageTag: 58dd3530-6c6f-49b5-bc0f-2c07c8c252cb
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
 	column id
 		dataType: int64
 		formatString: 0
 		lineageTag: c36a7d07-c896-4966-af9b-e0c868a3585c
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: id
 
 		annotation SummarizationSetBy = Automatic

@@ -117,6 +117,200 @@ table Dim_Dealers
 
 		annotation SummarizationSetBy = Automatic
 
+	column bin_no
+		dataType: string
+		lineageTag: e3988515-de0e-4d08-b1d2-f8d78cda6e1e
+		summarizeBy: none
+		sourceColumn: bin_no
+
+		annotation SummarizationSetBy = Automatic
+
+	column bin_photo
+		dataType: string
+		lineageTag: 89d5de1b-2abb-496c-be2c-b98169d28a48
+		summarizeBy: none
+		sourceColumn: bin_photo
+
+		annotation SummarizationSetBy = Automatic
+
+	column credit_maximum_limit
+		dataType: double
+		lineageTag: cba93719-a8b0-4f5d-9dde-e295b22b3311
+		summarizeBy: sum
+		sourceColumn: credit_maximum_limit
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column credit_minimum_limit
+		dataType: double
+		lineageTag: 8e9a8bd9-01a1-4c4e-854f-0bcd85e5ac6b
+		summarizeBy: sum
+		sourceColumn: credit_minimum_limit
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column customer_segment
+		dataType: string
+		lineageTag: 9f7475bf-3401-4d6d-9e72-8b988d5526c0
+		summarizeBy: none
+		sourceColumn: customer_segment
+
+		annotation SummarizationSetBy = Automatic
+
+	column deleted_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: b8642fac-11b9-4cf2-b7f1-efec3855f5b4
+		summarizeBy: none
+		sourceColumn: deleted_at
+
+		variation Variation
+			isDefault
+			relationship: 6a9401d8-918a-483b-bbac-ec3d471731bc
+			defaultHierarchy: LocalDateTable_06df6271-f168-483f-b5bf-9b30c4dd4ca7.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column dynamics_id
+		dataType: string
+		lineageTag: 6498be02-dcd2-48c3-953c-fc0301b7faa6
+		summarizeBy: none
+		sourceColumn: dynamics_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column dynamics_status
+		dataType: string
+		lineageTag: fcda3d70-6a0b-4022-baec-525dcf82cf80
+		summarizeBy: none
+		sourceColumn: dynamics_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column email
+		dataType: string
+		lineageTag: a17b5a15-a4e8-4091-8eda-a58ad4e495b5
+		summarizeBy: none
+		sourceColumn: email
+
+		annotation SummarizationSetBy = Automatic
+
+	column mfs_phone_number
+		dataType: string
+		lineageTag: 7c5f489e-c180-45e7-9947-f726e79508f6
+		summarizeBy: none
+		sourceColumn: mfs_phone_number
+
+		annotation SummarizationSetBy = Automatic
+
+	column mfs_type
+		dataType: string
+		lineageTag: 42599dd2-41ea-4f30-b6ad-bb89236f9328
+		summarizeBy: none
+		sourceColumn: mfs_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column nominee_name
+		dataType: string
+		lineageTag: 0911523f-bee8-4cde-af29-f3cc46a7257f
+		summarizeBy: none
+		sourceColumn: nominee_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column nominee_nid_photo
+		dataType: string
+		lineageTag: d58c3007-033f-4d16-badb-a454a364eae7
+		summarizeBy: none
+		sourceColumn: nominee_nid_photo
+
+		annotation SummarizationSetBy = Automatic
+
+	column nominee_relation_with_dealer
+		dataType: string
+		lineageTag: 4fb90677-fc9a-440b-8e6e-e2bda1031555
+		summarizeBy: none
+		sourceColumn: nominee_relation_with_dealer
+
+		annotation SummarizationSetBy = Automatic
+
+	column present_address
+		dataType: string
+		lineageTag: abf1db94-7a2b-4f99-956a-2c76a95fc0cf
+		summarizeBy: none
+		sourceColumn: present_address
+
+		annotation SummarizationSetBy = Automatic
+
+	column primary_contact_mobile_no
+		dataType: string
+		lineageTag: f0640180-6a3d-4ce3-b87c-b637573a450c
+		summarizeBy: none
+		sourceColumn: primary_contact_mobile_no
+
+		annotation SummarizationSetBy = Automatic
+
+	column primary_contact_name
+		dataType: string
+		lineageTag: 4febb500-ffab-4b68-973d-6a5a82836062
+		summarizeBy: none
+		sourceColumn: primary_contact_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column rejection_reason
+		dataType: string
+		lineageTag: 5f98e321-59c6-4c13-9d08-fc3d14d5ff34
+		summarizeBy: none
+		sourceColumn: rejection_reason
+
+		annotation SummarizationSetBy = Automatic
+
+	column shipping_address
+		dataType: string
+		lineageTag: bdc67a95-c135-40a1-b595-b8ade402287a
+		summarizeBy: none
+		sourceColumn: shipping_address
+
+		annotation SummarizationSetBy = Automatic
+
+	column status
+		dataType: string
+		lineageTag: 3f56578d-59bf-4a5d-a9b3-931c33b22657
+		summarizeBy: none
+		sourceColumn: status
+
+		annotation SummarizationSetBy = Automatic
+
+	column tin_no
+		dataType: string
+		lineageTag: e8068e58-89cf-4807-a298-4b9a8e2cd19f
+		summarizeBy: none
+		sourceColumn: tin_no
+
+		annotation SummarizationSetBy = Automatic
+
+	column tin_photo
+		dataType: string
+		lineageTag: b7753186-9dbc-4ddb-9986-f5c1734c1c79
+		summarizeBy: none
+		sourceColumn: tin_photo
+
+		annotation SummarizationSetBy = Automatic
+
+	column trade_licence_no
+		dataType: string
+		lineageTag: 784502a3-e190-434b-a132-38a006dca0e8
+		summarizeBy: none
+		sourceColumn: trade_licence_no
+
+		annotation SummarizationSetBy = Automatic
+
 	partition Dim_Dealers = m
 		mode: import
 		source =

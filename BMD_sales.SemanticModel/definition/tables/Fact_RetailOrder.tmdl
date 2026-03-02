@@ -6,7 +6,14 @@ table Fact_RetailOrder
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Total_Retail_Order_Quantity = SUM(Fact_RetailOrder[total_quantity])
+	measure Total_Retail_Order_Quantity = ```
+			
+			COALESCE (
+			    SUM ( Fact_RetailOrder[total_quantity] ),
+			    0
+			)
+			
+			```
 		lineageTag: 468c8102-192a-458a-9bf9-4357aff34649
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -19,7 +26,7 @@ table Fact_RetailOrder
 			
 			VAR Result =
 			    CALCULATE (
-			        [Total_Retail_Order_Quantity] * 3,
+			        [Total_Retail_Order_Quantity] * 1,
 			        Fact_RetailOrder[retailer_order_status] <> "APPROVED",
 			        Fact_RetailOrder[retailer_order_status] <> "REJECTED"
 			    )
@@ -35,7 +42,7 @@ table Fact_RetailOrder
 			
 			VAR DueAmount =
 			    CALCULATE (
-			        [Total_Retail_Order_Quantity] * 3,
+			        [Total_Retail_Order_Quantity] * 1,
 			        Fact_RetailOrder[retailer_order_status] = "APPROVED"
 			    )
 			VAR PaidAmount = [Total_Retailer_Paid]
@@ -73,6 +80,157 @@ table Fact_RetailOrder
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	measure Total_Retail_Order_Quantity_Pending =
+			
+			CALCULATE(
+			    SUM(Fact_RetailOrder[total_quantity]),
+			    Fact_RetailOrder[retailer_order_status] = "PENDING"
+			)
+		lineageTag: 386b52ce-b16d-42ca-a125-27bef85e2d02
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Total_Retail_Order_Quantity_Approved =
+			
+			CALCULATE(
+			    SUM(Fact_RetailOrder[total_quantity]),
+			    Fact_RetailOrder[retailer_order_status] = "APPROVED"
+			)
+		lineageTag: db225acc-6b90-45f6-a144-829bd4607485
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Total_Retail_Order_Quantity_Rejected =
+			
+			CALCULATE(
+			    SUM(Fact_RetailOrder[total_quantity]),
+			    Fact_RetailOrder[retailer_order_status] = "REJECTED"
+			)
+		lineageTag: 71254224-9fb7-426a-b544-19fe66add65b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Achievement_By_Metric =
+			
+			DIVIDE ( [Actual_By_Metric], [Target_By_Metric], 0 )
+		lineageTag: 9b8401cf-5ccb-4baf-b81f-c64579948239
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Total_Retail_Order_Quantity_Target = 70000
+		formatString: 0
+		lineageTag: 1549b390-aa47-4afb-a908-3188ad718b51
+
+	measure Retail_Order_vs_Retail_Order_Target_Display =
+			
+			VAR Retail_Order = [Total_Retail_Order_Quantity]
+			VAR Retail_Order_Target = [Total_Retail_Order_Quantity_Target]
+			RETURN
+			FORMAT ( Retail_Order, "0" ) & " / " & FORMAT ( Retail_Order_Target, "0" )
+		lineageTag: 51c4fc8a-5fee-4271-a2ff-ab02fc44c9c9
+
+	measure Retail_Order_vs_Retail_Order_Target_Percentage =
+			
+			DIVIDE (
+			    [Total_Retail_Order_Quantity],
+			    [Total_Retail_Order_Quantity_Target],
+			    0
+			)
+		lineageTag: e66676a0-7f62-4074-9299-d54d9d69af88
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Achievement_By_active_retailer =
+			
+			DIVIDE ( [Actual_Active_Retailer], [Target_Active_Retailer], 0 )
+		lineageTag: bdaafcb6-5e17-41a2-ac11-4603cea3a0b2
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Achievement_By_avg_vol_per_retailer =
+			
+			DIVIDE ( [Actual_Avg_Vol_Per_Retailer], [Target_Avg_Vol_Per_Retailer], 0 )
+		lineageTag: 6c3ab187-0bb5-4866-bec0-df7f2bcfe505
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Achievement_By_retailer_visits =
+			
+			DIVIDE ( [Actual_Retailer_Visit], [Target_Retailer_Visit], 0 )
+		lineageTag: 2be539af-c0cf-43f1-baf2-722de947a126
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Achievement_By_total_retailer_consumption =
+			
+			DIVIDE ( [Actual_Total_Retailer_Consumption], [Target_Total_Retailer_Consumption], 0 )
+		lineageTag: dff881d7-767f-4482-a604-722671095810
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Total_Retail_Order_Quantity_MT = SUM(Fact_RetailOrder[total_quantity_final])
+		lineageTag: c1dba85e-4123-4576-83dc-736095f38270
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Avg_Volume_Per_Retailer_MT = ```
+			
+			DIVIDE (
+			    [Total_Retail_Order_Quantity_MT],
+			    [Total_Retailer_Count],
+			    0
+			)
+			
+			```
+		lineageTag: da88ee01-6688-4817-bb29-d265971e9399
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Total_Retail_Order_Quantity_Pending_No =
+			
+			CALCULATE(
+			    DISTINCTCOUNT(Fact_RetailOrder[id]),
+			    Fact_RetailOrder[retailer_order_status] = "PENDING"
+			)
+		formatString: 0
+		lineageTag: 5bf3f98b-6d99-45ea-b8fc-9671ce51b833
+
+	measure 'Achievement_By_avg_vol_per_retailer (Org 2)' =
+			
+			DIVIDE ( [Actual_Avg_Vol_Per_Contractor (Org 2)], [Target_Avg_Vol_Per_Retailer], 0 )
+		lineageTag: 877ac57b-cade-4296-ae3d-66e790efcd67
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Total_Retail_Order_Count = COUNT(Fact_RetailOrder[id])
+		formatString: 0
+		lineageTag: a59518fe-4796-438f-aa54-4d3e71298c50
+
+	measure Average_Daily_Trade_Price =
+			
+			AVERAGEX (
+			    FILTER (
+			        Fact_RetailOrder,
+			        Fact_RetailOrder[total_quantity] > 0
+			            &&
+			        VAR RowPrice =
+			            DIVIDE (
+			                Fact_RetailOrder[total_amount],
+			                Fact_RetailOrder[total_quantity]
+			            )
+			        RETURN
+			            RowPrice > 450
+			                && RowPrice < 600
+			    ),
+			    DIVIDE (
+			        Fact_RetailOrder[total_amount],
+			        Fact_RetailOrder[total_quantity]
+			    )
+			)
+		lineageTag: 3e102a05-8b30-4b2c-bf58-6949147c95cc
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
 	column id
 		dataType: int64
 		formatString: 0
@@ -83,16 +241,21 @@ table Fact_RetailOrder
 		annotation SummarizationSetBy = Automatic
 
 	column latitude
-		dataType: string
+		dataType: double
+		formatString: 0.00
 		lineageTag: c84345ea-1d1a-4507-a9e6-d379a52af2c3
+		dataCategory: Latitude
 		summarizeBy: none
 		sourceColumn: latitude
 
-		annotation SummarizationSetBy = Automatic
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = User
 
 	column longitude
 		dataType: string
 		lineageTag: b82bd808-109e-432d-8e0a-f3c7c556aa60
+		dataCategory: Longitude
 		summarizeBy: none
 		sourceColumn: longitude
 
@@ -104,11 +267,6 @@ table Fact_RetailOrder
 		lineageTag: c2391416-0450-4358-b072-0174f3c8b42d
 		summarizeBy: none
 		sourceColumn: order_date
-
-		variation Variation
-			isDefault
-			relationship: a2dd2d07-4959-4f48-aa36-adb5c58fa380
-			defaultHierarchy: LocalDateTable_67abb228-df6e-431a-9d86-0427590bb1f4.'Date Hierarchy'
 
 		annotation SummarizationSetBy = Automatic
 
@@ -185,15 +343,70 @@ table Fact_RetailOrder
 
 		annotation SummarizationSetBy = Automatic
 
+	column uncovered_retailer_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 98e64f42-ff30-4a36-b816-dfce2322681e
+		summarizeBy: sum
+		sourceColumn: uncovered_retailer_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_quantity_final
+		dataType: double
+		lineageTag: 2107b101-32ed-4ad3-af26-3d80e76a3962
+		summarizeBy: sum
+		sourceColumn: total_quantity_final
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column deleted_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 22c34183-a153-4a58-a330-e458794b226e
+		summarizeBy: none
+		sourceColumn: deleted_at
+
+		variation Variation
+			isDefault
+			relationship: 42019020-3d82-4c9f-b4a2-16ebb927457b
+			defaultHierarchy: LocalDateTable_01849fc1-1a4c-46db-a499-f3555d1e19fc.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column deleted_by
+		dataType: int64
+		formatString: 0
+		lineageTag: 82eeb96c-3b8b-49f0-a3bf-5777b43de219
+		summarizeBy: sum
+		sourceColumn: deleted_by
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_rft_quantity
+		dataType: double
+		lineageTag: 215a7141-09d1-4eb8-a11e-415910c38228
+		summarizeBy: sum
+		sourceColumn: total_rft_quantity
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
 	partition Fact_RetailOrder = m
 		mode: import
 		source =
 				let
 				  Source = #"public retailer_order",
 				  #"Removed columns" = Table.RemoveColumns(Source, {"approval_date", "approved_image_url", "delete_status", "feed_back", "rejection_feed_back", "code", "module_code_id"}),
-				  #"Changed column type" = Table.TransformColumnTypes(#"Removed columns", {{"order_date", type date}})
+				  #"Changed column type" = Table.TransformColumnTypes(#"Removed columns", {{"order_date", type date}}),
+				  #"Merged queries" = Table.NestedJoin(#"Changed column type", {"retailer_id"}, #"public retailers", {"id"}, "public retailers", JoinKind.LeftOuter),
+				  #"Expanded public retailers" = Table.ExpandTableColumn(#"Merged queries", "public retailers", {"uncovered_retailer_id"}, {"uncovered_retailer_id"}),
+				  #"Added custom" = Table.TransformColumnTypes(Table.AddColumn(#"Expanded public retailers", "total_quantity_final", each [total_quantity] / 20), {{"total_quantity_final", type number}})
 				in
-				  #"Changed column type"
+				  #"Added custom"
 
 	annotation PBI_ResultType = Table
 

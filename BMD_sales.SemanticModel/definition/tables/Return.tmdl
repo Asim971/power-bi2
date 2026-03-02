@@ -7,7 +7,7 @@ table Return
 			    CALCULATE (
 			        SUM ( 'Return'[Amount] ),
 			        TREATAS (
-			            VALUES ( Dim_Contractor[ContractorID] ),
+			            VALUES ( Dim_Contractor_HeadMason[PartnerID] ),
 			            'Return'[id]
 			        )
 			    )
@@ -15,6 +15,10 @@ table Return
 			IF ( ISBLANK ( Result ), 0, Result )
 		formatString: 0
 		lineageTag: c5438808-292e-489a-8502-cedb4850f036
+
+	measure Final_Return = Processing[Processing]-'Return'[Return]
+		formatString: 0
+		lineageTag: be17973f-7bf7-4366-b130-23e354d9a838
 
 	column Date
 		dataType: dateTime
@@ -27,6 +31,8 @@ table Return
 			isDefault
 			relationship: 1d5962e3-6de6-4497-8c84-544d440f04c4
 			defaultHierarchy: LocalDateTable_43afd7a7-4705-432a-bc3a-8db381ecfeaa.'Date Hierarchy'
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 

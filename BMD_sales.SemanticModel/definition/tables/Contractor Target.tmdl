@@ -1,61 +1,123 @@
 table 'Contractor Target'
-	lineageTag: 080572ab-03cb-4fe0-909e-4b517d75794f
+	excludeFromModelRefresh
+	lineageTag: 5b394a02-025a-44d8-854e-0c9e5b50cd07
 
-	measure Total_Contractor_Target = SUM('Contractor Target'[Target])
-		formatString: 0
-		lineageTag: 5275eded-ce07-4e75-b047-72bf478e3000
-
-	measure Target_vs_Achievement_Percent =
+	measure Target_Contractor_Visit =
 			
-			DIVIDE (
-			    [Total_PartnerEligible_Orders_Bags],
-			    [Total_Contractor_Target],
-			    0
+			SUM ( 'Contractor Target'[Contractor Visits Target] )
+		formatString: 0
+		lineageTag: 094ffb71-20b4-415e-8538-0385b310807f
+
+	measure Target_Active_Contractor =
+			
+			SUM ( 'Contractor Target'[Active Contractor Target] )
+		formatString: 0
+		lineageTag: e17158a1-6c85-446f-9da4-8bd717fc3b87
+
+	measure Target_Avg_Vol_Per_Contractor =
+			SUM('Contractor Target'[Avg. Vol. Per Contractor Target]
 			)
-		lineageTag: 22253ecd-c750-41a8-80cb-2437b9cdd0eb
+		formatString: 0
+		lineageTag: aad0d0f9-c96a-4cd4-b0dc-a82cf7776254
 
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
+	measure Target_Total_Contractor_Consumption = ```
+			
+			SUM ( 'Contractor Target'[Contractor Consumption Target] )
+			
+			```
+		formatString: 0
+		lineageTag: 965d9b37-6fb1-406d-8c63-35a25d03d79e
 
-	column id
+	measure Target_By_Metric_Contractor = ```
+			
+			SWITCH (
+			    SELECTEDVALUE ( Metrics_Contractor[MetricName] ),
+			    "Contractor Visit", [Target_Contractor_Visit],
+			    "Active Contractor", [Target_Active_Contractor],
+			    "Avg Vol Per Contractor", [Target_Avg_Vol_Per_Contractor],
+			    "Total Contractor Consumption", [Target_Total_Contractor_Consumption]
+			)
+			
+			```
+		formatString: 0
+		lineageTag: be43d191-2c1d-41af-93cd-c45402d213b7
+
+	column UserID
 		dataType: int64
 		formatString: 0
-		lineageTag: d04a98ca-bf18-456f-9cd4-a190bdd0d650
+		lineageTag: 15ddd827-6492-4eed-a45e-70623c2a3f63
 		summarizeBy: none
-		sourceColumn: id
+		sourceColumn: UserID
 
 		annotation SummarizationSetBy = Automatic
 
-	column name
+	column RoleID
+		dataType: int64
+		formatString: 0
+		lineageTag: 0836cad2-580e-4b1c-b815-7aba9738cb1b
+		summarizeBy: count
+		sourceColumn: RoleID
+
+		annotation SummarizationSetBy = Automatic
+
+	column RoleName
 		dataType: string
-		lineageTag: e7fee52a-62dd-43e6-9516-a9bb958233e3
+		lineageTag: 7af03db1-17dd-4059-8237-136f72a26dab
 		summarizeBy: none
-		sourceColumn: name
+		sourceColumn: RoleName
 
 		annotation SummarizationSetBy = Automatic
 
-	column email
+	column OrganizationID
+		dataType: int64
+		formatString: 0
+		lineageTag: be86d564-fd7f-416b-92bc-1bb2725f58bb
+		summarizeBy: count
+		sourceColumn: OrganizationID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Organization
 		dataType: string
-		lineageTag: 92f29d2d-490f-4849-b75d-eb81d6455fea
+		lineageTag: 221c89db-5592-4d89-be30-d5191fea1e95
 		summarizeBy: none
-		sourceColumn: email
+		sourceColumn: Organization
 
 		annotation SummarizationSetBy = Automatic
 
-	column role_id
+	column 'Contractor Visits Target'
 		dataType: int64
 		formatString: 0
-		lineageTag: 919aada1-d4db-4169-9fde-6a98ec919670
+		lineageTag: 90bb0e8e-cb78-442f-8dbe-fe67e9083f92
 		summarizeBy: sum
-		sourceColumn: role_id
+		sourceColumn: Contractor Visits Target
 
 		annotation SummarizationSetBy = Automatic
 
-	column Target
+	column 'Active Contractor Target'
 		dataType: int64
 		formatString: 0
-		lineageTag: 59e33cbd-582f-4664-806a-adaf0a33bfb3
+		lineageTag: cc48b57d-8fef-46ce-8541-345ac5f8bf56
 		summarizeBy: sum
-		sourceColumn: Target
+		sourceColumn: Active Contractor Target
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Avg. Vol. Per Contractor Target'
+		dataType: int64
+		formatString: 0
+		lineageTag: 66a01c77-7707-427a-a87d-1870b43298dc
+		summarizeBy: sum
+		sourceColumn: Avg. Vol. Per Contractor Target
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Contractor Consumption Target'
+		dataType: int64
+		formatString: 0
+		lineageTag: 42a84ee6-e693-4c17-b674-87c19745adaa
+		summarizeBy: sum
+		sourceColumn: Contractor Consumption Target
 
 		annotation SummarizationSetBy = Automatic
 
@@ -66,7 +128,7 @@ table 'Contractor Target'
 				  Source = GoogleSheets.Contents("https://docs.google.com/spreadsheets/d/19WINZf1-7yaYzjWDQW5G5G7PBLPTcylP4CuvTezCwkM/edit?gid=0#gid=0"),
 				  #"Navigation 1" = Source{[name = "Contractor Target", ItemKind = "Table"]}[Data],
 				  #"Promoted headers" = Table.PromoteHeaders(#"Navigation 1", [PromoteAllScalars = true]),
-				  #"Changed column type" = Table.TransformColumnTypes(#"Promoted headers", {{"id", Int64.Type}, {"name", type text}, {"email", type text}, {"role_id", Int64.Type}, {"Target", Int64.Type}})
+				  #"Changed column type" = Table.TransformColumnTypes(#"Promoted headers", {{"UserID", Int64.Type}, {"RoleID", Int64.Type}, {"RoleName", type text}, {"OrganizationID", Int64.Type}, {"Organization", type text}, {"Contractor Visits Target", Int64.Type}, {"Active Contractor Target", Int64.Type}, {"Avg. Vol. Per Contractor Target", Int64.Type}, {"Contractor Consumption Target", Int64.Type}})
 				in
 				  #"Changed column type"
 

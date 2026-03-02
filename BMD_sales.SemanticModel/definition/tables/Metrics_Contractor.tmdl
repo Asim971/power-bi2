@@ -1,0 +1,99 @@
+table Metrics_Contractor
+	lineageTag: 698f93d5-3e96-41d9-b5b4-bd52460111b6
+
+	measure Actual_Active_Contractor =
+			
+			[Total_PartnerEligible_Orders_With_Contractor_Count]
+		formatString: 0
+		lineageTag: 1fc91384-487c-4251-9590-8bfd18100720
+
+	measure Actual_Contractor_Visit =
+			
+			[Total_Visits2]
+		formatString: 0
+		lineageTag: 3ca70965-8c80-4e85-8481-cd27563d21cd
+
+	measure Actual_Avg_Vol_Per_Contractor = [Avg_Order_Bags_per_Contractor]
+		lineageTag: e95d701a-6cb8-42c2-bd21-514f7997eb8a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Actual_Total_Contractor_Consumption =
+			
+			[Total_PartnerEligible_Orders_Bags]
+		formatString: 0
+		lineageTag: 9b9efe7f-fe3b-4d2d-9657-401e36d7950a
+
+	measure Actual_By_Metric_Contractor = ```
+			
+			SWITCH (
+			    SELECTEDVALUE ( Metrics_Contractor[MetricName] ),
+			    "Contractor Visit", [Actual_Contractor_Visit],
+			    "Active Contractor", [Actual_Active_Contractor],
+			    "Avg Vol Per Contractor", [Actual_Avg_Vol_Per_Contractor],
+			    "Total Contractor Consumption", [Actual_Total_Contractor_Consumption]
+			)
+			
+			```
+		lineageTag: b8fb0967-0e12-4791-b5c6-409290ac86a2
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Ach_Filter_Flag_Contractor =
+			
+			VAR SelectedThreshold =
+			    SELECTEDVALUE ( Ach_Threshold_Switch[Threshold] )
+			RETURN
+			IF (
+			    ISBLANK ( SelectedThreshold ),
+			    1,
+			    IF ( [Achievement_By_total_contractor_consumption] <= SelectedThreshold, 1, 0 )
+			)
+		formatString: 0
+		lineageTag: 066ed0e5-8d89-4e43-85c7-5c4c7a648602
+
+	measure 'Actual_Total_Contractor_Consumption (Org 2)' =
+			
+			[Total_PartnerEligible_Orders_MT]
+		lineageTag: 2d3d36f5-be33-4a4d-9575-fbd3ae4f2cf2
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Actual_Avg_Vol_Per_Contractor (Org 2)' = [Avg_Order_Bags_per_Contractor (Org 2)]
+		lineageTag: 81fbeb1f-eb69-43c5-8b02-b5240d0737d2
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column MetricKey
+		lineageTag: a8d5ecac-554d-4f7d-9352-7d9cd975df6e
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [MetricKey]
+
+		annotation SummarizationSetBy = Automatic
+
+	column MetricName
+		lineageTag: 2b206cbc-fb21-4dd2-81af-b9682dca56a2
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [MetricName]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Metrics_Contractor = calculated
+		mode: import
+		source =
+				
+				DATATABLE (
+				    "MetricKey", STRING,
+				    "MetricName", STRING,
+				    {
+				        { "RV", "Contractor Visit" },
+				        { "AR", "Active Contractor" },
+				        { "AV", "Avg Vol Per Contractor" },
+				        { "TRC", "Total Contractor Consumption" }
+				    }
+				)
+
+	annotation PBI_Id = 2f3ce7664b62412687d24342cf2cbf9c
+

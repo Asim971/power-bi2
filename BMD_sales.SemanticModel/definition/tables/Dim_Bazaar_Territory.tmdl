@@ -1,0 +1,42 @@
+table Dim_Bazaar_Territory
+	lineageTag: 74b64f32-467b-42ab-a4e1-e2f780e275ca
+
+	column territory_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 3531c808-41e5-47e5-8922-e0a97a441399
+		summarizeBy: none
+		sourceColumn: territory_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column bazaar_list_id
+		dataType: int64
+		formatString: 0
+		lineageTag: b8fc77d6-c045-49b1-b96f-da569babc385
+		summarizeBy: sum
+		sourceColumn: bazaar_list_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column organization_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 233c48cd-59ab-418e-9e5f-da9a7a04d094
+		summarizeBy: sum
+		sourceColumn: organization_id
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_Bazaar_Territory = m
+		mode: import
+		source =
+				let
+				  Source = #"public territory_bazaar_list",
+				  #"Merged queries" = Table.NestedJoin(Source, {"territory_id"}, #"public territory", {"id"}, "public territory", JoinKind.LeftOuter),
+				  #"Expanded public territory" = Table.ExpandTableColumn(#"Merged queries", "public territory", {"organization_id"}, {"organization_id"})
+				in
+				  #"Expanded public territory"
+
+	annotation PBI_ResultType = Table
+

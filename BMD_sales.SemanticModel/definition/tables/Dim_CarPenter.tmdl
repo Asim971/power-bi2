@@ -1,0 +1,122 @@
+table Dim_CarPenter
+	lineageTag: 84fd67d8-add4-4df4-8dd4-4e75003cee5d
+
+	measure Total_Carpenter = COUNTROWS(Dim_CarPenter)
+		formatString: 0
+		lineageTag: e017392c-1e7c-478d-bfd7-256a67db281a
+
+	measure Total_Carpenter_By_Date =
+			
+			CALCULATE (
+			    COUNTROWS ( Dim_CarPenter ),
+			    TREATAS (
+			        VALUES ( Dim_Date[Date] ),
+			        Dim_CarPenter[created_at]
+			    )
+			)
+		formatString: 0
+		lineageTag: 4d1f14d2-1892-4f5f-a1d3-d0f6eac6b552
+
+	column id
+		dataType: int64
+		formatString: 0
+		lineageTag: d1baabf8-8ca0-4936-be66-be70bb8930ae
+		summarizeBy: none
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	column business_type
+		dataType: string
+		lineageTag: 11ddfbab-bf67-4597-bfc7-b5b838e65cf0
+		summarizeBy: none
+		sourceColumn: business_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column carpenter_type
+		dataType: string
+		lineageTag: a029961e-8989-4c33-a285-66d64f72fd37
+		summarizeBy: none
+		sourceColumn: carpenter_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column created_at
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: f052737d-3cfe-4da7-925a-ea0565783b41
+		summarizeBy: none
+		sourceColumn: created_at
+
+		variation Variation
+			isDefault
+			relationship: 5e7d6a23-5750-4836-9883-78559c4cfc3a
+			defaultHierarchy: LocalDateTable_1fa4fb45-1f6d-4a5b-bbc6-523692412d65.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column delete_status
+		dataType: string
+		lineageTag: 95a8f592-1480-47de-b682-87af72fc30a1
+		summarizeBy: none
+		sourceColumn: delete_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column mobile_no
+		dataType: string
+		lineageTag: b307d264-05bb-4e08-b831-ba6a1bff755e
+		summarizeBy: none
+		sourceColumn: mobile_no
+
+		annotation SummarizationSetBy = Automatic
+
+	column name
+		dataType: string
+		lineageTag: 3536ff2a-1ace-48dc-a7a7-2b6f6b2591b1
+		summarizeBy: none
+		sourceColumn: name
+
+		annotation SummarizationSetBy = Automatic
+
+	column status
+		dataType: string
+		lineageTag: ab4739f9-37bc-4e87-b130-9d3708d2066c
+		summarizeBy: none
+		sourceColumn: status
+
+		annotation SummarizationSetBy = Automatic
+
+	column organization_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 5d9d7af0-569f-481d-878a-383c4a0049ca
+		summarizeBy: sum
+		sourceColumn: organization_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column upazilla_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 63547355-82f8-48ae-8afb-52efa37b3135
+		summarizeBy: sum
+		sourceColumn: upazilla_id
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_CarPenter = m
+		mode: import
+		source =
+				let
+				  Source = #"public carpenters",
+				  #"Removed columns" = Table.RemoveColumns(Source, {"address_line2", "address_line1", "code", "deleted_at", "dob", "nid", "nid_photo", "nominee_name", "nominee_nid", "nominee_photo", "notes", "photo", "preffered_mfs", "preffered_mfs_number", "rejection_comment", "total_experience_year", "updated_at", "created_by_id", "deleted_by_id", "module_code_id", "updated_by_id", "nominee_nid_photo"}),
+				  #"Changed column type" = Table.TransformColumnTypes(#"Removed columns", {{"created_at", type date}})
+				in
+				  #"Changed column type"
+
+	annotation PBI_ResultType = Table
+

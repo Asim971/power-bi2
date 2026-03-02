@@ -27,7 +27,6 @@ table Dim_Client_Simple
 				DISTINCTCOUNT('Dim_Client_Simple'[ClientKey]),
 				'Dim_Client_Simple'[ClientType] = "Dealer",
 			    REMOVEFILTERS('Fact_Visit'),
-				REMOVEFILTERS('Fact_UserOrders'),
 			    REMOVEFILTERS('Dim_Date')
 			)
 		formatString: #,##0
@@ -42,7 +41,6 @@ table Dim_Client_Simple
 				DISTINCTCOUNT('Dim_Client_Simple'[ClientKey]),
 				'Dim_Client_Simple'[ClientType] = "Retailer",
 			    REMOVEFILTERS('Fact_Visit'),
-				REMOVEFILTERS('Fact_UserOrders'),
 			    REMOVEFILTERS('Dim_Date')
 			)
 		formatString: #,##0
@@ -57,7 +55,6 @@ table Dim_Client_Simple
 			    COUNTROWS ( Dim_Client_Simple ),
 			    Dim_Client_Simple[ClientType] = "Site",
 			    REMOVEFILTERS('Fact_Visit'),
-				REMOVEFILTERS('Fact_UserOrders'),
 			    REMOVEFILTERS('Dim_Date')
 			)
 		formatString: #,##0
@@ -90,7 +87,6 @@ table Dim_Client_Simple
 			    COUNTROWS ( Dim_Client_Simple ),
 			    Dim_Client_Simple[ClientType] = "IHB",
 			    REMOVEFILTERS('Fact_Visit'),
-				REMOVEFILTERS('Fact_UserOrders'),
 			    REMOVEFILTERS('Dim_Date')
 			)
 		formatString: #,##0
@@ -105,7 +101,6 @@ table Dim_Client_Simple
 			    COUNTROWS ( Dim_Client_Simple ),
 			    Dim_Client_Simple[ClientType] IN { "Engineer", "Contractor", "HeadMason" },
 			    REMOVEFILTERS('Fact_Visit'),
-				REMOVEFILTERS('Fact_UserOrders'),
 			    REMOVEFILTERS('Dim_Date')
 			)
 		formatString: #,##0
@@ -325,7 +320,6 @@ table Dim_Client_Simple
 			    COUNTROWS ( Dim_Client_Simple ),
 			    Dim_Client_Simple[ClientType] IN { "IHB", "Site" },
 			    REMOVEFILTERS('Fact_Visit'),
-				REMOVEFILTERS('Fact_UserOrders'),
 			    REMOVEFILTERS('Dim_Date')
 			)
 		formatString: #,##0
@@ -394,8 +388,7 @@ table Dim_Client_Simple
 			// Base measure: Total distinct clients (unaffected by fact table filters)
 			CALCULATE(
 				DISTINCTCOUNT('Dim_Client_Simple'[ClientKey]),
-				REMOVEFILTERS('Fact_Visit'),
-				REMOVEFILTERS('Fact_UserOrders')
+				REMOVEFILTERS('Fact_Visit')
 			)
 		formatString: #,##0
 		lineageTag: 043a2bb6-bf84-4bef-b672-bc13005a5654
@@ -406,8 +399,7 @@ table Dim_Client_Simple
 			// Total distinct clients - respects dimension filters but ignores fact table context
 			CALCULATE(
 				DISTINCTCOUNT('Dim_Client_Simple'[ClientKey]),
-				REMOVEFILTERS('Fact_Visit'),
-				REMOVEFILTERS('Fact_UserOrders')
+				REMOVEFILTERS('Fact_Visit')
 			)
 		formatString: #,##0
 		displayFolder: Client Counts
@@ -482,8 +474,7 @@ table Dim_Client_Simple
 			// Ignores Fact_Visit filters - shows ALL clients in dimension for current ClientType/Location filters
 			CALCULATE(
 				DISTINCTCOUNT('Dim_Client_Simple'[ClientKey]),
-				REMOVEFILTERS('Fact_Visit'),
-				REMOVEFILTERS('Fact_UserOrders')
+				REMOVEFILTERS('Fact_Visit')
 			)
 		formatString: #,##0
 		displayFolder: Client Counts
@@ -491,23 +482,12 @@ table Dim_Client_Simple
 
 		changedProperty = IsHidden
 
-	measure 'Total Active Contractors New' =
-			
-			CALCULATE (
-			    DISTINCTCOUNT ( Dim_Client_Simple[ClientID] ),
-			    Dim_Client_Simple[Is_Active_Contractor_new] = TRUE()
-			)
-		formatString: 0
-		displayFolder: Client Counts
-		lineageTag: d89a445b-7a2f-4065-886c-3ea691e37bbc
-
 	measure Total_UncoverRetailers =
 			
 			CALCULATE (
 			    COUNTROWS ( Dim_Client_Simple ),
 			    Dim_Client_Simple[ClientType] = "UncoveredRetailer",
 			    REMOVEFILTERS('Fact_Visit'),
-				REMOVEFILTERS('Fact_UserOrders'),
 			    REMOVEFILTERS('Dim_Date')
 			)
 		formatString: 0
@@ -596,17 +576,6 @@ table Dim_Client_Simple
 
 		annotation SummarizationSetBy = Automatic
 
-	column BazaarID
-		dataType: int64
-		formatString: 0
-		lineageTag: 10924ccf-70ef-4bd0-b352-0269c55c4a88
-		summarizeBy: none
-		sourceColumn: BazaarID
-
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
-
 	column EntityGroup =
 			SWITCH(
 			    [ClientType],
@@ -617,6 +586,9 @@ table Dim_Client_Simple
 			    "Contractor", "Influencers",
 			    "Site", "Consumers",
 			    "IHB", "Consumers",
+			    "Carpenter", "Influencers",
+			    "Lead", "Consumers",
+			    "EndUser", "Consumers",
 			    "Influencers"
 			)
 		lineageTag: 8f901234-5678-9abc-def0-123456789abc
@@ -739,17 +711,12 @@ table Dim_Client_Simple
 
 		annotation SummarizationSetBy = Automatic
 
-	column Is_Active_Contractor_new =
-			
-			VAR OrdersUnderContractor =
-			    COUNTROWS (
-			        RELATEDTABLE ( Fact_UserOrders )
-			    )
-			RETURN
-			IF ( OrdersUnderContractor > 0, TRUE(), BLANK() )
-		formatString: """TRUE"";""TRUE"";""FALSE"""
-		lineageTag: 60c4a2bf-dbd8-488e-ae3d-c5f6ce0a1af4
+	column BazaarID
+		dataType: int64
+		formatString: 0
+		lineageTag: c73cd843-70a9-44ad-b8f6-5efbab032310
 		summarizeBy: none
+		sourceColumn: BazaarID
 
 		annotation SummarizationSetBy = Automatic
 
@@ -939,6 +906,75 @@ table Dim_Client_Simple
 				    }),
 				
 				    // ============================================================
+				    // 10. CARPENTERS
+				    // ============================================================
+				    CarpentersSource = #"public carpenters",
+				    CarpentersFiltered = Table.SelectRows(CarpentersSource, each [delete_status] = "NO"),
+				    CarpentersBase = Table.SelectColumns(CarpentersFiltered, {
+				        "id", "name", "carpenter_type"
+				    }),
+				    CarpentersFinal = Table.AddColumn(CarpentersBase, "ClientType", each "Carpenter", type text),
+				    CarpentersFinal2 = Table.AddColumn(CarpentersFinal, "ClientName", each [name], type text),
+				    CarpentersFinal3 = Table.AddColumn(CarpentersFinal2, "SubType", each [carpenter_type], type text),
+				    CarpentersFinal4 = Table.AddColumn(CarpentersFinal3, "ResponsibleRole", each "BDO", type text),
+				    CarpentersFinal5 = Table.AddColumn(CarpentersFinal4, "BazaarID", each -1, Int64.Type),
+				    CarpentersFinal6 = Table.AddColumn(CarpentersFinal5, "TerritoryName", each null, type text),
+				    CarpentersFinal7 = Table.AddColumn(CarpentersFinal6, "AreaName", each null, type text),
+				    CarpentersRenamed = Table.RenameColumns(CarpentersFinal7, {{"id", "ClientID"}}),
+				    CarpentersClean = Table.SelectColumns(CarpentersRenamed, {
+				        "ClientID", "ClientName", "ClientType", "SubType",
+				        "ResponsibleRole", "BazaarID", "TerritoryName", "AreaName"
+				    }),
+				
+				
+				
+				// ============================================================
+				    // 11. LEADS & END USERS
+				    // ============================================================
+				LeadSource = #"public lead",
+				
+				LeadWithClientType =
+				    Table.AddColumn(
+				        LeadSource,
+				        "ClientType",
+				        each
+				            if Text.Upper(Text.Trim(Text.From([end_user]))) = "YES" then "EndUser"
+				            else if Text.Upper(Text.Trim(Text.From([end_user]))) = "NO" then "Lead"
+				            else null,
+				        type text
+				    ),
+				
+				LeadWithClientName =
+				    Table.AddColumn(
+				        LeadWithClientType,
+				        "ClientName",
+				        each
+				            if [name] <> null and Text.Trim([name]) <> "" then [name]
+				            else if [ClientType] = "EndUser"
+				                then "EndUser-" & Text.From([id])
+				            else if [ClientType] = "Lead"
+				                then "Lead-" & Text.From([id])
+				            else null,
+				        type text
+				    ),
+				
+				LeadRenamed =
+				    Table.RenameColumns(
+				        LeadWithClientName,
+				        {
+				            {"id", "ClientID"},
+				            {"bazaar_id", "BazaarID"}
+				        }
+				    ),
+				
+				LeadClean =
+				    Table.SelectColumns(
+				        LeadRenamed,
+				        {"ClientID", "ClientName", "ClientType", "BazaarID"}
+				    ),
+				
+				
+				    // ============================================================
 				    // COMBINE ALL CLIENT TYPES (Dec 2025: Added HeadMason, SiteManager, UncoveredRetailer)
 				    // ============================================================
 				    AllClients = Table.Combine({
@@ -950,7 +986,9 @@ table Dim_Client_Simple
 				        ContractorClean,
 				        HeadMasonsClean,
 				        SiteManagersClean,
-				        UncoveredRetailerClean
+				        UncoveredRetailerClean,
+				        CarpentersClean,
+				        LeadClean
 				    }),
 				
 				    // ============================================================

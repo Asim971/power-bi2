@@ -25,44 +25,9 @@ table Dim_Site
 		formatString: 0
 		lineageTag: c2afdd67-838c-47b3-862c-5b238423d970
 
-	measure 'Total Active Sites (ACL)' =
-			
-			CALCULATE (
-			    DISTINCTCOUNT ( Fact_UserOrders[SiteID] ),
-			    TREATAS (
-			        VALUES ( Fact_UserOrders[SiteID] ),
-			        Dim_Site[SiteID]
-			    ),
-			    YEAR ( Fact_UserOrders[CreatedAt] ) = YEAR ( TODAY() ),
-			    MONTH ( Fact_UserOrders[CreatedAt] ) = MONTH ( TODAY() )
-			)
-		formatString: 0
-		lineageTag: 6a8bc552-4cde-4545-8ebe-6ea68de93da0
-
-	measure Total_Potential_Order_Sites = ```
-			
-			CALCULATE (
-			    DISTINCTCOUNT ( Dim_Site[SiteID] ),
-			    TREATAS (
-			        CALCULATETABLE (
-			            VALUES ( Fact_UserOrders[SiteID] ),
-			            Fact_UserOrders[OrderStatus] <> "REJECTED"
-			        ),
-			        Dim_Site[SiteID]
-			    )
-			)
-			
-			```
-		formatString: 0
-		lineageTag: 07fd5312-c1ff-47de-8606-b17091e6e703
-
 	measure contractor_total = DISTINCTCOUNT ( Dim_Site[ContractorID] )
 		formatString: 0
 		lineageTag: 620a2d0a-f4e3-4822-a95c-31d4e0be8ca0
-
-	measure Total_Order_Quantity_Site = SUM ( Fact_UserOrders[qty_in_mt] )
-		formatString: 0
-		lineageTag: 14797e09-c4f7-450e-bda9-217cf3cacddc
 
 	column SiteID
 		dataType: int64
@@ -151,7 +116,7 @@ table Dim_Site
 		dataType: int64
 		formatString: 0
 		lineageTag: e1f2a3b4-c5d6-4e7f-8a9b-0c1d2e3f4a5b
-		summarizeBy: none
+		summarizeBy: count
 		sourceColumn: BazaarID
 
 		annotation SummarizationSetBy = Automatic
@@ -160,7 +125,7 @@ table Dim_Site
 		dataType: int64
 		formatString: 0
 		lineageTag: f2a3b4c5-d6e7-4f8a-9b0c-1d2e3f4a5b6c
-		summarizeBy: count
+		summarizeBy: none
 		sourceColumn: HeadMasonID
 
 		annotation SummarizationSetBy = Automatic
@@ -310,18 +275,80 @@ table Dim_Site
 		annotation SummarizationSetBy = Automatic
 
 	column latitude
-		dataType: string
+		dataType: double
+		formatString: 0.00
 		lineageTag: 965384d4-025b-4afa-8e4f-dcfde7492a9b
+		dataCategory: Uncategorized
 		summarizeBy: none
 		sourceColumn: latitude
 
-		annotation SummarizationSetBy = Automatic
+		annotation SummarizationSetBy = User
 
 	column longitude
-		dataType: string
+		dataType: double
 		lineageTag: fc464918-cf3f-45b1-a1af-651f8d04a0e8
-		summarizeBy: none
+		dataCategory: Longitude
+		summarizeBy: sum
 		sourceColumn: longitude
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column contractor_status
+		dataType: string
+		lineageTag: 60f41b40-a897-4eaf-b1e7-a9276ca7aaad
+		summarizeBy: none
+		sourceColumn: contractor_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column HasHeadMeson
+		dataType: string
+		lineageTag: 1e61f8dc-7714-476d-a892-6ba45f993ee9
+		summarizeBy: none
+		sourceColumn: HasHeadMeson
+
+		annotation SummarizationSetBy = Automatic
+
+	column Contractor_HeadMason_Id
+		dataType: int64
+		formatString: 0
+		lineageTag: ac878dde-a65e-453a-8459-fd413a0b660e
+		summarizeBy: none
+		sourceColumn: Contractor_HeadMason_Id
+
+		annotation SummarizationSetBy = Automatic
+
+	column HasContractorHeadmason
+		dataType: string
+		lineageTag: 84a945ae-6730-4e1e-a14b-2bfacff98f60
+		summarizeBy: none
+		sourceColumn: HasContractorHeadmason
+
+		annotation SummarizationSetBy = Automatic
+
+	column head_mason_status
+		dataType: string
+		lineageTag: d9f10ecc-14f5-4cc6-94ca-43059fafa3f0
+		summarizeBy: none
+		sourceColumn: head_mason_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column engineer_status
+		dataType: string
+		lineageTag: 64c47415-30cf-4e2a-bf92-45778db4b7e6
+		summarizeBy: none
+		sourceColumn: engineer_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column contractor_headmason_status
+		dataType: string
+		lineageTag: 94e0d6ed-1ac6-46e5-9f35-dff23da2a41a
+		summarizeBy: none
+		sourceColumn: contractor_headmason_status
 
 		annotation SummarizationSetBy = Automatic
 
@@ -426,9 +453,27 @@ table Dim_Site
 				  #"Expanded public potential_site" = Table.ExpandTableColumn(#"Merged queries 1", "public potential_site", {"created_by"}, {"created_by"}),
 				  #"Added custom 1" = Table.AddColumn(#"Expanded public potential_site", "HasEngineer", each if [EngineerID] <> null then "Yes" else "No"),
 				  #"Merged queries 2" = Table.NestedJoin(#"Added custom 1", {"SiteID"}, #"public potential_site", {"id"}, "public potential_site", JoinKind.LeftOuter),
-				  #"Expanded public potential_site 1" = Table.ExpandTableColumn(#"Merged queries 2", "public potential_site", {"latitude", "longitude"}, {"latitude", "longitude"})
+				  #"Expanded public potential_site 1" = Table.ExpandTableColumn(#"Merged queries 2", "public potential_site", {"latitude", "longitude"}, {"latitude", "longitude"}),
+				  #"Changed column type" = Table.TransformColumnTypes(#"Expanded public potential_site 1", {{"latitude", type number}, {"longitude", type number}}),
+				  #"Merged queries 3" = Table.NestedJoin(#"Changed column type", {"ContractorID"}, #"public client", {"id"}, "public client", JoinKind.LeftOuter),
+				  #"Expanded public client" = Table.ExpandTableColumn(#"Merged queries 3", "public client", {"status"}, {"status.1"}),
+				  #"Renamed columns 1" = Table.RenameColumns(#"Expanded public client", {{"status.1", "contractor_status"}}),
+				  #"Inserted conditional column" = Table.AddColumn(#"Renamed columns 1", "HasHeadMeson", each if [HeadMasonID] <> null then "Yes" else "No"),
+				  #"Merged queries 4" = Table.NestedJoin(#"Inserted conditional column", {"HeadMasonID"}, #"public client", {"id"}, "public client", JoinKind.LeftOuter),
+				  #"Expanded public client 1" = Table.ExpandTableColumn(#"Merged queries 4", "public client", {"status"}, {"status.1"}),
+				  #"Renamed columns 2" = Table.RenameColumns(#"Expanded public client 1", {{"status.1", "head_mason_status"}}),
+				  #"Merged queries 5" = Table.NestedJoin(#"Renamed columns 2", {"EngineerID"}, #"public client", {"id"}, "public client", JoinKind.LeftOuter),
+				  #"Expanded public client 2" = Table.ExpandTableColumn(#"Merged queries 5", "public client", {"status"}, {"status.1"}),
+				  #"Renamed columns 3" = Table.RenameColumns(#"Expanded public client 2", {{"status.1", "engineer_status"}}),
+				  #"Added custom 2" = Table.TransformColumnTypes(Table.AddColumn(#"Renamed columns 3", "Contractor_HeadMason_Id", each if [ContractorID] <> null then [ContractorID]
+				else if [HeadMasonID] <> null then [HeadMasonID]
+				else null), {{"Contractor_HeadMason_Id", Int64.Type}}),
+				  #"Inserted conditional column 1" = Table.AddColumn(#"Added custom 2", "HasContractorHeadmason", each if [Contractor_HeadMason_Id] <> null then "Yes" else "No"),
+				  #"Merged queries 6" = Table.NestedJoin(#"Inserted conditional column 1", {"Contractor_HeadMason_Id"}, #"public client", {"id"}, "public client", JoinKind.LeftOuter),
+				  #"Expanded public client 3" = Table.ExpandTableColumn(#"Merged queries 6", "public client", {"status"}, {"status.1"}),
+				  #"Renamed columns 4" = Table.RenameColumns(#"Expanded public client 3", {{"status.1", "contractor_headmason_status"}})
 				in
-				    #"Expanded public potential_site 1"
+				    #"Renamed columns 4"
 				```
 
 	annotation PBI_NavigationStepName = Navigation	annotation PBI_ResultType = Table

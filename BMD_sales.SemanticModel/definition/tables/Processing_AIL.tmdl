@@ -1,11 +1,46 @@
 table Processing_AIL
 	lineageTag: da1228c8-155c-4f0f-aab9-00318241e970
 
+	measure Processing_Raw_AIL = ```
+			
+			COALESCE (
+			    CALCULATE (
+			        SUM ( Processing_AIL[Amount] ),
+			        TREATAS (
+			            VALUES ( Dim_Contractor_HeadMason[PartnerID] ),
+			            Processing_AIL[id]
+			        )
+			    ),
+			    0
+			)
+			
+			```
+		formatString: 0
+		lineageTag: 9d7cdd9e-a5cb-45e1-94ad-62f79807e3e7
+
+	measure Processing_AIL =
+			
+			SUMX (
+			    VALUES ( Dim_Contractor_HeadMason[PartnerID] ),
+			    VAR Remaining =
+			        [Processing_Raw_AIL]
+			        - [Net_Paid_AIL]
+			        - [Return_AIL]
+			    RETURN
+			        IF ( Remaining > 0, Remaining, 0 )
+			)
+		formatString: 0
+		lineageTag: 3ba78d2d-558d-4237-9fa8-b38d7d5ace83
+
+	measure Processing_AIL_Engineer_dummy = 0
+		formatString: 0
+		lineageTag: 9ac1f19c-555e-44fa-a634-d475a4244133
+
 	column id
 		dataType: int64
 		formatString: 0
 		lineageTag: 4204bed8-027a-4fac-a918-7fd4a126e55a
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: id
 
 		annotation SummarizationSetBy = Automatic

@@ -13,9 +13,7 @@ table Dim_Retailer2
 	measure Active_Retailers = ```
 			
 			CALCULATE (
-			    DISTINCTCOUNT ( Fact_RetailOrder[retailer_id]),
-			    YEAR ( Fact_RetailOrder[order_date] ) = YEAR ( TODAY() ),
-			    MONTH ( Fact_RetailOrder[order_date] ) = MONTH ( TODAY() )
+			    DISTINCTCOUNT ( Fact_RetailOrder[retailer_id])
 			)
 			
 			```
@@ -33,8 +31,8 @@ table Dim_Retailer2
 	measure Retailer_Visit_Count =
 			
 			CALCULATE (
-			    COUNTROWS ( Fact_Visit ),
-			    Fact_Visit[ClientType] = "Retailer",
+			    [Total_Visits2],
+			    Fact_Visit2[ClientType] = "Retailer",
 			    TREATAS (
 			        VALUES ( Dim_Retailer2[id] ),
 			        Fact_Visit[ClientID]
@@ -97,6 +95,104 @@ table Dim_Retailer2
 		formatString: 0
 		lineageTag: d8d36a27-8468-4a67-b1f9-9e61195da922
 
+	measure Total_Retailer_Count_ACSL = ```
+			
+			CALCULATE (
+			    COUNTROWS ( Dim_Retailer2 ),
+			    REMOVEFILTERS (),
+			    Dim_Retailer2[organization_id] = 3
+			)
+			
+			```
+		formatString: 0
+		lineageTag: 219a4f6c-18f6-4f44-8632-5c0da32b90a4
+
+	measure Retailers_Created =
+			
+			CALCULATE (
+			    COUNTROWS ( Dim_Retailer2 ),
+			    USERELATIONSHIP (
+			        Dim_Retailer2[created_at],
+			        Dim_Date[Date]
+			    )
+			)
+		formatString: 0
+		lineageTag: 34c8b27d-906c-49be-ba50-d575acc39441
+
+	measure Avg_Active_Retailers_per_Territory =
+			
+			AVERAGEX (
+			    VALUES ( Dim_Retailer2[territory_id] ),
+			    CALCULATE (
+			        DISTINCTCOUNT ( Fact_RetailOrder[retailer_id] )
+			    )
+			)
+		lineageTag: b4068819-72d5-498e-8e94-154bf8c63b40
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Active_vs_Target_Retailer_ACL_Display =
+			
+			VAR Active = [Active_Retailers]
+			VAR Total = [Total_Retailer_Count_ACL_Target]
+			RETURN
+			FORMAT ( Active, "0" ) & " / " & FORMAT ( Total, "0" )
+		lineageTag: 1e5497f1-8dc0-4f63-ac56-0e9545d1c458
+
+	measure Active_vs_Target_Retailer_ACL_Percentage =
+			
+			DIVIDE (
+			    [Active_Retailers],
+			    [Total_Retailer_Count_ACL_Target],
+			    0
+			)
+		lineageTag: 4fca6624-fbb0-4d14-b3bb-359b8f90fef7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Avg_Volume_Per_Retailer_Target = 200
+		formatString: 0
+		lineageTag: ef33d3f3-07b8-4f6f-95a0-85c24ff3d83c
+
+	measure Avg_Vol_Retailer_vs_Target_Retailer_Percentage =
+			
+			DIVIDE (
+			    [Avg_Volume_Per_Retailer],
+			    [Avg_Volume_Per_Retailer_Target],
+			    0
+			)
+		lineageTag: b46478d2-5b32-44c1-8a23-3da7a3d68af9
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Avg_Vol_Retailer_vs_Target_Retailer_Display =
+			
+			VAR Avg_Vol = [Avg_Volume_Per_Retailer]
+			VAR Target = [Avg_Volume_Per_Retailer_Target]
+			RETURN
+			FORMAT ( Avg_Vol, "0" ) & " / " & FORMAT ( Target, "0" )
+		lineageTag: ab08809c-100c-4e0f-a959-5059609f3cb1
+
+	measure Total_Retailer_Count_ACL_Target = 500
+		formatString: 0
+		lineageTag: 5bd93c34-6dcc-4d46-b9b2-0c5bf87d06d0
+
+	measure Active_Uncovered_Retailers = ```
+			
+			CALCULATE (
+			    DISTINCTCOUNT ( Fact_RetailOrder[uncovered_retailer_id]),
+			    YEAR ( Fact_RetailOrder[order_date] ) = YEAR ( TODAY() ),
+			    MONTH ( Fact_RetailOrder[order_date] ) = MONTH ( TODAY() )
+			)
+			
+			```
+		formatString: 0
+		lineageTag: 8bbbe1ec-7bb2-45cd-ad58-5cbce396fa7d
+
+	measure Active_Retailer = [Active_Retailers] - [Active_Uncovered_Retailers]
+		formatString: 0
+		lineageTag: 5f625da2-7a8f-4d44-906f-11828df82e5c
+
 	column id
 		dataType: int64
 		formatString: 0
@@ -153,7 +249,7 @@ table Dim_Retailer2
 		dataType: int64
 		formatString: 0
 		lineageTag: e4e6a537-061a-46b9-a23c-84d547ad23b2
-		summarizeBy: none
+		summarizeBy: sum
 		sourceColumn: bazaar_id
 
 		annotation SummarizationSetBy = Automatic
@@ -206,6 +302,36 @@ table Dim_Retailer2
 		lineageTag: f441a436-a0c5-4474-b3b0-53b8bf3a98ac
 		summarizeBy: none
 		sourceColumn: ClientKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column Territory_id =
+			
+			CALCULATE (
+			    MAX ( Dim_Bazaar_Territory[territory_id] ),
+			    FILTER (
+			        Dim_Bazaar_Territory,
+			        Dim_Bazaar_Territory[bazaar_list_id] = Dim_Retailer2[bazaar_id]
+			            && Dim_Bazaar_Territory[organization_id] = Dim_Retailer2[organization_id]
+			    )
+			)
+		formatString: 0
+		lineageTag: c9916e54-5b94-436f-a425-0d108bbf1942
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column deleted_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 11de6519-c257-401b-93b8-1c28083081b1
+		summarizeBy: none
+		sourceColumn: deleted_at
+
+		variation Variation
+			isDefault
+			relationship: 39072252-064b-4972-a5a5-45d7d05079d1
+			defaultHierarchy: LocalDateTable_90e08de2-7a4a-4e7d-9b73-b56ea1e03101.'Date Hierarchy'
 
 		annotation SummarizationSetBy = Automatic
 

@@ -21,7 +21,7 @@ table Dim_Retailer
 		isKey
 		formatString: 0
 		lineageTag: ret-c001-id
-		summarizeBy: none
+		summarizeBy: count
 		sourceColumn: RetailerID
 
 		annotation SummarizationSetBy = Automatic

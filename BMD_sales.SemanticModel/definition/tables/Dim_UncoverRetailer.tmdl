@@ -42,6 +42,7 @@ table Dim_UncoverRetailer
 	column latitude
 		dataType: string
 		lineageTag: 5662ccd2-1632-437a-9afc-db1efc34f106
+		dataCategory: Longitude
 		summarizeBy: none
 		sourceColumn: latitude
 
@@ -50,6 +51,7 @@ table Dim_UncoverRetailer
 	column longitude
 		dataType: string
 		lineageTag: 17e54711-91ef-4583-bb8a-3d8afea13278
+		dataCategory: Longitude
 		summarizeBy: none
 		sourceColumn: longitude
 

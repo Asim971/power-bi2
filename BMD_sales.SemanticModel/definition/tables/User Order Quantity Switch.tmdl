@@ -1,0 +1,48 @@
+table 'User Order Quantity Switch'
+	lineageTag: 4ef593cd-70f4-4642-8b1e-067595e4cf74
+
+	column 'User Order Quantity Switch'
+		lineageTag: cde71445-d2e2-4c32-8f40-be8704e0b575
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'User Order Quantity Switch Order'
+
+		relatedColumnDetails
+			groupByColumn: 'User Order Quantity Switch Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'User Order Quantity Switch Fields'
+		isHidden
+		lineageTag: 4b98ed48-7668-47ff-925f-a1676938d00e
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'User Order Quantity Switch Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'User Order Quantity Switch Order'
+		isHidden
+		formatString: 0
+		lineageTag: be511a11-8f2e-4d95-bf93-79ff6ada4fb7
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'User Order Quantity Switch' = calculated
+		mode: import
+		source =
+				{
+				    ("Bags", NAMEOF('Fact_ProjectConversion'[Total_PartnerEligible_Orders_Bags]), 0),
+				    ("Numbers", NAMEOF('Fact_ProjectConversion'[Total_PartnerEligible_Orders_Bags_No]), 1)
+				}
+
+	annotation PBI_Id = 3032650ad10a4ad8821427a13708fdab
+

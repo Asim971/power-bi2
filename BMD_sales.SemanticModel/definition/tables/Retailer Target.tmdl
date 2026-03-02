@@ -1,0 +1,136 @@
+table 'Retailer Target'
+	excludeFromModelRefresh
+	lineageTag: 4d237f7e-c60f-45ad-a319-16a4b450588a
+
+	measure Target_Retailer_Visit = SUM ( 'Retailer Target'[Retailer Visits Target] )
+		formatString: 0
+		lineageTag: f773e8cd-3519-4901-954e-0ca62a499ffc
+
+	measure Target_Active_Retailer =
+			
+			SUM ( 'Retailer Target'[Active Retailer Target] )
+		formatString: 0
+		lineageTag: 40391ee1-d39f-4d3d-adf4-f760112f8327
+
+	measure Target_Avg_Vol_Per_Retailer =
+			
+			AVERAGE ( 'Retailer Target'[Avg. Vol. Per Retailer Target])
+		lineageTag: 4c7565c9-5d42-42e6-8698-267857cdc1ab
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Target_Total_Retailer_Consumption = ```
+			
+			SUM ( 'Retailer Target'[Retailer Consumption Target] )
+			
+			```
+		formatString: 0
+		lineageTag: cc9d0dc8-4bed-4710-9d0f-5e2a41a4f1b1
+
+	measure Target_By_Metric = ```
+			
+			SWITCH (
+			    SELECTEDVALUE ( Metrics_Retail[MetricName] ),
+			    "Retailer Visit", [Target_Retailer_Visit],
+			    "Active Retailer", [Target_Active_Retailer],
+			    "Avg Vol Per Retailer", [Target_Avg_Vol_Per_Retailer],
+			    "Total Retailer Consumption", [Target_Total_Retailer_Consumption]
+			)
+			
+			```
+		lineageTag: 3f95d338-dc1b-4a9f-a085-1437c8591a3e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column UserID
+		dataType: int64
+		formatString: 0
+		lineageTag: 1b3ee1dd-ace8-471e-b409-d5900cbd1ca1
+		summarizeBy: none
+		sourceColumn: UserID
+
+		annotation SummarizationSetBy = Automatic
+
+	column RoleID
+		dataType: int64
+		formatString: 0
+		lineageTag: 1b2a05f3-7ee2-48cb-b2e8-7b25173f623c
+		summarizeBy: count
+		sourceColumn: RoleID
+
+		annotation SummarizationSetBy = Automatic
+
+	column RoleName
+		dataType: string
+		lineageTag: 5a17a03d-b8a4-4b38-8faf-a9d4d6cbf8c2
+		summarizeBy: none
+		sourceColumn: RoleName
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrganizationID
+		dataType: int64
+		formatString: 0
+		lineageTag: cf7d4ee4-4cb0-473e-89a8-362ffad5cb71
+		summarizeBy: count
+		sourceColumn: OrganizationID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Organization
+		dataType: string
+		lineageTag: 9d62b297-9de7-4b2b-a74b-479e55221a0c
+		summarizeBy: none
+		sourceColumn: Organization
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Retailer Visits Target'
+		dataType: int64
+		formatString: 0
+		lineageTag: 4141ee20-2bed-4b9c-a8fd-7e5686148bf9
+		summarizeBy: sum
+		sourceColumn: Retailer Visits Target
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Active Retailer Target'
+		dataType: int64
+		formatString: 0
+		lineageTag: 75d4e4e1-5ad6-4944-8b2d-14f28fe3c6aa
+		summarizeBy: sum
+		sourceColumn: Active Retailer Target
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Avg. Vol. Per Retailer Target'
+		dataType: int64
+		formatString: 0
+		lineageTag: 30f624be-ddb7-4225-b125-243182ce450d
+		summarizeBy: sum
+		sourceColumn: Avg. Vol. Per Retailer Target
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Retailer Consumption Target'
+		dataType: int64
+		formatString: 0
+		lineageTag: 91699ac8-494b-49cf-a51f-3f24606e4dbe
+		summarizeBy: sum
+		sourceColumn: Retailer Consumption Target
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Retailer Target' = m
+		mode: import
+		source =
+				let
+				  Source = GoogleSheets.Contents("https://docs.google.com/spreadsheets/d/1uBVoSg0j_DWr69bQeaaNlnY0GuEdUuON0HG4ulezXHU/edit?gid=0#gid=0"),
+				  #"Navigation 1" = Source{[name = "Retailer Target", ItemKind = "Table"]}[Data],
+				  #"Promoted headers" = Table.PromoteHeaders(#"Navigation 1", [PromoteAllScalars = true]),
+				  #"Changed column type" = Table.TransformColumnTypes(#"Promoted headers", {{"UserID", Int64.Type}, {"RoleID", Int64.Type}, {"RoleName", type text}, {"OrganizationID", Int64.Type}, {"Organization", type text}, {"Retailer Visits Target", Int64.Type}, {"Active Retailer Target", Int64.Type}, {"Avg. Vol. Per Retailer Target", Int64.Type}, {"Retailer Consumption Target", Int64.Type}})
+				in
+				  #"Changed column type"
+
+	annotation PBI_ResultType = Table
+

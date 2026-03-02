@@ -19,10 +19,6 @@ relationship 9f6d8aeb-4c79-c167-c7d9-7f8716100e93
 	fromColumn: Fact_Visit.DateKey
 	toColumn: Dim_Date.DateKey
 
-relationship e5f6a7b8-9012-3456-ef01-23456789abcd
-	fromColumn: Dim_Client_Simple.BazaarID
-	toColumn: Dim_Bazaar.BazaarID
-
 relationship f5c5ebce-c690-48a2-aab9-96f6101616fd
 	fromColumn: Fact_Target.UserID
 	toColumn: Dim_User.UserID
@@ -105,10 +101,6 @@ relationship b532266d-a6e7-4e42-9231-37f499ad7dcf
 	fromColumn: Dim_BDTerritory.updated_at
 	toColumn: LocalDateTable_7e09d3f4-9df3-4230-9fd4-155e0e558850.Date
 
-relationship 5f6a7b8c-9d0e-1f2a-3b4c-5d6e7f8a9b0c
-	fromColumn: Fact_UserOrders.SiteID
-	toColumn: Dim_Site.SiteID
-
 relationship 7b8c9d0e-1f2a-3b4c-5d6e-7f8a9b0c1d2e
 	fromColumn: Dim_Site.ContractorID
 	toColumn: Dim_Contractor.ContractorID
@@ -118,6 +110,7 @@ relationship 8c9d0e1f-2a3b-4c5d-6e7f-8a9b0c1d2e3f
 	toColumn: Dim_Engineer.EngineerID
 
 relationship 9d0e1f2a-3b4c-5d6e-7f8a-9b0c1d2e3f4a
+	isActive: false
 	fromColumn: Dim_Site.BazaarID
 	toColumn: Dim_Bazaar.BazaarID
 
@@ -129,11 +122,6 @@ relationship fv-terr-003-c3d4e5f6a7b8
 	isActive: false
 	fromColumn: Fact_Visit.territory_id
 	toColumn: Dim_Territory.territory_id
-
-relationship uo-bazaar-004-d4e5f6a7b8c9
-	isActive: false
-	fromColumn: Fact_UserOrders.BazaarID
-	toColumn: Dim_Bazaar.BazaarID
 
 relationship 9b1f2c3d-4e5f-6789-abcd-ef0123456789
 	fromColumn: Bridge_UserBazaar.UserID
@@ -156,10 +144,6 @@ relationship 3d4e5f60-7182-93a4-b5c6-d7e8f9012345
 relationship 21a856df-120f-e611-8b63-eb16c809ee46
 	fromColumn: Fact_Visit.ClientKey
 	toColumn: Dim_Contractor.ContractorKey
-
-relationship 3256fdfb-34f3-b04c-d07f-d6e71e29749b
-	fromColumn: Fact_UserOrders.created_by
-	toColumn: Dim_User.EmployeeID
 
 relationship fd6b0b46-80cf-4886-97a1-48f6d7afa8f4
 	joinOnDateBehavior: datePartOnly
@@ -190,16 +174,6 @@ relationship 92047f99-399d-4d2c-9581-1a987c7c88f3
 	joinOnDateBehavior: datePartOnly
 	fromColumn: Dim_Site.UpdatedAt
 	toColumn: LocalDateTable_60d6956c-9c98-4a85-858e-5c84dc444b4b.Date
-
-relationship 60da4107-8447-430e-9dde-04b36065f5cf
-	joinOnDateBehavior: datePartOnly
-	fromColumn: Fact_UserOrders.CreatedAt
-	toColumn: LocalDateTable_bde8d816-759e-467f-8812-7188e3d4e624.Date
-
-relationship 696d39f5-2251-4033-b158-fe66abb12833
-	joinOnDateBehavior: datePartOnly
-	fromColumn: Fact_UserOrders.UpdatedAt
-	toColumn: LocalDateTable_bbca09d9-5523-4af9-87d1-daec2670c5d4.Date
 
 relationship c5f9d95d-2f70-49fc-a4a9-0ecfd4d2a5d6
 	joinOnDateBehavior: datePartOnly
@@ -246,17 +220,13 @@ relationship a554b2df-4117-f183-346c-65e5e935e30a
 	toColumn: Dim_Contractor.ContractorID
 
 relationship 1a9d0b3c-0334-5df5-64b8-7cc15063a812
+	isActive: false
 	fromColumn: Dim_Bazaar.territory_id
 	toColumn: Dim_Location.territory_id
 
 relationship d09bfa60-a85a-1b34-a4c2-64f61e5b6748
-	isActive: false
 	fromColumn: Dim_User.TerritoryID
 	toColumn: Dim_Location.territory_id
-
-relationship d401356f-ae16-10c7-beb5-e3fbf0415a76
-	fromColumn: Fact_UserOrders.OrderDateKey
-	toColumn: Dim_Date.DateKey
 
 relationship 80f3ae87-9220-923e-1b42-f8e5adf8cfac
 	isActive: false
@@ -280,14 +250,6 @@ relationship 72d3f70d-3e2b-4305-94f3-d17fb92aae51
 
 	annotation PBI_IsFromSource = FS
 
-relationship 0ba939ee-e851-a99a-b863-a5d606b45aff
-	fromColumn: Target.UserID
-	toColumn: Dim_User.UserID
-
-relationship acb8c53b-6fe1-266d-9e26-6cc0e3545e62
-	fromColumn: Target.EntityGroup
-	toColumn: Dim_EntityGroup.EntityGroup
-
 relationship b17d1427-5806-4697-bbe1-81c73ceebcef
 	joinOnDateBehavior: datePartOnly
 	fromColumn: Paid.Date
@@ -303,6 +265,7 @@ relationship 561adbca-edc4-0641-91c9-0c94abf6491c
 	toColumn: Dim_User.UserID
 
 relationship f19dfd85-d7a5-f77a-e0cb-703d471cc414
+	isActive: false
 	fromColumn: Fact_RetailOrder.retailer_id
 	toColumn: Dim_Retailer.RetailerID
 
@@ -316,6 +279,7 @@ relationship cd225d6b-9a99-281a-3715-0ecebf052ec6
 	toColumn: Dim_Retailer2.id
 
 relationship c6eaf597-2338-2d2b-baa6-94faeafc2637
+	isActive: false
 	fromColumn: Dim_Retailer2.bazaar_id
 	toColumn: Dim_Bazaar.BazaarID
 
@@ -369,27 +333,14 @@ relationship 5f9ea7b3-a8eb-c702-e372-adf782bc5d75
 	fromColumn: Processing.id
 	toColumn: Dim_Contractor.ContractorID
 
-relationship fa955772-ab00-4513-8d04-d4a0453fca7d
-	isActive: false
-	crossFilteringBehavior: bothDirections
-	fromCardinality: one
-	fromColumn: Fact_Visit.VisitID
-	toColumn: Fact_Visit2.id
-
-	annotation PBI_IsFromSource = FS
-
 relationship b44f09c8-ebc8-f18e-e9a8-390478f1af0a
 	fromColumn: Fact_Client.created_at
 	toColumn: Dim_Date.Date
 
 relationship 18b2ab62-f63c-d913-d713-de6efdab4f00
+	isActive: false
 	fromColumn: Dim_Retailer2.created_at
 	toColumn: Dim_Date.Date
-
-relationship a2dd2d07-4959-4f48-aa36-adb5c58fa380
-	joinOnDateBehavior: datePartOnly
-	fromColumn: Fact_RetailOrder.order_date
-	toColumn: LocalDateTable_67abb228-df6e-431a-9d86-0427590bb1f4.Date
 
 relationship 8d60795d-388b-44b5-9338-3c77414d8cca
 	joinOnDateBehavior: datePartOnly
@@ -401,7 +352,254 @@ relationship 352d8eb9-0aed-48b3-b15b-4997b04201e6
 	fromColumn: Dim_Dealers.updated_at
 	toColumn: LocalDateTable_251ebb8e-62bb-459e-8bf4-a2ebe4d4169f.Date
 
-relationship 43a75542-be22-db9f-0f88-4fb3b0d3bd7d
-	fromColumn: 'Contractor Target'.id
+relationship 0538319e-5105-4e75-960a-2708fa3550bb
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Return_AIL.Date
+	toColumn: LocalDateTable_50c799fd-9c2b-496a-999c-479d820aad86.Date
+
+relationship 89e990c9-0c24-2e6f-a778-518d294a083a
+	fromColumn: Fact_Visit2.contractor_id
+	toColumn: Dim_Contractor.ContractorID
+
+relationship 8610c5eb-6049-82f5-f522-d4997db0b612
+	fromColumn: Fact_RetailOrder.order_date
+	toColumn: Dim_Date.Date
+
+relationship 1c7a8433-a4e4-3728-3ac5-f198485003de
+	fromColumn: 'Retailer Target'.UserID
+	toColumn: Dim_User.UserID
+
+relationship 53d00f74-0e98-1c71-1530-a363a497da1b
+	fromColumn: Dim_Bazaar_Territory.territory_id
+	toColumn: Dim_Location.territory_id
+
+relationship 36ed2488-4d2a-e52f-8881-7f394c1c5559
+	isActive: false
+	fromColumn: Dim_Retailer2.Territory_id
+	toColumn: Dim_Location.territory_id
+
+relationship e70e2e8c-9466-b877-355b-4befbc8bf57f
+	fromColumn: 'Contractor Target'.UserID
+	toColumn: Dim_User.UserID
+
+relationship 5f336485-0a5f-f27c-7827-5794fbc0cbd3
+	fromColumn: Fact_Client.created_by_id
 	toColumn: Dim_User.EmployeeID
+
+relationship c8386e05-ace7-36dc-0f2c-c82b17cab43f
+	fromColumn: Fact_Visit2.retailer_id
+	toColumn: Dim_Retailer2.id
+
+relationship c9846a4f-ae7d-437a-9a3b-fabd5c8e2490
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'Last Refresh Date'.'Last Refresh'
+	toColumn: LocalDateTable_722881a6-21ac-4563-aa7d-03b86efb8e8c.Date
+
+relationship c33fcbaa-5e3b-4777-be47-ec2e317caa23
+	isActive: false
+	fromColumn: Dim_Site.ContractorID
+	toColumn: Fact_Client.id
+
+	annotation PBI_IsFromSource = FS
+
+relationship 15a7162e-db2d-6221-659e-87390efd52c4
+	fromColumn: Fact_Visit2.engineer_id
+	toColumn: Dim_Engineer.EngineerID
+
+relationship c22d2c57-7967-4319-bc45-81d6d618c1c4
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'public lead'.created_at
+	toColumn: LocalDateTable_609a72c8-5d02-4d2a-8c27-8c5f99d25c4a.Date
+
+relationship 2fd573f1-df01-4254-be2d-2b7245698aee
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'public lead'.updated_at
+	toColumn: LocalDateTable_a0386168-5913-4a91-9d9a-e9351e11c15f.Date
+
+relationship 608e5a02-2be8-4a0b-93f3-5821f017b31b
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'public lead'.deleted_at
+	toColumn: LocalDateTable_b2b707e1-088c-4de1-b2b9-8bff2d17d955.Date
+
+relationship 9e596e3a-0d43-441e-9a0c-72a1cb13ba72
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Fact_Visit2.deleted_at
+	toColumn: LocalDateTable_65754af0-8a3c-451e-b970-476c5eabea58.Date
+
+relationship 4369cabc-2849-45d5-baa9-31329510cf5f
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'public carpenters'.created_at
+	toColumn: LocalDateTable_3aae1a2c-d063-4a35-a811-0d2104a52957.Date
+
+relationship 9e62bf59-292d-465d-8aad-915955323588
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'public carpenters'.deleted_at
+	toColumn: LocalDateTable_f09d7c44-65f9-45e4-b18a-5c465ab52826.Date
+
+relationship e2fa4386-2285-4000-995c-f3497d2d16fb
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'public carpenters'.dob
+	toColumn: LocalDateTable_6d97619b-a0ba-4f4e-b043-381c231d7048.Date
+
+relationship 4bf24569-9adf-49d6-b3cd-f93378f14544
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'public carpenters'.updated_at
+	toColumn: LocalDateTable_bf4abe08-7227-46e1-aca4-76db92130e10.Date
+
+relationship 02c657eb-e9a9-8d73-ca76-d6ec92eb3dde
+	fromColumn: Dim_Site.HeadMasonID
+	toColumn: Dim_HeadMason.HeadMasonID
+
+relationship 1e7550b3-5f7d-433f-b77e-0481d0ef7c08
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Fact_ProjectConversion.deleted_at
+	toColumn: LocalDateTable_a936f8ba-b86c-4c9b-a06b-ce0fcd6e2c34.Date
+
+relationship 49bf8758-3bf8-f6f8-35d1-b1f84cfe185d
+	fromColumn: Fact_ProjectConversion.created_at
+	toColumn: Dim_Date.Date
+
+relationship 3aa0dc5a-b889-7046-87c5-ec7fc94752c6
+	fromColumn: Fact_ProjectConversion.site_id
+	toColumn: Dim_Site.SiteID
+
+relationship 9cbe8a88-3b82-497d-a9c1-b9f53386dfb6
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Dim_Location.deleted_at
+	toColumn: LocalDateTable_e106ff45-94a8-4c0d-88d1-847f00d83ef9.Date
+
+relationship 42019020-3d82-4c9f-b4a2-16ebb927457b
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Fact_RetailOrder.deleted_at
+	toColumn: LocalDateTable_01849fc1-1a4c-46db-a499-f3555d1e19fc.Date
+
+relationship 39072252-064b-4972-a5a5-45d7d05079d1
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Dim_Retailer2.deleted_at
+	toColumn: LocalDateTable_90e08de2-7a4a-4e7d-9b73-b56ea1e03101.Date
+
+relationship f66153ff-61d8-467a-a22f-ea721116043e
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Fact_Client.deleted_at
+	toColumn: LocalDateTable_b7c069a5-ac97-4c94-9f27-7729796ec246.Date
+
+relationship 6a9401d8-918a-483b-bbac-ec3d471731bc
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Dim_Dealers.deleted_at
+	toColumn: LocalDateTable_06df6271-f168-483f-b5bf-9b30c4dd4ca7.Date
+
+relationship 5e7d6a23-5750-4836-9883-78559c4cfc3a
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Dim_CarPenter.created_at
+	toColumn: LocalDateTable_1fa4fb45-1f6d-4a5b-bbc6-523692412d65.Date
+
+relationship a05bd50e-da7d-4e1a-97e1-0d04177f7518
+	fromColumn: Dim_Client_Simple.BazaarID
+	toColumn: Dim_Bazaar.BazaarID
+
+	annotation PBI_IsFromSource = FS
+
+relationship 3f1a995e-7bbd-4a16-948a-ad0b1fa03995
+	isActive: false
+	fromColumn: Dim_Site.HeadMasonID
+	toColumn: Fact_Client.id
+
+	annotation PBI_IsFromSource = FS
+
+relationship b6169033-e971-7aac-ecc9-877eef7fc40b
+	fromColumn: Fact_ProjectConversion.carpenter_id
+	toColumn: Dim_CarPenter.id
+
+relationship 7c1572d7-32c2-6e7a-f697-0e30b37a297f
+	fromColumn: Target.EntityGroup
+	toColumn: Dim_EntityGroup.EntityGroup
+
+relationship 5c0d828e-3a36-65a4-81f9-cd50467ba9ed
+	fromColumn: Target.UserID
+	toColumn: Dim_User.UserID
+
+relationship dc038255-ac42-a3b6-1774-afb8e1440ea0
+	fromColumn: Fact_Visit2.carpenter_id
+	toColumn: Dim_CarPenter.id
+
+relationship 185d9928-be4f-3aaa-2067-20ddca71088e
+	fromColumn: Fact_Visit2.head_mason_id
+	toColumn: Dim_HeadMason.HeadMasonID
+
+relationship 90e44f8f-092f-356c-590d-dc640c8751a2
+	fromColumn: Pending_AIL.id
+	toColumn: Dim_Contractor.ContractorID
+
+relationship c8c8b2f5-3e39-9ed2-2629-11246aea4f4e
+	fromColumn: Processing_AIL.id
+	toColumn: Dim_Contractor.ContractorID
+
+relationship 9dd2b8a1-3c52-0c7f-e0d2-71367b765cdf
+	fromColumn: Return_AIL.id
+	toColumn: Dim_Contractor.ContractorID
+
+relationship 040cf88f-25cb-4be5-9bcc-14162c929c50
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Fact_ProjectConversion.memo_order_date
+	toColumn: LocalDateTable_5525b621-e681-4309-af31-b94a976f2c69.Date
+
+relationship 17e534e2-33d1-3f0a-e4ce-6e7608db56fc
+	fromColumn: Paid_AIL.id
+	toColumn: Dim_Contractor.ContractorID
+
+relationship 7578d767-0e36-c77a-79d3-90ef1a97fe42
+	fromColumn: Fact_ProjectConversion.OrderBy
+	toColumn: Dim_User.UserID
+
+relationship 52484fcc-3d0c-48a2-ba9b-1249a60f8ded
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Dim_Contractor_HeadMason.CreatedAt
+	toColumn: LocalDateTable_aa4ec469-f7b0-48b8-ad1e-1f00766a3142.Date
+
+relationship ab815c7a-4a5b-4df9-83c6-4ec395d68396
+	isActive: false
+	fromColumn: Dim_Site.EngineerID
+	toColumn: Fact_Client.id
+
+	annotation PBI_IsFromSource = FS
+
+relationship 90f99658-715d-4b8d-0b93-f9ffd76d21ff
+	fromColumn: Pending_AIL.id
+	toColumn: Dim_Contractor_HeadMason.PartnerID
+
+relationship fcc640e0-dc90-4623-c72a-dc541dd84f24
+	fromColumn: Processing_AIL.id
+	toColumn: Dim_Contractor_HeadMason.PartnerID
+
+relationship d3b221fd-7355-0974-6c50-7a8cea7ade28
+	fromColumn: Paid_AIL.id
+	toColumn: Dim_Contractor_HeadMason.PartnerID
+
+relationship 1c2a1cbc-6f36-3b82-5171-f9ac6b60c5d5
+	fromColumn: Return_AIL.id
+	toColumn: Dim_Contractor_HeadMason.PartnerID
+
+relationship b2d5b44c-0d50-0a32-9a9c-4b55a047e745
+	fromColumn: Paid.id
+	toColumn: Dim_Contractor_HeadMason.PartnerID
+
+relationship 7921f41a-2372-6e0b-179c-e876fa38f780
+	fromColumn: Return.id
+	toColumn: Dim_Contractor_HeadMason.PartnerID
+
+relationship 36a0812c-5444-6c16-667e-09e809813da2
+	fromColumn: Pending.id
+	toColumn: Dim_Contractor_HeadMason.PartnerID
+
+relationship 8ba6ee0d-2cad-dcbc-729c-c011ab0d61f1
+	fromColumn: Processing.id
+	toColumn: Dim_Contractor_HeadMason.PartnerID
+
+relationship 38d443f0-15f0-58bc-c794-acb03f68201b
+	fromColumn: Fact_Visit2.Contractor_HeadMason_Id
+	toColumn: Dim_Contractor_HeadMason.PartnerID
+
+relationship c9a65781-06cf-6e14-e11b-ab4f460915e4
+	fromColumn: Dim_Site.Contractor_HeadMason_Id
+	toColumn: Dim_Contractor_HeadMason.PartnerID
 

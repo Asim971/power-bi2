@@ -1,11 +1,42 @@
 table Paid_AIL
 	lineageTag: a7d97f83-596e-410c-be06-63b7a7e8b411
 
+	measure Paid_AIL = ```
+			
+			VAR Result =
+			    CALCULATE (
+			        SUM ( Paid_AIL[Amount] ),
+			        TREATAS (
+			            VALUES ( Dim_Contractor_HeadMason[PartnerID] ),
+			            Paid_AIL[id]
+			        )
+			    )
+			RETURN
+			IF ( ISBLANK ( Result ), 0, Result )
+			
+			```
+		formatString: 0
+		lineageTag: b75c7e80-a95a-403f-be3b-496196e5f43e
+
+	measure Net_Paid_AIL =
+			
+			VAR GrossPaid = [Paid_AIL]
+			VAR Returned = [Return_AIL]
+			VAR Result = GrossPaid - Returned
+			RETURN
+			IF ( Result <= 0, 0, Result )
+		formatString: 0
+		lineageTag: 74e75635-e0bb-4b5d-88e2-a4c969e9fc66
+
+	measure Paid_AIL_Engineer_dummy = 0
+		formatString: 0
+		lineageTag: f1a3b6ff-97f5-4f6e-b4eb-c61a00bcb78f
+
 	column id
 		dataType: int64
 		formatString: 0
 		lineageTag: c23424b3-c038-4ff7-a4e8-7f4465014f76
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: id
 
 		annotation SummarizationSetBy = Automatic

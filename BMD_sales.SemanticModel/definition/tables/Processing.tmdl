@@ -1,20 +1,37 @@
 table Processing
 	lineageTag: 69c1a5a3-b614-48d2-99c3-310232c2a92a
 
-	measure Processing_Raw =
+	measure Processing_Raw = ```
 			
-			VAR Result = SUM ( Processing[Amount] )
-			RETURN
-			COALESCE ( Result, 0 )
+			COALESCE (
+			    CALCULATE (
+			        SUM ( Processing[Amount] ),
+			        TREATAS (
+			            VALUES ( Dim_Contractor_HeadMason[PartnerID] ),
+			            Processing[id]
+			        )
+			    ),
+			    0
+			)
+			
+			```
 		formatString: 0
 		lineageTag: 86edf643-19dd-4af5-b709-ca67acab1119
 
-	measure Processing =
+	measure Processing = ```
 			
-			VAR Remaining =
-			    [Processing_Raw] - [Net_Paid]
-			RETURN
-			IF ( Remaining <= 0, 0, Remaining )
+			SUMX (
+			    VALUES ( Dim_Contractor_HeadMason[PartnerID] ),
+			    VAR Remaining =
+			        [Processing_Raw]
+			        - [Net_Paid]
+			        - [Return]
+			    RETURN
+			        IF ( Remaining > 0, Remaining, 0 )
+			)
+			
+			
+			```
 		formatString: 0
 		lineageTag: d39ec384-fa0a-401a-92b5-77bca66f5792
 

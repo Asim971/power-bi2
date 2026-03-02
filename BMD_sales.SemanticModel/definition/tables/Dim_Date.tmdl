@@ -16,6 +16,14 @@ table Dim_Date
 			```
 		lineageTag: 7c1b757b-1379-4a5c-afd9-8b2ecee46216
 
+	measure Last_Refresh_Time =
+			
+			FORMAT (
+			    NOW() + TIME ( 6, 0, 0 ),
+			    "dd MMM yyyy, hh:mm AM/PM"
+			)
+		lineageTag: e79f1810-ea10-4902-8e6c-c82166d0dec1
+
 	column DateKey
 		dataType: dateTime
 		formatString: Long Date

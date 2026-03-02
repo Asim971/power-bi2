@@ -1,0 +1,240 @@
+table Dim_Contractor_HeadMason
+	lineageTag: 3a1794c7-43ac-4629-9fc4-80d428c0a9a0
+
+	column PartnerID
+		dataType: int64
+		formatString: 0
+		lineageTag: 996d8f59-39dc-4f4a-8383-0cdc403f60c7
+		summarizeBy: none
+		sourceColumn: PartnerID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Name
+		dataType: string
+		lineageTag: 3aab3863-3fd7-463f-aa20-bd545c477e17
+		summarizeBy: none
+		sourceColumn: Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Phone
+		dataType: string
+		lineageTag: 59f03984-4db7-459a-be58-18b20162316f
+		summarizeBy: none
+		sourceColumn: Phone
+
+		annotation SummarizationSetBy = Automatic
+
+	column BkashNumber
+		dataType: string
+		lineageTag: 2e4de765-be2a-4e4c-adb2-cb08f3a0bc00
+		summarizeBy: none
+		sourceColumn: BkashNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column Address
+		dataType: string
+		lineageTag: 1a39d234-e9ef-4ac9-9ed5-56c5e2b1df4a
+		summarizeBy: none
+		sourceColumn: Address
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedAt
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 6e459289-2181-43fe-b181-c912ca8222dc
+		summarizeBy: none
+		sourceColumn: CreatedAt
+
+		variation Variation
+			isDefault
+			relationship: 52484fcc-3d0c-48a2-ba9b-1249a60f8ded
+			defaultHierarchy: LocalDateTable_aa4ec469-f7b0-48b8-ad1e-1f00766a3142.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsDeleted
+		dataType: string
+		lineageTag: 28762302-fedf-424a-bd05-cbbe7334178d
+		summarizeBy: none
+		sourceColumn: IsDeleted
+
+		annotation SummarizationSetBy = Automatic
+
+	column Status
+		dataType: string
+		lineageTag: 6aa23759-b4d7-440f-8e99-f6e6ce66d9de
+		summarizeBy: none
+		sourceColumn: Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column CreatedByID
+		dataType: int64
+		formatString: 0
+		lineageTag: 8ab55e7b-d0bc-43fe-9ff4-af9300d7d98f
+		summarizeBy: count
+		sourceColumn: CreatedByID
+
+		annotation SummarizationSetBy = Automatic
+
+	column client_type
+		dataType: string
+		lineageTag: 08d4f8a4-c6d8-41f6-94fb-c444d8d80f68
+		summarizeBy: none
+		sourceColumn: client_type
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_Contractor_HeadMason = m
+		mode: import
+		source =
+				let
+				    // ====================================================
+				    // STEP 1: Load Client Table
+				    // ====================================================
+				    ClientSource = #"public client",
+				
+				    ClientSelected = Table.SelectColumns(
+				        ClientSource,
+				        {
+				            "id",
+				            "name",
+				            "phone",
+				            "bkash_number",
+				            "address",
+				            "created_at",
+				            "is_deleted",
+				            "status",
+				            "created_by_id"
+				        },
+				        MissingField.UseNull
+				    ),
+				
+				    // ====================================================
+				    // STEP 2: Load Contractor IDs
+				    // ====================================================
+				    ContractorSource = #"public contractor",
+				    ContractorIDs = Table.SelectColumns(ContractorSource, {"id"}, MissingField.UseNull),
+				    ContractorRenamed = Table.RenameColumns(ContractorIDs, {{"id", "PartnerID"}}),
+				
+				    // Join contractor with client
+				    ContractorJoined = Table.NestedJoin(
+				        ContractorRenamed,
+				        {"PartnerID"},
+				        ClientSelected,
+				        {"id"},
+				        "ClientDetails",
+				        JoinKind.LeftOuter
+				    ),
+				
+				    ContractorExpanded = Table.ExpandTableColumn(
+				        ContractorJoined,
+				        "ClientDetails",
+				        {
+				            "name",
+				            "phone",
+				            "bkash_number",
+				            "address",
+				            "created_at",
+				            "is_deleted",
+				            "status",
+				            "created_by_id"
+				        }
+				    ),
+				
+				    ContractorWithType = Table.AddColumn(
+				        ContractorExpanded,
+				        "client_type",
+				        each "Contractor",
+				        type text
+				    ),
+				
+				    // ====================================================
+				    // STEP 3: Load Head Mason IDs
+				    // ====================================================
+				    HeadMasonSource = #"public head_masons",
+				    HeadMasonIDs = Table.SelectColumns(HeadMasonSource, {"id"}, MissingField.UseNull),
+				    HeadMasonRenamed = Table.RenameColumns(HeadMasonIDs, {{"id", "PartnerID"}}),
+				
+				    // Join head mason with client
+				    HeadMasonJoined = Table.NestedJoin(
+				        HeadMasonRenamed,
+				        {"PartnerID"},
+				        ClientSelected,
+				        {"id"},
+				        "ClientDetails",
+				        JoinKind.LeftOuter
+				    ),
+				
+				    HeadMasonExpanded = Table.ExpandTableColumn(
+				        HeadMasonJoined,
+				        "ClientDetails",
+				        {
+				            "name",
+				            "phone",
+				            "bkash_number",
+				            "address",
+				            "created_at",
+				            "is_deleted",
+				            "status",
+				            "created_by_id"
+				        }
+				    ),
+				
+				    HeadMasonWithType = Table.AddColumn(
+				        HeadMasonExpanded,
+				        "client_type",
+				        each "HeadMason",
+				        type text
+				    ),
+				
+				    // ====================================================
+				    // STEP 4: Combine Both Tables
+				    // ====================================================
+				    FinalTable = Table.Combine({ContractorWithType, HeadMasonWithType}),
+				
+				    // ====================================================
+				    // STEP 5: Rename Columns Properly
+				    // ====================================================
+				    RenamedColumns = Table.RenameColumns(
+				        FinalTable,
+				        {
+				            {"name", "Name"},
+				            {"phone", "Phone"},
+				            {"bkash_number", "BkashNumber"},
+				            {"address", "Address"},
+				            {"created_at", "CreatedAt"},
+				            {"is_deleted", "IsDeleted"},
+				            {"status", "Status"},
+				            {"created_by_id", "CreatedByID"}
+				        }
+				    ),
+				
+				    // ====================================================
+				    // STEP 6: Set Data Types
+				    // ====================================================
+				    TypedTable = Table.TransformColumnTypes(
+				        RenamedColumns,
+				        {
+				            {"PartnerID", Int64.Type},
+				            {"Name", type text},
+				            {"Phone", type text},
+				            {"BkashNumber", type text},
+				            {"Address", type text},
+				            {"CreatedAt", type datetime},
+				            {"IsDeleted", type text},
+				            {"Status", type text},
+				            {"CreatedByID", Int64.Type},
+				            {"client_type", type text}
+				        }
+				    )
+				
+				in
+				    TypedTable
+
+	annotation PBI_ResultType = Table
+

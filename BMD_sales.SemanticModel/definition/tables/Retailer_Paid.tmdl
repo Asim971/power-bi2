@@ -1,7 +1,12 @@
 table Retailer_Paid
 	lineageTag: e304f3ca-491b-4c65-b6ae-aa332c1d097c
 
-	measure Total_Retailer_Paid = SUM ( Retailer_Paid[Amount] )
+	measure Total_Retailer_Paid =
+			
+			COALESCE (
+			    SUM ( Retailer_Paid[Amount] ),
+			    0
+			)
 		formatString: 0
 		lineageTag: d3a37604-fcba-44f7-9661-a087e6a1b6e1
 

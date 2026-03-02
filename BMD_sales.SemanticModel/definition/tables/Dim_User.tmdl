@@ -9,6 +9,26 @@ table Dim_User
 
 		changedProperty = IsHidden
 
+	measure Total_Employees_Without_Filter =
+			
+			CALCULATE (
+			    COUNTROWS ( Dim_User ),
+			    REMOVEFILTERS (Dim_EntityGroup[EntityGroup])
+			)
+		formatString: 0
+		lineageTag: 1eaa99b4-48c3-435c-90a3-abc59b5c180f
+
+	measure Active_Employee_Percentage =
+			
+			DIVIDE (
+			    [Active_Employees2],
+			    [Total_Employees_Without_Filter],
+			    0
+			)
+		lineageTag: 77eea50e-34f9-482c-b718-0eb42e236837
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
 	column UserID
 		dataType: int64
 		isKey
@@ -338,7 +358,7 @@ table Dim_User
 		dataType: int64
 		formatString: 0
 		lineageTag: 5f6a7b8c-9d0e-1234-ab01-456789012345
-		summarizeBy: count
+		summarizeBy: none
 		sourceColumn: TerritoryID
 
 		changedProperty = IsHidden
@@ -360,6 +380,14 @@ table Dim_User
 		lineageTag: e97ca3b6-f31a-4afe-a052-4671328f108d
 		summarizeBy: none
 		sourceColumn: Location
+
+		annotation SummarizationSetBy = Automatic
+
+	column active_status
+		dataType: string
+		lineageTag: e48bc860-761f-4198-890d-e56fce1bc94b
+		summarizeBy: none
+		sourceColumn: active_status
 
 		annotation SummarizationSetBy = Automatic
 
@@ -716,9 +744,10 @@ table Dim_User
 				else if [RoleName] = "ZSM" then [ZoneName]
 				else if [RoleName] = "SR" then [TerritoryName]
 				else null), {{"Location", type text}}),
-				  #"Sorted rows" = Table.Sort(#"Added custom", {{"RoleID", Order.Descending}})
+				  #"Merged queries" = Table.NestedJoin(#"Added custom", {"UserID"}, #"public users", {"id"}, "public users", JoinKind.LeftOuter),
+				  #"Expanded public users" = Table.ExpandTableColumn(#"Merged queries", "public users", {"active_status"}, {"active_status"})
 								in
-								    #"Sorted rows"
+								    #"Expanded public users"
 
 	changedProperty = IsHidden
 

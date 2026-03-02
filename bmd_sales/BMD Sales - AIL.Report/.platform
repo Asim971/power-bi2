@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "BMD Sales - AIL"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "32cd7901-0d09-8cfa-4d23-17b3e6b2e1a5"
+  }
+}

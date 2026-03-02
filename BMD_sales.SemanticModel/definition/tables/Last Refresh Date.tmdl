@@ -1,0 +1,30 @@
+table 'Last Refresh Date'
+	lineageTag: 85e9426d-2d71-48f1-86fe-ad70f01baf28
+
+	measure MEASURE_LAST_REFRESHED = FORMAT ( MAX ( 'Last Refresh Date'[Last Refresh] ), "dddd, mmmm d, yyyy HH:MM:SS" )
+		lineageTag: c81f106b-e94a-4daa-8dee-6b13c41fd448
+
+	column 'Last Refresh'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 76fc2349-f51d-4ec1-959f-18103e81187b
+		summarizeBy: none
+		sourceColumn: Last Refresh
+
+		variation Variation
+			isDefault
+			relationship: c9846a4f-ae7d-437a-9a3b-fabd5c8e2490
+			defaultHierarchy: LocalDateTable_722881a6-21ac-4563-aa7d-03b86efb8e8c.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Last Refresh Date' = m
+		mode: import
+		source =
+				let
+				  Source = #table(type table[Last Refresh=datetime], {{DateTime.LocalNow()}})
+				in
+				  Source
+
+	annotation PBI_ResultType = Table
+

@@ -4,8 +4,8 @@ table Pending
 	measure Pending =
 			
 			CALCULATE (
-			    [Total_Order_Bags] * 3,
-			    NOT ISBLANK ( Dim_Contractor[ContractorID] )
+			    [Total_PartnerEligible_Orders_Bags] * 3,
+			    NOT ISBLANK ( Dim_Contractor_HeadMason[PartnerID] )
 			)
 		formatString: 0
 		lineageTag: 3473f589-1538-4b3a-874d-7d5259a9f104
@@ -15,10 +15,10 @@ table Pending
 			VAR Result =
 			    CALCULATE (
 			        [Total_PartnerEligible_Orders_Bags] * 3,
-			        NOT ISBLANK ( Dim_Contractor[ContractorID] ),
+			        NOT ISBLANK ( Dim_Contractor_HeadMason[PartnerID] ),
 			        Dim_User[RoleName] = "Sr",
-			        Fact_UserOrders[order_status] <> "APPROVED",
-			        Fact_UserOrders[order_status] <> "REJECTED"
+			        Fact_ProjectConversion[order_status] <> "APPROVED",
+			        Fact_ProjectConversion[order_status] <> "REJECTED"
 			    )
 			RETURN
 			IF ( ISBLANK ( Result ), 0, Result )
@@ -32,9 +32,9 @@ table Pending
 			VAR Result =
 			    CALCULATE (
 			        [Total_PartnerEligible_Orders_Bags] * 3,
-			        NOT ISBLANK ( Dim_Contractor[ContractorID] ),
+			        NOT ISBLANK ( Dim_Contractor_HeadMason[PartnerID] ),
 			        Dim_User[RoleName] = "Sr",
-			    Fact_UserOrders[order_status] = "APPROVED"
+			    Fact_ProjectConversion[order_status] = "APPROVED"
 			    )
 			RETURN
 			IF (
@@ -49,8 +49,9 @@ table Pending
 			
 			VAR Remaining =
 			    [Due_For_SR]
-			    - [Processing_Raw]
+			    - [Processing]
 			    - [Net_Paid]
+			    - [Return]
 			RETURN
 			IF ( Remaining <= 0, 0, Remaining )
 			
@@ -63,7 +64,7 @@ table Pending
 			VAR Result =
 			    CALCULATE (
 			        [Total_PartnerEligible_Orders_Bags] * 3,
-			        NOT ISBLANK ( Dim_Contractor[ContractorID] ),
+			        NOT ISBLANK ( Dim_Contractor_HeadMason[PartnerID] ),
 			        Dim_User[RoleName] = "Sr"
 			    )
 			RETURN
@@ -96,17 +97,29 @@ table Pending
 
 	measure Pending_For_SR_New = ```
 			
-			VAR Amount =
-			    CALCULATE (
-			        [Total_PartnerEligible_Orders_Bags]
-			            * [Partner_Incentive_Rate],
-			        NOT ISBLANK ( Dim_Contractor[ContractorID] ),
-			        Dim_User[RoleName] = "Sr",
-			        Fact_UserOrders[order_status] <> "APPROVED",
-			        Fact_UserOrders[order_status] <> "REJECTED"
-			    )
-			RETURN
-			COALESCE ( Amount, 0 )
+			SUMX (
+			    VALUES ( Dim_Contractor_HeadMason[PartnerID] ),
+			    VAR Bags =
+			        CALCULATE (
+			            [Total_PartnerEligible_Orders_Bags],
+			            Dim_User[RoleName] = "Sr",
+			            Fact_ProjectConversion[order_status] = "PENDING"
+			        )
+			    VAR Rate =
+			        SWITCH (
+			            TRUE(),
+			            Bags >= 1000, 8.00,
+			            Bags >= 700,  6.00,
+			            Bags >= 500,  5.00,
+			            Bags >= 300,  4.00,
+			            Bags >= 200,  3.50,
+			            Bags >= 100,  3.00,
+			            Bags >= 50,   2.50,
+			            0
+			        )
+			    RETURN
+			        Bags * Rate
+			)
 			
 			```
 		lineageTag: 1c97f365-952c-45ea-bfc2-77ddf3049a51
@@ -115,33 +128,195 @@ table Pending
 
 	measure Due_For_SR_New = ```
 			
-			VAR Amount =
-			    CALCULATE (
-			        [Total_PartnerEligible_Orders_Bags]
-			            * [Partner_Incentive_Rate],
-			        NOT ISBLANK ( Dim_Contractor[ContractorID] ),
-			        Dim_User[RoleName] = "Sr",
-			        Fact_UserOrders[order_status] = "APPROVED"
-			    )
-			RETURN
-			COALESCE ( Amount, 0 )
+			SUMX (
+			    VALUES ( Dim_Contractor_HeadMason[PartnerID] ),
+			    VAR Bags =
+			        CALCULATE (
+			            [Total_PartnerEligible_Orders_Bags],
+			            Dim_User[RoleName] = "Sr",
+			            Fact_ProjectConversion[order_status] = "APPROVED"
+			        )
+			    VAR Rate =
+			        SWITCH (
+			            TRUE(),
+			            Bags >= 1000, 8.00,
+			            Bags >= 700,  6.00,
+			            Bags >= 500,  5.00,
+			            Bags >= 300,  4.00,
+			            Bags >= 200,  3.50,
+			            Bags >= 100,  3.00,
+			            Bags >= 50,   2.50,
+			            0
+			        )
+			    RETURN
+			        Bags * Rate
+			)
 			
 			```
 		lineageTag: 05a997a2-53bb-490f-9a28-22e4f049566b
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Remaining_Due_For_SR_New = ```
+	measure Remaining_Due_For_SR_New =
+			
+			SUMX (
+			    VALUES ( Dim_Contractor_HeadMason[PartnerID] ),
+			    VAR Due = [Due_For_SR_New]
+			    VAR Processing = [Processing]
+			    VAR Paid = [Net_Paid]
+			    VAR ReturnAmount = [Return]
+			    VAR Remaining = Due - Processing - Paid - ReturnAmount
+			    RETURN IF ( Remaining > 0, Remaining, 0 )
+			)
+		lineageTag: b1843c47-c670-4367-98a1-cf2ec18eb871
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Remaining_Due_For_SR_New2 =
+			
+			SUMX (
+			    VALUES ( Dim_Contractor_HeadMason[PartnerID] ),
+			    VAR Remaining =
+			        [Due_For_SR_New]
+			        - [Processing]
+			        - [Net_Paid]
+			        - [Return]
+			    RETURN
+			        IF ( Remaining > 0, Remaining, 0 )
+			)
+		lineageTag: e2260f7b-aec3-4bd5-8441-20f8f213f1c9
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Pending_For_SR_HeadMason = ```
+			
+			SUMX (
+			    VALUES ( Dim_HeadMason[HeadMasonID] ),
+			    VAR Bags =
+			        CALCULATE (
+			            [Total_PartnerEligible_Orders_Bags_HeadMason],
+			            Dim_User[RoleName] = "Sr",
+			            Fact_ProjectConversion[order_status] <> "APPROVED",
+			            Fact_ProjectConversion[order_status] <> "REJECTED"
+			        )
+			    VAR Rate =
+			        SWITCH (
+			            TRUE(),
+			            Bags >= 1000, 8.00,
+			            Bags >= 700,  6.00,
+			            Bags >= 500,  5.00,
+			            Bags >= 300,  4.00,
+			            Bags >= 200,  3.50,
+			            Bags >= 100,  3.00,
+			            Bags >= 50,   2.50,
+			            0
+			        )
+			    RETURN
+			        Bags * Rate
+			)
+			
+			```
+		lineageTag: 9e62e44a-3a8e-4b5a-aa11-ddeb2ed611fc
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Due_For_SR_HeadMason = ```
+			
+			SUMX (
+			    VALUES ( Dim_HeadMason[HeadMasonID] ),
+			    VAR Bags =
+			        CALCULATE (
+			            [Total_PartnerEligible_Orders_Bags_HeadMason],
+			            Dim_User[RoleName] = "Sr",
+			            Fact_ProjectConversion[order_status] = "APPROVED"
+			        )
+			    VAR Rate =
+			        SWITCH (
+			            TRUE(),
+			            Bags >= 1000, 8.00,
+			            Bags >= 700,  6.00,
+			            Bags >= 500,  5.00,
+			            Bags >= 300,  4.00,
+			            Bags >= 200,  3.50,
+			            Bags >= 100,  3.00,
+			            Bags >= 50,   2.50,
+			            0
+			        )
+			    RETURN
+			        Bags * Rate
+			)
+			
+			```
+		lineageTag: d3feeac4-33f6-4595-b274-23f2d84973e0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Remaining_Due_For_SR_HeadMason = ```
 			
 			VAR Remaining =
-			    [Due_For_SR_New]
-			    - [Processing_Raw]
+			    [Due_For_SR_HeadMason]
+			    - [Processing]
 			    - [Net_Paid]
+			    - [Return]
 			RETURN
 			IF ( Remaining <= 0, 0, Remaining )
 			
+			
 			```
-		lineageTag: b1843c47-c670-4367-98a1-cf2ec18eb871
+		lineageTag: 98389835-15fc-4e6f-95e9-eeea38371761
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Pending_For_SR_Carpenter = ```
+			
+			VAR Result =
+			    CALCULATE (
+			        [Total_order_quantity_rft] * 1,
+			        NOT ISBLANK ( Dim_CarPenter[id] ),
+			        Dim_User[RoleName] = "Sr",
+			        Fact_ProjectConversion[order_status] <> "APPROVED",
+			        Fact_ProjectConversion[order_status] <> "REJECTED"
+			    )
+			RETURN
+			IF ( ISBLANK ( Result ), 0, Result )
+			
+			```
+		lineageTag: 417d910a-5a1a-48c1-a218-579cbb518803
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Due_For_SR_Carpenter =
+			
+			VAR Result =
+			    CALCULATE (
+			        [Total_order_quantity_rft] * 1,
+			        NOT ISBLANK ( Dim_CarPenter[id] ),
+			        Dim_User[RoleName] = "Sr",
+			    Fact_ProjectConversion[order_status] = "APPROVED"
+			    )
+			RETURN
+			IF (
+			    ISBLANK ( Result ),
+			    0,
+			    Result
+			)
+		lineageTag: cfda52be-5600-403e-9233-a690d50aa68f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Remaining_Due_For_SR_Carpenter = ```
+			
+			VAR Remaining =
+			    [Due_For_SR_Carpenter]
+			    - [Processing]
+			    - [Net_Paid]
+			    - [Return]
+			RETURN
+			IF ( Remaining <= 0, 0, Remaining )
+			
+			
+			```
+		lineageTag: c23ce85d-9ed6-48cc-81c9-0c2c52df9de2
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
@@ -166,6 +341,14 @@ table Pending
 		lineageTag: 5ec46da6-ff31-4c70-8b10-36b61743ccfd
 		summarizeBy: none
 		sourceColumn: Phone
+
+		annotation SummarizationSetBy = Automatic
+
+	column Bkash
+		dataType: string
+		lineageTag: 1ef465e4-f605-4b88-9f81-19433bb2e67c
+		summarizeBy: none
+		sourceColumn: Bkash
 
 		annotation SummarizationSetBy = Automatic
 

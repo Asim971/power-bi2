@@ -316,20 +316,6 @@ table Dim_Contractor
 
 		annotation SummarizationSetBy = Automatic
 
-	column Is_Active_Contractor =
-			
-			VAR OrdersUnderContractor =
-			    COUNTROWS (
-			        RELATEDTABLE ( Fact_UserOrders )
-			    )
-			RETURN
-			IF ( OrdersUnderContractor > 0, TRUE(), BLANK() )
-		formatString: """TRUE"";""TRUE"";""FALSE"""
-		lineageTag: 5be1cfd1-bf98-4d67-a7fa-30fa665a81e3
-		summarizeBy: none
-
-		annotation SummarizationSetBy = Automatic
-
 	column Pending
 		dataType: int64
 		formatString: 0
