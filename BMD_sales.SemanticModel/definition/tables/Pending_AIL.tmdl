@@ -1,4 +1,5 @@
 table Pending_AIL
+	excludeFromModelRefresh
 	lineageTag: de16bf63-6f3e-4b56-aee8-5f64365bc7d1
 
 	measure Pending_For_SR_AIL = ```

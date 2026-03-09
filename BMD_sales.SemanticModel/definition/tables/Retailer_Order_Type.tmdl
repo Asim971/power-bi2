@@ -1,0 +1,36 @@
+table Retailer_Order_Type
+	lineageTag: 8dc8b492-c503-4cee-aec8-5fdee533ec03
+
+	measure Retailer_Order_Value =
+			
+			SWITCH(
+			    SELECTEDVALUE(Retailer_Order_Type[Type]),
+			    "RO", [Total_Retail_Order_Amount],
+			    "UO", [Total_UserOrder_Amount]
+			)
+		lineageTag: 47e9c47b-5159-4a87-b401-9fd88d31e6f3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Type
+		lineageTag: b44c10b7-b7cd-460a-acec-103e6c1bb7bf
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Type]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Retailer_Order_Type = calculated
+		mode: import
+		source =
+				
+				DATATABLE(
+				    "Type", STRING,
+				    {
+				        {"RO"},
+				        {"UO"}
+				    }
+				)
+
+	annotation PBI_Id = f046c11cee0e4058b0681fc57bdaa017
+

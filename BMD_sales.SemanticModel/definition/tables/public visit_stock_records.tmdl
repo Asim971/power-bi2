@@ -1,0 +1,32 @@
+table 'public visit_stock_records'
+	lineageTag: 0b2900d2-7407-4de6-9056-e7b045d0b2dc
+
+	column visit_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 4a8df0a0-88fc-456c-b356-3a5df02af565
+		summarizeBy: sum
+		sourceColumn: visit_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column visit_stock_id
+		dataType: int64
+		formatString: 0
+		lineageTag: a60eaa3f-96b3-463e-b9dd-836388e0332e
+		summarizeBy: sum
+		sourceColumn: visit_stock_id
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'public visit_stock_records' = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("172.17.19.21", "bmdsalesdb"),
+				  #"Navigation 1" = Source{[Schema = "public", Item = "visit_stock_records"]}[Data]
+				in
+				  #"Navigation 1"
+
+	annotation PBI_ResultType = Table
+

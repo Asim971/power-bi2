@@ -5,6 +5,17 @@ table Dim_UncoverRetailer
 		formatString: 0
 		lineageTag: 716084dc-3a16-4a79-b65e-950981ee0d34
 
+	measure Uncovered_Retailer_Count =
+			
+			COUNTROWS(
+			    EXCEPT(
+			        VALUES(Dim_UncoverRetailer[id]),
+			        VALUES(Dim_retailer2[uncovered_retailer_id])
+			    )
+			)
+		formatString: 0
+		lineageTag: 34904a27-5153-439e-bc2c-7b02eb19e387
+
 	column is_converted_to_retailer
 		dataType: string
 		lineageTag: 5e77ad4d-e371-44e0-87c3-da724e594de0

@@ -1,4 +1,5 @@
 table Paid
+	excludeFromModelRefresh
 	lineageTag: 27800ed0-a8d1-4e90-a074-094b7f328f09
 
 	measure Paid = ```
@@ -27,6 +28,10 @@ table Paid
 			IF ( Result <= 0, 0, Result )
 		formatString: 0
 		lineageTag: 81d33eaa-d9f1-4dc9-89ff-7c201767a1d5
+
+	measure Paid_ACSL = 0
+		formatString: 0
+		lineageTag: 09b34f7e-c198-4d0d-bb9c-0dbbae1bc350
 
 	column Date
 		dataType: dateTime

@@ -1,4 +1,5 @@
 table Retailer_Paid
+	excludeFromModelRefresh
 	lineageTag: e304f3ca-491b-4c65-b6ae-aa332c1d097c
 
 	measure Total_Retailer_Paid =

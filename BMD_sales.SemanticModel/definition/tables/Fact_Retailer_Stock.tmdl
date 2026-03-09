@@ -1,0 +1,149 @@
+table Fact_Retailer_Stock
+	lineageTag: 441d7c6b-e1ef-4dfe-bf71-c56d1d8fb0ce
+
+	measure Retailer_Stock =
+			
+			SUMX(
+			    VALUES(Fact_Retailer_Stock[retailer_id]),
+			    VAR LatestDate =
+			        CALCULATE(MAX(Fact_Retailer_Stock[created_at]))
+			    RETURN
+			        CALCULATE(
+			            SUM(Fact_Retailer_Stock[qty]),
+			            Fact_Retailer_Stock[created_at] = LatestDate
+			        )
+			)
+		lineageTag: 3a9eb7c7-b9b0-4b03-8a31-896ed820461d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Retailer_Stock_Avg =
+			
+			DIVIDE(
+			    [Retailer_Stock],
+			    DISTINCTCOUNT(Fact_Retailer_Stock[retailer_id])
+			)
+		lineageTag: 280bba5b-c0ed-4e03-82dd-320cf64cef32
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Restock_Retailers =
+			
+			COUNTROWS(
+			    FILTER(
+			        VALUES(Dim_Retailer2[id]),
+			        [Cover_Days] <= 10
+			    )
+			)
+		formatString: 0
+		lineageTag: c6c07bfa-a7b3-4cbc-b021-7918e485963b
+
+	measure ClearStock_Retailers =
+			
+			COUNTROWS(
+			    FILTER(
+			        VALUES(Dim_Retailer2[id]),
+			        [Cover_Days] > 10
+			    )
+			)
+		formatString: 0
+		lineageTag: 23fd8c70-de45-45c9-9313-080ffa723e91
+
+	column visit_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 8284f8dc-452f-4f3d-ab57-72a7a02f5d34
+		summarizeBy: sum
+		sourceColumn: visit_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column visit_stock_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 98ab0898-47d7-46f1-ae92-11c71402ae2a
+		summarizeBy: none
+		sourceColumn: visit_stock_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column created_at
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 93c42938-978f-46ba-8710-dbff8e847771
+		summarizeBy: none
+		sourceColumn: created_at
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column created_by_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 699bcfa1-ba06-44e4-a18c-953b5015f130
+		summarizeBy: none
+		sourceColumn: created_by_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column dealer_id
+		dataType: int64
+		formatString: 0
+		lineageTag: df8ac142-28ae-4fa9-adb4-5c121d93ec8d
+		summarizeBy: sum
+		sourceColumn: dealer_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column retailer_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 3c74cf19-f883-4a36-88e7-ae713de3ba6a
+		summarizeBy: none
+		sourceColumn: retailer_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column note
+		dataType: string
+		lineageTag: bb1c348f-0f7b-4c47-8cf4-3a54a7701391
+		summarizeBy: none
+		sourceColumn: note
+
+		annotation SummarizationSetBy = Automatic
+
+	column qty
+		dataType: double
+		lineageTag: bf53da29-e045-4cd5-b2e0-ed1615b0accd
+		summarizeBy: sum
+		sourceColumn: qty
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column sku_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 142bc4c3-6054-4f21-b5c6-be312190e3c6
+		summarizeBy: sum
+		sourceColumn: sku_id
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Fact_Retailer_Stock = m
+		mode: import
+		source =
+				let
+				  Source = #"public visit_stock_records",
+				  #"Merged queries" = Table.NestedJoin(Source, {"visit_id"}, #"public visits", {"id"}, "public visits", JoinKind.LeftOuter),
+				  #"Expanded public visits" = Table.ExpandTableColumn(#"Merged queries", "public visits", {"created_at", "created_by_id", "dealer_id", "retailer_id"}, {"created_at", "created_by_id", "dealer_id", "retailer_id"}),
+				  #"Merged queries 1" = Table.NestedJoin(#"Expanded public visits", {"visit_stock_id"}, #"public visit_stocks", {"id"}, "public visit_stocks", JoinKind.LeftOuter),
+				  #"Expanded public visit_stocks" = Table.ExpandTableColumn(#"Merged queries 1", "public visit_stocks", {"note", "qty", "sku_id"}, {"note", "qty", "sku_id"}),
+				  #"Changed column type" = Table.TransformColumnTypes(#"Expanded public visit_stocks", {{"created_at", type date}})
+				in
+				  #"Changed column type"
+
+	annotation PBI_ResultType = Table
+

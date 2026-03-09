@@ -1,4 +1,5 @@
 table Pending
+	excludeFromModelRefresh
 	lineageTag: 07fb456b-ba79-449d-8465-79f212846f8b
 
 	measure Pending =
@@ -159,15 +160,13 @@ table Pending
 
 	measure Remaining_Due_For_SR_New =
 			
-			SUMX (
-			    VALUES ( Dim_Contractor_HeadMason[PartnerID] ),
-			    VAR Due = [Due_For_SR_New]
-			    VAR Processing = [Processing]
-			    VAR Paid = [Net_Paid]
-			    VAR ReturnAmount = [Return]
-			    VAR Remaining = Due - Processing - Paid - ReturnAmount
-			    RETURN IF ( Remaining > 0, Remaining, 0 )
-			)
+			VAR Remaining =
+			    [Due_For_SR_New]
+			    - [Processing]
+			    - [Net_Paid]
+			    - [Return]
+			RETURN
+			IF ( Remaining <= 0, 0, Remaining )
 		lineageTag: b1843c47-c670-4367-98a1-cf2ec18eb871
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -274,8 +273,7 @@ table Pending
 			        [Total_order_quantity_rft] * 1,
 			        NOT ISBLANK ( Dim_CarPenter[id] ),
 			        Dim_User[RoleName] = "Sr",
-			        Fact_ProjectConversion[order_status] <> "APPROVED",
-			        Fact_ProjectConversion[order_status] <> "REJECTED"
+			        Fact_ProjectConversion[order_status] = "PENDING"
 			    )
 			RETURN
 			IF ( ISBLANK ( Result ), 0, Result )
@@ -292,7 +290,7 @@ table Pending
 			        [Total_order_quantity_rft] * 1,
 			        NOT ISBLANK ( Dim_CarPenter[id] ),
 			        Dim_User[RoleName] = "Sr",
-			    Fact_ProjectConversion[order_status] = "APPROVED"
+			        Fact_ProjectConversion[order_status] = "APPROVED"
 			    )
 			RETURN
 			IF (
@@ -319,6 +317,43 @@ table Pending
 		lineageTag: c23ce85d-9ed6-48cc-81c9-0c2c52df9de2
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Total_Due_Till_Date =
+			
+			SUMX (
+			    VALUES ( Dim_Contractor_HeadMason[PartnerID] ),
+			    VAR Bags =
+			        CALCULATE (
+			            [Total_PartnerEligible_Orders_Bags],
+			            Dim_User[RoleName] = "Sr",
+			            Fact_ProjectConversion[order_status] = "APPROVED",
+			            FILTER (
+			                ALL ( Dim_Date ),
+			                Dim_Date[Date] <= MAX ( Dim_Date[Date] )
+			            )
+			        )
+			    VAR Rate =
+			        SWITCH (
+			            TRUE(),
+			            Bags >= 1000, 8.00,
+			            Bags >= 700,  6.00,
+			            Bags >= 500,  5.00,
+			            Bags >= 300,  4.00,
+			            Bags >= 200,  3.50,
+			            Bags >= 100,  3.00,
+			            Bags >= 50,   2.50,
+			            0
+			        )
+			    RETURN
+			        Bags * Rate
+			)
+		lineageTag: c8cf581e-e75d-4e06-bcf0-92ef7820bf8f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Processing_ACSL = 0
+		formatString: 0
+		lineageTag: ba491496-db7c-4b05-b866-03a5ba995c04
 
 	column id
 		dataType: string

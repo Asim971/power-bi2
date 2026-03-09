@@ -1,4 +1,5 @@
 table Paid_AIL
+	excludeFromModelRefresh
 	lineageTag: a7d97f83-596e-410c-be06-63b7a7e8b411
 
 	measure Paid_AIL = ```

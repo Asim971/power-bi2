@@ -524,7 +524,7 @@ table Fact_Visit2
 		dataType: int64
 		formatString: 0
 		lineageTag: 17b5e56a-2766-4000-9685-0d24be8ba2ff
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: lead_id
 
 		annotation SummarizationSetBy = Automatic

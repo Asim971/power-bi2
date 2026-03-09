@@ -1,4 +1,5 @@
 table Retailer_Return
+	excludeFromModelRefresh
 	lineageTag: 8ac248c2-6d1a-4cb5-bc3b-3aab0572b58f
 
 	measure Total_Retailer_Return =

@@ -1,0 +1,193 @@
+table dim_retailer_target_daily
+	lineageTag: 15b1cff2-22c9-4fe4-88c9-a6937154c64c
+
+	measure Active_Retailer_Target =
+			
+			ROUND(
+			    SUM(dim_retailer_target_daily[ActiveRetailerTargetPerDay]),
+			    0
+			)
+		lineageTag: 2943d971-4d14-4f9a-9370-66be78bfa478
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column TerritoryID
+		dataType: int64
+		formatString: 0
+		lineageTag: e8a872e6-fb14-4071-8989-8ab7edaea95e
+		summarizeBy: count
+		sourceColumn: TerritoryID
+
+		annotation SummarizationSetBy = Automatic
+
+	column TerritoryName
+		dataType: string
+		lineageTag: e80a933a-1bdb-4293-a21f-2fbc4f321c7d
+		summarizeBy: none
+		sourceColumn: TerritoryName
+
+		annotation SummarizationSetBy = Automatic
+
+	column Zone
+		dataType: string
+		lineageTag: 1b8de430-fb56-49ee-a591-14076fb5ed47
+		summarizeBy: none
+		sourceColumn: Zone
+
+		annotation SummarizationSetBy = Automatic
+
+	column Region
+		dataType: string
+		lineageTag: 74cf11d7-15c3-41d7-b6ce-cac7d7440d14
+		summarizeBy: none
+		sourceColumn: Region
+
+		annotation SummarizationSetBy = Automatic
+
+	column TargetMonth
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: f61e6867-0d7e-45a1-bdfb-1f2b4b3a13dd
+		summarizeBy: none
+		sourceColumn: TargetMonth
+
+		variation Variation
+			isDefault
+			relationship: c3573124-edc4-4d4e-9550-1a4fa9525b15
+			defaultHierarchy: LocalDateTable_36f0b76e-674b-4690-b6dc-d7ec4d4350df.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column ActiveRetailerTarget
+		dataType: int64
+		formatString: 0
+		lineageTag: a950f5d7-b513-44ec-a960-8715b4d5f0af
+		summarizeBy: sum
+		sourceColumn: ActiveRetailerTarget
+
+		annotation SummarizationSetBy = Automatic
+
+	column PerRetailerVolumeBag
+		dataType: int64
+		formatString: 0
+		lineageTag: 3c995936-3242-429e-9dc1-c4d846908a25
+		summarizeBy: sum
+		sourceColumn: PerRetailerVolumeBag
+
+		annotation SummarizationSetBy = Automatic
+
+	column VolumeTargetMT
+		dataType: double
+		lineageTag: d7eb3c31-9a5c-48af-a512-a5159115c812
+		summarizeBy: sum
+		sourceColumn: VolumeTargetMT
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column VolumeTargetBags
+		dataType: int64
+		formatString: 0
+		lineageTag: ddd6d24e-8110-4581-8bb5-51b69f5385cb
+		summarizeBy: sum
+		sourceColumn: VolumeTargetBags
+
+		annotation SummarizationSetBy = Automatic
+
+	column TargetDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: f9db39c7-667a-4557-abde-547bf6074ead
+		summarizeBy: none
+		sourceColumn: TargetDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column IsWorkingDay
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 00423a7d-2ff7-4cca-9601-ab21a4889254
+		summarizeBy: none
+		sourceColumn: IsWorkingDay
+
+		annotation SummarizationSetBy = Automatic
+
+	column WorkingDaysInMonth
+		dataType: double
+		lineageTag: 1cd56a5e-d100-443c-b1d6-3f28b28f671b
+		summarizeBy: sum
+		sourceColumn: WorkingDaysInMonth
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ActiveRetailerTargetPerDay
+		dataType: double
+		lineageTag: b5629532-fdbd-4f59-a435-ae448bf8d7f3
+		summarizeBy: sum
+		sourceColumn: ActiveRetailerTargetPerDay
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column PerRetailerVolumeBagPerDay
+		dataType: double
+		lineageTag: bdfe31ee-69b7-46de-a7f7-e07f593c292d
+		summarizeBy: sum
+		sourceColumn: PerRetailerVolumeBagPerDay
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column VolumeTargetMTPerDay
+		dataType: double
+		lineageTag: 5cddc4ce-2411-48ab-bd26-60e18ae38e65
+		summarizeBy: sum
+		sourceColumn: VolumeTargetMTPerDay
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column VolumeTargetBagsPerDay
+		dataType: double
+		lineageTag: 29da7de9-0426-4150-9cd1-c794a56e96eb
+		summarizeBy: sum
+		sourceColumn: VolumeTargetBagsPerDay
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column users_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 90683170-f58f-45a5-b925-accb2984c344
+		summarizeBy: none
+		sourceColumn: users_id
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_retailer_target_daily = m
+		mode: import
+		source =
+				let
+				  Source = Excel.Workbook(Web.Contents("https://anwargroup-my.sharepoint.com/personal/dev1_anwargroup_onmicrosoft_com/Documents/Apps/Microsoft Power Query/Uploaded Files/Dim_retailer_target 1.xlsx"), null, true),
+				  #"Navigation 1" = Source{[Item = "dim_retailer_target_daily", Kind = "Sheet"]}[Data],
+				  #"Promoted headers" = Table.PromoteHeaders(#"Navigation 1", [PromoteAllScalars = true]),
+				  #"Changed column type" = Table.TransformColumnTypes(#"Promoted headers", {{"TerritoryID", Int64.Type}, {"TerritoryName", type text}, {"Zone", type text}, {"Region", type text}, {"TargetMonth", type date}, {"ActiveRetailerTarget", Int64.Type}, {"PerRetailerVolumeBag", Int64.Type}, {"VolumeTargetMT", type number}, {"VolumeTargetBags", Int64.Type}, {"TargetDate", type date}, {"IsWorkingDay", type logical}, {"WorkingDaysInMonth", type number}, {"ActiveRetailerTargetPerDay", type number}, {"PerRetailerVolumeBagPerDay", type number}, {"VolumeTargetMTPerDay", type number}, {"VolumeTargetBagsPerDay", type number}}),
+				  #"Merged queries" = Table.NestedJoin(#"Changed column type", {"TerritoryID"}, #"public users_territory", {"territory_id"}, "public users_territory", JoinKind.LeftOuter),
+				  #"Expanded public users_territory" = Table.ExpandTableColumn(#"Merged queries", "public users_territory", {"users_id"}, {"users_id"})
+				in
+				  #"Expanded public users_territory"
+
+	annotation PBI_ResultType = Table
+

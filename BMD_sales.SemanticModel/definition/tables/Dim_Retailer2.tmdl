@@ -193,6 +193,16 @@ table Dim_Retailer2
 		formatString: 0
 		lineageTag: 5f625da2-7a8f-4d44-906f-11828df82e5c
 
+	measure Active_Bazaars = DISTINCTCOUNT(Dim_Retailer2[bazaar_id])
+		formatString: 0
+		lineageTag: 2876c87a-e2fb-4064-a90d-fad60fc9f7fc
+
+	measure Retailer_Count2 =
+			
+			DISTINCTCOUNT(Fact_RetailOrder[retailer_id])
+		formatString: 0
+		lineageTag: ba776f89-6c70-4d23-9b1e-2c3ae39e6386
+
 	column id
 		dataType: int64
 		formatString: 0

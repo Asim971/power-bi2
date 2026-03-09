@@ -1,0 +1,35 @@
+table Stock_Status
+	lineageTag: 0bbaab48-80bf-4f71-8690-8e545369d9c5
+
+	measure Retailer_Status_Count =
+			
+			SWITCH(
+			    SELECTEDVALUE(Stock_Status[Status]),
+			    "Restock", [Restock_Retailers],
+			    "Clear Stock", [ClearStock_Retailers]
+			)
+		formatString: 0
+		lineageTag: daca027c-5c08-435b-892b-2dd37ae5dba6
+
+	column Status
+		lineageTag: 024f568c-a909-424c-9ae7-0e449957b2e6
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Status]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Stock_Status = calculated
+		mode: import
+		source =
+				
+				DATATABLE(
+				    "Status", STRING,
+				    {
+				        {"Restock"},
+				        {"Clear Stock"}
+				    }
+				)
+
+	annotation PBI_Id = 77c2bd031a00467ca0316ba24a85a600
+

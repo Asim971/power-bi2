@@ -2,13 +2,15 @@ table 'Retailer Target'
 	excludeFromModelRefresh
 	lineageTag: 4d237f7e-c60f-45ad-a319-16a4b450588a
 
-	measure Target_Retailer_Visit = SUM ( 'Retailer Target'[Retailer Visits Target] )
+	measure Target_Retailer_Visit =
+			
+			SELECTEDVALUE(Dim_Retailer_Target[Retailer Visits Target])
 		formatString: 0
 		lineageTag: f773e8cd-3519-4901-954e-0ca62a499ffc
 
 	measure Target_Active_Retailer =
 			
-			SUM ( 'Retailer Target'[Active Retailer Target] )
+			SELECTEDVALUE ( Dim_Retailer_Target[Active Retailer Target] )
 		formatString: 0
 		lineageTag: 40391ee1-d39f-4d3d-adf4-f760112f8327
 
@@ -41,6 +43,12 @@ table 'Retailer Target'
 		lineageTag: 3f95d338-dc1b-4a9f-a085-1437c8591a3e
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Retail Order Target' =
+			
+			SUM ( Dim_Retailer_Target[Retail Order Target] )
+		formatString: 0
+		lineageTag: 63b1b14a-82ff-4885-86d1-25f3379878c9
 
 	column UserID
 		dataType: int64

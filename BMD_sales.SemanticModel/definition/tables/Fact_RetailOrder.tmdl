@@ -1,7 +1,7 @@
 table Fact_RetailOrder
 	lineageTag: 45867225-9226-4a56-a8fe-8df63d9c6310
 
-	measure Total_Order_Amount = SUM(Fact_RetailOrder[total_amount])
+	measure Total_Retail_Order_Amount = SUM(Fact_RetailOrder[total_amount])
 		lineageTag: 0c470f7c-e99d-46c3-a952-371e85228ab4
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -231,6 +231,127 @@ table Fact_RetailOrder
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	measure Daily_Retailer_Consumption_Rate =
+			
+			DIVIDE(
+			    SUM(Fact_RetailOrder[total_quantity]),
+			    COUNTROWS(VALUES(Dim_Date[Date]))
+			)
+		lineageTag: f187b53e-2fd9-4613-8a41-6047773e1065
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Retail_User_Order_Ratio =
+			
+			VAR RetailOrders =
+			    DISTINCTCOUNT(Fact_RetailOrder[id])
+			VAR UserOrders =
+			    DISTINCTCOUNT(Fact_ProjectConversion[id])
+			RETURN
+			"1 : " & FORMAT(DIVIDE(UserOrders, RetailOrders), "0.00")
+		lineageTag: 67254b6c-6678-4137-855a-2d6c5cdadb73
+
+	measure User_Order_By_Retailer =
+			
+			CALCULATE(
+			    SUM(Fact_ProjectConversion[total_quantity]),
+			    Fact_ProjectConversion[retailer_id] = SELECTEDVALUE(Fact_RetailOrder[retailer_id])
+			)
+		lineageTag: 2574f25a-93bb-4004-852d-0d8e751fb7ed
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Profit =
+			
+			IF(
+			    ISBLANK([Average_Daily_UserOrder_Price]) ||
+			    ISBLANK([Average_Daily_Trade_Price]),
+			    0,
+			    [Average_Daily_UserOrder_Price] - [Average_Daily_Trade_Price]
+			)
+		lineageTag: e6c87f56-d692-4038-b15a-1a208e6f4c92
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Consumption_Rate_Per_Day =
+			
+			DIVIDE(
+			    SUM(Fact_ProjectConversion[total_quantity]),
+			    COUNTROWS(VALUES(Dim_Date[Date]))
+			)
+		lineageTag: 02e21378-931f-4b4c-b1f6-e5772adc7532
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Cover_Days =
+			
+			DIVIDE(
+			    [Retailer_Stock_Avg],
+			    [Consumption_Rate_Per_Day],
+			    0
+			)
+		lineageTag: 5dbe0c8d-e6c5-4c24-a6f5-6adf595659eb
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure RO_Value = -[Total_Retail_Order_Amount]
+		lineageTag: 8eb25f7b-2388-4f15-ac69-d6dcb41f48df
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure UO_Value = [Total_UserOrder_Amount]
+		lineageTag: 75a2df34-fff8-4434-a45d-8c62cecc6e0a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Retail_Order_Ratio =
+			
+			DIVIDE(
+			    [Total_Retail_Order_Quantity],
+			    [Total_order_quantity]
+			)
+		lineageTag: 21e9327f-fa20-4f62-99ff-1180a70c3ea3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Avg_Retail_Order_Per_Month =
+			
+			DIVIDE(
+			    [Total_Retail_Order_Quantity],
+			    COUNTROWS(
+			        DISTINCT(
+			            SELECTCOLUMNS(
+			                Fact_Retailorder,
+			                "YearMonth",
+			                FORMAT(Fact_Retailorder[order_date], "YYYY-MM")
+			            )
+			        )
+			    )
+			)
+		lineageTag: 7b22a34d-a7dc-471f-aa4d-ab9eba598d8f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Achievement_By_retailer_order =
+			
+			DIVIDE ( [Total_Retail_Order_Count], [Retail_Order_Target], 0 )
+		lineageTag: 633886a8-bdf3-470e-a490-633d0c40c5e0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure User_Order_Target =
+			
+			SELECTEDVALUE( Dim_Retailer_Target[User Order Target] )
+		formatString: 0
+		lineageTag: 908a8090-7c4c-4b02-9c67-84d368ad8f70
+
+	measure Achievement_By_user_order =
+			
+			DIVIDE ( [Total_User_Order_Count], [User_Order_Target], 0 )
+		lineageTag: ffa757ae-5350-419d-a640-fd48d65ca252
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
 	column id
 		dataType: int64
 		formatString: 0
@@ -394,6 +515,18 @@ table Fact_RetailOrder
 		annotation SummarizationSetBy = Automatic
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Stock_Status =
+			
+			IF(
+			    [Cover_Days] > 5,
+			    "Clear_Stock",
+			    "Restock"
+			)
+		lineageTag: 1652d887-cc4f-4c03-b4e8-e3985c4841e2
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
 
 	partition Fact_RetailOrder = m
 		mode: import

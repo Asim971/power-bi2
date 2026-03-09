@@ -1,4 +1,5 @@
 table Processing_AIL
+	excludeFromModelRefresh
 	lineageTag: da1228c8-155c-4f0f-aab9-00318241e970
 
 	measure Processing_Raw_AIL = ```

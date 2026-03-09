@@ -1,4 +1,5 @@
 table Return
+	excludeFromModelRefresh
 	lineageTag: 419e2e57-33b1-4d50-a33b-d4b994b1f020
 
 	measure Return =
@@ -19,6 +20,10 @@ table Return
 	measure Final_Return = Processing[Processing]-'Return'[Return]
 		formatString: 0
 		lineageTag: be17973f-7bf7-4366-b130-23e354d9a838
+
+	measure Return_ACSL = 0
+		formatString: 0
+		lineageTag: 55aa2e5d-c595-4b43-9581-20b010cd221f
 
 	column Date
 		dataType: dateTime

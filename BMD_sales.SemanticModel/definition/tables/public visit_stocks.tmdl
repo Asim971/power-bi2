@@ -1,0 +1,126 @@
+table 'public visit_stocks'
+	lineageTag: 3f46c5bd-262c-42f2-a2a7-4c03b5ba821e
+
+	column id
+		dataType: int64
+		formatString: 0
+		lineageTag: 42d3b482-3236-48b8-be26-5d70d2b2281d
+		summarizeBy: none
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	column name
+		dataType: string
+		lineageTag: 77d4ab14-e6d6-44bc-83d1-5a3bcad1dec3
+		summarizeBy: none
+		sourceColumn: name
+
+		annotation SummarizationSetBy = Automatic
+
+	column note
+		dataType: string
+		lineageTag: e32c1eba-61a1-41d5-8d7c-1a4779ebc04f
+		summarizeBy: none
+		sourceColumn: note
+
+		annotation SummarizationSetBy = Automatic
+
+	column organization_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 910c1800-6993-4bba-bcb2-dcd07f44871a
+		summarizeBy: sum
+		sourceColumn: organization_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column organization_name
+		dataType: string
+		lineageTag: 2eae1f18-d5a3-4c95-8513-0e8dc95d50d8
+		summarizeBy: none
+		sourceColumn: organization_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column product
+		dataType: string
+		lineageTag: a0668858-502a-483f-b0f1-c6e0a2443e09
+		summarizeBy: none
+		sourceColumn: product
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_photo
+		dataType: string
+		lineageTag: 2cdb76d9-29b3-4584-85d3-19ca1ec79a69
+		summarizeBy: none
+		sourceColumn: product_photo
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_type
+		dataType: string
+		lineageTag: 2e5714a1-e4ea-4230-b74d-69951603b817
+		summarizeBy: none
+		sourceColumn: product_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column qty
+		dataType: double
+		lineageTag: ceb56d9a-14aa-4443-a48f-916714d72c17
+		summarizeBy: sum
+		sourceColumn: qty
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column unit
+		dataType: string
+		lineageTag: 03d9868c-5bb3-4a8b-b871-efceeafc137a
+		summarizeBy: none
+		sourceColumn: unit
+
+		annotation SummarizationSetBy = Automatic
+
+	column unit_price
+		dataType: double
+		lineageTag: 7c61b4ab-0033-4c7a-9cb5-e9d3ab9c401e
+		summarizeBy: sum
+		sourceColumn: unit_price
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column brand_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 15469400-a068-4b1e-99a7-13e7619d4083
+		summarizeBy: sum
+		sourceColumn: brand_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column sku_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 8b912576-29ff-45d8-9d0c-051ce305848f
+		summarizeBy: sum
+		sourceColumn: sku_id
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'public visit_stocks' = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("172.17.19.21", "bmdsalesdb"),
+				  #"Navigation 1" = Source{[Schema = "public", Item = "visit_stocks"]}[Data]
+				in
+				  #"Navigation 1"
+
+	annotation PBI_ResultType = Table
+

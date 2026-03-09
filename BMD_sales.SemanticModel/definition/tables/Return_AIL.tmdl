@@ -1,4 +1,5 @@
 table Return_AIL
+	excludeFromModelRefresh
 	lineageTag: 139d01a5-096b-4918-bf8e-9550e1140559
 
 	measure Return_AIL =

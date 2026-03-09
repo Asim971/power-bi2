@@ -1,0 +1,21 @@
+table Retailer_with_order
+	lineageTag: b51b7fa8-a3e4-4c7b-b540-6a0562471533
+
+	measure Retailer_with_order = SWITCH( SELECTEDVALUE(Retailer_with_order[Type]), "RO", [Active_Retailers], "UO", [Retailer_user_order] )
+		formatString: 0
+		lineageTag: b88ef039-7b3b-4961-829f-a45677020c42
+
+	column Type
+		lineageTag: b8570ce9-2394-43fa-8566-92f52eb3a7e9
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Type]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Retailer_with_order = calculated
+		mode: import
+		source = DATATABLE( "Type", STRING, { {"RO"}, {"UO"} } )
+
+	annotation PBI_Id = 3224f0c972464d899b4ffaa6389fcd42
+

@@ -669,8 +669,9 @@ table Fact_ProjectConversion
 	measure Total_Carpenter_Pending_Count =
 			
 			CALCULATE (
-			    DISTINCTCOUNT(Fact_ProjectConversion[id]),
-			    Fact_ProjectConversion[order_status] IN { "PENDING", "PENDING_SR_VERIFICATION" }
+			    COUNT(Fact_ProjectConversion[id]),
+			    Fact_ProjectConversion[order_status] = "PENDING",
+			    Fact_ProjectConversion[picture_type] = "AFTER_ACSL"
 			)
 		formatString: 0
 		displayFolder: Carpenter
@@ -680,7 +681,8 @@ table Fact_ProjectConversion
 			
 			CALCULATE (
 			    SUM ( Fact_ProjectConversion[total_rft_quantity] ),
-			    Fact_ProjectConversion[order_status] IN { "PENDING", "PENDING_SR_VERIFICATION" }
+			    Fact_ProjectConversion[order_status] = "PENDING",
+			    Fact_ProjectConversion[picture_type] = "AFTER_ACSL"
 			)
 		displayFolder: Carpenter
 		lineageTag: 235dd053-1894-4d3f-9f1f-f319f9d13329
@@ -691,7 +693,8 @@ table Fact_ProjectConversion
 			
 			CALCULATE (
 			    SUM ( Fact_ProjectConversion[total_rft_quantity] ),
-			    Fact_ProjectConversion[order_status] = "APPROVED"
+			    Fact_ProjectConversion[order_status] = "APPROVED",
+			    Fact_ProjectConversion[picture_type] = "AFTER_ACSL"
 			)
 		displayFolder: Carpenter
 		lineageTag: 8309a24a-85bd-4654-a09b-d68207d62b6b
@@ -702,7 +705,8 @@ table Fact_ProjectConversion
 			
 			CALCULATE (
 			    SUM ( Fact_ProjectConversion[total_rft_quantity] ),
-			    Fact_ProjectConversion[order_status] = "REJECTED"
+			    Fact_ProjectConversion[order_status] = "REJECTED",
+			    Fact_ProjectConversion[picture_type] = "AFTER_ACSL"
 			)
 		displayFolder: Carpenter
 		lineageTag: e3b6da27-efe8-4c32-95ba-b0297dba13ea
@@ -949,6 +953,54 @@ table Fact_ProjectConversion
 		lineageTag: 977d0981-aac5-4a7c-864d-0b8489533cc4
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Total_order_quantity_rft_MT = SUM(Fact_ProjectConversion[total_rft_quantity])/400
+		displayFolder: Carpenter
+		lineageTag: 4886d54c-7dab-4b7a-ac5b-ba6d298c0d71
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Avg_Order_per_Carpenter_MT =
+			
+			DIVIDE (
+			    [Total_order_quantity_rft],
+			    [Active_Carpenter]
+			)/400
+		displayFolder: Carpenter
+		lineageTag: db790f01-30ea-46d3-8a21-40871cbd13b2
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Total_UserOrder_Amount = sum(Fact_ProjectConversion[total_amount])
+		lineageTag: a603d1f0-ee8b-4ffe-9f1a-8e76465b9d30
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Total_User_Order_Count = COUNT(Fact_ProjectConversion[id])
+		formatString: 0
+		lineageTag: b74a128a-b5f7-4508-9cd6-dc56e8a81213
+
+	measure Avg_User_Order_Per_Month =
+			
+			DIVIDE(
+			    [Total_order_quantity],
+			    COUNTROWS(
+			        DISTINCT(
+			            SELECTCOLUMNS(
+			                Fact_ProjectConversion,
+			                "YearMonth",
+			                FORMAT(Fact_ProjectConversion[created_at], "YYYY-MM")
+			            )
+			        )
+			    )
+			)
+		lineageTag: 323d888b-439b-429f-bb6c-d048faaf959b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Retailer_user_order = DISTINCTCOUNT(Fact_ProjectConversion[retailer_id])
+		formatString: 0
+		lineageTag: 6d51413f-9a3d-45c1-b4d5-6223a8597a58
 
 	column id
 		dataType: int64
@@ -1218,6 +1270,14 @@ table Fact_ProjectConversion
 
 		annotation SummarizationSetBy = Automatic
 
+	column picture_type
+		dataType: string
+		lineageTag: 64fdf410-87d0-446a-be94-d80caa040388
+		summarizeBy: none
+		sourceColumn: picture_type
+
+		annotation SummarizationSetBy = Automatic
+
 	partition Fact_ProjectConversion = m
 		mode: import
 		source = ```
@@ -1235,9 +1295,11 @@ table Fact_ProjectConversion
 				  #"Sorted rows 1" = Table.Sort(#"Added custom", {{"updated_by_user_order_request", Order.Ascending}}),
 				  #"Added custom 1" = Table.TransformColumnTypes(Table.AddColumn(#"Sorted rows 1", "Contractor_HeadMason_Id", each if [contractor_id] <> null then [contractor_id]
 				else if [head_mason_id] <> null then [head_mason_id]
-				else null), {{"Contractor_HeadMason_Id", Int64.Type}})
+				else null), {{"Contractor_HeadMason_Id", Int64.Type}}),
+				  #"Merged queries 1" = Table.NestedJoin(#"Added custom 1", {"id"}, #"public project_conversion", {"id"}, "public project_conversion", JoinKind.LeftOuter),
+				  #"Expanded public project_conversion" = Table.ExpandTableColumn(#"Merged queries 1", "public project_conversion", {"picture_type"}, {"picture_type"})
 				in
-				  #"Added custom 1"
+				  #"Expanded public project_conversion"
 				```
 
 	annotation PBI_ResultType = Table

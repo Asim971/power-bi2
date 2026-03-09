@@ -1,0 +1,217 @@
+table dim_contractor_target_daily
+	lineageTag: 8abf9d91-75ed-4862-8aec-a611f751f1a4
+
+	column TerritoryID
+		dataType: int64
+		formatString: 0
+		lineageTag: c3700f6c-fe01-4ea8-8a2d-825d0a590246
+		summarizeBy: count
+		sourceColumn: TerritoryID
+
+		annotation SummarizationSetBy = Automatic
+
+	column TerritoryName
+		dataType: string
+		lineageTag: 5b9a356d-4e30-4019-acfe-bc1072d14f66
+		summarizeBy: none
+		sourceColumn: TerritoryName
+
+		annotation SummarizationSetBy = Automatic
+
+	column Zone
+		dataType: string
+		lineageTag: 4222cd8b-a917-4543-86cc-391528ff8821
+		summarizeBy: none
+		sourceColumn: Zone
+
+		annotation SummarizationSetBy = Automatic
+
+	column Region
+		dataType: string
+		lineageTag: 3ef223c7-edb4-41b9-a5c2-97c8e29e10a5
+		summarizeBy: none
+		sourceColumn: Region
+
+		annotation SummarizationSetBy = Automatic
+
+	column TerritoryOfficer
+		dataType: string
+		lineageTag: c714a1dd-bebf-4d86-83b0-20bf064d881a
+		summarizeBy: none
+		sourceColumn: TerritoryOfficer
+
+		annotation SummarizationSetBy = Automatic
+
+	column MarketType
+		dataType: string
+		lineageTag: 74bbafbb-c06f-4536-b31f-ff9a817c7de8
+		summarizeBy: none
+		sourceColumn: MarketType
+
+		annotation SummarizationSetBy = Automatic
+
+	column MarketTotalContractors
+		dataType: int64
+		formatString: 0
+		lineageTag: df9787ba-f9c2-42c9-9216-a387c6b8f4cf
+		summarizeBy: sum
+		sourceColumn: MarketTotalContractors
+
+		annotation SummarizationSetBy = Automatic
+
+	column RegisteredACLContractors
+		dataType: int64
+		formatString: 0
+		lineageTag: 955cf841-6e98-43f5-a430-f61001b3cc1a
+		summarizeBy: sum
+		sourceColumn: RegisteredACLContractors
+
+		annotation SummarizationSetBy = Automatic
+
+	column TargetMonth
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: a27e645c-eb83-417f-91b8-4f87737cc875
+		summarizeBy: none
+		sourceColumn: TargetMonth
+
+		variation Variation
+			isDefault
+			relationship: e72f8d0c-7817-423d-8f56-f9c93e15e7b5
+			defaultHierarchy: LocalDateTable_338f616c-f0ef-447c-a9bf-170c67f48d3e.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column ActiveContractorTarget
+		dataType: int64
+		formatString: 0
+		lineageTag: 47628a07-5625-4ac4-8d39-a98d7558da7e
+		summarizeBy: sum
+		sourceColumn: ActiveContractorTarget
+
+		annotation SummarizationSetBy = Automatic
+
+	column PerContractorVolumeBag
+		dataType: int64
+		formatString: 0
+		lineageTag: 131ba3bf-f6bf-451f-8de7-f1c14e845cfa
+		summarizeBy: sum
+		sourceColumn: PerContractorVolumeBag
+
+		annotation SummarizationSetBy = Automatic
+
+	column VolumeTargetMT
+		dataType: double
+		lineageTag: 0155f996-efe7-40ca-9d83-845b51df6ef3
+		summarizeBy: sum
+		sourceColumn: VolumeTargetMT
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column VolumeTargetBags
+		dataType: int64
+		formatString: 0
+		lineageTag: c1f43fd3-a27c-43b9-b2ef-18cd18278913
+		summarizeBy: sum
+		sourceColumn: VolumeTargetBags
+
+		annotation SummarizationSetBy = Automatic
+
+	column TargetDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 41439e1f-3052-4ff7-b4f2-945d08604444
+		summarizeBy: none
+		sourceColumn: TargetDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column IsWorkingDay
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: a84475e9-5f15-4f44-a67a-13848c3e29d5
+		summarizeBy: none
+		sourceColumn: IsWorkingDay
+
+		annotation SummarizationSetBy = Automatic
+
+	column WorkingDaysInMonth
+		dataType: int64
+		formatString: 0
+		lineageTag: 5f4b2bdc-8e2b-4a4e-8024-692814f233ca
+		summarizeBy: sum
+		sourceColumn: WorkingDaysInMonth
+
+		annotation SummarizationSetBy = Automatic
+
+	column ActiveContractorTargetPerDay
+		dataType: double
+		lineageTag: 5803909d-cc4f-43c4-a6ef-e57096855014
+		summarizeBy: sum
+		sourceColumn: ActiveContractorTargetPerDay
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column PerContractorVolumeBagPerDay
+		dataType: double
+		lineageTag: 356b64b2-c2ca-4f6d-bc32-3caee781f5cf
+		summarizeBy: sum
+		sourceColumn: PerContractorVolumeBagPerDay
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column VolumeTargetMTPerDay
+		dataType: double
+		lineageTag: 5c5abcfe-6ac0-40d9-a65b-b0ce6ccd8721
+		summarizeBy: sum
+		sourceColumn: VolumeTargetMTPerDay
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column VolumeTargetBagsPerDay
+		dataType: double
+		lineageTag: cd0ecffa-011d-46ab-9009-a794ebb207d1
+		summarizeBy: sum
+		sourceColumn: VolumeTargetBagsPerDay
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column users_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 9ad6e0fd-3735-43c8-85c6-e95a61436935
+		summarizeBy: none
+		sourceColumn: users_id
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_contractor_target_daily = m
+		mode: import
+		source =
+				let
+				  Source = Excel.Workbook(Web.Contents("https://anwargroup-my.sharepoint.com/personal/dev1_anwargroup_onmicrosoft_com/Documents/Apps/Microsoft Power Query/Uploaded Files/Dim_contractor_target 1.xlsx"), null, true),
+				  #"Navigation 1" = Source{[Item = "dim_contractor_target_daily", Kind = "Sheet"]}[Data],
+				  #"Promoted headers" = Table.PromoteHeaders(#"Navigation 1", [PromoteAllScalars = true]),
+				  #"Replaced value" = Table.ReplaceValue(#"Promoted headers", "-", "", Replacer.ReplaceValue, {"RegisteredACLContractors"}),
+				  #"Changed column type" = Table.TransformColumnTypes(#"Replaced value", {{"TerritoryID", Int64.Type}, {"TerritoryName", type text}, {"Zone", type text}, {"Region", type text}, {"TerritoryOfficer", type text}, {"MarketType", type text}, {"MarketTotalContractors", Int64.Type}, {"RegisteredACLContractors", Int64.Type}, {"TargetMonth", type date}, {"ActiveContractorTarget", Int64.Type}, {"PerContractorVolumeBag", Int64.Type}, {"VolumeTargetMT", type number}, {"VolumeTargetBags", Int64.Type}, {"TargetDate", type date}, {"IsWorkingDay", type logical}, {"WorkingDaysInMonth", Int64.Type}, {"ActiveContractorTargetPerDay", type number}, {"PerContractorVolumeBagPerDay", type number}, {"VolumeTargetMTPerDay", type number}, {"VolumeTargetBagsPerDay", type number}}),
+				  #"Merged queries" = Table.NestedJoin(#"Changed column type", {"TerritoryID"}, #"public users_territory", {"territory_id"}, "public users_territory", JoinKind.LeftOuter),
+				  #"Expanded public users_territory" = Table.ExpandTableColumn(#"Merged queries", "public users_territory", {"users_id"}, {"users_id"})
+				in
+				  #"Expanded public users_territory"
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,147 @@
+table Dim_Retailer_Target
+	lineageTag: 29909d74-ea51-4e76-88fe-e4f080ae583b
+
+	measure Retail_Order_Target =
+			
+			SELECTEDVALUE ( Dim_Retailer_Target[Retail Order Target] )
+		formatString: 0
+		lineageTag: 1feedae4-e250-4641-ac80-624ad547c159
+
+	column id
+		dataType: int64
+		formatString: 0
+		lineageTag: 8867f66c-f2e5-4bf3-8e17-1b2a6a4ca33a
+		summarizeBy: sum
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	column delete_status
+		dataType: string
+		lineageTag: 4b1e2d6a-b8a7-4098-9313-ec2475546f61
+		summarizeBy: none
+		sourceColumn: delete_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column email
+		dataType: string
+		lineageTag: 822603fb-e3db-439e-ab7c-4c48c3e079d6
+		summarizeBy: none
+		sourceColumn: email
+
+		annotation SummarizationSetBy = Automatic
+
+	column name
+		dataType: string
+		lineageTag: b5d5805f-e2c7-4888-b864-a5f1493cca20
+		summarizeBy: none
+		sourceColumn: name
+
+		annotation SummarizationSetBy = Automatic
+
+	column phone_number
+		dataType: string
+		lineageTag: 04758246-0979-419b-a9cc-d72329c1f68f
+		summarizeBy: none
+		sourceColumn: phone_number
+
+		annotation SummarizationSetBy = Automatic
+
+	column organization_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 5428d78d-81dd-4443-8946-d83a868a39c0
+		summarizeBy: sum
+		sourceColumn: organization_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column role_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 6aeabfd0-851a-43cc-a2b5-3d493b30f6a6
+		summarizeBy: sum
+		sourceColumn: role_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column active_status
+		dataType: string
+		lineageTag: de8dc031-1a20-4678-b7b9-07718ff47293
+		summarizeBy: none
+		sourceColumn: active_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Retailer Visits Target'
+		dataType: int64
+		formatString: 0
+		lineageTag: 8947ae13-0941-4362-8cb7-5a1e8ada1354
+		summarizeBy: sum
+		sourceColumn: Retailer Visits Target
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Active Retailer Target'
+		dataType: int64
+		formatString: 0
+		lineageTag: 40d2e614-a391-4cc6-b3d5-574ec72d694b
+		summarizeBy: sum
+		sourceColumn: Active Retailer Target
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Avg. Vol. Per Retailer Target'
+		dataType: int64
+		formatString: 0
+		lineageTag: 599640ed-5e9b-4a16-a572-6d483047ff59
+		summarizeBy: sum
+		sourceColumn: Avg. Vol. Per Retailer Target
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Retailer Consumption Target'
+		dataType: int64
+		formatString: 0
+		lineageTag: fec2f38b-0f70-4eb3-a803-5a49f8b421b1
+		summarizeBy: sum
+		sourceColumn: Retailer Consumption Target
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Retail Order Target'
+		dataType: int64
+		formatString: 0
+		lineageTag: 14638469-d34d-4043-bb63-4e46d73c12a4
+		summarizeBy: sum
+		sourceColumn: Retail Order Target
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'User Order Target'
+		dataType: int64
+		formatString: 0
+		lineageTag: 7c27d586-ef40-48ba-b5f0-9435ef2eda37
+		summarizeBy: sum
+		sourceColumn: User Order Target
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_Retailer_Target = m
+		mode: import
+		source =
+				let
+				  Source = #"public users",
+				  #"Removed columns" = Table.RemoveColumns(Source, {"area_record_ref", "corteza_record_ref", "corteza_user_id", "created_at", "division_record_ref", "line_manager", "meta", "nation_record_ref", "recordid", "territory_record_ref", "updated_at", "user_designation", "zone_record_ref", "area_id", "bd_territory_id", "nation_id", "region_id", "zone_id", "created_by", "deleted_by", "updated_by", "code", "module_code_id"}),
+				  #"Added custom" = Table.TransformColumnTypes(Table.AddColumn(#"Removed columns", "Retailer Visits Target", each 1), {{"Retailer Visits Target", Int64.Type}}),
+				  #"Added custom 1" = Table.TransformColumnTypes(Table.AddColumn(#"Added custom", "Active Retailer Target", each 1), {{"Active Retailer Target", Int64.Type}}),
+				  #"Added custom 2" = Table.TransformColumnTypes(Table.AddColumn(#"Added custom 1", "Avg. Vol. Per Retailer Target", each 1), {{"Avg. Vol. Per Retailer Target", Int64.Type}}),
+				  #"Added custom 3" = Table.TransformColumnTypes(Table.AddColumn(#"Added custom 2", "Retailer Consumption Target", each 1), {{"Retailer Consumption Target", Int64.Type}}),
+				  #"Added custom 4" = Table.TransformColumnTypes(Table.AddColumn(#"Added custom 3", "Retail Order Target", each 1), {{"Retail Order Target", Int64.Type}}),
+				  #"Added custom 5" = Table.TransformColumnTypes(Table.AddColumn(#"Added custom 4", "User Order Target", each 1), {{"User Order Target", Int64.Type}})
+				in
+				  #"Added custom 5"
+
+	annotation PBI_ResultType = Table
+

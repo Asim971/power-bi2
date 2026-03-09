@@ -1,0 +1,37 @@
+table Retailer_Coverage
+	lineageTag: 993f4340-22cb-4a2e-af30-02d913c59984
+
+	measure Retailer_Status_Value =
+			
+			SWITCH(
+			    SELECTEDVALUE(Retailer_Coverage[Status]),
+			    "Covered Retailer", [Active_Retailers],
+			    "Covered Bazaar", [Active_Bazaars],
+			    "Uncovered Retailer", [Uncovered_Retailer_Count]
+			)
+		formatString: 0
+		lineageTag: 40233142-8171-4995-8819-bb1d71473df4
+
+	column Status
+		lineageTag: 90cafa63-6e3d-420c-9aaf-a63b3d50c5f3
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Status]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Retailer_Coverage = calculated
+		mode: import
+		source =
+				
+				DATATABLE(
+				    "Status", STRING,
+				    {
+				        {"Covered Retailer"},
+				        {"Covered Bazaar"},
+				        {"Uncovered Retailer"}
+				    }
+				)
+
+	annotation PBI_Id = 52778283580549fdae781ac33cf7b7bb
+

@@ -49,10 +49,6 @@ relationship f6799f3a-889e-954f-c7b2-eb9ce9f6233c
 	fromColumn: Dim_BDTerritory.users_id
 	toColumn: Dim_User.UserID
 
-relationship a82988d2-2f94-c2a9-041d-0d9169e1b7bd
-	fromColumn: Dim_Bazaar.territory_id
-	toColumn: Dim_Territory.territory_id
-
 relationship 6e7b6f2a-9c33-4b8a-93ff-1e9b8a9a6b4a
 	fromColumn: Fact_Visit.VisitStageID
 	toColumn: Dim_VisitStage.VisitStageID
@@ -118,11 +114,6 @@ relationship ihb-bazaar-001-a1b2c3d4e5f6
 	fromColumn: Dim_IHB.BazaarID
 	toColumn: Dim_Bazaar.BazaarID
 
-relationship fv-terr-003-c3d4e5f6a7b8
-	isActive: false
-	fromColumn: Fact_Visit.territory_id
-	toColumn: Dim_Territory.territory_id
-
 relationship 9b1f2c3d-4e5f-6789-abcd-ef0123456789
 	fromColumn: Bridge_UserBazaar.UserID
 	toColumn: Dim_User.UserID
@@ -135,11 +126,6 @@ relationship 8a7b6c5d-4e3f-2109-8fed-cba987654321
 relationship 2c3d4e5f-6071-8293-a4b5-c6d7e8f90123
 	fromColumn: Bridge_UserTerritory.UserID
 	toColumn: Dim_User.UserID
-
-relationship 3d4e5f60-7182-93a4-b5c6-d7e8f9012345
-	crossFilteringBehavior: bothDirections
-	fromColumn: Bridge_UserTerritory.territory_id
-	toColumn: Dim_Territory.territory_id
 
 relationship 21a856df-120f-e611-8b63-eb16c809ee46
 	fromColumn: Fact_Visit.ClientKey
@@ -241,15 +227,6 @@ relationship 51c40eea-5353-3654-ec63-cdf1c4333c32
 	fromColumn: Paid.id
 	toColumn: Dim_Contractor.ContractorID
 
-relationship 72d3f70d-3e2b-4305-94f3-d17fb92aae51
-	isActive: false
-	crossFilteringBehavior: bothDirections
-	fromCardinality: one
-	fromColumn: Dim_Territory.territory_id
-	toColumn: Dim_Location.territory_id
-
-	annotation PBI_IsFromSource = FS
-
 relationship b17d1427-5806-4697-bbe1-81c73ceebcef
 	joinOnDateBehavior: datePartOnly
 	fromColumn: Paid.Date
@@ -277,11 +254,6 @@ relationship d4d6a777-396a-135b-1ce5-259b57b26744
 relationship cd225d6b-9a99-281a-3715-0ecebf052ec6
 	fromColumn: Fact_RetailOrder.retailer_id
 	toColumn: Dim_Retailer2.id
-
-relationship c6eaf597-2338-2d2b-baa6-94faeafc2637
-	isActive: false
-	fromColumn: Dim_Retailer2.bazaar_id
-	toColumn: Dim_Bazaar.BazaarID
 
 relationship 2e215a29-5fd1-4665-abca-bcc31c796caa
 	joinOnDateBehavior: datePartOnly
@@ -602,4 +574,70 @@ relationship 38d443f0-15f0-58bc-c794-acb03f68201b
 relationship c9a65781-06cf-6e14-e11b-ab4f460915e4
 	fromColumn: Dim_Site.Contractor_HeadMason_Id
 	toColumn: Dim_Contractor_HeadMason.PartnerID
+
+relationship b0d46b00-8329-4b68-97f5-2efa634f78d4
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: 'public visit_stocks'.id
+	toColumn: Fact_Retailer_Stock.visit_stock_id
+
+	annotation PBI_IsFromSource = FS
+
+relationship 4dd0219a-85bb-4eea-b10c-d394b4bede67
+	fromColumn: Fact_Visit2.lead_id
+	toColumn: 'public lead'.id
+
+	annotation PBI_IsFromSource = FS
+
+relationship 5d2e3b94-bc30-45df-b1e0-31192908cb75
+	isActive: false
+	fromColumn: Dim_Site.Contractor_HeadMason_Id
+	toColumn: Fact_Client.id
+
+	annotation PBI_IsFromSource = FS
+
+relationship 0fb1cb48-ff6a-65da-617d-e101d875405d
+	fromColumn: Fact_Retailer_Stock.retailer_id
+	toColumn: Dim_Retailer2.id
+
+relationship e941fca6-20cd-6a52-24f7-5e3d2565d864
+	fromColumn: Fact_Retailer_Stock.created_by_id
+	toColumn: Dim_User.UserID
+
+relationship dd76ed56-4bdf-4b94-9af1-8b67c462fe38
+	fromColumn: Fact_Retailer_Stock.created_at
+	toColumn: Dim_Date.Date
+
+relationship 153541e9-4503-460c-b594-775abb97fb8f
+	isActive: false
+	fromColumn: Fact_Retailer_Stock.visit_id
+	toColumn: Fact_Visit2.id
+
+	annotation PBI_IsFromSource = FS
+
+relationship c3573124-edc4-4d4e-9550-1a4fa9525b15
+	joinOnDateBehavior: datePartOnly
+	fromColumn: dim_retailer_target_daily.TargetMonth
+	toColumn: LocalDateTable_36f0b76e-674b-4690-b6dc-d7ec4d4350df.Date
+
+relationship e72f8d0c-7817-423d-8f56-f9c93e15e7b5
+	joinOnDateBehavior: datePartOnly
+	fromColumn: dim_contractor_target_daily.TargetMonth
+	toColumn: LocalDateTable_338f616c-f0ef-447c-a9bf-170c67f48d3e.Date
+
+relationship bae7e4e9-e590-2a59-8f01-a3bce6c38a07
+	fromColumn: dim_retailer_target_daily.users_id
+	toColumn: Dim_User.UserID
+
+relationship 87b57423-8f05-a45a-2f3e-573def3fd20f
+	fromColumn: dim_contractor_target_daily.users_id
+	toColumn: Dim_User.UserID
+
+relationship 4e35d56c-b924-d75f-6049-99dc06c8e0ec
+	fromColumn: dim_contractor_target_daily.TargetDate
+	toColumn: Dim_Date.Date
+
+relationship f8915af5-573d-3403-518a-cd5e51b4b2d5
+	fromColumn: dim_retailer_target_daily.TargetDate
+	toColumn: Dim_Date.Date
 

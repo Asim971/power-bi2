@@ -1,4 +1,5 @@
 table Target
+	excludeFromModelRefresh
 	lineageTag: 20d0afb4-8cc4-4c6c-9db6-ecc9c9cb7ce3
 
 	measure Cumulative_Target =

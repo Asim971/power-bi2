@@ -16,7 +16,7 @@ table Bridge_UserTerritory
 		dataType: int64
 		formatString: 0
 		lineageTag: 7f4c1d7a-0b4e-4a71-8f8d-3d3c0b2a81a5
-		summarizeBy: none
+		summarizeBy: sum
 		sourceColumn: territory_id
 
 		changedProperty = IsHidden

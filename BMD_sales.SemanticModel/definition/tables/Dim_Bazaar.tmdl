@@ -1,6 +1,10 @@
 table Dim_Bazaar
 	lineageTag: 1a2b3c4d-5e6f-7890-abcd-ef1234567890
 
+	measure Total_bazaar = DISTINCTCOUNT(Dim_Bazaar[BazaarID])
+		formatString: 0
+		lineageTag: 9f4b9412-62c2-4b97-a623-0ba59c2d7066
+
 	column BazaarID
 		dataType: int64
 		isKey
@@ -48,7 +52,7 @@ table Dim_Bazaar
 		dataType: int64
 		formatString: 0
 		lineageTag: 785bb0fc-70a2-4b5e-9569-81cc2d4ec977
-		summarizeBy: none
+		summarizeBy: sum
 		sourceColumn: territory_id
 
 		changedProperty = IsHidden
