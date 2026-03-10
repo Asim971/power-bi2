@@ -689,6 +689,23 @@ table Fact_Visit2
 
 		annotation SummarizationSetBy = Automatic
 
+	column visit_reference_type
+		dataType: string
+		lineageTag: f029c1af-3f32-48cf-9e95-a2e35a867ac0
+		summarizeBy: none
+		sourceColumn: visit_reference_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column visit_reference_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 0a11478b-09b3-4fc5-92c0-bb1757fe5c48
+		summarizeBy: sum
+		sourceColumn: visit_reference_id
+
+		annotation SummarizationSetBy = Automatic
+
 	partition Fact_Visit2 = m
 		mode: import
 		source =

@@ -29,10 +29,11 @@ table Fact_Retailer_Stock
 
 	measure Restock_Retailers =
 			
-			COUNTROWS(
+			CALCULATE(
+			    DISTINCTCOUNT(Dim_Retailer2[id]),
 			    FILTER(
 			        VALUES(Dim_Retailer2[id]),
-			        [Cover_Days] <= 10
+			        [Cover_Days] <= 5
 			    )
 			)
 		formatString: 0
@@ -40,10 +41,11 @@ table Fact_Retailer_Stock
 
 	measure ClearStock_Retailers =
 			
-			COUNTROWS(
+			CALCULATE(
+			    DISTINCTCOUNT(Dim_Retailer2[id]),
 			    FILTER(
 			        VALUES(Dim_Retailer2[id]),
-			        [Cover_Days] > 10
+			        [Cover_Days] > 5
 			    )
 			)
 		formatString: 0

@@ -641,3 +641,7 @@ relationship f8915af5-573d-3403-518a-cd5e51b4b2d5
 	fromColumn: dim_retailer_target_daily.TargetDate
 	toColumn: Dim_Date.Date
 
+relationship c3bd0f98-7792-7ff1-0d2e-1525bb714065
+	fromColumn: Fact_ProjectConversion.retailer_id
+	toColumn: Dim_Retailer2.id
+

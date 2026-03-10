@@ -330,7 +330,7 @@ table Dim_Site
 
 	column head_mason_status
 		dataType: string
-		lineageTag: dce49f95-0a6b-49c7-8aa3-7950c8c6004a
+		lineageTag: a8f1b08d-3fdc-4343-97f0-2984999f9cc3
 		summarizeBy: none
 		sourceColumn: head_mason_status
 
@@ -338,7 +338,7 @@ table Dim_Site
 
 	column engineer_status
 		dataType: string
-		lineageTag: ab0c6238-db4f-49a0-a9e5-3373bd260641
+		lineageTag: ccc132a6-baf2-48e0-a0fa-e86db05f70cd
 		summarizeBy: none
 		sourceColumn: engineer_status
 
@@ -346,7 +346,7 @@ table Dim_Site
 
 	column contractor_headmason_status
 		dataType: string
-		lineageTag: 957e2c12-5cd8-4b39-91ba-26071b16e338
+		lineageTag: 34a6891a-192c-4847-9b20-63df9af4c96e
 		summarizeBy: none
 		sourceColumn: contractor_headmason_status
 

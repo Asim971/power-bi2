@@ -352,6 +352,43 @@ table Fact_RetailOrder
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	measure Average_Daily_Trade_Price_AIL =
+			
+			AVERAGEX (
+			    FILTER (
+			        Fact_RetailOrder,
+			        Fact_RetailOrder[total_quantity] > 0
+			            &&
+			        VAR RowPrice =
+			            DIVIDE (
+			                Fact_RetailOrder[total_amount],
+			                Fact_RetailOrder[total_quantity]
+			            )
+			        RETURN
+			            RowPrice > 60000
+			                && RowPrice < 90000
+			    ),
+			    DIVIDE (
+			        Fact_RetailOrder[total_amount],
+			        Fact_RetailOrder[total_quantity]
+			    )
+			)
+		lineageTag: 9a7a3fa5-0c49-4243-b2e6-a22bb73d31df
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Profit_AIL =
+			
+			IF(
+			    ISBLANK([Average_Daily_UserOrder_Price_AIL]) ||
+			    ISBLANK([Average_Daily_Trade_Price_AIL]),
+			    0,
+			    [Average_Daily_UserOrder_Price_AIL] - [Average_Daily_Trade_Price_AIL]
+			)
+		lineageTag: 92b0efd2-2ba0-47d4-aed9-97aba80d4153
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
 	column id
 		dataType: int64
 		formatString: 0

@@ -2,10 +2,10 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
   "metadata": {
     "type": "Report",
-    "displayName": "BMD Sales - ACL_Old"
+    "displayName": "BMD Sales - ACL"
   },
   "config": {
     "version": "2.0",
-    "logicalId": "4560decb-3af0-8676-419a-22f451e657d1"
+    "logicalId": "33582e69-0d45-a375-4a0f-ecc8bafd7bd9"
   }
 }
